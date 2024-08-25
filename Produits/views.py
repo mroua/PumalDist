@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.db import connection
+from django.contrib.auth.decorators import login_required
 
 from .models import *
 from .Serializers import ProduitSerializer
@@ -15,6 +16,7 @@ class ProduitViewSet(viewsets.ModelViewSet):
     serializer_class = ProduitSerializer
 
 
+@login_required
 def ProduitView(request):
     liste_type = TypeProduit.objects.all()
     liste_couleur = Couleur.objects.all()

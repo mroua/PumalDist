@@ -1,7 +1,18 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Users{% endblock %}
+{% block title %}Payeur{% endblock %}
+{% block page_heading %}
 
+
+    <div>
+        <a href="{% url 'distributeur' %}" class="block px-4 py-2 hover:bg-gray-700 rounded">Distributeur</a>
+    </div>
+    <div><!-- accomptes -->
+        <a href="{% url 'payeur' %}" class="block px-4 py-2 hover:bg-gray-700 rounded">Payeur</a>
+    </div>
+
+
+{% endblock %}
 {% block content %}
     <!-- Add User Sidebar -->
     <div id="addSidebar"
@@ -207,7 +218,7 @@
         </div>
     </div>
 
-    <div class="flex justify-between items-center mb-4" style="margin-top: -8px">
+    <div class="flex justify-between items-center pt-8 mb-4" style="margin-top: -8px">
         <h2 class="text-2xl font-bold text-gray-700">Liste des Payeurs</h2>
         <div>
             <button id="filterButton" class="bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-700">Filtrer
@@ -247,7 +258,7 @@
                     Bloqué {% else %} Actif {% endif %}</span>
                 </div>
                 <div class="flex space-x-2 w-1/6 justify-end">
-                    <button class="bg-blue-500 text-white p-2 rounded"><i class="fas fa-search"></i></button>
+                    <!--<button class="bg-blue-500 text-white p-2 rounded"><i class="fas fa-search"></i></button>-->
                     <button class="bg-blue-500 text-white p-2 rounded">
                         <i id="editButton" class="editButton fas fa-pencil-alt"
                            onclick="newdatauser()">
@@ -407,6 +418,8 @@
             $.ajax(settings)
                 .done(function (response) {
                     console.log(response);
+
+                    window.location.href = "/distributeur/payeur";
                 })
                 .fail(function (jqXHR, textStatus, errorThrown) {
                     // Log the entire jqXHR object to see all details
@@ -483,6 +496,7 @@
             $.ajax(settings)
                 .done(function (response) {
                     console.log(response);
+                    window.location.href = "/distributeur/payeur";
                 })
                 .fail(function (jqXHR, textStatus, errorThrown) {
                     // Log the entire jqXHR object to see all details

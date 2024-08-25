@@ -34,7 +34,7 @@ class LoginView(APIView):
     def get(self, request):
         print("get")
         if request.user.is_authenticated:
-            return redirect('/dashboard')  # Redirect to the dashboard or another page
+            return redirect('/users/')  # Redirect to the dashboard or another page
         return render(request, "Login.html")
 
 class VilleViewSet(viewsets.ModelViewSet):

@@ -737,6 +737,8 @@
             $.ajax(settings)
                 .done(function (response) {
                     console.log(response);
+
+                    window.location.href = "/distributeur/";
                 })
                 .fail(function (jqXHR, textStatus, errorThrown) {
                     // Log the entire jqXHR object to see all details

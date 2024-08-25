@@ -94,7 +94,7 @@
             "method": "POST",
             "timeout": 0,
             "headers": {
-                "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),
+                //"X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),
                 "Content-Type": "application/json",
             },
             "data": JSON.stringify({
@@ -104,12 +104,9 @@
         };
 
         $.ajax(settings).done(function (response) {
-
+                window.location.href = "/users";
             if (response.success) {
-                window.location.href = "/dashboard";
-            } else {
-                $("#errorMessage").text(response.message || " Mot de passe ou username incorrecte.");
-                $("#errorMessage").removeClass("hidden");
+            console.log("ici")
             }
         }).fail(function () {
             $("#errorMessage").text("Une erreur s'est produite, veuillez réessayer plus tard.");

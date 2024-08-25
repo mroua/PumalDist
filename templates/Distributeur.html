@@ -1,12 +1,17 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Users{% endblock %}
+{% block title %}Distributeur{% endblock %}
 {% block page_heading %}
+
+
     <div>
-
-
-
+        <a href="{% url 'distributeur' %}" class="block px-4 py-2 hover:bg-gray-700 rounded">Distributeur</a>
     </div>
+    <div><!-- accomptes -->
+        <a href="{% url 'payeur' %}" class="block px-4 py-2 hover:bg-gray-700 rounded">Payeur</a>
+    </div>
+
+
 {% endblock %}
 
 {% block content %}
@@ -282,7 +287,7 @@
         </div>
     </div>
 
-    <div class="flex justify-between items-center mb-4" style="margin-top: -8px">
+    <div class="flex justify-between items-center pt-8 mb-4" style="margin-top: -8px">
         <h2 class="text-2xl font-bold text-gray-700">Liste des utilisateurs</h2>
         <div>
             <button id="filterButton" class="bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-700">Filtrer
@@ -521,6 +526,8 @@
             $.ajax(settings)
                 .done(function (response) {
                     console.log(response);
+
+                    window.location.href = "/distributeur/";
                 })
                 .fail(function (jqXHR, textStatus, errorThrown) {
                     // Log the entire jqXHR object to see all details
@@ -597,6 +604,7 @@
             $.ajax(settings)
                 .done(function (response) {
                     console.log(response);
+                    window.location.href = "/distributeur/";
                 })
                 .fail(function (jqXHR, textStatus, errorThrown) {
                     // Log the entire jqXHR object to see all details

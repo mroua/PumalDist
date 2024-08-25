@@ -66,9 +66,9 @@
                     <div>
                         <select id="region" name="region"
                                 class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                            <option value="EST">EST</option>
-                            <option value="OUEST">OUEST</option>
-                            <option value="NORD">Centre</option>
+                            <option value="Est">EST</option>
+                            <option value="Ouest">OUEST</option>
+                            <option value="Centre">Centre</option>
                         </select>
                     </div>
                 </div>
@@ -318,7 +318,7 @@
         </div>
     </div>
 
-    <div class="flex justify-between items-center mb-4" style="margin-top: -8px">
+    <div class="flex justify-between items-center pt-8 mb-4" style="margin-top: -8px">
         <h2 class="text-2xl font-bold text-gray-700">Liste des utilisateurs</h2>
         <div>
             <button id="filterButton" class="bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-700">Filtrer
@@ -360,7 +360,7 @@
                 </div>
                 <div class="text-blue-600 w-1/4">{{ elem.email }}</div>
                 <div class="flex space-x-2 w-1/6 justify-end">
-                    <button class="bg-blue-500 text-white p-2 rounded"><i class="fas fa-search"></i></button>
+                    <!--<button class="bg-blue-500 text-white p-2 rounded"><i class="fas fa-search"></i></button>-->
                     <button class="bg-blue-500 text-white p-2 rounded">
                         <i id="editButton" class="editButton fas fa-pencil-alt" onclick="
                                 {% if elem.photo %}
@@ -595,6 +595,8 @@
             $.ajax(settings)
                 .done(function (response) {
                     console.log(response);
+
+                    window.location.href = "/users";
                 })
                 .fail(function (jqXHR, textStatus, errorThrown) {
                     // Log the entire jqXHR object to see all details
@@ -677,6 +679,7 @@
             $.ajax(settings)
                 .done(function (response) {
                     console.log(response);
+                    window.location.href = "/users";
                 })
                 .fail(function (jqXHR, textStatus, errorThrown) {
                     // Log the entire jqXHR object to see all details

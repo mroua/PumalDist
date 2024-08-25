@@ -363,7 +363,7 @@
         </div>
     </div>
 
-    <div class="flex justify-between items-center mb-4" style="margin-top: -8px">
+    <div class="flex justify-between items-center pt-8 mb-4" style="margin-top: -8px">
         <h2 class="text-2xl font-bold text-gray-700">Liste des commandes</h2>
         <div>
             <button id="filterButton" class="bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-700">Filtrer
@@ -440,9 +440,9 @@
                     </button>
                     <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded"
                             data-identifiant="{{ elem.id }}"><i class="fas fa-search"></i></button>
-                    <button class="bg-blue-500 text-white p-2 rounded">
+                    <!--<button class="bg-blue-500 text-white p-2 rounded">
                         <i id="editButton" class="editButton fas fa-pencil-alt" onclick=""></i>
-                    </button>
+                    </button>-->
                     <button class="bg-red-500 text-white p-2 rounded"><i class="fas fa-trash"></i></button>
                 </div>
             </div>
@@ -901,6 +901,8 @@
 
             $.ajax(settings)
                 .done(function (response) {
+
+                    window.location.href = "/commande/";
                     console.log(response);
                 })
                 .fail(function (jqXHR, textStatus, errorThrown) {
@@ -953,7 +955,7 @@
         $(document).ready(function () {
             // AJAX settings
             var settings = {
-                "url": "http://127.0.0.1:8000/api/products",
+                "url": "/api/products",
                 "method": "GET",
                 "timeout": 0,
                 "headers": {
