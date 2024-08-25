@@ -1,0 +1,1338 @@
+{% extends "base.html" %}
+{% load mes_tags %}
+{% load static %}
+{% block title %}Commandes{% endblock %}
+
+{% block content %}
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+    <!-- Add Produit Sidebar -->
+    <div id="addSidebar" style="margin-top: -10px"
+         class="fixed right-0 top-0 bottom-0 w-4/5 bg-white shadow-lg transform translate-x-full transition-transform duration-300 z-50">
+        <div class="flex justify-between items-center p-4 border-b">
+            <h3 class="text-lg font-semibold">Ajouter une commande</h3>
+            <button id="closeSidebar" class="text-gray-500 hover:text-gray-700">&times;</button>
+        </div>
+
+        <!-- Step 1: Select Products -->
+        <div id="step1" class="p-4 h-full">
+            <div class="p-4 h-28 flex justify-around border border-gray-300 rounded-lg mb-4 gap-4">
+                <!-- Type Filter -->
+                <div class="mb-4 w-64">
+                    <label for="typeFilter" class="block text-sm font-medium text-gray-700 mb-2">Type</label>
+                    <select id="typeFilter"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option value="">Tous</option>
+                        {% for fil in liste_type %}
+                            <option id="{{ fil.id }}">{{ fil.designation }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Measure Filter -->
+                <div class="mb-4 w-64">
+                    <label for="measureFilter" class="block text-sm font-medium text-gray-700 mb-2">Mesure</label>
+                    <select id="measureFilter"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option value="">Tous</option>
+                        {% for fil in liste_mesure %}
+                            <option id="{{ fil.id }}">{{ fil.designation }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Field Filter -->
+                <div class="mb-4 w-64">
+                    <label for="colorfilter" class="block text-sm font-medium text-gray-700 mb-2">Couleur</label>
+                    <select id="colorfilter"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option value="">Tous</option>
+                        {% for fil in liste_couleur %}
+                            <option id="{{ fil.id }}">{{ fil.designation }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Field Filter -->
+                <div class="mb-4 w-64">
+                    <label for="distfield" class="block text-sm font-medium text-gray-700 mb-2">Selectionner le
+                        distributeur</label>
+                    <select id="distfield"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        {% for fil in liste_distributeur %}
+                            <option data-designation="{{ fil.designation }}" data-username="{{ fil.user.nom }}"
+                                    data-email="{{ fil.user.email }}"
+                                    id="{{ fil.id }}" value="{{ fil.id }}">{{ fil.designation }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+
+            </div>
+            <div class="h-4/6 overflow-y-auto">
+                <div id="productList" class="grid gap-4 w-full"></div>
+            </div>
+
+            <button id="goToStep2" class="goToStep2 h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Suivant
+            </button>
+        </div>
+
+        <!-- Step 2: Review Selected Products -->
+        <div id="step2" class="p-4 hidden">
+            <h3 class="text-lg font-semibold mb-4">Review Products</h3>
+            <div class="h-4/6 overflow-y-auto">
+                <div id="selectedProducts"></div>
+            </div>
+
+            <div class="flex justify-end pr-28">
+                <div class="h-16">Total:</div>
+                <div class="h-16 w-1/6 text-right pr-8" id="totalPrice">0 DA</div>
+            </div>
+
+            <div class="flex justify-between items-center mt-4">
+                <button id="goToStep1" class="bg-gray-500 text-white px-4 py-2 rounded-lg">Retour</button>
+                <button id="goToStep3" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Suivant</button>
+            </div>
+        </div>
+
+        <!-- Step 3: Confirm Order -->
+        <div id="step3" class="p-4 hidden">
+            <!-- Logo Section -->
+            <div class="h-4/5 w-full flex flex-col  items-center">
+
+                <div class="w-2/3">
+                    <div class="flex justify-center mb-4">
+                        <img src="{% static 'images/puma.svg' %}" alt="Company Logo" class="h-16">
+                    </div>
+
+                    <!-- Facture Details -->
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <!-- Recipient Details -->
+                        <div class="">
+                            <p id="recipientCompany">Nom de l'entreprise</p>
+                            <p id="recipientName">Nom et prénom</p>
+                            <p id="recipientEmail">email@domaine.com</p>
+                        </div>
+
+                        <!-- Facture Info -->
+                        <div class="text-right">
+                            <!--<p id="factureCode">12345</p>-->
+                            <p id="factureDate">01/01/2024</p>
+                            <p id="issuerName">{{ request.user.nom }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Product Details Table -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-t border-b border-gray-300">
+                            <thead>
+                            <tr>
+                                <th class="p-2 text-left">Désignation & Référence</th>
+                                <th class="p-2 text-center">Prix Unitaire</th>
+                                <th class="p-2 text-center">Quantité</th>
+                                <th class="p-2 text-center">Total</th>
+                            </tr>
+                            </thead>
+                            <tbody id="productDetails">
+                            <!-- Product rows will be inserted here dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Total Section -->
+                    <div class="flex justify-end">
+                        <div class="mt-4 w-1/3">
+                            <div class="flex justify-between mt-2 font-semibold">
+                                <span>Total:</span>
+                                <span id="totalAmount" class="pr-2">0 DA</span>
+                            </div>
+                            <div class="flex justify-between mt-2 font-semibold">
+                                <span>TVA:</span>
+                                <span id="taxAmount" class="pr-2">0 DA</span>
+                            </div>
+                            <div class="flex justify-between mt-2 font-semibold">
+                                <span>Montant Total:</span>
+                                <span id="amountDue" class="pr-2">0 DA</span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex justify-between items-center mt-4">
+                <button class="goToStep2 bg-gray-500 text-white px-4 py-2 rounded-lg">Retour</button>
+                <button id="confirmOrder" class="bg-green-500 text-white px-4 py-2 rounded-lg">Confirmer</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Edit Sidebar -->
+    <div id="editSidebar" style="margin-top: -10px"
+         class="fixed right-0 top-0 bottom-0 w-4/5 bg-white shadow-lg transform translate-x-full transition-transform duration-300 z-50">
+        <div class="flex justify-between items-center p-4 border-b">
+            <h3 class="text-lg font-semibold">Modifier la commande</h3>
+            <button id="closeEditSidebar" class="text-gray-500 hover:text-gray-700">&times;</button>
+        </div>
+
+        <!-- Step 1: Select Products -->
+        <div id="editStep1" class="p-4 h-full">
+            <div class="p-4 h-28 flex justify-around border border-gray-300 rounded-lg mb-4 gap-4">
+                <!-- Type Filter -->
+                <div class="mb-4 w-64">
+                    <label for="editTypeFilter" class="block text-sm font-medium text-gray-700 mb-2">Type</label>
+                    <select id="editTypeFilter"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option value="">Tous</option>
+                        {% for fil in liste_type %}
+                            <option id="{{ fil.id }}">{{ fil.designation }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Measure Filter -->
+                <div class="mb-4 w-64">
+                    <label for="editMeasureFilter" class="block text-sm font-medium text-gray-700 mb-2">Mesure</label>
+                    <select id="editMeasureFilter"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option value="">Tous</option>
+                        {% for fil in liste_mesure %}
+                            <option id="{{ fil.id }}">{{ fil.designation }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Field Filter -->
+                <div class="mb-4 w-64">
+                    <label for="editColorfilter" class="block text-sm font-medium text-gray-700 mb-2">Couleur</label>
+                    <select id="editColorfilter"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option value="">Tous</option>
+                        {% for fil in liste_couleur %}
+                            <option id="{{ fil.id }}">{{ fil.designation }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Field Filter -->
+                <div class="mb-4 w-64">
+                    <label for="editDistfield" class="block text-sm font-medium text-gray-700 mb-2">Selectionner le
+                        distributeur</label>
+                    <select id="editDistfield"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        {% for fil in liste_distributeur %}
+                            <option data-designation="{{ fil.designation }}" data-username="{{ fil.user.nom }}"
+                                    data-email="{{ fil.user.email }}"
+                                    id="{{ fil.id }}" value="{{ fil.id }}">{{ fil.designation }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="h-4/6 overflow-y-auto">
+                <div id="editProductList" class="grid gap-4 w-full"></div>
+            </div>
+
+            <button id="goToEditStep2" class="goToEditStep2 h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">
+                Suivant
+            </button>
+        </div>
+
+        <!-- Step 2: Review Selected Products -->
+        <div id="editStep2" class="p-4 hidden">
+            <h3 class="text-lg font-semibold mb-4">Modifier les produits sélectionnés</h3>
+            <div class="h-4/6 overflow-y-auto">
+                <div id="editSelectedProducts"></div>
+            </div>
+
+            <div class="flex justify-end pr-28">
+                <div class="h-16">Total:</div>
+                <div class="h-16 w-1/6 text-right pr-8" id="editTotalPrice">0 DA</div>
+            </div>
+
+            <div class="flex justify-between items-center mt-4">
+                <button id="goToEditStep1" class="bg-gray-500 text-white px-4 py-2 rounded-lg">Retour</button>
+                <button id="goToEditStep3" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Suivant</button>
+            </div>
+        </div>
+
+        <!-- Step 3: Confirm Order -->
+        <div id="editStep3" class="p-4 hidden">
+            <!-- Logo Section -->
+            <div class="h-4/5 w-full flex flex-col  items-center">
+
+                <div class="w-2/3">
+                    <div class="flex justify-center mb-4">
+                        <img src="{% static 'images/puma.svg' %}" alt="Company Logo" class="h-16">
+                    </div>
+
+                    <!-- Facture Details -->
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <!-- Recipient Details -->
+                        <div class="">
+                            <p id="editRecipientCompany">Nom de l'entreprise</p>
+                            <p id="editRecipientName">Nom et prénom</p>
+                            <p id="editRecipientEmail">email@domaine.com</p>
+                        </div>
+
+                        <!-- Facture Info -->
+                        <div class="text-right">
+                            <!--<p id="editFactureCode">12345</p>-->
+                            <p id="editFactureDate">01/01/2024</p>
+                            <p id="editIssuerName">{{ request.user.nom }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Product Details Table -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-t border-b border-gray-300">
+                            <thead>
+                            <tr>
+                                <th class="p-2 text-left">Désignation & Référence</th>
+                                <th class="p-2 text-center">Prix Unitaire</th>
+                                <th class="p-2 text-center">Quantité</th>
+                                <th class="p-2 text-center">Total</th>
+                            </tr>
+                            </thead>
+                            <tbody id="editProductDetails">
+                            <!-- Product rows will be inserted here dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Total Section -->
+                    <div class="flex justify-end">
+                        <div class="mt-4 w-1/3">
+                            <div class="flex justify-between mt-2 font-semibold">
+                                <span>Total:</span>
+                                <span id="editTotalAmount" class="pr-2">0 DA</span>
+                            </div>
+                            <div class="flex justify-between mt-2 font-semibold">
+                                <span>TVA:</span>
+                                <span id="editTaxAmount" class="pr-2">0 DA</span>
+                            </div>
+                            <div class="flex justify-between mt-2 font-semibold">
+                                <span>Montant Total:</span>
+                                <span id="editAmountDue" class="pr-2">0 DA</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex justify-between items-center mt-4">
+                <button class="goToEditStep2 bg-gray-500 text-white px-4 py-2 rounded-lg">Retour</button>
+                <button id="confirmEditOrder" class="bg-green-500 text-white px-4 py-2 rounded-lg">Confirmer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Sidebar -->
+    <div id="viewSidebar" style="margin-top: -10px"
+         class="flex flex-col fixed right-0 top-0 bottom-0 w-4/5 bg-white shadow-lg transform translate-x-full transition-transform duration-300 z-50">
+        <div class="flex justify-between items-center p-4 border-b">
+            <h3 class="text-lg font-semibold">Détail Commande</h3>
+            <button id="closeViewSidebar" class="text-gray-500 hover:text-gray-700">&times;</button>
+        </div>
+
+        <div id="containerdatacmd" class="flex-grow flex flex-col p-8">
+
+        </div>
+
+
+    </div>
+
+
+    <!-- Filter Modal -->
+    <div id="filterModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h3 class="text-lg font-semibold">Filter Products</h3>
+            <!-- Filter form -->
+            <form id="filterForm" class="mt-4">
+                <!-- Filter fields here -->
+                <button type="button" id="closeFilterModal" class="bg-gray-500 text-white px-4 py-2 rounded-lg">Close
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="flex justify-between items-center mb-4" style="margin-top: -8px">
+        <h2 class="text-2xl font-bold text-gray-700">Liste des commandes</h2>
+        <div>
+            <button id="filterButton" class="bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-700">Filtrer
+            </button>
+            <button id="addButton" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400">Ajouter
+            </button>
+        </div>
+
+    </div>
+
+
+    <!-- Produit List Headers -->
+    <div class="bg-white shadow-md rounded-t-lg p-4">
+        <div class="flex items-center justify-between text-gray-600 font-semibold">
+            <div class="w-1/6 capitalize">Code</div>
+            <div class="w-1/4 capitalize">Distributeur</div>
+            <div class="w-1/6 capitalize">Ville</div>
+            <div class="w-1/6 capitalize">Date</div>
+            <div class="w-1/6 capitalize px-4">Total CMD</div>
+            <div class="w-1/6 capitalize px-4">Total BL</div>
+            <div class="w-1/6 capitalize text-center">Etat</div>
+            <div class="w-1/6 capitalize text-center">Actions</div>
+        </div>
+    </div>
+
+    <!-- Produit List
+     <h3 class="text-lg font-bold text-blue-600">{ { elem.designation }}</h3>
+                        <p class="text-sm text-gray-500">{ { elem.reference }}</p>-->
+    <div class="shadow-md space-y-4">
+        {% for elem in liste_cmd %}
+            <div class="flex items-center justify-between bg-gray-50 p-4 rounded-lg">
+                <div class="w-1/6">
+                    <p class="text-sm text-gray-500">{{ elem.code }}</p>
+                </div>
+                <div class="w-1/4">
+                    <p class="text-sm text-gray-500">{{ elem.distributeur }}</p>
+                </div>
+                <div class="w-1/6">
+                    <p class="text-sm text-gray-500">{{ elem.ville }}</p>
+                </div>
+                <div class="w-1/6">
+                    <p class="text-sm text-gray-500">{{ elem.date_ajout }}</p>
+                </div>
+                <div class="w-1/6 border-r-2 border-gray-700">
+                    <div class="flex w-full justify-between pr-2">
+                        <div class="text-sm text-gray-500">HT:</div>
+                        <div class="text-sm text-gray-500 text-right">{{ elem.total|floate_redefined }} DA</div>
+                    </div>
+                    <div class="flex w-full justify-between pr-2">
+                        <div class="text-sm text-gray-500">Taxe:</div>
+                        <div class="text-sm text-gray-500 text-right">{{ elem.taxedtotal|floate_redefined }} DA</div>
+                    </div>
+                </div>
+                <div class="w-1/6">
+                    <div class="flex w-full justify-between pl-2">
+                        <div class="text-sm text-gray-500">HT:</div>
+                        <div class="text-sm text-gray-500 text-right">{{ elem.total_blivraison|floate_redefined }} DA
+                        </div>
+                    </div>
+                    <div class="flex w-full justify-between pl-2">
+                        <div class="text-sm text-gray-500">Taxe:</div>
+                        <div class="text-sm text-gray-500 text-right">{{ elem.taxedtotal_blivraison|floate_redefined }}
+                            DA
+                        </div>
+                    </div>
+                </div>
+                <div class="w-1/6">
+                    <p class="text-sm text-gray-500 text-center">{{ elem.etat }}</p>
+                </div>
+                <div class="flex space-x-2 w-1/6 justify-end">
+                    <button id="popupButton" class="popupButton bg-blue-500 text-white p-2 rounded"
+                            data-identifiant="{{ elem.id }}"><i
+                            class="fa-solid fa-truck"></i>
+                    </button>
+                    <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded"
+                            data-identifiant="{{ elem.id }}"><i class="fas fa-search"></i></button>
+                    <button class="bg-blue-500 text-white p-2 rounded">
+                        <i id="editButton" class="editButton fas fa-pencil-alt" onclick=""></i>
+                    </button>
+                    <button class="bg-red-500 text-white p-2 rounded"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Filter Modal -->
+    <div id="addbl" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
+        <form>
+            <div class="relative w-screen h-screen flex justify-center items-center">
+                <div class="bg-white w-3/4 h-3/4 p-6 rounded-lg shadow-lg flex flex-col gap-y-2">
+                    <h3 class="text-lg font-semibold">Ajout BL</h3>
+                    <!-- div list products -->
+                    <div class="grid grid-cols-8 p-4">
+                        <div class="col-span-2">Produit</div>
+                        <div class="col-span-1">Type/Mesure</div>
+                        <div class="col-span-1">Couleur</div>
+                        <div class="col-span-1">Prix unitaire</div>
+                        <div class="col-span-1">Quantité restante</div>
+                        <div class="col-span-1">Quantité à livrer</div>
+                        <div class="col-span-1 text-right">Total</div>
+                    </div>
+                    <!--<div class="bg-blue-300 flex w-full">
+                        <div class="flex-grow">Produit</div>
+                        <div class="flex-grow"></div>
+                        <div class="flex-grow"></div>
+                        <div class="flex-grow">Type/Mesure</div>
+                        <div class="flex-grow">Couleur</div>
+                        <div class="flex-grow">Prix unitaire</div>
+                        <div class="flex-grow">Quantité restante</div>
+                        <div class="flex-grow">Quantité a livré</div>
+                        <div class="flex-grow">Total</div>
+                    </div>-->
+                    <div class="listeblprod flex-grow" id="listeblprod">
+                    </div>
+                    <div class="grid grid-cols-8 text-right pr-4 text-lg">
+                        <div class="col-span-7 mr-3.5">Total HT:</div>
+                        <div class="col-span-1" id="totalhtbl">0 DA</div>
+                    </div>
+                    <div class="grid grid-cols-8 text-right pr-4 text-lg">
+                        <div class="col-span-7">Total Taxe:</div>
+                        <div class="col-span-1" id="totaltaxebl">0 DA</div>
+                    </div>
+                    <div class="flex justify-around">
+                        <div class="">
+                            <button type="button" id="closePopup" class="bg-gray-500 text-white px-4 py-2 rounded-lg">
+                                Annuler
+                            </button>
+                        </div>
+
+                        <div class="flex-grow flex items-center justify-around space-x-4">
+                            <div class="flex items-center justify-center space-x-4">
+                                <input id="facture_id" class="border border-gray-300
+                                text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block
+                                p-2.5" placeholder="Facture"/>
+                            </div>
+
+                            <div class="flex items-center space-x-4 border border-gray-300 rounded-lg">
+                                <label for="file-upload" class="block flex-shrink-0">
+                                    <div class="flex items-center justify-center px-4 py-2 rounded-l-lg bg-white text-blue-500 cursor-pointer hover:bg-blue-500 hover:text-white transition-colors duration-300">
+                                        <span>Fichier FC</span>
+                                    </div>
+                                    <input id="file-upload" type="file" class="hidden"/>
+                                </label>
+                                <span id="file-name" class="text-gray-500 w-64 truncate">No fc file</span>
+                            </div>
+
+                            <div class="flex items-center space-x-4 border border-gray-300 rounded-lg">
+                                <label for="file-upload2" class="block flex-shrink-0">
+                                    <div class="flex items-center justify-center px-4 py-2 rounded-l-lg bg-white text-blue-500 cursor-pointer hover:bg-blue-500 hover:text-white transition-colors duration-300">
+                                        <span>Fichier BL</span>
+                                    </div>
+                                    <input id="file-upload2" type="file" class="hidden"/>
+                                </label>
+                                <span id="file-name2" class="text-gray-500 w-64 truncate">No bl file</span>
+                            </div>
+
+                        </div>
+
+                        <div class="">
+                            <input type="submit" class="bg-green-300 text-white px-4 py-2 rounded-lg" id="validatebl"
+                                   value="Valider">
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+    <script>
+        var edit_elem = 0;
+
+        var $reference = $('#reference');
+        var $photo = $('#photo');
+        var $designation = $('#designation');
+        var $type = $('#type');
+        var $couleur = $('#couleur');
+        var $typemesure = $('#typemesure');
+        var $mesure = $('#mesure');
+        var $prix_publique = $('#prix_publique');
+        var $Prix_Gros = $('#Prix_Gros');
+        var $containerdatacmd = $('#containerdatacmd');
+        var fileuploaddata = null;
+        var fileupload2data = null;
+        var identifiant = 0;
+
+        function formatNumber(num) {
+            return new Intl.NumberFormat('fr-FR', {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(num);
+        }
+
+        function parseFormattedNumber(formattedNum) {
+            // Replace spaces and commas, then parse the string as a float
+            return parseFloat(formattedNum.replace(/\s/g, '').replace(',', '.'));
+        }
+
+        $('#file-upload').on('change', function () {
+            const fileName = $(this).val().split('\\').pop() || 'No fc file';
+            $('#file-name').text(fileName);
+        });
+
+        $('#file-upload2').on('change', function () {
+            const fileName = $(this).val().split('\\').pop() || 'No bl file';
+            $('#file-name2').text(fileName);
+        });
+
+
+        // Initialize the selected products list
+        var selectedProducts = [];
+
+        // Toggle the sidebar
+        $('#addButton').on('click', function () {
+            $('#addSidebar').toggleClass('translate-x-full');
+        });
+
+        // Toggle the sidebar edit
+        $('.editButton').on('click', function () {
+            $('#editSidebar').toggleClass('translate-x-full');
+        });
+
+        // Toggle the sidebar edit
+        $('.viewButton').on('click', function () {
+            identifiant = $(this).data('identifiant');
+            console.log(identifiant);
+            $containerdatacmd.html('');
+            let settings = {
+                url: `/api/commandedetail/${identifiant}`,
+                method: "GET",
+                timeout: 0,
+                headers: {
+                    "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
+                },
+            };
+
+            $.ajax(settings).done(function (response) {
+                let responsedata = response;
+                $containerdatacmd.append(`
+                    <div class="flex text-gray-700">
+                        <div class="w-28 h-24">
+                            <img src="/static/images/puma.svg" alt="Image" class="w-24 h-24">
+                        </div>
+                        <div class="flex-grow flex flex-wrap">
+                            <div class="w-1/4 p-2 flex items-center space-x-2">
+                                <p class="font-bold">Nom & prénom:</p>
+                                <p>${responsedata['distributeur']['user']['last_name']}</p>
+                            </div>
+                            <div class="w-1/4 p-2 flex items-center space-x-2">
+                                <p class="font-bold">Société:</p>
+                                <p>${responsedata['distributeur']['designation']}</p>
+                            </div>
+                            <div class="w-1/4 p-2 flex items-center space-x-2">
+                                <p class="font-bold">Téléphone:</p>
+                                <p>${responsedata['distributeur']['user']['telephone']}</p>
+                            </div>
+                            <div class="w-1/4 p-2 flex items-center space-x-2">
+                                <p class="font-bold capital">état:</p>
+                                <p>${responsedata['etat']}</p>
+                            </div>
+                            <div class="w-1/4 p-2 flex items-center space-x-2">
+                                <p class="font-bold">Code:</p>
+                                <p>${responsedata['distributeur']['code']}</p>
+                            </div>
+                            <div class="w-1/4 p-2 flex items-center space-x-2">
+                                <p class="font-bold">Ville:</p>
+                                <p>${responsedata['distributeur']['adresse']}</p>
+                            </div>
+                            <div class="w-1/4 p-2 flex items-center space-x-2">
+                                <p class="font-bold">Désignation:</p>
+                                <p>${responsedata['distributeur']['ville']['designation']}</p>
+                            </div>
+                            <div class="w-1/4 p-2 flex items-center space-x-2">
+                                <p class="font-bold">Date:</p>
+                                <p>${responsedata['date_ajout']}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="listeitemsprod" class="flex-grow listeprodview overflow-y-auto py-4">
+                        <p class="font-bold text-lg mb-4">Liste des produits:</p>
+                    </div>
+                    <div class="h-14 flex justify-between" id="totalproducts"></div>
+                `);
+                totalprodlines = 0;
+                for (i = 0; i < responsedata['commandesLines'].length; i++) {
+                    $listeitemsprod = $("#listeitemsprod");
+                    itemprod = responsedata['commandesLines'][i];
+                    totalprodlines = totalprodlines + itemprod['total_prixtotal'];
+                    $listeitemsprod.append(`<div class="flex items-center justify-between bg-gray-50 p-4 rounded-lg mb-2">
+                    <div class="flex items-center w-1/5">
+                        <img src="${itemprod['produit']['image']}" alt="product" class="h-12 w-12 rounded-lg mr-4">
+                        <div>
+                            <h3 class="text-lg font-bold text-blue-600 productName">${itemprod['produit']['designation']}</h3>
+                            <p class="text-sm text-gray-500 productRef">${itemprod['produit']['reference']}</p>
+                        </div>
+                    </div>
+                    <div class="w-3/5 flex">
+                        <div class="w-1/5">${itemprod['produit']['type']['designation']}</div>
+                        <div class="w-1/5">${itemprod['produit']['mesure']['designation']}</div>
+                        <div class="w-1/5">${itemprod['produit']['couleur']['designation']}</div>
+                        <div class="w-1/5 text-right pr-4">${formatNumber(itemprod['prixunitaire'])} DA</div>
+                        <div class="w-1/5 pr-4">
+                            <div class="flex justify-between">
+                                <div>Commandé</div>
+                                <div>${itemprod['quantite']}</div>
+                            </div>
+                            <div class="flex justify-between">
+                                <div>Livré</div>
+                                <div>${itemprod['total_quantite']}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-1/5 text-right pr-4">
+                        <div class="flex justify-between">
+                            <div>Commandé</div>
+                            <div>${formatNumber(itemprod['prixtotal'])} DA</div>
+                        </div>
+                        <div class="flex justify-between">
+                            <div>Livré</div>
+                            <div>${formatNumber(itemprod['total_prixtotal'])} DA</div>
+                        </div>
+                    </div>
+                </div>`)
+                }
+
+                $("#totalproducts").append(`
+                <a href="/commande/bl?commandes=${identifiant}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Voir détail BL</a>
+                <div class="text-right pr-4">
+                        <div class="w-full flex">
+                            <span class="w-48">Total Commandé</span>
+                            <span class="w-48">${formatNumber(itemprod['prixtotal'])} DA HT</span>
+                            <span class="w-48">${formatNumber(itemprod['prixtotal'] * 0.19 + itemprod['prixtotal'])} DA Taxe</span>
+                        </div>
+                        <div class="w-full flex">
+                            <span class="w-48">Total Livré</span>
+                            <span class="w-48">${formatNumber(itemprod['total_prixtotal'])} DA HT</span>
+                            <span class="w-48">${formatNumber(totalprodlines * 0.19 + totalprodlines)} DA Taxe</span>
+                        </div>
+                    </div>
+                </div>
+                `);
+
+                $('#viewSidebar').toggleClass('translate-x-full');
+            });
+
+
+        });
+
+        // Close the sidebar
+        $('#closeSidebar').on('click', function () {
+            $('#addSidebar').addClass('translate-x-full');
+        });
+
+        // Close the sidebar
+        $('#closeViewSidebar').on('click', function () {
+            $('#viewSidebar').addClass('translate-x-full');
+        });
+
+        // Close the sidebar
+        $('#closeEditSidebar').on('click', function () {
+            $('#editSidebar').addClass('translate-x-full');
+        });
+
+        // Show the filter modal
+        $('#filterButton').on('click', function () {
+            $('#filterModal').removeClass('hidden');
+        });
+
+        // Close the filter modal
+        $('#closeFilterModal').on('click', function () {
+            $('#filterModal').addClass('hidden');
+        });
+
+        //pop up!!!!!!!!!!
+        $(document).ready(function () {
+            // Show the popup
+            $('.popupButton').click(function () {
+                identifiant = $(this).data('identifiant');
+
+                $listeblprod = $('#listeblprod');
+                $listeblprod.html('');
+                let settings = {
+                    url: `/api/commandedetail/${identifiant}`,
+                    method: "GET",
+                    timeout: 0,
+                    headers: {
+                        "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
+                    },
+                };
+                cpt = 0;
+                $.ajax(settings).done(function (response) {
+                    let responsedata = response;
+                    for (i = 0; i < responsedata['commandesLines'].length; i++) {
+                        itemprod = responsedata['commandesLines'][i];
+                        nbrrestant = itemprod['quantite'] - itemprod['total_quantite'];
+                        $listeblprod.append(`
+                            <div class="grid grid-cols-8 bg-gray-50 p-4 rounded-lg mb-2 product-line"
+                                data-unitprice="${itemprod['prixunitaire']}" data-idprodelem="${itemprod['produit']['id']}">
+                                <div class="flex items-center col-span-2">
+                                    <img src="${itemprod['produit']['image']}" alt="product" class="h-12 w-12 rounded-lg mr-4">
+                                    <div>
+                                        <h3 class="text-lg font-bold text-blue-600 productName">${itemprod['produit']['designation']}</h3>
+                                        <p class="text-sm text-gray-500 productRef">${itemprod['produit']['reference']}</p>
+                                    </div>
+                                </div>
+                                <div class="col-span-1">
+                                    <h3 class="text-lg font-bold text-blue-600 productName">${itemprod['produit']['type']['designation']}</h3>
+                                    <p class="text-sm text-gray-500 productRef">${itemprod['produit']['mesure']['designation']}</p>
+                                </div>
+                                <div class="col-span-1">${itemprod['produit']['couleur']['designation']}</div>
+                                <div class="col-span-1 prixunitaire">${formatNumber(itemprod['prixunitaire'])} DA</div>
+                                <div class="col-span-1 pr-4 nbrrestant">${nbrrestant}</div>
+                                <div class="col-span-1 text-right pr-4">
+                                    <input type="number" data-idelem="${cpt}" class="inputblquantity review-quantity bg-gray-50 border border-gray-300
+                                        text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block
+                                        w-full p-2.5" value="0" min="0" max="${nbrrestant}" />
+                                </div>
+                                <div class="col-span-1 text-right pr-4 totalbl" id="totalbl_${cpt}">0 DA</div>
+                            </div>
+                        `);
+                        cpt++;
+                    }
+
+                    // Function to calculate the totals
+                    function calculateTotals() {
+                        let totalHT = 0;
+
+                        // Iterate through each product line
+                        $('.product-line').each(function () {
+                            const quantity = $(this).find('.review-quantity').val();
+                            const unitPrice = parseFloat($(this).data('unitprice'));
+
+                            // Calculate the total for the line
+                            const totalLine = quantity * unitPrice;
+
+                            // Update the total for the line
+                            $(this).find('.totalbl').text(formatNumber(totalLine) + ' DA');
+
+                            // Add to the total HT
+                            totalHT += totalLine;
+                        });
+
+                        // Update total HT
+                        $('#totalhtbl').text(formatNumber(totalHT) + ' DA');
+
+                        // Calculate and update total with tax
+                        const totalTaxe = totalHT + totalHT * 0.19;
+                        $('#totaltaxebl').text(formatNumber(totalTaxe) + ' DA');
+                    }
+
+                    // Add event listener for quantity input change
+                    $('.inputblquantity').on('input', function () {
+                        calculateTotals();
+                    });
+
+                    // Initial calculation on popup load
+                    calculateTotals();
+
+                    $('#addbl').fadeIn();
+                });
+            });
+
+            // Close the popup
+            $('#closePopup').click(function () {
+                $('#addbl').fadeOut();
+            });
+
+            // Optional: Close popup if clicking outside of the popup content
+            $(window).click(function (event) {
+                if ($(event.target).is('#addbl')) {
+                    $('#addbl').fadeOut();
+                }
+            });
+        });
+
+        function getBase64(file, callback) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function () {
+                callback(reader.result);
+            };
+            reader.onerror = function (error) {
+                console.log('Error: ', error);
+            };
+        }
+
+        $('#validatebl').on('click', function (e) {
+            e.preventDefault();
+            liste_prodbl = [];
+            $('#listeblprod .product-line').each(function (index) {
+                var product_idbl = parseInt($(this).data('idprodelem'));
+                var quantity = parseInt($(this).find('.inputblquantity').val());
+                var nbrrestant = parseInt($(this).find('.nbrrestant').html());
+
+
+                /*
+                    var reader = new FileReader();
+
+            reader.onload = function(e) {
+                var base64String = e.target.result.split(',')[1];
+                console.log('Base64 String:', base64String);
+
+            };
+                */
+
+                if (quantity > nbrrestant) {
+                    alert("Vous ne pouvez pas depasser la quantité réstante.")
+                } else {
+                    liste_prodbl.push({
+                        "produit": product_idbl,
+                        "quantite": quantity
+                    })
+                }
+            });
+            $facture_id = $('#facture_id');
+
+            if ($facture_id.val() === "") facture = null;
+            else facture = $facture_id.val();
+
+            var settings = {
+                "url": "/api/blivraison/",
+                "method": "POST",
+                "timeout": 0,
+                "headers": {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),
+                },
+                "data": JSON.stringify({
+                    "facture": facture,
+                    "fc_file": fileuploaddata,
+                    "bl_file": fileupload2data,
+                    "commandes": identifiant,
+                    "BonLivraison": liste_prodbl
+                }),
+            };
+
+            $.ajax(settings)
+                .done(function (response) {
+                    console.log(response);
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    // Log the entire jqXHR object to see all details
+                    console.log('jqXHR:', jqXHR);
+
+                    // Log the status text
+                    console.log('Status:', textStatus);
+
+                    // Log the error thrown
+                    console.log('Error Thrown:', errorThrown);
+
+                    // Log the response text, which might contain detailed error messages
+                    console.log('Response Text:', jqXHR.responseText);
+
+                    // Optionally, parse the responseText as JSON if it's in JSON format
+                    try {
+                        var responseJSON = JSON.parse(jqXHR.responseText);
+                        console.log('Response JSON:', responseJSON);
+                    } catch (e) {
+                        console.error('Failed to parse response as JSON:', e);
+                    }
+
+                });
+
+        });
+
+
+        // Close sidebar when clicking outside
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('#addButton, #addSidebar').length) {
+                $('#addSidebar').addClass('translate-x-full');
+            }
+        });
+
+        // Close sidebar when clicking outside
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('#editButton, #editSidebar').length) {
+                $('#editSidebar').addClass('translate-x-full');
+            }
+        });
+
+        // Close filter modal when clicking outside
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('#filterButton, #filterModal').length) {
+                $('#filterModal').addClass('hidden');
+            }
+        });
+
+        $(document).ready(function () {
+            // AJAX settings
+            var settings = {
+                "url": "http://127.0.0.1:8000/api/products",
+                "method": "GET",
+                "timeout": 0,
+                "headers": {
+                    "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
+                },
+            };
+
+            // Make the AJAX request
+            $.ajax(settings).done(function (response) {
+                console.log(response); // Log the response for debugging
+
+                // Clear existing product list
+                $('#productList').empty();
+
+                // Populate the product list
+                response.forEach(function (product) {
+                    prix_publiqueformat = formatNumber(product.prix_publique);
+                    var productHtml = `
+                    <div class="flex items-center justify-between bg-gray-50 p-4 rounded-lg product-row" data-price="${product.prix_publique}" data-product-id="${product.produit_id}">
+                        <div class="flex items-center w-1/4">
+                            <img src="/media/${product.image || 'default_image.png'}" alt="Avatar" class="h-12 w-12 rounded-lg mr-4 imageprod">
+                            <div>
+                                <h3 class="text-lg font-bold text-blue-600 nameprod">${product.designation}</h3>
+                                <p class="text-sm text-gray-500 refprod">${product.reference}</p>
+                            </div>
+                        </div>
+                        <div class="w-1/4 typeprod">Mortier</div>
+                        <div class="w-1/5 mesureprod">5 Kg</div>
+                        <div class="w-1/6 colorprod">${product.couleur_produit}</div>
+                        <div class="w-1/6 priceprod text-right pr-4" data-value="${product.prix_publique}">
+                            ${prix_publiqueformat} DA
+                        </div>
+                        <div class="w-1/6">
+                            <input type="number" class="numbprod product-quantity bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="0" min="0" />
+                        </div>
+                        <div class="w-1/6 product-total text-right">0 DA</div>
+                    </div>
+                `;
+                    $('#productList').append(productHtml);
+                });
+
+                // Reinitialize event handlers
+                initializeEventHandlers();
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                console.error('Error:', textStatus, errorThrown);
+            });
+
+            function initializeEventHandlers() {
+                // Update product total on quantity change and highlight the selected product
+                $('.product-quantity').off('input').on('input', function () {
+                    var quantity = $(this).val();
+                    var productRow = $(this).closest('.product-row');
+                    var price = productRow.data('price');
+                    var total = quantity * price;
+                    var productId = productRow.data('product-id');
+                    var productTotal = productRow.find('.product-total');
+
+                    productTotal.text(formatNumber(total) + ' DA');
+
+                    // Highlight product if quantity > 0
+                    if (quantity > 0) {
+                        productRow.addClass('bg-green-100'); // Highlight with green background
+                        addToSelectedProducts(productId, quantity, total);
+                    } else {
+                        productRow.removeClass('bg-green-100'); // Remove highlight
+                        removeFromSelectedProducts(productId);
+                    }
+
+                    // Update Step 2 quantities
+                    updateStep2Quantity(productId, quantity);
+                });
+
+                // Move to Step 2 and review selected products
+                $('.goToStep2').on('click', function () {
+                    var selectedProductsHtml = '';
+                    var totalPrice = 0;
+
+                    selectedProducts.forEach(function (product) {
+                        if (product.quantity > 0) {
+                            var productTotalFormatted = formatNumber(product.total);
+
+                            selectedProductsHtml += `<div class="flex items-center justify-between bg-gray-50 p-4 rounded-lg mb-2 review-product-row" data-product-id="${product.id}" data-price="${product.price}">
+                            <div class="flex items-center w-1/4">
+                                <img src="${product.image}" alt="product" class="h-12 w-12 rounded-lg mr-4">
+                                <div>
+                                    <h3 class="text-lg font-bold text-blue-600 productName">${product.name}</h3>
+                                    <p class="text-sm text-gray-500 productRef">${product.reference}</p>
+                                </div>
+                            </div>
+                            <div class="w-1/4">${product.type}</div>
+                            <div class="w-1/5">${product.weight}</div>
+                            <div class="w-1/6">${product.color}</div>
+                            <div class="w-1/6 text-right pr-4 productPrice">${product.priceFormatted} DA</div>
+                            <div class="w-1/6">
+                                <input type="number" class="review-quantity bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="${product.quantity}" min="0" />
+                            </div>
+                            <div class="w-1/6 text-right review-product-total pr-4">${productTotalFormatted} DA</div>
+                            <button class="removeProduct bg-red-500 text-white px-4 py-2 rounded-lg ml-4">Supprimer</button>
+                        </div>`;
+
+                            totalPrice += product.total;
+                        }
+                    });
+
+                    $('#selectedProducts').html(selectedProductsHtml);
+                    $('#totalPrice').text(formatNumber(totalPrice) + ' DA');
+
+                    $('#step1').hide();
+                    $('#step2').show();
+                });
+
+                // Move back to Step 1
+                $('#goToStep1').on('click', function () {
+                    $('#step2').hide();
+                    $('#step1').show();
+                });
+
+                $('#goToStep3').on('click', function () {
+                    // Fill in the distributor details
+                    var selectedDistributor = $('#distfield option:selected');
+                    var distributorName = selectedDistributor.data('username');
+                    var distributorCompany = selectedDistributor.data('designation');
+                    var distributorEmail = selectedDistributor.data('email');
+
+
+                    $('#recipientCompany').text(distributorCompany);
+                    $('#recipientName').text(distributorName);
+                    $('#recipientEmail').text(distributorEmail);
+
+                    // Generate a fake facture code and date for now
+                    /*var factureCode = 'FAC-' + Math.floor(Math.random() * 1000000);
+
+                    $('#factureCode').text(factureCode);*/
+                    var currentDate = new Date().toLocaleDateString('fr-FR');
+                    $('#factureDate').text(currentDate);
+
+                    // Populate the product details in the facture
+                    var factureProductDetails = '';
+                    var totalAmount = 0;
+
+                    $('#selectedProducts .review-product-row:visible').each(function () {
+                        var productName = $(this).find('.productName').text();
+                        var productRef = $(this).find('.productRef').text();
+                        var productPrice = $(this).find('.productPrice').text();
+                        var productQuantity = $(this).find('.review-quantity').val();
+                        var productTotal = $(this).find('.review-product-total').text();
+
+                        totalAmount += parseFormattedNumber(productTotal);
+
+                        factureProductDetails += `
+                            <tr>
+                                <td class="p-2">${productName} (${productRef})</td>
+                                <td class="p-2 text-right">${productPrice}</td>
+                                <td class="p-2 text-right">${productQuantity}</td>
+                                <td class="p-2 text-right">${productTotal}</td>
+                            </tr>
+                        `;
+                    });
+
+                    $('#productDetails').html(factureProductDetails);
+
+                    // Calculate and display the totals
+                    var taxRate = 0.19; // Example tax rate of 19%
+                    var taxAmount = totalAmount * taxRate;
+                    var amountDue = totalAmount + taxAmount;
+
+                    $('#totalAmount').text(formatNumber(totalAmount) + ' DA');
+                    $('#taxAmount').text(formatNumber(taxAmount) + ' DA');
+                    $('#amountDue').text(formatNumber(amountDue) + ' DA');
+
+                    // Move to Step 3
+                    $('#step2').hide();
+                    $('#step3').show();
+                });
+
+
+                // Handle quantity change in Step 2 and update the total in Step 1
+                $('#selectedProducts').on('input', '.review-quantity', function () {
+                    var reviewRow = $(this).closest('.review-product-row');
+                    var newQuantity = parseInt($(this).val(), 10);
+                    var price = reviewRow.data('price');
+                    var newTotal = newQuantity * price;
+                    var productId = reviewRow.data('product-id');
+
+                    reviewRow.find('.review-product-total').text(formatNumber(newTotal) + ' DA');
+
+                    // Update Step 1 quantities
+                    updateStep1Quantity(productId, newQuantity, newTotal);
+
+                    // Update the total in the selectedProducts array
+                    updateSelectedProduct(productId, newQuantity, newTotal);
+
+                    // Update the overall total price
+                    var overallTotal = calculateTotalPrice();
+                    $('#totalPrice').text(formatNumber(overallTotal) + ' DA');
+                });
+
+                // Remove a product from Step 2
+                $('#selectedProducts').on('click', '.removeProduct', function () {
+                    var reviewRow = $(this).closest('.review-product-row');
+                    var productId = reviewRow.data('product-id');
+
+                    reviewRow.remove();
+
+                    // Remove the product from Step 1
+                    removeProductFromStep1(productId);
+
+                    // Remove the product from the selectedProducts array
+                    removeFromSelectedProducts(productId);
+
+                    // Update the overall total price
+                    var overallTotal = calculateTotalPrice();
+                    $('#totalPrice').text(formatNumber(overallTotal) + ' DA');
+                });
+            }
+
+            function addToSelectedProducts(productId, quantity, total) {
+                var productRow = $('.product-row[data-product-id="' + productId + '"]');
+
+                var product = {
+                    id: productId,
+                    name: productRow.find('.nameprod').text(),
+                    reference: productRow.find('.refprod').text(),
+                    type: productRow.find('.typeprod').text(),
+                    weight: productRow.find('.mesureprod').text(),
+                    color: productRow.find('.colorprod').text(),
+                    price: productRow.data('price'),
+                    priceFormatted: productRow.find('.priceprod').text(),
+                    quantity: quantity,
+                    total: total,
+                    image: productRow.find('.imageprod').attr('src')
+                };
+
+                // Check if the product already exists in the selectedProducts array
+                var existingProduct = selectedProducts.find(function (p) {
+                    return p.id === productId;
+                });
+
+                if (existingProduct) {
+                    existingProduct.quantity = quantity;
+                    existingProduct.total = total;
+                } else {
+                    selectedProducts.push(product);
+                }
+            }
+
+            function updateSelectedProduct(productId, quantity, total) {
+                var product = selectedProducts.find(function (p) {
+                    return p.id === productId;
+                });
+
+                if (product) {
+                    product.quantity = quantity;
+                    product.total = total;
+                }
+            }
+
+            function removeFromSelectedProducts(productId) {
+                selectedProducts = selectedProducts.filter(function (product) {
+                    return product.id !== productId;
+                });
+            }
+
+            function updateStep2Quantity(productId, quantity) {
+                var reviewRow = $('.review-product-row[data-product-id="' + productId + '"]');
+                reviewRow.find('.review-quantity').val(quantity);
+
+                var price = reviewRow.data('price');
+                var newTotal = quantity * price;
+
+                reviewRow.find('.review-product-total').text(formatNumber(newTotal) + ' DA');
+            }
+
+            function updateStep1Quantity(productId, quantity, total) {
+                var productRow = $('.product-row[data-product-id="' + productId + '"]');
+
+                productRow.find('.product-quantity').val(quantity);
+                productRow.find('.product-total').text(formatNumber(total) + ' DA');
+
+                if (quantity > 0) {
+                    productRow.addClass('bg-green-100'); // Highlight with green background
+                } else {
+                    productRow.removeClass('bg-green-100'); // Remove highlight
+                }
+            }
+
+            function removeProductFromStep1(productId) {
+                var productRow = $('.product-row[data-product-id="' + productId + '"]');
+                productRow.find('.product-quantity').val(0);
+                productRow.find('.product-total').text('0 DA');
+                productRow.removeClass('bg-green-100'); // Remove highlight
+            }
+
+            function calculateTotalPrice() {
+                return selectedProducts.reduce(function (total, product) {
+                    return total + product.total;
+                }, 0);
+            }
+
+            //selectedProducts
+            $('#confirmOrder').on('click', function () {
+                listteproducts = [];
+                for (i = 0; i < selectedProducts.length; i++) {
+                    listteproducts.push({
+                        "produit": selectedProducts[i]['id'],
+                        "quantite": parseInt(selectedProducts[i]['quantity'])
+                    })
+                }
+
+                var settings = {
+                    "url": "/api/commande/",
+                    "method": "POST",
+                    "timeout": 0,
+                    "headers": {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),  // Assuming you have CSRF token in your template context
+                    },
+                    "data": JSON.stringify({
+                        "distributeur": $('#distfield').val(),
+                        "etat": "Reception",
+                        "total": 0,
+                        "commandesLines": listteproducts
+                    }),
+                };
+
+                $.ajax(settings)
+                    .done(function (response) {
+                        console.log(response);
+                    })
+                    .fail(function (jqXHR, textStatus, errorThrown) {
+                        // Log the entire jqXHR object to see all details
+                        console.log('jqXHR:', jqXHR);
+
+                        // Log the status text
+                        console.log('Status:', textStatus);
+
+                        // Log the error thrown
+                        console.log('Error Thrown:', errorThrown);
+
+                        // Log the response text, which might contain detailed error messages
+                        console.log('Response Text:', jqXHR.responseText);
+
+                        // Optionally, parse the responseText as JSON if it's in JSON format
+                        try {
+                            var responseJSON = JSON.parse(jqXHR.responseText);
+                            console.log('Response JSON:', responseJSON);
+                        } catch (e) {
+                            console.error('Failed to parse response as JSON:', e);
+                        }
+
+                    });
+
+            });
+
+        });
+
+
+        $(document).ready(function () {
+            // When a file is selected in #file-upload
+            $("#file-upload").on('change', function () {
+                const file = $(this).prop('files')[0];
+                if (file) {
+                    getBase64(file, function (base64) {
+                        fileuploaddata = base64
+                    });
+                } else fileuploaddata = null
+            });
+
+            // When a file is selected in #file-upload2
+            $("#file-upload2").on('change', function () {
+                const file = $(this).prop('files')[0];
+                if (file) {
+                    getBase64(file, function (base64) {
+                        fileupload2data = base64
+                    });
+                } else fileupload2data = null
+            });
+        });
+    </script>
+
+
+{% endblock %}

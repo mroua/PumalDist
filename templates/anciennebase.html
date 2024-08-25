@@ -1,0 +1,116 @@
+{% load static %}
+{% csrf_token %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Dashboard{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .speccol {
+            background: #1E3A8A;
+        }
+
+        .active-link {
+            background-color: rgba(255, 255, 255, 0.2); /* Adjust the opacity for subtlety */
+            border-radius: 8px; /* Optional: adds rounded corners */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex h-screen">
+
+    <!-- Sidebar -->
+    <div class="w-64 speccol h-screen p-4 flex flex-col">
+        <!-- Logo -->
+        <div class="flex items-center justify-center mb-10">
+            <img src="{% static 'images/puma.svg' %}" alt="Logo" class="h-40 w-40 mr-3"> <!-- Replace with your logo -->
+            <!--<span class="text-white text-2xl font-bold">YourBrand</span>-->
+        </div>
+        <!-- Menu Items -->
+
+        <ul class="text-white flex-1 ">
+            <li class="mb-4 w-full ">
+                <a href="{% url 'dashboard' %}" class="hover:text-gray-300 uppercase {% if request.path == '/dashboard/' %}active-link{% endif %} block w-full py-2 px-4 rounded-md uppercase">Dashboard</a>
+            </li>
+            {% if user.type in 'Agent,Admin' %}
+                <li class="mb-4 w-full ">
+                    <a href="{% url 'users' %}" class="hover:text-gray-300 uppercase {% if request.path == '/users/' %}active-link{% endif %} block w-full py-2 px-4 rounded-md uppercase">Utilisateurs</a>
+                </li>
+            {% endif %}
+            {% if user.type in 'Agent,Admin' %}
+                <li class="mb-4 w-full ">
+                    <a href="{% url 'distributeur' %}" class="hover:text-gray-300 uppercase
+                        {% if request.path == '/distributeur/' %}active-link
+                        {% elif request.path == '/distributeur/payeur' %}active-link
+                        {% elif request.path == '/distributeur/payeurdraft' %}active-link
+                    {% endif %} block w-full py-2 px-4 rounded-md uppercase">Distributeur</a>
+                </li>
+            {% endif %}
+    <!--<li class="mb-4">
+        <a href="{ % url 'user' %}" class="hover:text-gray-300 uppercase { % if request.path == '/user/' %}underline{ % endif %}">Utilisateur</a>
+    </li>
+    <li class="mb-4">
+        <a href="{ % url 'products' %}" class="hover:text-gray-300 uppercase { % if request.path == '/products/' %}underline{ % endif %}">Produits</a>
+    </li>
+    <li class="mb-4">
+        <a href="{ % url 'distributor' %}" class="hover:text-gray-300 uppercase { % if request.path == '/distributor/' %}underline{ % endif %}">Distributeur</a>
+    </li>
+    <li class="mb-4">
+        <a href="{ % url 'visit' %}" class="hover:text-gray-300 uppercase { % if request.path == '/visit/' %}underline{ % endif %}">Visite</a>
+    </li>
+    <li class="mb-4">
+        <a href="{ % url 'payment' %}" class="hover:text-gray-300 uppercase { % if request.path == '/payment/' %}underline{ % endif %}">Encaissement</a>
+    </li>-->
+</ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col h-full">
+
+        <!-- Top Menu -->
+        <div class="bg-white p-4 flex justify-between items-center shadow-md">
+            <div class="">
+                {% block page_heading %}{% endblock %}
+            </div>
+
+            <!-- Profile Dropdown -->
+            <div class="relative">
+                <button id="profileDropdownButton" class="flex items-center space-x-2">
+                    <!--<span class="text-gray-700">Username</span>-->
+                    <img src="{{ user.photo.url }}" alt="Profile" class="h-8 w-8 rounded-full"> <!-- Replace with profile picture -->
+                    <svg class="h-5 w-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+                <!-- Dropdown Menu -->
+                <div id="profileDropdown" class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg hidden">
+                    <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</a>
+                    <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Déconnexion</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="p-8 space-y-6 flex-1 overflow-y-auto">
+            {% block content %}{% endblock %}
+        </div>
+
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $("#profileDropdownButton").on("click", function() {
+                $("#profileDropdown").toggleClass("hidden");
+            });
+        });
+    </script>
+
+</body>
+</html>

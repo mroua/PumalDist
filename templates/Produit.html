@@ -1,0 +1,426 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Produits{% endblock %}
+
+{% block content %}
+    <!-- Add Produit Sidebar -->
+    <div id="addSidebar"
+         class="fixed right-0 top-0 bottom-0 w-2/5 bg-white shadow-lg transform translate-x-full transition-transform duration-300 z-50">
+        <div class="flex justify-between items-center p-4 border-b">
+            <h3 class="text-lg font-semibold">Ajouter un produit</h3>
+            <button id="closeSidebar" class="text-gray-500 hover:text-gray-700">&times;</button>
+        </div>
+        <!-- Add Produit Form -->
+        <div class="p-4 overflow-y-auto">
+            <form id="ProduitForm">
+                <div class="h-5/6">
+                    <div class="flex justify-center">
+                        <div class="relative p-4">
+                            <input type="file" id="photo" name="photo"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                   accept="image/*"
+                                   style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                            <div id="photoPreview"
+                                 class="w-24 h-24 bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden border border-gray-300">
+                                <img id="previewImage" src="{% static 'images/product.png' %}" alt="Preview"
+                                     class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <input type="text" id="reference" name="reference" placeholder="Référence"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <input type="text" id="designation" name="designation" placeholder="Designation"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <select id="type" name="type"
+                                    class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                {% for type in liste_type %}
+                                    <option value="{{ type.id }}">{{ type.designation }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div>
+                            <select id="couleur" name="couleur"
+                                    class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                {% for couleur in liste_couleur %}
+                                    <option value="{{ couleur.id }}">{{ couleur.designation }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div>
+                            <select id="typemesure" name="typemesure"
+                                    class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                <option value="Sac">Sac</option>
+                                <option value="Unité">Unité</option>
+                            </select>
+                        </div>
+                        <div>
+                            <select id="mesure" name="mesure"
+                                    class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                {% for mesure in liste_mesure %}
+                                    <option class="{% if mesure.type  == 'Unité' %}hidden{% endif %}"
+                                            data-type="{{ mesure.type }}"
+                                            value="{{ mesure.id }}">{{ mesure.designation }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div>
+                            <input type="text" id="prix_publique" name="prix_publique" placeholder="Prix Publique"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <input type="text" id="Prix_Gros" name="Prix_Gros" placeholder="Prix Gros"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-end">
+                    <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400">
+                        Ajouter
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Produit Sidebar -->
+    <div id="editSidebar"
+         class="fixed right-0 top-0 bottom-0 w-2/5 bg-white shadow-lg transform translate-x-full transition-transform duration-300 z-50"
+         style="margin-top: -8px">
+        <div class="flex justify-between items-center p-4 border-b">
+            <h3 class="text-lg font-semibold">Editer produit: </h3>
+            <button id="closeEditSidebar" class="text-gray-500 hover:text-gray-700">&times;</button>
+        </div>
+        <!-- Edit Produit Form -->
+        <div class="p-4 overflow-y-auto">
+            <form id="editProduitForm">
+                <div class="flex justify-center">
+                    <div class="relative p-4">
+                        <input type="file" id="edit_photo" name="edit_photo"
+                               class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                               accept="image/*"
+                               style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                        <div id="edit_photoPreview"
+                             class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden border border-gray-300">
+                            <img id="edit_previewImage" src="{% static 'images/blank-profile.webp' %}" alt="Preview"
+                                 class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <input type="text" id="edit_Produitname" name="edit_Produitname" placeholder="Produitname"
+                               class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                    </div>
+                    <div>
+                        <input type="edit_email" id="edit_email" name="email" placeholder="Email"
+                               class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                    </div>
+                    <div>
+                        <input type="text" id="edit_first_name" name="edit_first_name" placeholder="first name"
+                               class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                    </div>
+                    <div>
+                        <input type="text" id="edit_last_name" name="edit_last_name" placeholder="last name"
+                               class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                    </div>
+                    <div>
+                        <input type="text" id="edit_telephone" name="edit_telephone" placeholder="Téléphone"
+                               class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                    </div>
+                    <div>
+                        <select id="edit_responsable" name="edit_responsable"
+                                class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                            <option value="">Résponsable</option>
+                            {% for worker in Produits_select %}
+                                <option value="{{ worker.id }}">{{ worker.nom }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <select id="edit_type" name="edit_type"
+                                class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                            <option value="Agent">Agent</option>
+                            <option value="Admin">Admin</option>
+                        </select>
+                    </div>
+                    <div>
+                        <select id="edit_region" name="edit_region"
+                                class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                            <option value="EST">EST</option>
+                            <option value="OUEST">OUEST</option>
+                            <option value="NORD">Centre</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="checkbox-wrapper-6">
+                    <input class="tgl tgl-light" id="edit_is_active" type="checkbox"/>
+                    <label class="tgl-btn" for="edit_is_active"></label>
+                </div>
+
+
+                <div class="flex justify-end">
+                    <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400">
+                        Ajouter
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Filter Modal -->
+    <div id="filterModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40 flex items-center justify-center"
+         style="margin-top: -16px">
+        <div class="bg-white w-1/3 rounded-lg shadow-lg">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 class="text-lg font-semibold">Filtres</h3>
+                <button id="closeFilterModal" class="text-gray-500 hover:text-gray-700">&times;</button>
+            </div>
+            <div class="p-4">
+                <!-- Filter Form -->
+            </div>
+        </div>
+    </div>
+
+    <div class="flex justify-between items-center mb-4" style="margin-top: -8px">
+        <h2 class="text-2xl font-bold text-gray-700">Liste des produits</h2>
+        <div>
+            <button id="filterButton" class="bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-700">Filtrer
+            </button>
+            <button id="addButton" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400">Ajouter
+            </button>
+        </div>
+    </div>
+
+    <!-- Produit List Headers -->
+    <div class="bg-white shadow-md rounded-t-lg p-4 pl-8">
+        <div class="flex items-center justify-between text-gray-600 font-semibold">
+            <div class="w-1/4 capitalize">Produit</div>
+            <div class="w-1/4 capitalize">Type</div>
+            <div class="w-1/5 capitalize">Mesure</div>
+            <div class="w-1/6 capitalize">Couleur</div>
+            <div class="w-1/5 capitalize">Prix</div>
+            <div class="w-1/6 capitalize text-center">Actions</div>
+        </div>
+    </div>
+
+    <!-- Produit List -->
+    <div class="shadow-md space-y-4">
+        {% for elem in produit %}
+
+            <div class="flex items-center justify-between bg-gray-50 p-4 rounded-lg">
+                <div class="flex items-center w-1/4">
+                    <img src="{% if elem.image %} {{ elem.image.url }} {% else %} {% static 'images/product.png' %} {% endif %}"
+                         alt="Avatar" class="h-12 w-12 rounded-lg mr-4">
+                    <div>
+                        <h3 class="text-lg font-bold text-blue-600">{{ elem.designation }}</h3>
+                        <p class="text-sm text-gray-500">{{ elem.reference }}</p>
+                    </div>
+                </div>
+                <div class="w-1/4">{{ elem.type }}</div>
+                <div class="w-1/5">{{ elem.mesure }}</div>
+                <div class="w-1/6">{{ elem.couleur }}</div>
+                <div class="w-1/5">
+                    <p>Prix publ:{{ elem.prix_publique }} DA</p>
+                    <p>Prix gros:{{ elem.prix_gros }} DA</p>
+                </div>
+                <div class="flex space-x-2 w-1/6 justify-end">
+                    <button class="bg-blue-500 text-white p-2 rounded"><i class="fas fa-search"></i></button>
+                    <button class="bg-blue-500 text-white p-2 rounded"><i id="editButton" class="editButton fas fa-pencil-alt" onclick=""></i></button>
+                    <button class="bg-red-500 text-white p-2 rounded"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        edit_elem = 0;
+
+        $reference = $('#reference');
+        $photo = $('#photo');
+        $designation = $('#designation');
+        $type = $('#type');
+        $couleur = $('#couleur');
+        $typemesure = $('#typemesure');
+        $mesure = $('#mesure');
+        $prix_publique = $('#prix_publique');
+        $Prix_Gros = $('#Prix_Gros');
+
+
+        // Toggle the sidebar
+        $('#addButton').on('click', function () {
+            $('#addSidebar').toggleClass('translate-x-full');
+        });
+
+        // Toggle the sidebar edit
+        $('.editButton').on('click', function () {
+            $('#editSidebar').toggleClass('translate-x-full');
+        });
+
+        // Close the sidebar
+        $('#closeSidebar').on('click', function () {
+            $('#addSidebar').addClass('translate-x-full');
+        });
+
+        // Close the sidebar
+        $('#closeEditSidebar').on('click', function () {
+            $('#editSidebar').addClass('translate-x-full');
+        });
+
+        // Show the filter modal
+        $('#filterButton').on('click', function () {
+            $('#filterModal').removeClass('hidden');
+        });
+
+        // Close the filter modal
+        $('#closeFilterModal').on('click', function () {
+            $('#filterModal').addClass('hidden');
+        });
+
+        // Close sidebar when clicking outside
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('#addButton, #addSidebar').length) {
+                $('#addSidebar').addClass('translate-x-full');
+            }
+        });
+
+        // Close sidebar when clicking outside
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('#editButton, #editSidebar').length) {
+                $('#editSidebar').addClass('translate-x-full');
+            }
+        });
+
+        // Close filter modal when clicking outside
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('#filterButton, #filterModal').length) {
+                $('#filterModal').addClass('hidden');
+            }
+        });
+
+        // Update photo preview
+        document.getElementById('photo').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const previewImage = document.getElementById('previewImage');
+                    previewImage.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Update edit_photo preview
+        document.getElementById('edit_photo').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const previewImage = document.getElementById('edit_previewImage');
+                    previewImage.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        $(document).ready(function () {
+            $typemesure.on('change', function () {
+                var selectedType = $(this).val();  // Get the selected type from the typemesure dropdown
+
+                $('#mesure option').each(function () {
+                    var optionType = $(this).data('type');  // Get the type associated with each mesure option
+
+                    // Show or hide options based on the selected type
+                    if (optionType === selectedType) {
+                        $(this).removeClass('hidden');  // Show the option
+                    } else {
+                        $(this).addClass('hidden');  // Hide the option
+                    }
+                });
+
+                // Reset the mesure dropdown to show the first available option
+                $('#mesure').val($('#mesure option:not(.hidden):first').val());
+            });
+
+            // Trigger the change event on page load to ensure the correct options are displayed
+            $typemesure.trigger('change');
+        });
+
+
+        $('#ProduitForm').on('submit', function (e) {
+            e.preventDefault(); // Prevent the default form submission
+
+            var form = new FormData();
+
+            // Add basic form data
+            form.append("reference", $reference.val());
+            form.append("designation", $designation.val());
+            form.append("type", $type.val());
+            form.append("couleur", $couleur.val());
+            form.append("typemesure", $typemesure.val());
+            form.append("mesure", $mesure.val());
+            form.append("prix_publique", $prix_publique.val());
+            form.append("prix_gros", $Prix_Gros.val());
+            form.append("active", true);
+
+            // Add the photo
+            var photoFile = $('#photo')[0].files[0];
+            if (photoFile) {
+                form.append("image", photoFile);
+            }
+
+
+            for (var pair of form.entries()) {
+                console.log(pair[0] + ": " + pair[1]);
+            }
+
+            var settings = {
+                "url": "/api/produit/",
+                "method": "POST",
+                "timeout": 0,
+                "headers": {
+                    "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),  // Assuming you have CSRF token in your template context
+                },
+                "processData": false,
+                "contentType": false,
+                "data": form
+            };
+
+            $.ajax(settings)
+                .done(function (response) {
+                    console.log(response);
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    // Log the entire jqXHR object to see all details
+                    console.log('jqXHR:', jqXHR);
+
+                    // Log the status text
+                    console.log('Status:', textStatus);
+
+                    // Log the error thrown
+                    console.log('Error Thrown:', errorThrown);
+
+                    // Log the response text, which might contain detailed error messages
+                    console.log('Response Text:', jqXHR.responseText);
+
+                    // Optionally, parse the responseText as JSON if it's in JSON format
+                    try {
+                        var responseJSON = JSON.parse(jqXHR.responseText);
+                        console.log('Response JSON:', responseJSON);
+                    } catch (e) {
+                        console.error('Failed to parse response as JSON:', e);
+                    }
+
+                });
+        });
+
+    </script>
+{% endblock %}

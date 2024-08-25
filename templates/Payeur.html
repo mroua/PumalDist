@@ -1,0 +1,513 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Users{% endblock %}
+
+{% block content %}
+    <!-- Add User Sidebar -->
+    <div id="addSidebar"
+         class="fixed right-0 top-0 bottom-0 w-2/5 bg-white shadow-lg transform
+         translate-x-full transition-transform duration-300 z-50 ">
+        <div class="flex justify-between items-center p-4 border-b">
+            <h3 class="text-lg font-semibold">Ajouter un Payeur</h3>
+            <button id="closeSidebar" class="text-gray-500 hover:text-gray-700">&times;</button>
+        </div>
+        <!-- Add User Form -->
+        <div class="p-4">
+
+            <form id="userForm">
+                <div class="p-4" style="height: calc(100% - 10rem); overflow-y: auto;">
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <select id="distributeur" name="distributeur"
+                                    class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                {% for worker in users_select %}
+                                    <option value="{{ worker.id }}">{{ worker.designation }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div>
+                            <input type="text" id="code" name="code" placeholder="Code"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <input type="text" id="designation" name="designation" placeholder="Désignation"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <select id="ville" name="ville"
+                                    class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                {% for ville in ville_list %}
+                                    <option data-region="{{ ville.region }}" value="{{ ville.id }}">{{ ville.designation }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div>
+                            <input type="text" id="adresse" name="adresse" placeholder="Adresse"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <input type="text" id="telephone" name="telephone" placeholder="Téléphone"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <input type="text" id="nif" name="nif" placeholder="NIF"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <input type="text" id="nis" name="nis" placeholder="NIS"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <input type="text" id="art" name="art" placeholder="ART"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <input type="text" id="rc" name="rc" placeholder="RC"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-end py-8">
+                    <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400">
+                        Ajouter
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit User Sidebar -->
+    <div id="editSidebar"
+         class="fixed right-0 top-0 bottom-0 w-2/5 bg-white shadow-lg transform translate-x-full transition-transform duration-300 z-50"
+         style="margin-top: -8px">
+        <div class="flex justify-between items-center p-4 border-b">
+            <h3 class="text-lg font-semibold">Editer payeur: </h3>
+            <button id="closeEditSidebar" class="text-gray-500 hover:text-gray-700">&times;</button>
+        </div>
+        <!-- Edit User Form -->
+
+        <div class="p-4">
+            <form id="edituserForm">
+                <div class="p-4" style="height: calc(100% - 10rem); overflow-y: auto;">
+
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <input type="text" id="edit_code" name="edit_code" placeholder="Code"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <select id="edit_responsable" name="edit_responsable"
+                                    class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                <option value="">Résponsable</option>
+                                {% for worker in users_select %}
+                                    <option value="{{ worker.id }}">{{ worker.designation }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div>
+                            <input type="text" id="edit_designation" name="edit_designation" placeholder="edit_Désignation"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <input type="text" id="edit_telephone" name="edit_telephone" placeholder="Téléphone"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <select id="edit_ville" name="edit_ville"
+                                    class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                {% for ville in ville_list %}
+                                    <option data-region="{{ ville.region }}" value="{{ ville.id }}">{{ ville.designation }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div>
+                            <input type="text" id="edit_adresse" name="edit_adresse" placeholder="Adresse"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <input type="text" id="edit_nif" name="edit_nif" placeholder="NIF"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <input type="text" id="edit_nis" name="edit_nis" placeholder="NIS"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <input type="text" id="edit_art" name="edit_art" placeholder="ART"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <input type="text" id="edit_rc" name="edit_rc" placeholder="RC"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <input type="text" id="edit_plafonnement" name="edit_plafonnement" placeholder="Plafonnement"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <input type="text" id="edit_echeance_jour" name="edit_echeance_jour" placeholder="echeance_jour"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <input type="text" id="edit_ristourne_a" name="edit_ristourn_a" placeholder="ristourn_a"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <input type="text" id="edit_ristourne_na" name="edit_ristourn_na" placeholder="ristourn_na"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <input type="text" id="edit_objectif_a" name="edit_objectif_a" placeholder="objectif_a"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <input type="text" id="edit_objectif_m" name="edit_objectif_m" placeholder="objectif_m"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <label>Accées</label>
+                            <div class="checkbox-wrapper-6">
+                                <input class="tgl tgl-light" id="edit_is_active" type="checkbox"/>
+                                <label class="tgl-btn" for="is_active"></label>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <label>Bloqué commande</label>
+                            <div class="checkbox-wrapper-6">
+                                <input class="tgl tgl-light" id="edit_bloquer" type="checkbox"/>
+                                <label class="tgl-btn" for="bloquer"></label>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="flex justify-end py-8">
+                    <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400">
+                        Modifier
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Filter Modal -->
+    <div id="filterModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40 flex items-center justify-center"
+         style="margin-top: -16px">
+        <div class="bg-white w-1/3 rounded-lg shadow-lg">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 class="text-lg font-semibold">Filtres</h3>
+                <button id="closeFilterModal" class="text-gray-500 hover:text-gray-700">&times;</button>
+            </div>
+            <div class="p-4">
+                <!-- Filter Form -->
+            </div>
+        </div>
+    </div>
+
+    <div class="flex justify-between items-center mb-4" style="margin-top: -8px">
+        <h2 class="text-2xl font-bold text-gray-700">Liste des Payeurs</h2>
+        <div>
+            <button id="filterButton" class="bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-700">Filtrer
+            </button>
+            <button id="addButton" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400">Ajouter
+            </button>
+        </div>
+    </div>
+
+
+    <!-- User List Headers -->
+    <div class="bg-white shadow-md rounded-t-lg p-4 pl-8">
+        <div class="flex items-center justify-between text-gray-600 font-semibold">
+            <div class="w-1/4 capitalize">Distributeur</div>
+            <div class="w-1/6 capitalize">Code</div>
+            <div class="w-1/4 capitalize">Désignation</div>
+            <div class="w-1/6 capitalize">Ville</div>
+            <div class="w-1/6 capitalize">Téléphone</div>
+            <div class="w-1/6 capitalize">Date d'ajout</div>
+            <div class="w-1/6 capitalize pl-12">état</div>
+            <div class="w-1/6 capitalize text-center">Actions</div>
+        </div>
+    </div>
+
+    <!-- User List -->
+    <div class="bg-white shadow-md rounded-b-lg p-4 space-y-4">
+        {% for elem in dist_list %}
+            <div class="flex items-center justify-between bg-gray-50 p-4 rounded-lg">
+                <div class="text-gray-600 w-1/4">{{ elem.distributeur }}</div>
+                <div class="text-gray-600 w-1/6">{{ elem.code }}</div>
+                <div class="text-gray-600 w-1/4">{{ elem.designation }}</div>
+                <div class="text-gray-600 w-1/6">{{ elem.ville }}</div>
+                <div class="text-gray-600 w-1/6">{{ elem.telephone }}</div>
+                <div class="text-gray-600 w-1/6">{{ elem.date_ajout|date:'d-m-Y' }}</div>
+                <div class="w-1/6 text-center">
+                <span class="bg-gray-500 text-white text-xs px-2 py-1 rounded">{% if elem.bloque %}
+                    Bloqué {% else %} Actif {% endif %}</span>
+                </div>
+                <div class="flex space-x-2 w-1/6 justify-end">
+                    <button class="bg-blue-500 text-white p-2 rounded"><i class="fas fa-search"></i></button>
+                    <button class="bg-blue-500 text-white p-2 rounded">
+                        <i id="editButton" class="editButton fas fa-pencil-alt"
+                           onclick="newdatauser()">
+                        </i>
+                    </button>
+                    <button class="bg-red-500 text-white p-2 rounded"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        edit_elem = 0;
+
+        $telephone = $('#telephone');
+        $distributeur = $('#distributeur');
+        $code = $('#code');
+        $designation = $('#designation');
+        $ville = $('#ville');
+        $adresse = $('#adresse');
+        $nif = $('#nif');
+        $nis = $('#nis');
+        $art = $('#art');
+        $rc = $('#rc');
+
+
+        // Toggle the sidebar
+        $('#addButton').on('click', function () {
+            $('#addSidebar').toggleClass('translate-x-full');
+        });
+
+        // Toggle the sidebar edit
+        $('.editButton').on('click', function () {
+            $('#editSidebar').toggleClass('translate-x-full');
+        });
+
+        // Close the sidebar
+        $('#closeSidebar').on('click', function () {
+            $('#addSidebar').addClass('translate-x-full');
+        });
+
+        // Close the sidebar
+        $('#closeEditSidebar').on('click', function () {
+            $('#editSidebar').addClass('translate-x-full');
+        });
+
+        // Show the filter modal
+        $('#filterButton').on('click', function () {
+            $('#filterModal').removeClass('hidden');
+        });
+
+        // Close the filter modal
+        $('#closeFilterModal').on('click', function () {
+            $('#filterModal').addClass('hidden');
+        });
+
+        // Close sidebar when clicking outside
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('#addButton, #addSidebar').length) {
+                $('#addSidebar').addClass('translate-x-full');
+            }
+        });
+
+        // Close sidebar when clicking outside
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('#editButton, #editSidebar').length) {
+                $('#editSidebar').addClass('translate-x-full');
+            }
+        });
+
+        // Close filter modal when clicking outside
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('#filterButton, #filterModal').length) {
+                $('#filterModal').addClass('hidden');
+            }
+        });
+
+
+
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * max);
+        }
+
+
+        function newdatauser(id, first_name, last_name, email, telephone, responsable, code, bloque, designation, ville,
+                             adresse, nif, nis, art, rc, plafonnement, echeance, ristourne_a, ristourne_na, objectif_a, objectif_m,
+                             isactive, username) {
+            edit_elem = id;
+            $("#edit_username").val(username);
+            $("#edit_email").val(email);
+            $("#edit_first_name").val(first_name);
+            $("#edit_last_name").val(last_name);
+            $("#edit_telephone").val(telephone);
+
+            $("#edit_code").val(code);
+            $("#edit_bloque").val(bloque);
+            $("#edit_designation").val(designation);
+            $("#edit_ville").val(ville);
+            $("#edit_nif").val(nif);
+            $("#edit_nis").val(nis);
+            $("#edit_art").val(art);
+            $("#edit_rc").val(rc);
+            $("#edit_plafonnement").val(plafonnement);
+            $("#edit_echeance_jour").val(echeance);
+            $("#edit_ristourne_a").val(ristourne_a);
+            $("#edit_ristourne_na").val(ristourne_na);
+            $("#edit_objectif_a").val(objectif_a);
+            $("#edit_objectif_m").val(objectif_m);
+
+
+            if (isactive === "True") {
+                $('#edit_is_active').prop('checked', true);
+            }
+
+            if (responsable === "None") {
+                $("#edit_responsable").val('');
+            } else {
+                $("#edit_responsable").val(responsable);
+            }
+
+
+        }
+
+        $('#userForm').on('submit', function (e) {
+            e.preventDefault(); // Prevent the default form submission
+
+            var form = new FormData();
+
+            form.append("code", $code.val());
+            form.append("designation", $designation.val());
+            form.append("ville", $ville.val());
+            form.append("adresse", $adresse.val());
+            form.append("telephone", $telephone.val());
+            form.append("distributeur", $distributeur.val());
+            form.append("nif", $nif.val());
+            form.append("nis", $nis.val());
+            form.append("art", $art.val());
+            form.append("rc", $rc.val());
+
+
+            for (var pair of form.entries()) {
+                console.log(pair[0] + ": " + pair[1]);
+            }
+
+            var settings = {
+                "url": "/api/payeur/",
+                "method": "POST",
+                "timeout": 0,
+                "headers": {
+                    "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),  // Assuming you have CSRF token in your template context
+                },
+                "processData": false,
+                "contentType": false,
+                "data": form
+            };
+
+            $.ajax(settings)
+                .done(function (response) {
+                    console.log(response);
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    // Log the entire jqXHR object to see all details
+                    console.log('jqXHR:', jqXHR);
+
+                    // Log the status text
+                    console.log('Status:', textStatus);
+
+                    // Log the error thrown
+                    console.log('Error Thrown:', errorThrown);
+
+                    // Log the response text, which might contain detailed error messages
+                    console.log('Response Text:', jqXHR.responseText);
+
+                    // Optionally, parse the responseText as JSON if it's in JSON format
+                    try {
+                        var responseJSON = JSON.parse(jqXHR.responseText);
+                        console.log('Response JSON:', responseJSON);
+                    } catch (e) {
+                        console.error('Failed to parse response as JSON:', e);
+                    }
+
+                });
+        });
+
+        $('#edituserForm').on('submit', function (e) {
+            e.preventDefault(); // Prevent the default form submission
+
+            var form = new FormData();
+
+            form.append("user.username", $('#edit_username').val());
+            form.append("user.email", $('#edit_email').val());
+            form.append("user.type", 'Distributeur');
+            form.append("user.first_name", $first_name.val());
+            form.append("user.last_name", $last_name.val());
+            form.append("user.telephone", $telephone.val());
+            form.append("user.responsable", $responsable.val());
+            form.append("user.region", $ville.find('option:selected').data('region'));
+            form.append("user.user_permissions", "1,2,3");
+            form.append("code", $code.val());
+            form.append("designation", $designation.val());
+            form.append("ville", $ville.val());
+            form.append("numero", $numero.val());
+            form.append("adresse", $adresse.val());
+            form.append("nif", $nif.val());
+            form.append("nis", $nis.val());
+            form.append("art", $art.val());
+            form.append("rc", $rc.val());
+            form.append("plafonnement", $plafonnement.val());
+            form.append("bloquer", $bloquer.val());
+            form.append("echeance_jour", $echeance_jour.val());
+            form.append("ristourn_a", $ristourn_a.val());
+            form.append("ristourn_na", $ristourn_na.val());
+            form.append("objectif_a", $objectif_a.val());
+            form.append("objectif_m", $objectif_m.val());
+
+
+            for (var pair of form.entries()) {
+                console.log(pair[0] + ": " + pair[1]);
+            }
+
+            var settings = {
+                "url": "/api/distributeur/" + edit_elem + '/',
+                "method": "PUT",
+                "timeout": 0,
+                "headers": {
+                    "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),  // Assuming you have CSRF token in your template context
+                },
+                "processData": false,
+                "contentType": false,
+                "data": form
+            };
+
+            $.ajax(settings)
+                .done(function (response) {
+                    console.log(response);
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    // Log the entire jqXHR object to see all details
+                    console.log('jqXHR:', jqXHR);
+
+                    // Log the status text
+                    console.log('Status:', textStatus);
+
+                    // Log the error thrown
+                    console.log('Error Thrown:', errorThrown);
+
+                    // Log the response text, which might contain detailed error messages
+                    console.log('Response Text:', jqXHR.responseText);
+
+                    // Optionally, parse the responseText as JSON if it's in JSON format
+                    try {
+                        var responseJSON = JSON.parse(jqXHR.responseText);
+                        console.log('Response JSON:', responseJSON);
+                    } catch (e) {
+                        console.error('Failed to parse response as JSON:', e);
+                    }
+
+                });
+        });
+
+
+    </script>
+{% endblock %}

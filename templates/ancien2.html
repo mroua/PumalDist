@@ -1,0 +1,850 @@
+{% extends "base.html" %}
+{% load mes_tags %}
+{% load static %}
+{% block title %}Commandes{% endblock %}
+
+{% block content %}
+
+    {% block page_heading %}Coucou{% endblock %}
+
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+    <!-- Add Produit Sidebar -->
+    <div id="addSidebar" style="margin-top: -10px"
+         class="bg-green-300 fixed right-0 top-0 bottom-0 w-2/5 bg-white shadow-lg transform translate-x-full transition-transform duration-300 z-50">
+        <div class="flex justify-between items-center p-4 border-b">
+            <h3 class="text-lg font-semibold">Encaissement</h3>
+            <button id="closeSidebar" class="text-gray-500 hover:text-gray-700">&times;</button>
+        </div>
+
+        <!-- Step 1: Select Products -->
+        <div class="p-4 grid grid-cols-2 gap-4 bg-red-300">
+            <div class="mb-0">
+                <label for="distenc" class="block text-sm font-medium text-gray-700 mb-2">Distributeur</label>
+                <select id="distenc"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    {% for dist in listedist %}
+                        <option value="{{ dist.id }}">{{ dist.designation }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-0">
+                <label for="payenc" class="block text-sm font-medium text-gray-700 mb-2">Payeur</label>
+                <select id="payenc"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    {% for pay in listepayeur %}
+                        <option value="{{ pay.id }}">{{ pay.designation }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-0 col-span-2">
+                <label class="flex items-center">
+                    <input type="checkbox" id="encaissementSubstitution" class="mr-2">
+                    <span>Encaissement de substitution</span>
+                </label>
+            </div>
+
+            <!-- This section will appear when Encaissement de substitution is checked -->
+            <div id="substitutionSection" class="hidden">
+                <div>
+                    <label for="creance_subfacpayeur"
+                           class="block mb-1 text-sm font-medium text-gray-900 dark:text-gray-400">Facture substituée</label>
+                    <select id="creance_subfacpayeur" multiple name="Facture[]" placeholder="Factures..."
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                            block w-full p-1">
+                        <option value="01">ELH ADJ MUSTAPHA</option>
+                        <option value="02">QADA BEN HOUARI</option>
+                        <option value="03">PAYEUR Z</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label for="payeurSubstitue" class="block text-sm font-medium text-gray-700 mb-2">Payeur substitué</label>
+                    <select id="payeurSubstitue"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <!-- Options will be populated dynamically -->
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label for="factureSubstitue" class="block text-sm font-medium text-gray-700 mb-2">Facture substituée</label>
+                    <select id="factureSubstitue" multiple
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <!-- Options will be populated dynamically -->
+                    </select>
+                </div>
+
+                <!-- This div will display selected factures -->
+                <div id="selectedFactures" class="bg-gray-100 p-4 mt-4 rounded-lg">
+                    <!-- Factures will be listed here -->
+                </div>
+            </div>
+
+            <div class="">
+                <label for="accountsomme" class="block text-sm font-medium text-gray-700 mb-1">Accompte</label>
+                <label id="accountsomme" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                block w-full p-2.5 text-right">0 DA
+                </label>
+            </div>
+            <div class="">
+                <label for="montantenc"
+                       class="block mb-1 pl-1 text-sm font-medium text-gray-900">Montant</label>
+                <label for="montantenc" id="display_montant"
+                       class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-right">0
+                    DA</label>
+                <input id="montantenc" value="" type="number" class="w-0 h-0">
+            </div>
+            <div class="mb-0 flex">
+                <p class="text-gray-900 text-sm rounded-lg w-full">Réstant accompte</p>
+                <p id="restant_accompte" class="text-gray-900 text-sm rounded-lg w-full text-right">0 DA</p>
+            </div>
+            <div class="mb-0 flex">
+                <p class="text-gray-900 text-sm rounded-lg w-full">Réstant montant</p>
+                <p id="restant_montant" class="text-gray-900 text-sm rounded-lg w-full text-right">0 DA</p>
+            </div>
+            <div class="mb-0 col-span-2 grid grid-cols-3 gap-2">
+                <label for="hs-radio-on-right"
+                       class="flex p-3 w-full bg-white border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
+                    <span class="text-sm text-gray-500 dark:text-neutral-400">Cheque</span>
+                    <input type="radio" name="options"
+                           class="shrink-0 ml-auto mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
+                           id="hs-radio-on-right">
+                </label>
+
+                <label for="hs-radio-on-right-checked1"
+                       class="flex p-3 w-full bg-white border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
+                    <span class="text-sm text-gray-500 dark:text-neutral-400">Virement</span>
+                    <input type="radio" name="options"
+                           class="shrink-0 ml-auto mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
+                           id="hs-radio-on-right-checked1">
+                </label>
+
+                <label for="hs-radio-on-right-checked2"
+                       class="flex p-3 w-full bg-white border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
+                    <span class="text-sm text-gray-500 dark:text-neutral-400">Espece</span>
+                    <input type="radio" name="options"
+                           class="shrink-0 ml-auto mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
+                           id="hs-radio-on-right-checked2">
+                </label>
+            </div>
+
+            <div class="mb-0">
+                <label for="banqueenc" class="block text-sm font-medium text-gray-700 mb-1">Banque</label>
+                <select id="banqueenc"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    {% for bnq in listebanque %}
+                        <option value="{{ bnq.id }}">{{ bnq.designation }} ({{ bnq.code }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-0">
+                <label for="numeroenc"
+                       class="block mb-1 pl-1 text-sm font-medium text-gray-900">Numéro</label>
+                <input id="numeroenc"
+                       class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-right">0
+                />
+            </div>
+
+            <div class="mb-0">
+                <label for="datedepot"
+                       class="block mb-1 pl-1 text-sm font-medium text-gray-900">Date dépot</label>
+                <input type="date" id="datedepot"
+                       class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+            </div>
+            <div class="mb-0">
+                <label for="datevalisation"
+                       class="block mb-1 pl-1 text-sm font-medium text-gray-900">Date valisation de la banque</label>
+                <input type="date" id="datevalisation"
+                       class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+            </div>
+            <div class="mb-0 cols-span-2">
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Edit Sidebar -->
+    <div id="editSidebar" style="margin-top: -10px"
+         class="fixed right-0 top-0 bottom-0 w-4/5 bg-white shadow-lg transform translate-x-full transition-transform duration-300 z-50">
+        <div class="flex justify-between items-center p-4 border-b">
+            <h3 class="text-lg font-semibold">Modifier la commande</h3>
+            <button id="closeEditSidebar" class="text-gray-500 hover:text-gray-700">&times;</button>
+        </div>
+
+        <!-- Step 1: Select Products -->
+        <div id="editStep1" class="p-4 h-full">
+            <div class="p-4 h-28 flex justify-around border border-gray-300 rounded-lg mb-4 gap-4">
+                <!-- Type Filter -->
+                <div class="mb-4 w-64">
+                    <label for="editTypeFilter" class="block text-sm font-medium text-gray-700 mb-2">Type</label>
+                    <select id="editTypeFilter"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option value="">Tous</option>
+                        {% for fil in liste_type %}
+                            <option id="{{ fil.id }}">{{ fil.designation }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Measure Filter -->
+                <div class="mb-4 w-64">
+                    <label for="editMeasureFilter" class="block text-sm font-medium text-gray-700 mb-2">Mesure</label>
+                    <select id="editMeasureFilter"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option value="">Tous</option>
+                        {% for fil in liste_mesure %}
+                            <option id="{{ fil.id }}">{{ fil.designation }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Field Filter -->
+                <div class="mb-4 w-64">
+                    <label for="editColorfilter" class="block text-sm font-medium text-gray-700 mb-2">Couleur</label>
+                    <select id="editColorfilter"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option value="">Tous</option>
+                        {% for fil in liste_couleur %}
+                            <option id="{{ fil.id }}">{{ fil.designation }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Field Filter -->
+                <div class="mb-4 w-64">
+                    <label for="editDistfield" class="block text-sm font-medium text-gray-700 mb-2">Selectionner le
+                        distributeur</label>
+                    <select id="editDistfield"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        {% for fil in liste_distributeur %}
+                            <option data-designation="{{ fil.designation }}" data-username="{{ fil.user.nom }}"
+                                    data-email="{{ fil.user.email }}"
+                                    id="{{ fil.id }}" value="{{ fil.id }}">{{ fil.designation }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="h-4/6 overflow-y-auto">
+                <div id="editProductList" class="grid gap-4 w-full"></div>
+            </div>
+
+            <button id="goToEditStep2" class="goToEditStep2 h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">
+                Suivant
+            </button>
+        </div>
+
+        <!-- Step 2: Review Selected Products -->
+        <div id="editStep2" class="p-4 hidden">
+            <h3 class="text-lg font-semibold mb-4">Modifier les produits sélectionnés</h3>
+            <div class="h-4/6 overflow-y-auto">
+                <div id="editSelectedProducts"></div>
+            </div>
+
+            <div class="flex justify-end pr-28">
+                <div class="h-16">Total:</div>
+                <div class="h-16 w-1/6 text-right pr-8" id="editTotalPrice">0 DA</div>
+            </div>
+
+            <div class="flex justify-between items-center mt-4">
+                <button id="goToEditStep1" class="bg-gray-500 text-white px-4 py-2 rounded-lg">Retour</button>
+                <button id="goToEditStep3" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Suivant</button>
+            </div>
+        </div>
+
+        <!-- Step 3: Confirm Order -->
+        <div id="editStep3" class="p-4 hidden">
+            <!-- Logo Section -->
+            <div class="h-4/5 w-full flex flex-col  items-center">
+
+                <div class="w-2/3">
+                    <div class="flex justify-center mb-4">
+                        <img src="{% static 'images/puma.svg' %}" alt="Company Logo" class="h-16">
+                    </div>
+
+                    <!-- Facture Details -->
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <!-- Recipient Details -->
+                        <div class="">
+                            <p id="editRecipientCompany">Nom de l'entreprise</p>
+                            <p id="editRecipientName">Nom et prénom</p>
+                            <p id="editRecipientEmail">email@domaine.com</p>
+                        </div>
+
+                        <!-- Facture Info -->
+                        <div class="text-right">
+                            <!--<p id="editFactureCode">12345</p>-->
+                            <p id="editFactureDate">01/01/2024</p>
+                            <p id="editIssuerName">{{ request.user.nom }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Product Details Table -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-t border-b border-gray-300">
+                            <thead>
+                            <tr>
+                                <th class="p-2 text-left">Désignation & Référence</th>
+                                <th class="p-2 text-center">Prix Unitaire</th>
+                                <th class="p-2 text-center">Quantité</th>
+                                <th class="p-2 text-center">Total</th>
+                            </tr>
+                            </thead>
+                            <tbody id="editProductDetails">
+                            <!-- Product rows will be inserted here dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Total Section -->
+                    <div class="flex justify-end">
+                        <div class="mt-4 w-1/3">
+                            <div class="flex justify-between mt-2 font-semibold">
+                                <span>Total:</span>
+                                <span id="editTotalAmount" class="pr-2">0 DA</span>
+                            </div>
+                            <div class="flex justify-between mt-2 font-semibold">
+                                <span>TVA:</span>
+                                <span id="editTaxAmount" class="pr-2">0 DA</span>
+                            </div>
+                            <div class="flex justify-between mt-2 font-semibold">
+                                <span>Montant Total:</span>
+                                <span id="editAmountDue" class="pr-2">0 DA</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex justify-between items-center mt-4">
+                <button class="goToEditStep2 bg-gray-500 text-white px-4 py-2 rounded-lg">Retour</button>
+                <button id="confirmEditOrder" class="bg-green-500 text-white px-4 py-2 rounded-lg">Confirmer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Sidebar -->
+    <div id="viewSidebar" style="margin-top: -10px"
+         class="flex flex-col fixed right-0 top-0 bottom-0 w-4/5 bg-white shadow-lg transform translate-x-full transition-transform duration-300 z-50">
+        <div class="flex justify-between items-center p-4 border-b">
+            <h3 class="text-lg font-semibold">Détail Commande</h3>
+            <button id="closeViewSidebar" class="text-gray-500 hover:text-gray-700">&times;</button>
+        </div>
+
+        <div id="containerdatacmd" class="flex-grow flex flex-col p-8">
+
+        </div>
+
+
+    </div>
+
+
+    <div class="flex justify-between items-center mb-4" style="margin-top: -8px">
+        <h2 class="text-2xl font-bold text-gray-700">Liste des BL</h2>
+
+        <div>
+            <button id="addButton" class="bg-blue-500 text-white p-2 rounded">
+                Encaissement
+            </button>
+            <button id="popupButton" class="popupButton bg-blue-500 text-white p-2 rounded">
+                facture
+            </button>
+        </div>
+
+    </div>
+
+
+    <div class="bg-white shadow-md rounded-t-lg p-4">
+        <div class="flex text-gray-600 font-semibold">
+            <div class="capitalize" style="width: 90px">Code</div>
+            <div class="flex-grow grid grid-cols-11">
+                <div class="capitalize col-span-2">Distributeur</div>
+                <div class="capitalize">Dates</div>
+                <div class="capitalize col-span-2">Vente</div>
+                <div class="capitalize px-4 col-span-2">Circulation</div>
+                <div class="capitalize px-4 col-span-2">Depot</div>
+                <div class="capitalize col-span-2">Encaissement</div>
+            </div>
+            <div class="capitalize text-center" style="width: 70px">Actions</div>
+        </div>
+    </div>
+    <div class=" space-y-4">
+        {% for elem in lise_fact %}
+            <div class="bg-white shadow-md rounded-lg p-4">
+                <div class="flex text-gray-600 font-semibold">
+                    <div class="capitalize text-sm" style="width: 90px">{{ elem.code }}</div>
+                    <div class="flex-grow grid grid-cols-11">
+                        <div class="capitalize col-span-2">
+                            <p class="text-sm text-gray-500">{{ elem.distributeur }}</p>
+                            <p class="text-sm text-gray-500">{{ elem.payeur }}</p>
+                        </div>
+                        <div class="capitalize">
+                            <p class="text-sm text-gray-500">{{ elem.date_ajout|date:'d-m-Y' }}</p>
+                            <p class="text-sm text-gray-500">{{ elem.date_echeance|date:'d-m-Y' }}</p>
+                        </div>
+                        <div class="capitalize col-span-2">
+                            <div class="flex w-full justify-between pl-2">
+                                <div class="text-sm text-gray-500">HT:</div>
+                                <div class="text-sm text-gray-500 text-right">{{ elem.total|floate_redefined }} DA
+                                </div>
+                            </div>
+                            <div class="flex w-full justify-between pl-2">
+                                <div class="text-sm text-gray-500">TTC:</div>
+                                <div class="text-sm text-gray-500 text-right">{{ elem.total|taxednumber }}
+                                    DA
+                                </div>
+                            </div>
+                        </div>
+                        <div class="capitalize px-4 col-span-2">
+                            <div class="flex w-full justify-between pl-2">
+                                <div class="text-sm text-gray-500">HT:</div>
+                                <div class="text-sm text-gray-500 text-right">{{ elem.total_validation_depot_false|floate_redefined }}
+                                    DA
+                                </div>
+                            </div>
+                            <div class="flex w-full justify-between pl-2">
+                                <div class="text-sm text-gray-500">TTC:</div>
+                                <div class="text-sm text-gray-500 text-right">{{ elem.total_validation_depot_false|taxednumber }}
+                                    DA
+                                </div>
+                            </div>
+                        </div>
+                        <div class="capitalize px-4 col-span-2">
+                            <div class="flex w-full justify-between pl-2">
+                                <div class="text-sm text-gray-500">HT:</div>
+                                <div class="text-sm text-gray-500 text-right">{{ elem.total_validation_depot_true|floate_redefined }}
+                                    DA
+                                </div>
+                            </div>
+                            <div class="flex w-full justify-between pl-2">
+                                <div class="text-sm text-gray-500">TTC:</div>
+                                <div class="text-sm text-gray-500 text-right">{{ elem.total_validation_depot_true|taxednumber }}
+                                    DA
+                                </div>
+                            </div>
+                        </div>
+                        <div class="capitalize text-center col-span-2 pr-2">
+                            <div class="flex w-full justify-between pl-2">
+                                <div class="text-sm text-gray-500">HT:</div>
+                                <div class="text-sm text-gray-500 text-right">{{ elem.total_encaissement|floate_redefined }}
+                                    DA
+                                </div>
+                            </div>
+                            <div class="flex w-full justify-between pl-2">
+                                <div class="text-sm text-gray-500">TTC:</div>
+                                <div class="text-sm text-gray-500 text-right">{{ elem.total_encaissement|taxednumber }}
+                                    DA
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="capitalize text-center" style="width: 70px">
+                        <button class="bg-blue-500 text-white p-2 rounded">
+                            <i id="editButton" class="editButton fas fa-pencil-alt" onclick=""></i>
+                        </button>
+                        <button class="bg-red-500 text-white p-2 rounded"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            </div>
+
+
+        {% endfor %}
+    </div>
+    <div class="rounded-t-lg px-4">
+        <div class="flex text-gray-600 font-semibold">
+            <div class="capitalize" style="width: 90px"></div>
+            <div class="flex-grow grid grid-cols-11 text-semibold">
+                <div class="capitalize col-span-2"></div>
+                <div class="capitalize">
+                    <p>Totals HT</p>
+                    <p>Totals TTC</p>
+                </div>
+                <div class="capitalize col-span-2 text-right">
+                    <p>{{ somme_total|floate_redefined }} DA</p>
+                    <p>{{ somme_total|taxednumber }} DA</p>
+                </div>
+                <div class="capitalize px-4 col-span-2 text-right">
+                    <p>{{ somme_circu|floate_redefined }} DA</p>
+                    <p>{{ somme_circu|taxednumber }} DA</p>
+                </div>
+                <div class="capitalize px-4 col-span-2 text-right">
+                    <p>{{ somme_depot|floate_redefined }} DA</p>
+                    <p>{{ somme_depot|taxednumber }} DA</p>
+                </div>
+                <div class="capitalize col-span-2 text-right pr-2">
+                    <p>{{ somme_encai|floate_redefined }} DA</p>
+                    <p>{{ somme_encai|taxednumber }} DA</p>
+                </div>
+            </div>
+            <div class="capitalize text-center" style="width: 70px"></div>
+        </div>
+    </div>
+
+    <!-- Filter Modal -->
+    <div id="addbl" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
+        <form id="formaddfacture">
+            <div class="relative w-screen h-screen flex justify-center items-center">
+                <div class="bg-white w-96 h-3/4 p-6 rounded-lg shadow-lg gap-y-2 flex flex-col">
+                    <div class="w-full flex justify-between">
+                        <div><h3 class="text-lg font-semibold">Ajout Facture</h3></div>
+                        <div>
+                            <button class="closePopup text-gray-700 p-2">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex-grow grid grid-cols-1 overflow-y-auto mb-4">
+                        <div class="mb-3">
+                            <label for="distributeur" class="block mb-1 pl-1 text-sm font-medium text-gray-900">Distribupteur</label>
+                            <select id="distributeur" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                block w-full p-2.5">
+                                {% for elem in listedist %}
+                                    <option class="p-2.5" value="{{ elem.id }}">{{ elem.designation }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="payeur" class="block mb-1 pl-1 text-sm font-medium text-gray-900">Payeur</label>
+                            <select id="payeur" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                block w-full p-2.5">
+                                {% for elem in listepayeur %}
+                                    <option class="p-2.5" value="{{ elem.id }}">{{ elem.designation }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="code" class="block mb-1 pl-1 text-sm font-medium text-gray-900">Code</label>
+                            <input type="text" id="code" name="code" placeholder="AZER01"
+                                   class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        </div>
+                        <div class="mb-3">
+                            <label for="date_facture" class="block mb-1 pl-1 text-sm font-medium text-gray-900">Date
+                                échéance</label>
+                            <input type="date" id="date_facture"
+                                   class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        </div>
+                        <div class="mb-3">
+                            <label for="facture_montant"
+                                   class="block mb-1 pl-1 text-sm font-medium text-gray-900">Montant</label>
+                            <label for="facture_montant" id="display_montant"
+                                   class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-right">0
+                                DA</label>
+                            <input id="facture_montant" value="" type="number" class="w-0 h-0">
+                        </div>
+                        <div class="flex items-center space-x-4 border border-gray-300 rounded-lg h-11">
+                            <label for="fc_facture" class="block flex-shrink-0">
+                                <div class="flex items-center justify-center px-4 h-full rounded-l-lg
+                                    bg-white text-blue-500 cursor-pointer hover:bg-blue-500 hover:text-white
+                                    transition-colors duration-300">
+                                    <span class="">Fichier FC</span>
+                                </div>
+                                <input id="fc_facture" type="file" class="hidden"/>
+                            </label>
+                            <span id="file-name" class="text-gray-500 w-64 truncate">No fc file</span>
+                        </div>
+
+                        <div>
+
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between">
+                        <button class="closePopup bg-gray-500 text-white p-2 rounded">Annuler</button>
+                        <button type="submit" class="bg-green-300 text-white p-2 rounded">Ajouter</button>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+    <script>
+
+        new TomSelect('#creance_subfacpayeur', {
+            plugins: ['remove_button']
+        });
+        $distributeur = $("#distributeur");
+        $payeur = $("#payeur");
+        $code = $("#code");
+        $date_facture = $("#date_facture");
+
+
+        // Toggle the sidebar
+        $('#addButton').on('click', function () {
+            $('#addSidebar').toggleClass('translate-x-full');
+        });
+
+        // Close the sidebar
+        $('#closeSidebar').on('click', function () {
+            $('#addSidebar').addClass('translate-x-full');
+        });
+
+
+        // Close sidebar when clicking outside
+        /*$(document).on('click', function (e) {
+            if (!$(e.target).closest('#addButton, #addSidebar').length) {
+                $('#addSidebar').addClass('translate-x-full');
+            }
+        });*/
+
+
+        $(document).ready(function () {
+            // Show the popup
+            $('.popupButton').click(function () {
+                $('#addbl').fadeIn();
+            });
+
+            // Close the popup
+            $('.closePopup').click(function () {
+                $('#addbl').fadeOut();
+            });
+
+            // Optional: Close popup if clicking outside of the popup content
+            $(window).click(function (event) {
+                if ($(event.target).is('#addbl')) {
+                    $('#addbl').fadeOut();
+                }
+            });
+        });
+
+
+        $('#fc_facture').on('change', function () {
+            const fileName = $(this).val().split('\\').pop() || 'No fc file';
+            $('#file-name').text(fileName);
+        });
+
+
+        $display_montant = $('#display_montant');
+        $facture_montant = $('#facture_montant');
+
+        $display_montant.on('click', function () {
+            $facture_montant.trigger('click')
+        });
+
+
+        $facture_montant.on('keyup', function () {
+
+            if ($facture_montant.val().length === 0) $display_montant.html('0 DA');
+            else $display_montant.html(parseFloat($facture_montant.val()).toLocaleString('en-US').replaceAll(',', ' ') + ' DA');
+        });
+
+        $facture_montant.focus(function () {
+            if ($display_montant.hasClass('border-blue-500')) {
+            } else $display_montant.addClass('border-blue-500');
+            console.log("focus mode0")
+        });
+
+
+        $facture_montant.focusout(function () {
+            $display_montant.removeClass('border-blue-500')
+        });
+
+
+        $('#formaddfacture').on('submit', function (e) {
+            e.preventDefault(); // Prevent the default form submission
+
+            var form = new FormData();
+
+            // Add basic form data
+            form.append("payeur", $payeur.val());
+            form.append("code", $code.val());
+            form.append("montant", $facture_montant.val());
+            form.append("date_facture", $date_facture.val());
+
+            // Add the photo
+            var photoFile = $('#fc_facture')[0].files[0];
+            if (photoFile) {
+                form.append("fc_file", photoFile);
+            }
+
+
+            var settings = {
+                "url": "/api/facture/",
+                "method": "POST",
+                "timeout": 0,
+                "headers": {
+                    "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),  // Assuming you have CSRF token in your template context
+                },
+                "processData": false,
+                "contentType": false,
+                "data": form
+            };
+
+            $.ajax(settings)
+                .done(function (response) {
+                    console.log(response);
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    // Log the entire jqXHR object to see all details
+                    console.log('jqXHR:', jqXHR);
+
+                    // Log the status text
+                    console.log('Status:', textStatus);
+
+                    // Log the error thrown
+                    console.log('Error Thrown:', errorThrown);
+
+                    // Log the response text, which might contain detailed error messages
+                    console.log('Response Text:', jqXHR.responseText);
+
+                    // Optionally, parse the responseText as JSON if it's in JSON format
+                    try {
+                        var responseJSON = JSON.parse(jqXHR.responseText);
+                        console.log('Response JSON:', responseJSON);
+                    } catch (e) {
+                        console.error('Failed to parse response as JSON:', e);
+                    }
+
+                });
+        });
+
+
+        $(document).ready(function () {
+            $('#distributeur').change(function () {
+                var distributeurId = $(this).val();
+
+                $.ajax({
+                    url: '/api/payeur?distributeur=' + distributeurId, // Update this with your actual API endpoint
+                    method: 'GET',
+                    data: {
+                        distributeur: distributeurId
+                    },
+                    success: function (response) {
+                        // Assuming 'response' contains the list of payeurs in JSON format
+                        var payeurSelect = $('#payeur');
+                        payeurSelect.empty(); // Clear the current options
+
+                        $.each(response, function (index, payeur) {
+                            payeurSelect.append(new Option(payeur.designation, payeur.id));
+                        });
+                    },
+                    error: function (error) {
+                        console.log("Error fetching payeur data:", error);
+                    }
+                });
+            });
+
+
+            $('#distenc').change(function () {
+                var distributeurId = $(this).val();
+
+                $.ajax({
+                    url: '/api/payeur?distributeur=' + distributeurId, // Update this with your actual API endpoint
+                    method: 'GET',
+                    data: {
+                        distributeur: distributeurId
+                    },
+                    success: function (response) {
+                        // Assuming 'response' contains the list of payeurs in JSON format
+                        var payeurSelect = $('#payenc');
+                        payeurSelect.empty(); // Clear the current options
+
+                        $.each(response, function (index, payeur) {
+                            payeurSelect.append(new Option(payeur.designation, payeur.id));
+                        });
+                    },
+                    error: function (error) {
+                        console.log("Error fetching payeur data:", error);
+                    }
+                });
+            });
+
+            $('#payeur').change(function () {
+                var payeurId = $(this).val();
+
+                $.ajax({
+                    url: '/encaissement/accomptetotal', // API endpoint for accomptetotal
+                    method: 'GET',
+                    data: {
+                        payeur_id: payeurId
+                    },
+                    success: function (response) {
+                        // Handle the response here
+                        console.log("Accomptetotal data for payeur:", response);
+                        // Example: update some element with the data
+                        $('#accountsomme').html(response.total_amount);
+                    },
+                    error: function (error) {
+                        console.log("Error fetching accomptetotal data:", error);
+                    }
+                });
+            });
+
+            // Handle change event for payenc select (second instance)
+            $('#payenc').change(function () {
+                var payeurId = $(this).val();
+
+                $.ajax({
+                    url: '/encaissement/accomptetotal', // API endpoint for accomptetotal
+                    method: 'GET',
+                    data: {
+                        payeur_id: payeurId
+                    },
+                    success: function (response) {
+                        // Handle the response here
+                        console.log("Accomptetotal data for payeur:", response);
+                        // Example: update some element with the data
+                        $('#accountsomme').html(response.total_amount);
+                    },
+                    error: function (error) {
+                        console.log("Error fetching accomptetotal data:", error);
+                    }
+                });
+            });
+
+        });
+
+        $(document).ready(function () {
+    // Show or hide the substitution section based on the encaissement checkbox
+    $('#encaissementSubstitution').change(function () {
+        if ($(this).is(':checked')) {
+            $('#substitutionSection').removeClass('hidden');
+        } else {
+            $('#substitutionSection').addClass('hidden');
+            $('#activatePayeurSubstitution').prop('checked', false);
+            $('#payeurSubstitue').empty();  // Clear payeur options
+            $('#factureSubstitue').empty(); // Clear facture options
+            $('#selectedFactures').empty(); // Clear selected factures display
+        }
+    });
+
+    // Handle changes in the facture substitué select box
+    $('#factureSubstitue').change(function () {
+        const selectedFactures = $(this).val();
+        $('#selectedFactures').empty(); // Clear the current list
+        if (selectedFactures) {
+            selectedFactures.forEach(facture => {
+                $('#selectedFactures').append(`<p>${facture}</p>`);
+            });
+        }
+    });
+
+    // Example data population for payeur and facture select elements
+    const payeurs = ['Payeur 1', 'Payeur 2', 'Payeur 3'];
+    const factures = ['Facture 1', 'Facture 2', 'Facture 3'];
+
+    // Populate payeur options
+    payeurs.forEach(payeur => {
+        $('#payeurSubstitue').append(`<option value="${payeur}">${payeur}</option>`);
+    });
+
+    // Populate facture options
+    factures.forEach(facture => {
+        $('#factureSubstitue').append(`<option value="${facture}">${facture}</option>`);
+    });
+});
+
+
+    </script>
+
+
+{% endblock %}
