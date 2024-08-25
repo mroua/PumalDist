@@ -7,8 +7,11 @@ from django.db import connection
 from Distributeur.models import Distributeur, Payeur
 from .Serializers import BanqueSerializer, AccountSerializer, FacturesSerializer, EncaissementSerializer
 from .models import Banque, Account, Factures, Encaissement
+from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
+@login_required
 def EncaissementView(request):
     # Get the list of distributeurs and payeurs
     listedist = Distributeur.objects.filter(bloquer=True).order_by('id')
@@ -144,8 +147,7 @@ class EncaissementViewSet(viewsets.ModelViewSet):
     queryset = Encaissement.objects.all()
     serializer_class = EncaissementSerializer
 
-
-
+@login_required
 def AccompteDist(request):
     payeur = request.GET.get('payeur')
 
@@ -163,6 +165,7 @@ def AccompteDist(request):
     return HttpResponse(accompte)
 
 
+@login_required
 def get_factures(request, payeur_id):
     factures = Factures.objects.filter(payeur_id=payeur_id)
     facture_data = [

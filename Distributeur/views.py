@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.contrib.auth.decorators import login_required
 
 from Distributeur.Serializers import DistributeurSerializer, payeurSerializer
 from .models import *
@@ -25,6 +26,7 @@ class PayeurViewSet(viewsets.ModelViewSet):
     filterset_fields = ['distributeur']
 
 
+@login_required
 def DistribView(request):
     dist_list = Distributeur.objects.all()
     ville_list = Ville.objects.all()
@@ -40,7 +42,7 @@ def DistribView(request):
                       'ville_list': ville_list,
                       'users_select': users_select
                   })
-
+@login_required
 def PayView(request):
     dist_list = Payeur.objects.filter(draft = False)
     ville_list = Ville.objects.all()

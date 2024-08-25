@@ -12,6 +12,9 @@ from .Serializers import Dist_CommandeLinesSerializer, Dist_CommandeSerializer, 
 from .models import Dist_CommandeLines, Dist_Commande, Dist_BonLivraison, Dist_BonLivraisonLine
 from rest_framework.views import APIView
 from django.db import connection
+from django.contrib.auth.decorators import login_required
+
+
 
 
 from django_filters.rest_framework import DjangoFilterBackend
@@ -47,7 +50,7 @@ class Dist_BonLivraisonDetailViewset(viewsets.ModelViewSet):
     queryset = Dist_BonLivraison.objects.all()
     serializer_class = Dist_BonLivraisonDetailSerializer
 
-
+@login_required
 def CommandeView(request):
     liste_type = TypeProduit.objects.all()
     liste_couleur = Couleur.objects.all()
@@ -115,7 +118,7 @@ def CommandeView(request):
         'liste_cmd': lise_prod
     })
 
-
+@login_required
 def BlivraisonView(request):
     commandes = request.GET.get('commandes')
     blist = Dist_BonLivraison.objects.filter(commandes=commandes).values(

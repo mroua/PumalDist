@@ -7,6 +7,8 @@ from rest_framework.views import APIView
 
 from .models import *
 from .Serializers import VilleSerializer, CustomUserSerializer
+from django.contrib.auth.decorators import login_required
+
 
 class LoginView(APIView):
     http_method_names = ['post', 'get']
@@ -51,6 +53,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
 
+@login_required
 def Utilisateurs(request):
     liste_users = CustomUser.objects.filter(
         Q(type="Agent")|
