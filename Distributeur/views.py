@@ -42,6 +42,7 @@ def DistribView(request):
                       'ville_list': ville_list,
                       'users_select': users_select
                   })
+
 @login_required
 def PayView(request):
     dist_list = Payeur.objects.filter(draft = False)

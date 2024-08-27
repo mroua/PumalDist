@@ -8,6 +8,7 @@ from Commande.views import Dist_CommandeLinesViewSet, Dist_CommandeViewSet, Dist
     Dist_BonLivraisonDetailViewset
 
 from Encaissement.views import BanqueViewSet, AccountViewSet, FacturesViewSet, EncaissementViewSet
+from Formation.views import FormationViewSet, FormationSingupViewSet, EquipeViewSet, ProblematiqueViewSet
 
 router1 = routers.DefaultRouter()
 
@@ -33,3 +34,8 @@ router1.register('commandedetail', Dist_CommandeDetailViewSet, basename='command
 router1.register('blivraison', Dist_BonLivraisonViewSet, basename='blivraison')
 router1.register('blivraisonlines', Dist_BonLivraisonLineViewSet)
 router1.register('blivraisondetail', Dist_BonLivraisonDetailViewset, basename='blivraisondetail')
+
+
+router1.register('formation', FormationViewSet, basename='formation')
+router1.register('formationsingup', FormationSingupViewSet, basename='formationsingup')
+router1.register('problematique', ProblematiqueViewSet, basename='problematique')

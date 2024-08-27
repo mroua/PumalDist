@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'Produits.apps.ProduitsConfig',
     'Commande.apps.CommandeConfig',
     'Encaissement.apps.EncaissementConfig',
+    'Formation.apps.FormationConfig',
 
     'corsheaders',
     'rest_framework',
