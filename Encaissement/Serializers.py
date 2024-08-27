@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Factures, Encaissement, Account, EncaissementFacture, Banque
 from datetime import datetime, timedelta
+from datetime import date
 
 
 class BanqueSerializer(serializers.ModelSerializer):
@@ -10,9 +11,33 @@ class BanqueSerializer(serializers.ModelSerializer):
 
 
 class AccountSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Account
         fields = '__all__'
+
+    def to_representation(self, instance):
+        # Modify the representation to include the extra fields only on GET requests
+        representation = super().to_representation(instance)
+        if self.context['request'].method == 'GET':
+            # Add extra fields to the representation
+            representation['payeur_designation'] = instance.payeur.designation
+            representation['distributeur_designation'] = instance.payeur.distributeur.designation
+            if(instance.type in ["Cheque", "Virement"]):
+                representation['banque_designation'] = instance.banque.designation+" ("+ instance.banque.code +")"
+            else:
+                representation['banque_designation'] = 'Aucune'
+
+        return representation
+
+    def update(self, instance, validated_data):
+        for attr, value in validated_data.items():
+            print(value)
+            setattr(instance, attr, value)
+            if(attr == "validation_depot"): instance.date_depot = date.today()
+            if(attr == "validation"): instance.date_validation = date.today()
+        instance.save()
+        return instance
 
 class FacturesSerializer(serializers.ModelSerializer):
     class Meta:
@@ -21,33 +46,39 @@ class FacturesSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         payeur = validated_data.get('payeur')
-        if not validated_data.get('date_echeance') and payeur:
-
-            days_to_add = payeur.distributeur.echeance_jour
-            validated_data['date_echeance'] = datetime.now() + timedelta(days=days_to_add)
+        try:
+            if not validated_data.get('date_echeance') and payeur:
+                days_to_add = payeur.distributeur.echeance_jour
+                validated_data['date_echeance'] = (datetime.now() + timedelta(days=days_to_add)).date()
+        except Exception as e:
+            # Default to 15 days if there is an exception
+            validated_data['date_echeance'] = (datetime.now() + timedelta(days=15)).date()
         return super().create(validated_data)
 
 
 class EncaissementSerializer(serializers.ModelSerializer):
-    factures = serializers.ListField(write_only=True)
+    factures = serializers.ListField(
+        child=serializers.IntegerField(),
+        write_only=True
+    )
+    numero = serializers.CharField(required=False)
 
     class Meta:
         model = Encaissement
-        fields = ['id', 'code', 'montant', 'payeur', 'type', 'numero', 'date_validation', 'date_ajout', 'validation', 'validation_depot', 'banque', 'date_depot', 'date_cheque', 'substitution', 'listefacturesub', 'factures']
+        fields = ['id', 'montant', 'payeur', 'type', 'numero', 'banque', 'date_depot', 'date_cheque', 'substitution', 'listefacturesub', 'factures']
 
     def create(self, validated_data):
-        factures_data = validated_data.pop('factures')
+        factures_ids = validated_data.pop('factures')
         encaissement = Encaissement.objects.create(**validated_data)
 
         remaining_montant = encaissement.montant
         payeur = encaissement.payeur
 
-        # Apply encaissement amount to each facture
-        for facture_data in factures_data:
-            facture = Factures.objects.get(id=facture_data['id'])
-            facture_montant = facture_data['montant']
+        for facture_id in factures_ids:
+            facture = Factures.objects.get(id=facture_id)
 
             if remaining_montant >= facture.montant:
+                # Full amount applied to the facture
                 encaissement_facture = EncaissementFacture(
                     facture=facture,
                     type='Encaissement',
@@ -55,10 +86,11 @@ class EncaissementSerializer(serializers.ModelSerializer):
                     montant=facture.montant
                 )
                 encaissement_facture.save()
-                facture.complete = True
+                facture.montant = 0  # Mark the facture as fully paid
                 facture.save()
                 remaining_montant -= facture.montant
             else:
+                # Partially apply the remaining montant to the facture
                 encaissement_facture = EncaissementFacture(
                     facture=facture,
                     type='Encaissement',
@@ -71,13 +103,12 @@ class EncaissementSerializer(serializers.ModelSerializer):
                 remaining_montant = 0
                 break
 
-        # Use account funds if encaissement funds are exhausted
+        # If there's remaining montant, use account funds
         if remaining_montant == 0:
             accounts = Account.objects.filter(payeur=payeur, montant__gt=0).order_by('date_ajout')
             for account in accounts:
-                for facture_data in factures_data:
-                    facture = Factures.objects.get(id=facture_data['id'])
-                    facture_montant = facture_data['montant']
+                for facture_id in factures_ids:
+                    facture = Factures.objects.get(id=facture_id)
 
                     if account.montant >= facture.montant:
                         encaissement_facture = EncaissementFacture(
@@ -87,11 +118,11 @@ class EncaissementSerializer(serializers.ModelSerializer):
                             montant=facture.montant
                         )
                         encaissement_facture.save()
-                        facture.complete = True
-                        facture.save()
                         account.montant -= facture.montant
                         account.save()
-                        facture_montant = 0
+                        facture.montant = 0  # Mark the facture as fully paid
+                        facture.save()
+                        remaining_montant = 0
                     else:
                         encaissement_facture = EncaissementFacture(
                             facture=facture,
@@ -104,8 +135,10 @@ class EncaissementSerializer(serializers.ModelSerializer):
                         facture.save()
                         account.montant = 0
                         account.save()
+                    if remaining_montant == 0:
+                        break
 
-        # If there's still remaining encaissement amount, create a new account
+        # If there's still remaining montant, create a new account
         if remaining_montant > 0:
             Account.objects.create(
                 code=encaissement.code,

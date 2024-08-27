@@ -5,13 +5,15 @@
 
 {% block page_heading %}
     <div>
-        <a href="{% url 'encaissement' %}" class="block px-4 py-2 hover:bg-gray-700 rounded">Encaissements</a>
+        <a href="{% url 'encaissement' %}" class="block px-4 py-2 hover:bg-gray-200 rounded
+            {% if request.path == '/encaissement/' %} bg-gray-200{% endif %}"
+        >Encaissements</a>
     </div>
-    <div><!-- accomptes -->
-        <a href="{% url 'encaissement' %}" class="block px-4 py-2 hover:bg-gray-700 rounded">Accomptes</a>
-    </div>
+
     <div>
-        <a href="{% url 'encaissement' %}" class="block px-4 py-2 hover:bg-gray-700 rounded">Validations</a>
+        <a href="{% url 'accompte' %}" class="block px-4 py-2 hover:bg-gray-200 rounded
+            {% if request.name == '/encaissement/accompte' %} bg-gray-200{% endif %}"
+        >Accompte</a>
     </div>
 
 {% endblock %}
@@ -21,9 +23,27 @@
         .hidden {
             display: none;
         }
+
+        .tom-select .option,
+        .tom-select .item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tom-select .left {
+            flex-grow: 1;
+            text-align: left;
+        }
+
+        .tom-select .right {
+            flex-shrink: 0;
+            text-align: right;
+            margin-left: 10px;
+        }
     </style>
 
-    <!-- Add Produit Sidebar -->
+    <!-- Add Encaissement Sidebar -->
     <div id="addSidebar" style="margin-top: -10px"
          class="fixed right-0 top-0 bottom-0 w-2/5 bg-white shadow-lg flex flex-col transform translate-x-full transition-transform duration-300 z-50">
         <div class="flex justify-between items-center p-4 border-b">
@@ -69,7 +89,9 @@
                             substitué</label>
                         <select id="payeurSubstitue"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                            <!-- Options will be populated dynamically -->
+                            {% for pay in listepayeur %}
+                                <option value="{{ pay.id }}">{{ pay.designation }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <div>
@@ -77,11 +99,14 @@
                                class="block mb-1 text-sm font-medium text-gray-900 dark:text-gray-400">Facture
                             substituée</label>
                         <select id="creance_subfacpayeur" multiple name="Facture[]" placeholder="Factures..."
-                                class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                class="tom-select border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
                                 block w-full p-1">
-                            <option value="01">ELH ADJ MUSTAPHA</option>
-                            <option value="02">QADA BEN HOUARI</option>
-                            <option value="03">PAYEUR Z</option>
+                            {% for fac in listefacture %}
+                                <option value="{{ fac.id }}" data-code="{{ fac.code }}"
+                                        data-montant="{{ fac.restant|floatformat }}">
+                                    {{ fac.code }} ({{ fac.restant|floatformat }} DA)
+                                </option>
+                            {% endfor %}
                         </select>
                     </div>
 
@@ -92,7 +117,7 @@
             <div class="p-4 grid grid-cols-2 gap-4">
                 <div class="">
                     <label for="accountsomme" class="block text-sm font-medium text-gray-700 mb-1">Accompte</label>
-                    <label id="accountsomme" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                    <label id="accountsomme" data-value="0" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
                     block w-full p-2.5 text-right">0 DA
                     </label>
                 </div>
@@ -102,7 +127,7 @@
                     <label for="montantenc" id="display_enc"
                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-right">0
                         DA</label>
-                    <input id="montantenc" value="" type="number" class="w-0 h-0">
+                    <input id="montantenc" value="0" type="number" class="w-0 h-0">
                 </div>
                 <div class="mb-0 flex">
                     <p class="text-gray-900 text-sm rounded-lg w-full">Réstant accompte</p>
@@ -116,25 +141,19 @@
                     <label for="hs-radio-on-right"
                            class="flex p-3 w-full bg-white border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
                         <span class="text-sm text-gray-500 dark:text-neutral-400">Cheque</span>
-                        <input type="radio" name="options" checked
-                               class="shrink-0 ml-auto mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
-                               id="hs-radio-on-right">
+                        <input type="radio" name="options" value="Cheque" checked id="hs-radio-on-right">
                     </label>
 
                     <label for="hs-radio-on-right-checked1"
                            class="flex p-3 w-full bg-white border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
                         <span class="text-sm text-gray-500 dark:text-neutral-400">Virement</span>
-                        <input type="radio" name="options"
-                               class="shrink-0 ml-auto mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
-                               id="hs-radio-on-right-checked1">
+                        <input type="radio" name="options" value="Virement" id="hs-radio-on-right-checked1">
                     </label>
 
                     <label for="hs-radio-on-right-checked2"
                            class="flex p-3 w-full bg-white border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
                         <span class="text-sm text-gray-500 dark:text-neutral-400">Espece</span>
-                        <input type="radio" name="options"
-                               class="shrink-0 ml-auto mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
-                               id="hs-radio-on-right-checked2">
+                        <input type="radio" name="options" value="Espece" id="hs-radio-on-right-checked2">
                     </label>
                 </div>
 
@@ -369,118 +388,153 @@
 
     </div>
 
-    <div class="w-full h-full py-8 flex flex-col">
+    <div class="w-full h-full flex flex-col py-2 overflow-y-auto text-bold">
 
 
         <div class="flex justify-between items-center mb-4" style="margin-top: -8px">
             <h2 class="text-2xl font-bold text-gray-700">Liste des Encaissement</h2>
             <div>
-                <button id="addButton" class="bg-blue-500 text-white p-2 rounded">
+                <button id="filterButton" class="bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-700">Filtrer
+                </button>
+
+                <button id="addButton" class="popupButton bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400">
                     Encaissement
                 </button>
-                <button id="popupButton" class="popupButton bg-blue-500 text-white p-2 rounded">
+                <button id="popupButton" class="popupButton bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400">
                     facture
                 </button>
             </div>
 
         </div>
 
+        <div class="px-2">
+            <div class="flex text-gray-800 text-xs font-bold">
+                <div class="capitalize" style="width: 70px"></div>
+                <div class="p-2 flex-grow grid grid-cols-6 gap-4">
+                    <div class="capitalize text-right">
+                        <div><span>Totals </span><span class="ml-3"> HT</span></div>
+                        <div><span>Totals</span><span class="ml-1"> TTC</span></div>
 
-        <div class="bg-white shadow-md rounded-t-lg p-4 mb-4">
+
+                    </div>
+                    <div class="capitalize text-right">
+                        <p>{{ somme_total|floate_redefined }} DA</p>
+                        <p>{{ somme_total|taxednumber }} DA</p>
+                    </div>
+                    <div class="capitalize px-4 text-right">
+                        <p>{{ somme_circu|floate_redefined }} DA</p>
+                        <p>{{ somme_circu|taxednumber }} DA</p>
+                    </div>
+                    <div class="capitalize px-4 text-right">
+                        <p>{{ somme_depot|floate_redefined }} DA</p>
+                        <p>{{ somme_depot|taxednumber }} DA</p>
+                    </div>
+                    <div class="capitalize text-right pr-2">
+                        <p>{{ somme_encai|floate_redefined }} DA</p>
+                        <p>{{ somme_encai|taxednumber }} DA</p>
+                    </div>
+                </div>
+                <div class="capitalize text-center" style="width: 70px"></div>
+            </div>
+        </div>
+        <div class="bg-white shadow-md rounded-t-lg p-2 mb-4">
             <div class="flex text-gray-600 font-semibold">
-                <div class="capitalize" style="width: 90px">Code</div>
-                <div class="flex-grow grid grid-cols-7">
-                    <div class="capitalize text-center">Distributeur</div>
-                    <div class="capitalize text-center">Plafonnement</div>
-                    <div class="capitalize text-center">Vente</div>
-                    <div class="capitalize px-4 text-center">Circulation</div>
-                    <div class="capitalize px-4 text-center">Depot</div>
-                    <div class="capitalize text-center">Encaissement</div>
-                    <div class="capitalize text-center">échue</div>
+                <div class="capitalize" style="width: 70px">Code</div>
+                <div class="flex-grow grid grid-cols-6 gap-4">
+                    <div class="capitalize">Distributeur</div>
+                    <!--<div class="capitalize text-center">Plafonnement</div>-->
+                    <div class="capitalize pr-4 text-right">Vente</div>
+                    <div class="capitalize pr-4 text-right">Circulation</div>
+                    <div class="capitalize pr-4 text-right">Depot</div>
+                    <div class="capitalize pr-4 text-right">Encaissement</div>
+                    <div class="capitalize pr-4 text-right">échue</div>
                 </div>
                 <div class="capitalize text-center" style="width: 80px">Actions</div>
             </div>
         </div>
         <div class="flex-grow space-y-4 overflow-y-auto">
             {% for elem in lise_fact %}
-                <div class="bg-white shadow-md rounded-lg p-4">
+                <div class="bg-white shadow-md rounded-lg p-2">
                     <div class="flex text-gray-600 font-semibold">
-                        <div class="capitalize text-sm" style="width: 90px">{{ elem.code }}</div>
-                        <div class="flex-grow grid grid-cols-7 gap-4">
+                        <div class="capitalize text-xs" style="width: 70px">{{ elem.code }}</div>
+                        <div class="flex-grow grid grid-cols-6 gap-2">
                             <div class="capitalize">
-                                <p class="text-sm text-gray-500">{{ elem.distributeur }}</p>
-                                <p class="text-sm text-gray-500">{{ elem.payeur }}</p>
+                                <p class="text-xs text-gray-500">{{ elem.distributeur }}</p>
+                                <p class="text-xs text-gray-500">{{ elem.payeur }}</p>
                             </div>
-                            <div class="capitalize">
-                                <div class="text-sm text-gray-500 text-right">{{ elem.plafonnement|floate_redefined }}
+                            <!--<div class="capitalize">
+                                <div class="text-xs font-bold text-gray-800 text-right">{{ elem.plafonnement|floate_redefined }}
                                     DA
                                 </div>
-                            </div>
+                            </div>-->
                             <div class="capitalize">
                                 <div class="flex w-full justify-between ">
-                                    <div class="text-sm text-gray-500">HT:</div>
-                                    <div class="text-sm text-gray-500 text-right">{{ elem.total|floate_redefined }} DA
+                                    <div class="text-xs font-bold text-gray-500">HT:</div>
+                                    <div class="text-xs font-bold text-gray-800 text-right">
+                                        {{ elem.total|floate_redefined }}
+                                        DA
                                     </div>
                                 </div>
                                 <div class="flex w-full justify-between ">
-                                    <div class="text-sm text-gray-500">TTC:</div>
-                                    <div class="text-sm text-gray-500 text-right">{{ elem.total|taxednumber }}
+                                    <div class="text-xs font-bold text-gray-500">TTC:</div>
+                                    <div class="text-xs font-bold text-gray-800 text-right">
+                                        {{ elem.total|taxednumber }}
                                         DA
                                     </div>
                                 </div>
                             </div>
                             <div class="capitalize">
                                 <div class="flex w-full justify-between ">
-                                    <div class="text-sm text-gray-500">HT:</div>
-                                    <div class="text-sm text-gray-500 text-right">{{ elem.total_validation_depot_false|floate_redefined }}
+                                    <div class="text-xs text-gray-500">HT:</div>
+                                    <div class="text-xs font-bold text-gray-800 text-right">{{ elem.total_validation_depot_false|floate_redefined }}
                                         DA
                                     </div>
                                 </div>
                                 <div class="flex w-full justify-between ">
-                                    <div class="text-sm text-gray-500">TTC:</div>
-                                    <div class="text-sm text-gray-500 text-right">{{ elem.total_validation_depot_false|taxednumber }}
+                                    <div class="text-xs text-gray-500">TTC:</div>
+                                    <div class="text-xs font-bold text-gray-800 text-right">{{ elem.total_validation_depot_false|taxednumber }}
                                         DA
                                     </div>
                                 </div>
                             </div>
                             <div class="capitalize">
                                 <div class="flex w-full justify-between">
-                                    <div class="text-sm text-gray-500">HT:</div>
-                                    <div class="text-sm text-gray-500 text-right">{{ elem.total_validation_depot_true|floate_redefined }}
+                                    <div class="text-xs text-gray-500">HT:</div>
+                                    <div class="text-xs font-bold text-gray-800 text-right">{{ elem.total_validation_depot_true|floate_redefined }}
                                         DA
                                     </div>
                                 </div>
                                 <div class="flex w-full justify-between">
-                                    <div class="text-sm text-gray-500">TTC:</div>
-                                    <div class="text-sm text-gray-500 text-right">{{ elem.total_validation_depot_true|taxednumber }}
+                                    <div class="text-xs text-gray-500">TTC:</div>
+                                    <div class="text-xs font-bold text-gray-800 text-right">{{ elem.total_validation_depot_true|taxednumber }}
                                         DA
                                     </div>
                                 </div>
                             </div>
                             <div class="capitalize text-center">
                                 <div class="flex w-full justify-between">
-                                    <div class="text-sm text-gray-500">HT:</div>
-                                    <div class="text-sm text-gray-500 text-right">{{ elem.total_encaissement|floate_redefined }}
+                                    <div class="text-xs text-gray-500">HT:</div>
+                                    <div class="text-xs font-bold text-gray-800 text-right">{{ elem.total_encaissement|floate_redefined }}
                                         DA
                                     </div>
                                 </div>
                                 <div class="flex w-full justify-between">
-                                    <div class="text-sm text-gray-500">TTC:</div>
-                                    <div class="text-sm text-gray-500 text-right">{{ elem.total_encaissement|taxednumber }}
+                                    <div class="text-xs text-gray-500">TTC:</div>
+                                    <div class="text-xs font-bold text-gray-800 text-right">{{ elem.total_encaissement|taxednumber }}
                                         DA
                                     </div>
                                 </div>
                             </div>
                             <div class="capitalize text-center">
                                 <div class="flex w-full justify-between">
-                                    <div class="text-sm text-gray-500">HT:</div>
-                                    <div class="text-sm text-gray-500 text-right">{{ elem.montant_echue|floate_redefined }}
+                                    <div class="text-xs text-gray-500">HT:</div>
+                                    <div class="text-xs font-bold text-gray-800 text-right">{{ elem.montant_echue|floate_redefined }}
                                         DA
                                     </div>
                                 </div>
                                 <div class="flex w-full justify-between">
-                                    <div class="text-sm text-gray-500">TTC:</div>
-                                    <div class="text-sm text-gray-500 text-right">{{ elem.montant_echue|taxednumber }}
+                                    <div class="text-xs text-gray-500">TTC:</div>
+                                    <div class="text-xs font-bold text-gray-800 text-right">{{ elem.montant_echue|taxednumber }}
                                         DA
                                     </div>
                                 </div>
@@ -494,39 +548,9 @@
                         </div>
                     </div>
                 </div>
-
-
             {% endfor %}
         </div>
-        <div class="rounded-t-lg px-4">
-            <div class="flex text-gray-600 font-semibold">
-                <div class="capitalize" style="width: 90px"></div>
-                <div class="flex-grow grid grid-cols-11 text-semibold">
-                    <div class="capitalize col-span-2"></div>
-                    <div class="capitalize">
-                        <p>Totals HT</p>
-                        <p>Totals TTC</p>
-                    </div>
-                    <div class="capitalize col-span-2 text-right">
-                        <p>{{ somme_total|floate_redefined }} DA</p>
-                        <p>{{ somme_total|taxednumber }} DA</p>
-                    </div>
-                    <div class="capitalize px-4 col-span-2 text-right">
-                        <p>{{ somme_circu|floate_redefined }} DA</p>
-                        <p>{{ somme_circu|taxednumber }} DA</p>
-                    </div>
-                    <div class="capitalize px-4 col-span-2 text-right">
-                        <p>{{ somme_depot|floate_redefined }} DA</p>
-                        <p>{{ somme_depot|taxednumber }} DA</p>
-                    </div>
-                    <div class="capitalize col-span-2 text-right pr-2">
-                        <p>{{ somme_encai|floate_redefined }} DA</p>
-                        <p>{{ somme_encai|taxednumber }} DA</p>
-                    </div>
-                </div>
-                <div class="capitalize text-center" style="width: 70px"></div>
-            </div>
-        </div>
+
 
     </div>
 
@@ -625,8 +649,23 @@
 
 
         new TomSelect('#creance_subfacpayeur', {
-            plugins: ['remove_button']
+            render: {
+                option: function (data, escape) {
+                    return '<div class="option">' +
+                        '<span class="left">' + escape(data.code) + '</span>' +
+                        '<span class="right">' + escape(formatNumber(data.montant)) + ' DA</span>' +
+                        '</div>';
+                },
+                item: function (data, escape) {
+                    return '<div class="item">' +
+                        '<span class="left">' + escape(data.code) + '</span>' +
+                        '<span class="right">' + escape(formatNumber(data.montant)) + ' DA</span>' +
+                        '</div>';
+                }
+            }
         });
+
+
         $distributeur = $("#distributeur");
         $payeur = $("#payeur");
         $code = $("#code");
@@ -642,14 +681,6 @@
         $('#closeSidebar').on('click', function () {
             $('#addSidebar').addClass('translate-x-full');
         });
-
-
-        // Close sidebar when clicking outside
-        /*$(document).on('click', function (e) {
-            if (!$(e.target).closest('#addButton, #addSidebar').length) {
-                $('#addSidebar').addClass('translate-x-full');
-            }
-        });*/
 
 
         $(document).ready(function () {
@@ -695,7 +726,6 @@
         $facture_montant.focus(function () {
             if ($display_montant.hasClass('border-blue-500')) {
             } else $display_montant.addClass('border-blue-500');
-            console.log("focus mode0")
         });
 
 
@@ -736,9 +766,8 @@
 
             $.ajax(settings)
                 .done(function (response) {
-                    console.log(response);
 
-                    window.location.href = "/distributeur/";
+                    window.location.href = "/encaissement/";
                 })
                 .fail(function (jqXHR, textStatus, errorThrown) {
                     // Log the entire jqXHR object to see all details
@@ -792,26 +821,8 @@
                     });
                 }
             });
-
-            // Example data population for payeur and facture select elements
-            const payeurs = ['Payeur 1', 'Payeur 2', 'Payeur 3'];
-            const factures = ['Facture 1', 'Facture 2', 'Facture 3'];
-
-            // Populate payeur options
-            payeurs.forEach(payeur => {
-                $('#payeurSubstitue').append(`<option value="${payeur}">${payeur}</option>`);
-            });
-
-            // Populate facture options
-            factures.forEach(facture => {
-                $('#factureSubstitue').append(`<option value="${facture}">${facture}</option>`);
-            });
         });
-
-
-    </script>
-
-    <script>
+        let selectedFactures = [];
 
         $(document).ready(function () {
             $display_enc = $('#display_enc');
@@ -823,18 +834,16 @@
 
 
             $montantenc.on('keyup', function () {
-                if ($montantenc.val().length === 0) $display_enc.html('0 DA');
+                if ($montantenc.val().length === 0) $display_enc.html('0.00 DA');
                 else {
-                    $display_enc.html(parseFloat($montantenc.val()).toLocaleString('en-US').replaceAll(',', ' ') + ' DA');
-                    checksomme();
+                    $display_enc.html(formatNumber($montantenc.val()) + ' DA');
                 }
-                
+                checksomme();
             });
 
             $montantenc.focus(function () {
                 if ($display_enc.hasClass('border-blue-500')) {
                 } else $display_enc.addClass('border-blue-500');
-                console.log("focus mode0")
             });
 
 
@@ -868,7 +877,6 @@
             });
 
 
-
         });
 
         $(document).ready(function () {
@@ -886,12 +894,20 @@
                         // Assuming 'response' contains the list of payeurs in JSON format
 
                         var payeurSelect = $('#payenc');
-                        payeurSelect.empty(); // Clear the current options
+                        payeurSelect.empty();
 
                         $.each(response, function (index, payeur) {
                             payeurSelect.append(new Option(payeur.designation, payeur.id));
                         });
-                        loadFactures($('#payenc').val())
+
+                        var payeurSub = $('#payeurSubstitue');
+                        payeurSub.empty();
+
+                        $.each(response, function (index, payeur) {
+                            payeurSub.append(new Option(payeur.designation, payeur.id));
+                        });
+                        loadFactures($('#payenc').val());
+                        ChargeAccount($('#payenc').val())
                     },
                     error: function (error) {
                         console.log("Error fetching payeur data:", error);
@@ -899,47 +915,13 @@
                 });
             });
 
-            $('#payeur').change(function () {
-                var payeurId = $(this).val();
-
-                $.ajax({
-                    url: '/encaissement/accomptetotal', // API endpoint for accomptetotal
-                    method: 'GET',
-                    data: {
-                        payeur_id: payeurId
-                    },
-                    success: function (response) {
-                        // Handle the response here
-                        console.log("Accomptetotal data for payeur:", response);
-                        // Example: update some element with the data
-                        $('#accountsomme').html(response.total_amount);
-                    },
-                    error: function (error) {
-                        console.log("Error fetching accomptetotal data:", error);
-                    }
-                });
-            });
 
             // Handle change event for payenc select (second instance)
             $('#payenc').change(function () {
                 var payeurId = $(this).val();
 
-                $.ajax({
-                    url: '/encaissement/accomptetotal', // API endpoint for accomptetotal
-                    method: 'GET',
-                    data: {
-                        payeur_id: payeurId
-                    },
-                    success: function (response) {
-                        // Handle the response here
-                        console.log("Accomptetotal data for payeur:", response);
-                        // Example: update some element with the data
-                        $('#accountsomme').html(response.total_amount);
-                    },
-                    error: function (error) {
-                        console.log("Error fetching accomptetotal data:", error);
-                    }
-                });
+                ChargeAccount(payeurId)
+
             });
 
             function appendFactures(factures) {
@@ -948,21 +930,23 @@
                     var factureHtml = `
                 <div class="grid grid-cols-4 col-span-2 border-t">
                     <div class="py-2 px-2">
-                        <input type="checkbox" id="checkbox_${facture.id}" class="mr-2 facturecheckebox">
+                        <input type="checkbox" id="checkbox_${facture.id}" class="mr-2 facturecheckebox" onchange="handleCheckboxChange(this)">
                         ${facture.code}
                     </div>
-                    <div class="py-2 px-2 text-right" id="montant_${facture.id}">${formatNumber(facture.montant)} DA</div>
+                    <div class="py-2 px-2 text-right" data-value="${facture.montant}" id="montant_${facture.id}">${formatNumber(facture.montant)} DA</div>
                     <div class="py-2 px-2 text-right" id="restant_${facture.id}">0.00 DA</div>
                     <div class="py-2 px-2 text-center">${facture.date_echeance}</div>
                 </div>
             `;
                     $('#listefacture').append(factureHtml);
+                    selectedFactures = [];
+
                 });
             }
 
             function loadFactures(payeurId) {
                 $.ajax({
-                    url: `/encaissement/get-factures/${payeurId}/`,  // Update the URL based on your Django setup
+                    url: `/encaissement/get-factures/${payeurId}/`,
                     method: 'GET',
                     success: function (data) {
                         appendFactures(data.factures);
@@ -976,6 +960,7 @@
             // Load factures on page load
             var initialPayeurId = $('#payenc').val();
             loadFactures(initialPayeurId);
+            ChargeAccount(initialPayeurId);
 
             // Reload factures when the payeur is changed
             $('#payenc').change(function () {
@@ -983,12 +968,187 @@
                 loadFactures(selectedPayeurId);
             });
         });
-        
+
+
         function checksomme() {
-            if($('#montantenc').val().length === 0){
-                $('#restant_montant').html("0.00 DA")
-            }
+            let montantTot = parseFloat($('#montantenc').val());
+            let accountTot = parseFloat($('#accountsomme').data('value'));
+            let montantRestant = montantTot;
+            let accountRestant = accountTot;
+
+            selectedFactures.forEach(function (facture) {
+                let restantElem = $(`#restant_${facture.id}`);
+                let factureMontant = facture.montant;
+
+                // Deduct from montantRestant first
+                if (montantRestant >= factureMontant) {
+                    restantElem.html("0.00 DA");
+                    montantRestant -= factureMontant;
+                } else if (montantRestant > 0) {
+                    factureMontant -= montantRestant;
+                    montantRestant = 0;
+
+                    // Now deduct the remaining factureMontant from accountRestant
+                    if (accountRestant >= factureMontant) {
+                        restantElem.html("0.00 DA");
+                        accountRestant -= factureMontant;
+                    } else {
+                        restantElem.html(formatNumber(factureMontant - accountRestant) + " DA");
+                        accountRestant = 0;
+                    }
+                } else {
+                    // If montantRestant is 0, start deducting directly from accountRestant
+                    if (accountRestant >= factureMontant) {
+                        restantElem.html("0.00 DA");
+                        accountRestant -= factureMontant;
+                    } else {
+                        restantElem.html(formatNumber(factureMontant - accountRestant) + " DA");
+                        accountRestant = 0;
+                    }
+                }
+            });
+
+            $('#restant_montant').html(formatNumber(montantRestant) + " DA");
+            $('#restant_accompte').html(formatNumber(accountRestant) + " DA");
         }
+
+
+        function handleCheckboxChange(checkbox) {
+            let id = $(checkbox).attr('id').split('_')[1]; // Extract the number after "checkbox_"
+
+            if ($(checkbox).is(':checked')) {
+                // Add to the list if checked
+                selectedFactures.push({
+                    "id": id,
+                    "montant": $("#montant_" + id).data('value')
+                });
+            } else {
+                // Remove from the list if unchecked
+                selectedFactures = selectedFactures.filter(item => item.id !== id);
+            }
+
+            checksomme()
+        }
+
+        function ChargeAccount(payeur_id) {
+            $.ajax({
+                url: '/encaissement/accomptetotal', // API endpoint for accomptetotal
+                method: 'GET',
+                data: {
+                    payeur_id: payeur_id
+                },
+                success: function (response) {
+                    // Handle the response here
+                    // Example: update some element with the data
+                    $('#accountsomme').html(formatNumber(response) + " DA");
+                    $('#accountsomme').attr('data-value', response);
+                },
+                error: function (error) {
+                    console.log("Error fetching accomptetotal data:", error);
+                }
+            });
+        }
+
+
+        $('#addenc').on('click', function () {
+            // Extracting just the IDs from selectedFactures
+            var factureIds = selectedFactures.map(function (facture) {
+                return parseInt(facture.id);
+            });
+
+            var listefacturesub = [];
+
+            if ($('#encaissementSubstitution').is(':checked')) {
+                listefacturesub = $('#creance_subfacpayeur').val();
+            } else listefacturesub = null;
+
+            alert($('input[name="options"]:checked').val());
+
+            if ($('input[name="options"]:checked').val() === "Espece") {
+                var encaissementData = {
+                    montant: $('#montantenc').val(),
+                    payeur: $('#payenc').val(),
+                    type: $('input[name="options"]:checked').val(),
+                    substitution: $('#encaissementSubstitution').is(':checked'),
+                    listefacturesub: listefacturesub, // Send the selected factures or empty if unchecked
+                    factures: factureIds // Sending only the IDs
+                };
+            } else {
+                var encaissementData = {
+                    montant: $('#montantenc').val(),
+                    payeur: $('#payenc').val(),
+                    type: $('input[name="options"]:checked').val(),
+                    numero: $('#numeroenc').val(),
+                    banque: $('#banqueenc').val(),
+                    date_depot: $('#datedepot').val(),
+                    date_cheque: $('#datevalisation').val(),
+                    substitution: $('#encaissementSubstitution').is(':checked'),
+                    listefacturesub: listefacturesub, // Send the selected factures or empty if unchecked
+                    factures: factureIds // Sending only the IDs
+                };
+            }
+
+
+            // Retrieve the CSRF token from the form input
+            var csrftoken = $('input[name="csrfmiddlewaretoken"]').val(); // Adjust selector if necessary
+
+            var settings = {
+                "url": '/api/encaissement/', // Replace with your actual API endpoint
+                "method": "POST",
+                "timeout": 0,
+                "headers": {
+                    "X-CSRFToken": csrftoken // Set the CSRF token in the header
+                },
+                "contentType": "application/json",
+                "data": JSON.stringify(encaissementData)
+            };
+
+            $.ajax(settings)
+                .done(function (response) {
+                    console.log(response);
+                    alert('Encaissement ajouté avec succès');
+                    window.location.href = "/users";
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    console.log('jqXHR:', jqXHR);
+
+                    console.log('Status:', textStatus);
+
+                    console.log('Error Thrown:', errorThrown);
+
+                    console.log('Response Text:', jqXHR.responseText);
+
+                    try {
+                        var responseJSON = JSON.parse(jqXHR.responseText);
+                        console.log('Response JSON:', responseJSON);
+                    } catch (e) {
+                        console.error('Failed to parse response as JSON:', e);
+                    }
+
+                    alert('Erreur lors de l\'ajout de l\'encaissement');
+                });
+        });
+
+
+        $(document).ready(function () {
+            $('input[name="options"]').on('change', function () {
+                console.log("ici");
+                console.log($(this).val());
+
+                if ($(this).val() === 'Espece') {
+                    console.log("voila");
+                    // Disabling the fields
+                    $('#banqueenc').prop('disabled', true);
+                    $('#numeroenc').prop('disabled', true);
+                } else {
+                    // Enabling the fields
+                    $('#banqueenc').prop('disabled', false);
+                    $('#numeroenc').prop('disabled', false);
+                }
+            });
+        });
+
+
 
     </script>
 

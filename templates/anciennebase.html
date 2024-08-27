@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.1.0/dist/css/tom-select.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.1.0/dist/js/tom-select.complete.min.js"></script>
     <style>
         .speccol {
             background: #1E3A8A;
@@ -22,70 +24,99 @@
             background-color: rgba(255, 255, 255, 0.2); /* Adjust the opacity for subtlety */
             border-radius: 8px; /* Optional: adds rounded corners */
         }
+
+        /*.burger-menu {
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        #burgerIcon div{
+            background: #e2e8f0;
+        }
+
+        .menu-transition {
+            transition: transform 0.3s ease-in-out;
+        }
+
+
+
+        .burger-menu.show {
+            transform: translateX(280px);
+        }
+        #burgerIcon.show div {
+            background: #334155;
+        }*/
+
     </style>
 </head>
 <body class="bg-gray-100 flex h-screen">
 
-    <!-- Sidebar -->
-    <div class="w-64 speccol h-screen p-4 flex flex-col">
-        <!-- Logo -->
-        <div class="flex items-center justify-center mb-10">
-            <img src="{% static 'images/puma.svg' %}" alt="Logo" class="h-40 w-40 mr-3"> <!-- Replace with your logo -->
-            <!--<span class="text-white text-2xl font-bold">YourBrand</span>-->
-        </div>
-        <!-- Menu Items -->
-
-        <ul class="text-white flex-1 ">
-            <li class="mb-4 w-full ">
-                <a href="{% url 'dashboard' %}" class="hover:text-gray-300 uppercase {% if request.path == '/dashboard/' %}active-link{% endif %} block w-full py-2 px-4 rounded-md uppercase">Dashboard</a>
-            </li>
-            {% if user.type in 'Agent,Admin' %}
-                <li class="mb-4 w-full ">
-                    <a href="{% url 'users' %}" class="hover:text-gray-300 uppercase {% if request.path == '/users/' %}active-link{% endif %} block w-full py-2 px-4 rounded-md uppercase">Utilisateurs</a>
-                </li>
-            {% endif %}
-            {% if user.type in 'Agent,Admin' %}
-                <li class="mb-4 w-full ">
-                    <a href="{% url 'distributeur' %}" class="hover:text-gray-300 uppercase
-                        {% if request.path == '/distributeur/' %}active-link
-                        {% elif request.path == '/distributeur/payeur' %}active-link
-                        {% elif request.path == '/distributeur/payeurdraft' %}active-link
-                    {% endif %} block w-full py-2 px-4 rounded-md uppercase">Distributeur</a>
-                </li>
-            {% endif %}
-    <!--<li class="mb-4">
-        <a href="{ % url 'user' %}" class="hover:text-gray-300 uppercase { % if request.path == '/user/' %}underline{ % endif %}">Utilisateur</a>
-    </li>
-    <li class="mb-4">
-        <a href="{ % url 'products' %}" class="hover:text-gray-300 uppercase { % if request.path == '/products/' %}underline{ % endif %}">Produits</a>
-    </li>
-    <li class="mb-4">
-        <a href="{ % url 'distributor' %}" class="hover:text-gray-300 uppercase { % if request.path == '/distributor/' %}underline{ % endif %}">Distributeur</a>
-    </li>
-    <li class="mb-4">
-        <a href="{ % url 'visit' %}" class="hover:text-gray-300 uppercase { % if request.path == '/visit/' %}underline{ % endif %}">Visite</a>
-    </li>
-    <li class="mb-4">
-        <a href="{ % url 'payment' %}" class="hover:text-gray-300 uppercase { % if request.path == '/payment/' %}underline{ % endif %}">Encaissement</a>
-    </li>-->
-</ul>
+<!-- Sidebar -->
+<div id="sidebar" class="w-80 speccol h-screen p-4 flex flex-col fixed transform -translate-x-full menu-transition z-20">
+    <!-- Logo -->
+    <div class="flex items-center justify-center mb-10">
+        <img src="{% static 'images/puma.svg' %}" alt="Logo" class="h-40 w-40 mr-3">
     </div>
+    <!-- Menu Items -->
+    <ul class="text-white flex-1">
+        <li class="mb-4 w-full">
+            <a href="{% url 'dashboard' %}" class="hover:text-gray-300 uppercase {% if request.path == '/dashboard/' %}active-link{% endif %} block w-full py-2 px-4 rounded-md uppercase">Dashboard</a>
+        </li>
+        {% if request.user.type in 'Agent,Admin' %}
+            <li class="mb-4 w-full">
+                <a href="{% url 'users' %}" class="hover:text-gray-300 uppercase {% if request.path == '/users/' %}active-link{% endif %} block w-full py-2 px-4 rounded-md uppercase">Utilisateurs</a>
+            </li>
+        {% endif %}
+        {% if user.type in 'Agent,Admin' %}
+            <li class="mb-4 w-full">
+                <a href="{% url 'distributeur' %}" class="hover:text-gray-300 uppercase
+                    {% if request.path == '/distributeur/' %}active-link
+                    {% elif request.path == '/distributeur/payeur' %}active-link
+                    {% elif request.path == '/distributeur/payeurdraft' %}active-link
+                    {% endif %} block w-full py-2 px-4 rounded-md uppercase">Distributeur</a>
+            </li>
+        {% endif %}
+        {% if user.type in 'Agent,Admin' %}
+            <li class="mb-4 w-full">
+                <a href="{% url 'commande' %}" class="hover:text-gray-300 uppercase
+                    {% if request.path == '/commande/' %}active-link
+                    {% elif request.path == '/commande/bl' %}active-link
+                    {% endif %} block w-full py-2 px-4 rounded-md uppercase">Commandes</a>
+            </li>
+        {% endif %}
+        {% if user.type in 'Agent,Admin' %}
+            <li class="mb-4 w-full">
+                <a href="{% url 'encaissement' %}" class="hover:text-gray-300 uppercase
+                    {% if request.path == '/encaissement/' %}active-link
+                    {% elif request.path == '/encaissement/facture' %}active-link
+                    {% endif %} block w-full py-2 px-4 rounded-md uppercase">Encaissement</a>
+            </li>
+        {% endif %}
+    </ul>
+</div>
 
-    <!-- Main Content -->
-    <div class="flex-1 flex flex-col h-full">
+<!-- Main Content -->
+<div class="flex-1 flex flex-col h-full">
 
-        <!-- Top Menu -->
-        <div class="bg-white p-4 flex justify-between items-center shadow-md">
-            <div class="">
-                {% block page_heading %}{% endblock %}
-            </div>
+    <!-- Top Menu -->
+    <div class="relative bg-white p-8 flex justify-between items-center shadow-md h-20">
+        <!-- Burger Icon -->
+        <img src="{% static 'images/pumalong.svg' %}" class="absolute top-0 left-8 h-20">
+        <div class="burger-menu space-y-1 pl-3.5 z-10" id="burgerIcon">
+            <div class="w-8 h-0.5"></div>
+            <div class="w-8 h-0.5"></div>
+            <div class="w-8 h-0.5"></div>
+        </div>
 
-            <!-- Profile Dropdown -->
+        <!-- Page Heading -->
+        <!-- Profile Dropdown -->
+        <div class="flex gap-8">
+            <div class="flex gap-4">{% block page_heading %}{% endblock %}</div>
             <div class="relative">
                 <button id="profileDropdownButton" class="flex items-center space-x-2">
-                    <!--<span class="text-gray-700">Username</span>-->
-                    <img src="{{ user.photo.url }}" alt="Profile" class="h-8 w-8 rounded-full"> <!-- Replace with profile picture -->
-                    <svg class="h-5 w-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <img src="{{ user.photo.url }}" alt="Profile" class="h-8 w-8 rounded-full">
+                    <svg class="h-5 w-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                         xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                     </svg>
                 </button>
@@ -97,20 +128,44 @@
             </div>
         </div>
 
-        <!-- Main Content Area -->
-        <div class="p-8 space-y-6 flex-1 overflow-y-auto">
-            {% block content %}{% endblock %}
-        </div>
-
     </div>
 
-    <script>
-        $(document).ready(function() {
-            $("#profileDropdownButton").on("click", function() {
-                $("#profileDropdown").toggleClass("hidden");
-            });
+    <!-- Main Content Area -->
+    <div class="px-8 flex-1 overflow-y-auto">
+        {% block content %}{% endblock %}
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        // Toggle Sidebar
+        $("#burgerIcon").on("click", function () {
+            $("#sidebar").toggleClass("-translate-x-full translate-x-0");
+
+            // Toggle Burger Icon to X
+            $(this).toggleClass("open");
+            if ($(this).hasClass("open")) {
+                $("#burgerIcon div:nth-child(1)").addClass("transform rotate-45 translate-y-2");
+                $("#burgerIcon div:nth-child(2)").addClass("opacity-0");
+                $("#burgerIcon div:nth-child(3)").addClass("transform -rotate-45 -translate-y-2");
+                $(this).addClass("show");
+            } else {
+                $("#burgerIcon div:nth-child(1)").removeClass("transform rotate-45 translate-y-2");
+                $("#burgerIcon div:nth-child(2)").removeClass("opacity-0");
+                $("#burgerIcon div:nth-child(3)").removeClass("transform -rotate-45 -translate-y-2");
+                $(this).removeClass("show");
+            }
+
+
         });
-    </script>
+
+        // Toggle Profile Dropdown
+        $("#profileDropdownButton").on("click", function () {
+            $("#profileDropdown").toggleClass("hidden");
+        });
+    });
+</script>
 
 </body>
 </html>

@@ -49,7 +49,7 @@ class Encaissement(models.Model):
     code = models.CharField(max_length=100)
     montant = models.FloatField(default=0)
     payeur = models.ForeignKey(Payeur, models.CASCADE)
-    type = models.CharField(max_length=20, choices=typeencaissement)
+    type = models.CharField(max_length=20, choices=typeencaissement, default="Cheque")
     numero = models.CharField(max_length=50)
     date_validation = models.DateField(null=True, blank=True)
     date_ajout = models.DateTimeField(auto_now_add=True)
@@ -69,21 +69,20 @@ class Encaissement(models.Model):
 
 class Account(models.Model):
     id = models.AutoField(primary_key=True)
-    code = models.CharField(max_length=100)
+    code = models.CharField(max_length=100, null=True, blank=True)
     payeur = models.ForeignKey(Payeur, models.CASCADE)
     montant_init = models.FloatField(default=0)
     montant = models.FloatField(default=0)
-    type = models.CharField(max_length=20, choices=typeencaissement)
-    numero = models.CharField(max_length=50)
+    type = models.CharField(max_length=20, choices=typeencaissement, default="Cheque")
+    banque = models.ForeignKey(Banque, null=True, blank=True, on_delete=models.CASCADE)
+    numero = models.CharField(max_length=50, null=True, blank=True)
     date_validation = models.DateField(null=True, blank=True)
     date_ajout = models.DateTimeField(auto_now_add=True)
     validation = models.BooleanField(default=False)
 
     encaissement = models.ForeignKey(Encaissement, models.CASCADE, null=True, blank=True)
 
-
     validation_depot = models.BooleanField(default=False)
-    banque = models.ForeignKey(Banque, null=True, blank=True, on_delete=models.CASCADE)
     date_depot = models.DateField(null=True, blank=True)
     date_cheque = models.DateField(null=True, blank=True)
 

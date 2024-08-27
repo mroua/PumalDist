@@ -17,6 +17,7 @@ def EncaissementView(request):
     listedist = Distributeur.objects.filter(bloquer=True).order_by('id')
     listebanque = Banque.objects.all().order_by('designation')
     listepayeur = Payeur.objects.filter(distributeur=listedist.first())
+    listefacture = Factures.objects.filter(payeur = listepayeur.first(), complete=False)
 
     # Base SQL query
     query = """
@@ -113,6 +114,7 @@ def EncaissementView(request):
         "listedist": listedist,
         "listebanque": listebanque,
         "listepayeur": listepayeur,
+        "listefacture": listefacture,
         "lise_fact": lise_fact,
         "somme_total": somme_total,
         "somme_encai": somme_encai,
@@ -124,6 +126,21 @@ def EncaissementView(request):
 def FactureView(request):
 
     return render(request, "Facture.html")
+
+def AccompteView(request):
+    listedist = Distributeur.objects.filter(bloquer=True).order_by('id')
+    listebanque = Banque.objects.all().order_by('designation')
+    listepayeur = Payeur.objects.filter(distributeur=listedist.first())
+
+    listeaccompte = Account.objects.filter(montant__gt=0)
+
+
+    return render(request, "Accompte.html", {
+        "listedist": listedist,
+        "listebanque": listebanque,
+        "listepayeur": listepayeur,
+        "listeaccompte": listeaccompte
+    })
 
 '''
 
@@ -149,19 +166,18 @@ class EncaissementViewSet(viewsets.ModelViewSet):
 
 @login_required
 def AccompteDist(request):
-    payeur = request.GET.get('payeur')
+    payeur = request.GET.get('payeur_id')
 
     total_amount = Account.objects.filter(
         validation=True,
-        montant__ne=0,
-        payeur=payeur
+        payeur=payeur,
+        montant__gt=0
     ).aggregate(
         total_montant=Sum('montant')
     )
 
-    # Get the total amount from the dictionary returned by aggregate
-    accompte = total_amount['total_montant'] or 0
 
+    accompte = total_amount['total_montant'] or 0
     return HttpResponse(accompte)
 
 
