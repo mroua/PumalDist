@@ -11,12 +11,12 @@
         >Encaissements</a>
     </div>
 
-
     <div>
         <a href="{% url 'encaissementvalidate' %}" class="block px-4 py-2 hover:bg-gray-200 rounded
-            {% if request.path == 'encaissement/encaissementvalidate/' %} bg-gray-200{% endif %}"
+            {% if request.path == '/encaissement/encaissementvalidate' %} bg-gray-200{% endif %}"
         >Validation</a>
     </div>
+
 
     <div>
         <a href="{% url 'accompte' %}" class="block px-4 py-2 hover:bg-gray-200 rounded
@@ -44,7 +44,7 @@
          class="fixed right-0 top-0 bottom-0 w-2/5 bg-white shadow-lg transform translate-x-full transition-transform duration-300 z-50"
          style="margin-top: -8px">
         <div class="flex justify-between items-center p-4 border-b">
-            <h3 class="text-lg font-semibold">Acompte: </h3>
+            <h3 class="text-lg font-semibold">Encaissement Détail: </h3>
             <button id="closeEditSidebar" class="text-gray-500 hover:text-gray-700">&times;</button>
         </div>
         <!-- Edit User Form -->
@@ -70,13 +70,6 @@
                             </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="montantignitdetail"
-                                   class="block mb-1 pl-1 text-sm font-medium text-gray-900">Montant Initial</label>
-                            <div id="montantignitdetail" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
-                                    block w-full p-2.5 text-right">
-                            </div>
-                        </div>
                         <div class="mb-3">
                             <label for="montantdetail"
                                    class="block mb-1 pl-1 text-sm font-medium text-gray-900">Montant</label>
@@ -113,6 +106,12 @@
                             <div id="chequedetail"
                                  class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-right"></div>
                         </div>
+                        <div>
+                            <label for="substitutionedit"
+                                   class="block mb-1 pl-1 text-sm font-medium text-gray-900">Substitution</label>
+                            <div id="substitutionedit"
+                                 class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-right"></div>
+                        </div>
                     </div>
                     <div id="elemptdate" class="grid grid-cols-2 gap-3">
 
@@ -130,35 +129,32 @@
         </div>
     </div>
 
-    <!-- Filter Modal -->
-    <div id="filterModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40 flex items-center justify-center"
-         style="margin-top: -16px">
-        <div class="bg-white w-1/3 rounded-lg shadow-lg">
-            <div class="flex justify-between items-center p-4 border-b">
-                <h3 class="text-lg font-semibold">Filtres</h3>
-                <button id="closeFilterModal" class="text-gray-500 hover:text-gray-700">&times;</button>
-            </div>
-            <div class="p-4">
-                <!-- Filter Form -->
-            </div>
-        </div>
-    </div>
-
-
-
     <div class="w-full h-full flex flex-col py-2 overflow-y-auto text-bold">
 
         <div class="flex justify-between items-center mb-4" style="margin-top: -8px">
-            <h2 class="text-2xl font-bold text-gray-700">Liste des Accomptes</h2>
+            <h2 class="text-2xl font-bold text-gray-700">Liste des Encaissement</h2>
             <div>
                 <button id="filterButton" class="bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-700">Filtrer
                 </button>
-                <button id="popupButton"
-                        class="popupButton bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400">
-                    Ajouter
-                </button>
+
             </div>
         </div>
+
+    <!--
+    montant
+payeur
+type
+numero
+date_validation
+date_ajout
+validation
+validation_depot
+banque
+date_depot
+date_cheque
+substitution
+listefacturesub
+    -->
 
         <div class="bg-white shadow-md rounded-t-lg p-2 mb-4">
             <div class="grid grid-cols-9 text-gray-600 font-semibold gap-4">
@@ -168,12 +164,12 @@
                 <div class="capitalize">étape</div>
                 <div class="capitalize">date Ajout</div>
                 <div class="capitalize">date échéance</div>
-                <div class="capitalize">Type</div>
+                <div class="capitalize">Substitution</div>
                 <div class="capitalize text-right pr-4">Actions</div>
             </div>
         </div>
         <div class="flex-grow space-y-4 overflow-y-auto text-xs">
-            {% for elem in listeaccompte %}
+            {% for elem in encaissement %}
                 <div class="grid grid-cols-9 bg-white p-2 rounded-lg gap-4 text-gray-800 font-bold">
                     <div class="col-span-2">
                         <p class="truncate">{{ elem.payeur.distributeur.designation }}</p>
@@ -394,7 +390,7 @@
             $elemptdate = $("#elemptdate");
             $elemptdate.html('');
             let settings = {
-                url: `/api/account/${identifiant}`,
+                url: `/api/encaissement/${identifiant}`,
                 method: "GET",
                 timeout: 0,
                 headers: {
@@ -410,6 +406,7 @@
                 $('#montantignitdetail').html(formatNumber(responsedata["montant_init"]) + " DA");
                 $('#typeaccountt').html(responsedata["type"]);
                 $('#banquedetail').html(responsedata["banque_designation"]);
+                $('#substitutionedit').html(responsedata[""]);
                 if (responsedata["type"] === "Espece") {
                     $('#numerodetail').html("Aucun");
                     $('#chequedetail').html("Aucun");
@@ -768,12 +765,12 @@
                 const identifiant = $(this).data('identifiant');
 
                 // Create a confirmation popup
-                const isConfirmed = confirm("Etes vous sure de vouloir supprimer cette acompte?");
+                const isConfirmed = confirm("Are you sure you want to delete this element?");
 
                 // If the user confirms, make the delete request
                 if (isConfirmed) {
                     let settings = {
-                        url: `/api/encaissement/${identifiant}/`,
+                        url: `/api/account/${identifiant}/`,
                         method: "DELETE",
                         timeout: 0,
                         headers: {

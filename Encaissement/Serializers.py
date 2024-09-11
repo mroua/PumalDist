@@ -1,13 +1,34 @@
+from django.db.models import Sum
 from rest_framework import serializers
 from .models import Factures, Encaissement, Account, EncaissementFacture, Banque
 from datetime import datetime, timedelta
 from datetime import date
+
+from django.utils import timezone
+
 
 
 class BanqueSerializer(serializers.ModelSerializer):
     class Meta:
         model = Banque
         fields = '__all__'
+
+
+class EncaissementFactureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EncaissementFacture
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+
+        if(instance.encaissement):
+            if(not instance.encaissement.validation_depot): etat= "En circulaion"
+            elif(not instance.encaissement.validation): etat= "En dépot"
+            else: etat = "Validé"
+            representation['encaissement_etat'] = etat
+
+        return representation
 
 
 class AccountSerializer(serializers.ModelSerializer):
@@ -44,6 +65,24 @@ class FacturesSerializer(serializers.ModelSerializer):
         model = Factures
         fields = ['id', 'code', 'payeur', 'montant', 'date_ajout', 'date_echeance', 'complete', 'fc_file']
 
+
+    def to_representation(self, instance):
+        # Modify the representation to include the extra fields only on GET requests
+        representation = super().to_representation(instance)
+        if self.context['request'].method == 'GET':
+            # Add extra fields to the representation
+            representation['payeur_designation'] = instance.payeur.designation
+            representation['distributeur_designation'] = instance.payeur.distributeur.user.first_name+' '+instance.payeur.distributeur.user.last_name
+            representation['montant_ttc'] = instance.montant_ttc
+            listeencaissement = EncaissementFacture.objects.filter(facture=instance)
+            serializer = EncaissementFactureSerializer(listeencaissement, many=True)
+            serialized_data = serializer.data
+
+            representation['listeencaissement'] = serialized_data
+
+        return representation
+
+
     def create(self, validated_data):
         payeur = validated_data.get('payeur')
         try:
@@ -53,8 +92,15 @@ class FacturesSerializer(serializers.ModelSerializer):
         except Exception as e:
             # Default to 15 days if there is an exception
             validated_data['date_echeance'] = (datetime.now() + timedelta(days=15)).date()
-        return super().create(validated_data)
 
+        # Create the Factures instance
+        facture = super().create(validated_data)
+
+        # Calculate and update montant_ttc
+        facture.montant_ttc = facture.montant_ttc * 0.19 + facture.montant_ttc
+        facture.save()  # Save the updated instance to the database
+
+        return facture
 
 class EncaissementSerializer(serializers.ModelSerializer):
     factures = serializers.ListField(
@@ -65,10 +111,36 @@ class EncaissementSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Encaissement
-        fields = ['id', 'montant', 'payeur', 'type', 'numero', 'banque', 'date_depot', 'date_cheque', 'substitution', 'listefacturesub', 'factures']
+        fields = [
+            'id', 'montant', 'payeur', 'type', 'numero', 'banque',
+            'date_depot', 'date_cheque', 'substitution', 'listefacturesub', 'factures'
+        ]
+
+
+    def to_representation(self, instance):
+        # Modify the representation to include the extra fields only on GET requests
+        representation = super().to_representation(instance)
+        if self.context['request'].method == 'GET':
+            # Add extra fields to the representation
+            representation['payeur_designation'] = instance.payeur.designation
+            representation['distributeur_designation'] = instance.payeur.distributeur.user.first_name+' '+instance.payeur.distributeur.user.last_name
+            if(instance.type in ["Cheque", "Virement"]):
+                representation['banque_designation'] = instance.banque.designation+" ("+ instance.banque.code +")"
+            else:
+                representation['banque_designation'] = 'Aucune'
+
+        return representation
 
     def create(self, validated_data):
         factures_ids = validated_data.pop('factures')
+
+        # Check if the type is "Espece"
+        if validated_data.get('type') == "Espece":
+            validated_data['validation'] = True
+            validated_data['validation_depot'] = True
+            validated_data['date_validation'] = timezone.now().date()
+            validated_data['date_depot'] = timezone.now().date()
+
         encaissement = Encaissement.objects.create(**validated_data)
 
         remaining_montant = encaissement.montant
@@ -76,19 +148,18 @@ class EncaissementSerializer(serializers.ModelSerializer):
 
         for facture_id in factures_ids:
             facture = Factures.objects.get(id=facture_id)
+            facture_montant = facture.montant_ttc - (EncaissementFacture.objects.filter(facture=facture).aggregate(Sum('montant'))['montant__sum'] or 0)
 
-            if remaining_montant >= facture.montant:
+            if remaining_montant >= facture_montant:
                 # Full amount applied to the facture
                 encaissement_facture = EncaissementFacture(
                     facture=facture,
                     type='Encaissement',
                     encaissement=encaissement,
-                    montant=facture.montant
+                    montant=facture_montant
                 )
                 encaissement_facture.save()
-                facture.montant = 0  # Mark the facture as fully paid
-                facture.save()
-                remaining_montant -= facture.montant
+                remaining_montant -= facture_montant
             else:
                 # Partially apply the remaining montant to the facture
                 encaissement_facture = EncaissementFacture(
@@ -98,30 +169,27 @@ class EncaissementSerializer(serializers.ModelSerializer):
                     montant=remaining_montant
                 )
                 encaissement_facture.save()
-                facture.montant -= remaining_montant
-                facture.save()
                 remaining_montant = 0
                 break
 
         # If there's remaining montant, use account funds
-        if remaining_montant == 0:
+        if remaining_montant > 0:
             accounts = Account.objects.filter(payeur=payeur, montant__gt=0).order_by('date_ajout')
             for account in accounts:
                 for facture_id in factures_ids:
                     facture = Factures.objects.get(id=facture_id)
+                    facture_montant = facture.montant_ttc - (EncaissementFacture.objects.filter(facture=facture).aggregate(Sum('montant'))['montant__sum'] or 0)
 
-                    if account.montant >= facture.montant:
+                    if account.montant >= facture_montant:
                         encaissement_facture = EncaissementFacture(
                             facture=facture,
                             type='Account',
                             account=account,
-                            montant=facture.montant
+                            montant=facture_montant
                         )
                         encaissement_facture.save()
-                        account.montant -= facture.montant
+                        account.montant -= facture_montant
                         account.save()
-                        facture.montant = 0  # Mark the facture as fully paid
-                        facture.save()
                         remaining_montant = 0
                     else:
                         encaissement_facture = EncaissementFacture(
@@ -131,8 +199,7 @@ class EncaissementSerializer(serializers.ModelSerializer):
                             montant=account.montant
                         )
                         encaissement_facture.save()
-                        facture.montant -= account.montant
-                        facture.save()
+                        remaining_montant -= account.montant
                         account.montant = 0
                         account.save()
                     if remaining_montant == 0:
@@ -149,5 +216,12 @@ class EncaissementSerializer(serializers.ModelSerializer):
                 numero=encaissement.numero,
                 encaissement=encaissement
             )
+
+        # Update the `complet` field based on whether the total montant_ttc is fully covered
+        for facture_id in factures_ids:
+            facture = Factures.objects.get(id=facture_id)
+            total_encaissement = EncaissementFacture.objects.filter(facture=facture).aggregate(Sum('montant'))['montant__sum'] or 0
+            facture.complete = total_encaissement >= facture.montant_ttc
+            facture.save()
 
         return encaissement

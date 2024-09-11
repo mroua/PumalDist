@@ -1,4 +1,5 @@
 import base64
+import json
 from io import BytesIO
 from django.core.files.base import ContentFile
 from django.db.models import Sum
@@ -333,5 +334,72 @@ class Dist_BonLivraisonDetailSerializer(serializers.ModelSerializer):
         return representation
 
 
+class Dist_BonLivraisonNormalSerializer(serializers.ModelSerializer):
+    fc_file = serializers.FileField(write_only=True, required=False, allow_null=True)
+    bl_file = serializers.FileField(write_only=True, required=False, allow_null=True)
+    BonLivraison = serializers.CharField(write_only=True, required=True)
+    commandes = serializers.PrimaryKeyRelatedField(
+        queryset=Dist_Commande.objects.all(),
+        write_only=True, required=False, allow_null=True
+    )
+
+    class Meta:
+        model = Dist_BonLivraison
+        fields = ['id', 'facture', 'date_ajout', 'date_facturation', 'date_echeance', 'fc_file', 'bl_file', 'commandes',
+                  'BonLivraison', 'total']
+        read_only_fields = ['date_ajout', 'total']
+
+
+    def create(self, validated_data):
+        bon_livraison_lines_data = validated_data.pop('BonLivraison')
+        bon_livraison = Dist_BonLivraison.objects.create(**validated_data)
+        total = 0
+
+        # Parse the BonLivraison string as JSON
+        bon_livraison_lines_data = json.loads(bon_livraison_lines_data)
+
+        for line_data in bon_livraison_lines_data:
+            produit_id = line_data.get('produit')
+            if produit_id is None:
+                raise serializers.ValidationError("Produit is required.")
+            try:
+                produit = Produit.objects.get(id=produit_id)
+            except Produit.DoesNotExist:
+                raise serializers.ValidationError(f"Produit with id {produit_id} does not exist.")
+
+            prixunitaire = produit.prix_publique
+            quantite = line_data.get('quantite')
+            if quantite is None:
+                raise serializers.ValidationError("Quantite is required.")
+            prixtotal = prixunitaire * quantite
+            line_data['prixunitaire'] = prixunitaire
+            line_data['prixtotal'] = prixtotal
+            line_data['produit'] = produit  # Assign the actual Produit instance
+            total += prixtotal
+            Dist_BonLivraisonLine.objects.create(bl=bon_livraison, **line_data)
+
+        bon_livraison.total = total
+        bon_livraison.save()
+
+        return bon_livraison
+
+    def update(self, instance, validated_data):
+        # Extract fields
+        facture = validated_data.get('facture', None)
+        fc_file = validated_data.get('fc_file', None)
+        bl_file = validated_data.get('bl_file', None)
+
+        if facture is not None:
+            instance.facture = facture
+
+        if fc_file:
+            instance.fc_file = fc_file
+
+        if bl_file:
+            instance.bl_file = bl_file
+
+        instance.save()
+
+        return instance
 
 

@@ -8,7 +8,9 @@ from rest_framework import viewsets, status
 # Create your views here.
 from Distributeur.models import Distributeur
 from Produits.models import TypeProduit, Couleur, Mesure
-from .Serializers import Dist_CommandeLinesSerializer, Dist_CommandeSerializer, Dist_BonLivraisonSerializer, Dist_BonLivraisonLineSerializer, Dist_CommandeSerializerDetail, Dist_BonLivraisonDetailSerializer
+from .Serializers import Dist_CommandeLinesSerializer, Dist_CommandeSerializer, Dist_BonLivraisonSerializer, \
+    Dist_BonLivraisonLineSerializer, Dist_CommandeSerializerDetail, Dist_BonLivraisonDetailSerializer, \
+    Dist_BonLivraisonNormalSerializer
 from .models import Dist_CommandeLines, Dist_Commande, Dist_BonLivraison, Dist_BonLivraisonLine
 from rest_framework.views import APIView
 from django.db import connection
@@ -49,6 +51,11 @@ class Dist_BonLivraisonLineViewSet(viewsets.ModelViewSet):
 class Dist_BonLivraisonDetailViewset(viewsets.ModelViewSet):
     queryset = Dist_BonLivraison.objects.all()
     serializer_class = Dist_BonLivraisonDetailSerializer
+
+
+class Dist_BonLivraisonNormalViewset(viewsets.ModelViewSet):
+    queryset = Dist_BonLivraison.objects.all()
+    serializer_class = Dist_BonLivraisonNormalSerializer
 
 @login_required
 def CommandeView(request):

@@ -352,8 +352,6 @@
 
     <div class="flex justify-between items-center pt-8 mb-4" style="margin-top: -8px">
         <h2 class="text-2xl font-bold text-gray-700">Liste des BL</h2>
-
-
     </div>
 
 
@@ -376,7 +374,7 @@
                         <p class="text-sm text-gray-500">{ { elem.reference }}</p>-->
     <div class="shadow-md space-y-4">
         {% for elem in blist %}
-            <div class="flex items-center justify-between bg-gray-50 p-4 rounded-lg">
+            <div class="flex items-center justify-between bg-gray-50 p-2 rounded-lg mt-2">
                 <div class="w-1/6">
                     <p class="text-sm text-gray-500">bl_{{ elem.commandes__distributeur__code }}{{ cmd }}</p>
                 </div>
@@ -390,13 +388,13 @@
                     <p class="text-sm text-gray-500">{{ elem.date_echeance }}</p>
                 </div>
                 <div class="w-1/6">
-                    <a href="{{ elem.fc_file }}"
+                    <a href="/media/{{ elem.fc_file }}"
                        class="{% if elem.fc_file %}bg-blue-500{% else %}bg-gray-300{% endif %} text-white px-4 py-2 rounded-lg">
                         Fichier FC
                     </a>
                 </div>
-                <div class="w-1/6">{{ elem.bl_file }}
-                    <a href="{{ elem.bl_file }}"
+                <div class="w-1/6">
+                    <a href="/media/{{ elem.bl_file }}"
                        class="{% if elem.bl_file %}bg-blue-500{% else %}bg-gray-300{% endif %} text-white px-4 py-2 rounded-lg">
                         Fichier BL
                     </a>
@@ -419,7 +417,8 @@
                             data-identifiant="{{ elem.id }}"><i
                             class="fas fa-pencil-alt"></i>
                     </button>
-                    <button class="bg-red-500 text-white p-2 rounded"><i class="fas fa-trash"></i></button>
+                    <button class="bg-red-500 text-white p-2 rounded delete-btn" data-code="{{ elem.commandes__distributeur__code }}"
+                            data-identifiant="{{ elem.id }}" data-cmd="{{ cmd }}"><i class="fas fa-trash"></i></button>
                 </div>
             </div>
         {% endfor %}
@@ -431,7 +430,6 @@
             <div class="relative w-screen h-screen flex justify-center items-center">
                 <div class="bg-white w-3/4 h-3/4 p-6 rounded-lg shadow-lg flex flex-col gap-y-2">
                     <h3 class="text-lg font-semibold">Ajout BL</h3>
-                    <!-- div list products -->
                     <div class="grid grid-cols-8 p-4">
                         <div class="col-span-2">Produit</div>
                         <div class="col-span-2">Type/Mesure</div>
@@ -440,17 +438,7 @@
                         <div class="col-span-1">Quantité</div>
                         <div class="col-span-1 text-right">Total</div>
                     </div>
-                    <!--<div class="bg-blue-300 flex w-full">
-                        <div class="flex-grow">Produit</div>
-                        <div class="flex-grow"></div>
-                        <div class="flex-grow"></div>
-                        <div class="flex-grow">Type/Mesure</div>
-                        <div class="flex-grow">Couleur</div>
-                        <div class="flex-grow">Prix unitaire</div>
-                        <div class="flex-grow">Quantité restante</div>
-                        <div class="flex-grow">Quantité a livré</div>
-                        <div class="flex-grow">Total</div>
-                    </div>-->
+
                     <div class="listeblprod flex-grow" id="listeblprod">
                     </div>
                     <div class="grid grid-cols-8 text-right pr-4 text-lg">
@@ -475,7 +463,7 @@
                                 p-2.5" placeholder="Facture"/>
                             </div>
 
-                            <div class="flex items-center space-x-4 border border-gray-300 rounded-lg">
+                            <div class="flex items-center space-x-4 border border-gray-300 rounded-lg w-72">
                                 <label for="file-upload" class="block flex-shrink-0">
                                     <div class="flex items-center justify-center px-4 py-2 rounded-l-lg bg-white text-blue-500 cursor-pointer hover:bg-blue-500 hover:text-white transition-colors duration-300">
                                         <span>Fichier FC</span>
@@ -485,7 +473,7 @@
                                 <span id="file-name" class="text-gray-500 w-64 truncate">No fc file</span>
                             </div>
 
-                            <div class="flex items-center space-x-4 border border-gray-300 rounded-lg">
+                            <div class="flex items-center space-x-4 border border-gray-300 rounded-lg w-72">
                                 <label for="file-upload2" class="block flex-shrink-0">
                                     <div class="flex items-center justify-center px-4 py-2 rounded-l-lg bg-white text-blue-500 cursor-pointer hover:bg-blue-500 hover:text-white transition-colors duration-300">
                                         <span>Fichier BL</span>
@@ -531,9 +519,10 @@
             // Show the popup
             $('.popupButton').click(function () {
                 identifiant = $(this).data('identifiant');
-
-                $listeblprod = $('#listeblprod');
+                console.log(identifiant);
+                let $listeblprod = $('#listeblprod');
                 $listeblprod.html('');
+
                 let settings = {
                     url: `/api/blivraisondetail/${identifiant}`,
                     method: "GET",
@@ -542,57 +531,69 @@
                         "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
                     },
                 };
+
                 $.ajax(settings).done(function (response) {
                     let responsedata = response;
-                    commandesid = responsedata['commandes']['id'];
+                    let commandesid = responsedata['commandes']['id'];
 
-                    for (i = 0; i < responsedata['BonLivraison'].length; i++) {
-                        itemprod = responsedata['BonLivraison'][i];
-
+                    // Populate the product details
+                    for (let i = 0; i < responsedata['BonLivraison'].length; i++) {
+                        let itemprod = responsedata['BonLivraison'][i];
                         $listeblprod.append(`
-                            <div class="grid grid-cols-8 bg-gray-50 p-4 rounded-lg mb-2 product-line">
-                                <div class="flex items-center col-span-2">
-                                    <img src="${itemprod['produit']['image']}" alt="product" class="h-12 w-12 rounded-lg mr-4">
-                                    <div>
-                                        <h3 class="text-lg font-bold text-blue-600 productName">${itemprod['produit']['designation']}</h3>
-                                        <p class="text-sm text-gray-500 productRef">${itemprod['produit']['reference']}</p>
-                                    </div>
-                                </div>
-                                <div class="col-span-2">
-                                    <h3 class="text-lg font-bold text-blue-600 productName">${itemprod['produit']['type']['designation']}</h3>
-                                    <p class="text-sm text-gray-500 productRef">${itemprod['produit']['mesure']['designation']}</p>
-                                </div>
-                                <div class="col-span-1">${itemprod['produit']['couleur']['designation']}</div>
-                                <div class="col-span-1 prixunitaire">${formatNumber(itemprod['prixunitaire'])} DA</div>
-                                <div class="col-span-1 prixunitaire">${itemprod['quantite']}</div>
-                                <div class="col-span-1 text-right pr-4">${formatNumber(itemprod['prixtotal'])} DA</div>
-                            </div>
-                        `);
+                <div class="grid grid-cols-8 bg-gray-50 p-4 rounded-lg mb-2 product-line">
+                    <div class="flex items-center col-span-2">
+                        <img src="${itemprod['produit']['image']}" alt="product" class="h-12 w-12 rounded-lg mr-4">
+                        <div>
+                            <h3 class="text-lg font-bold text-blue-600 productName">${itemprod['produit']['designation']}</h3>
+                            <p class="text-sm text-gray-500 productRef">${itemprod['produit']['reference']}</p>
+                        </div>
+                    </div>
+                    <div class="col-span-2">
+                        <h3 class="text-lg font-bold text-blue-600 productName">${itemprod['produit']['type']['designation']}</h3>
+                        <p class="text-sm text-gray-500 productRef">${itemprod['produit']['mesure']['designation']}</p>
+                    </div>
+                    <div class="col-span-1">${itemprod['produit']['couleur']['designation']}</div>
+                    <div class="col-span-1 prixunitaire">${formatNumber(itemprod['prixunitaire'])} DA</div>
+                    <div class="col-span-1 prixunitaire">${itemprod['quantite']}</div>
+                    <div class="col-span-1 text-right pr-4">${formatNumber(itemprod['prixtotal'])} DA</div>
+                </div>
+            `);
                     }
 
-                    totalprice = responsedata['total'];
-
+                    // Update total price
+                    let totalprice = responsedata['total'];
                     $('#totalhtbl').text(formatNumber(totalprice) + ' DA');
 
-                    fc_file = responsedata['fc_file'];
-                    bl_file = responsedata['bl_file'];
-
-                    // Calculate and update total with tax
+                    // Update tax
                     const totalTaxe = totalprice + totalprice * 0.19;
                     $('#totaltaxebl').text(formatNumber(totalTaxe) + ' DA');
+
+                    // Populate form fields
                     $('#facture_id').val(responsedata['facture']);
 
-                    if(fc_file){
-                        //$('#file-upload').val(responsedata['fc_file']);
-                    }
-                    if(bl_file){
-                        $('#file-upload').val(responsedata['bl_file']);
+                    // Handle file previews
+                    let fc_file = responsedata['fc_file'];
+                    let bl_file = responsedata['bl_file'];
+
+
+                    if (fc_file) {
+                        //$('#file-upload').siblings('span').text('');
+                        $('#file-name').text(fc_file.replace('/media/Factures/', '') || 'FC File Selected');
+                    } else {
+                        $('#file-upload').siblings('span').text('No FC File');
                     }
 
+                    if (bl_file) {
+                        //$('#file-upload2').siblings('span').text('BL File Selected');
+                        $('#file-name2').text(bl_file.replace('/media/BonLivraison/', '') || 'BL File Selected');
+                    } else {
+                        $('#file-upload2').siblings('span').text('No BL File');
+                    }
 
                     $('#addbl').fadeIn();
                 });
             });
+
 
             // Close the popup
             $('#closePopup').click(function () {
@@ -607,20 +608,6 @@
             });
         });
 
-
-
-        function getBase64(file, callback) {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = function () {
-                callback(reader.result);
-            };
-            reader.onerror = function (error) {
-                console.log('Error: ', error);
-            };
-        }
-
-
         $('#file-upload').on('change', function () {
             const fileName = $(this).val().split('\\').pop() || 'No fc file';
             $('#file-name').text(fileName);
@@ -632,31 +619,19 @@
         });
 
 
-        $(document).ready(function () {
-            // When a file is selected in #file-upload
-            $("#file-upload").on('change', function () {
-                const file = $(this).prop('files')[0];
-                if (file) {
-                    getBase64(file, function (base64) {
-                        fileuploaddata = base64
-                    });
-                } else fileuploaddata = null
-            });
-
-            // When a file is selected in #file-upload2
-            $("#file-upload2").on('change', function () {
-                const file = $(this).prop('files')[0];
-                if (file) {
-                    getBase64(file, function (base64) {
-                        fileupload2data = base64
-                    });
-                } else fileupload2data = null
-            });
-        });
-
-
         $('#validatebl').on('click', function (e) {
             e.preventDefault();
+            var form = new FormData();
+
+            var fcFile = $("#file-upload")[0].files[0];
+            var blFile = $("#file-upload2")[0].files[0];
+
+            if (fcFile) {
+                form.append("fc_file", fcFile);
+            }
+            if (blFile) {
+                form.append("bl_file", blFile);
+            }
 
             $facture_id = $('#facture_id');
 
@@ -664,25 +639,20 @@
             else facture = $facture_id.val();
 
             var settings = {
-                "url": "/api/blivraison/"+identifiant+"/",
+                "url": "/api/blivraison/" + identifiant + "/",
                 "method": "put",
                 "timeout": 0,
                 "headers": {
-                    "Content-Type": "application/json",
                     "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),
                 },
-                "data": JSON.stringify({
-                    "id": identifiant,
-                    "commandes": commandesid,
-                    "facture": facture,
-                    "fc_file": fileuploaddata,
-                    "bl_file": fileupload2data
-                }),
+                "processData": false,
+                "contentType": false,
+                "data": form
             };
 
             $.ajax(settings)
                 .done(function (response) {
-                    console.log(response);
+                    window.location.href = "/commande/";
                 })
                 .fail(function (jqXHR, textStatus, errorThrown) {
                     // Log the entire jqXHR object to see all details
@@ -707,6 +677,42 @@
 
                 });
 
+        });
+
+
+        $(document).ready(function () {
+            // Handle the delete button click
+            $('.delete-btn').on('click', function () {
+                // Get the element's identifier
+                const cmd = $(this).data('cmd');
+                const code = $(this).data('code');
+                const identifiant = $(this).data('identifiant');
+
+                // Create a confirmation popup
+                const isConfirmed = confirm("Etes vous sure de vouloir supprimer le BL bl_"+code+cmd+"?");
+
+                // If the user confirms, make the delete request
+                if (isConfirmed) {
+                    let settings = {
+                        url: `/api/blivraison/${identifiant}/`,
+                        method: "DELETE",
+                        timeout: 0,
+                        headers: {
+                            "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
+                        },
+                        success: function (response) {
+                            window.location.href = "/commande/";
+                        },
+                        error: function (xhr) {
+                            // Handle error
+                            alert("Une erreur s'est produite lors de la suppression de l'élément.");
+                        }
+                    };
+
+                    // Send the delete request
+                    $.ajax(settings);
+                }
+            });
         });
 
     </script>

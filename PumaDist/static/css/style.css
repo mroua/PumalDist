@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&display=swap');
+
+
+body {
+    font-family: 'Work Sans', sans-serif;
+}
 
 .checkbox-wrapper-6 .tgl {
     display: none;
@@ -113,4 +119,44 @@
 
 #addbl {
     top: -25px;
+}
+
+.backprimer {
+    background: #141b54;
+}
+
+.backslate {
+    background: #e2e8f0;
+}
+
+.textslate {
+    color: #e2e8f0;
+}
+
+input, select {
+    color: #141b54 !important;
+    font-weight: 400;
+}
+
+input::placeholder, select::placeholder {
+    color: #5b80b2;
+}
+
+.defaultval {
+    font-weight: 400;
+    font-size: 12px;
+    color: #E5E7EB;
+}
+.defaultboldval {
+    font-weight: 500;
+    font-size: 14px;
+    color: #E5E7EB;
+}
+
+.backslateprime {
+    background: #0f172a;
+}
+
+.backslateslite {
+    background: #1e293b;
 }

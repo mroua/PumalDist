@@ -11,12 +11,6 @@
     </div>
 
     <div>
-        <a href="{% url 'encaissementvalidate' %}" class="block px-4 py-2 hover:bg-gray-200 rounded
-            {% if request.path == 'encaissement/encaissementvalidate/' %} bg-gray-200{% endif %}"
-        >Validation</a>
-    </div>
-
-    <div>
         <a href="{% url 'accompte' %}" class="block px-4 py-2 hover:bg-gray-200 rounded
             {% if request.name == '/encaissement/accompte' %} bg-gray-200{% endif %}"
         >Accompte</a>
@@ -54,7 +48,7 @@
          class="fixed right-0 top-0 bottom-0 w-2/5 bg-white shadow-lg flex flex-col transform translate-x-full transition-transform duration-300 z-50">
         <div class="flex justify-between items-center p-4 border-b">
             <h3 class="text-lg font-semibold">Encaissement</h3>
-            <button id="closeSidebar" class="closeSidebar text-gray-500 hover:text-gray-700">&times;</button>
+            <button id="closeSidebar" class="text-gray-500 hover:text-gray-700">&times;</button>
         </div>
         <div class="flex-grow overflow-y-auto">
             <!-- Step 1: Select Products -->
@@ -145,19 +139,19 @@
                 </div>
                 <div class="mb-0 col-span-2 grid grid-cols-3 gap-2">
                     <label for="hs-radio-on-right"
-                           class="flex justify-between p-3 w-full bg-white border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
+                           class="flex p-3 w-full bg-white border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
                         <span class="text-sm text-gray-500 dark:text-neutral-400">Cheque</span>
                         <input type="radio" name="options" value="Cheque" checked id="hs-radio-on-right">
                     </label>
 
                     <label for="hs-radio-on-right-checked1"
-                           class="flex justify-between p-3 w-full bg-white border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
+                           class="flex p-3 w-full bg-white border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
                         <span class="text-sm text-gray-500 dark:text-neutral-400">Virement</span>
                         <input type="radio" name="options" value="Virement" id="hs-radio-on-right-checked1">
                     </label>
 
                     <label for="hs-radio-on-right-checked2"
-                           class="flex justify-between p-3 w-full bg-white border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
+                           class="flex p-3 w-full bg-white border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
                         <span class="text-sm text-gray-500 dark:text-neutral-400">Espece</span>
                         <input type="radio" name="options" value="Espece" id="hs-radio-on-right-checked2">
                     </label>
@@ -211,7 +205,7 @@
 
         </div>
         <div class="p-4 flex justify-between">
-            <button id="closeSidebar" class="closeSidebar bg-gray-500 text-white p-2 rounded">Annuler</button>
+            <button class="closePopup bg-gray-500 text-white p-2 rounded">Annuler</button>
             <button id="addenc" class="bg-green-300 text-white p-2 rounded">Ajouter</button>
         </div>
 
@@ -220,83 +214,163 @@
 
     <!-- Edit Sidebar -->
     <div id="editSidebar" style="margin-top: -10px"
-         class="fixed right-0 top-0 bottom-0 w-2/5 bg-white shadow-lg transform translate-x-full transition-transform duration-300 z-50">
+         class="fixed right-0 top-0 bottom-0 w-4/5 bg-white shadow-lg transform translate-x-full transition-transform duration-300 z-50">
         <div class="flex justify-between items-center p-4 border-b">
-            <h3 class="text-lg font-semibold" id="title_code">Détail</h3>
-            <button id="closeEditSidebar" class="closeEditSidebar text-gray-500 hover:text-gray-700">&times;</button>
-        </div>
-        <div class="flex-grow overflow-y-auto p-4" id="editenc">
-            <div class="grid grid-cols-2 gap-4 mb-4">
-                <div class="mb-3">
-                    <label for="distributeurdetail" class="block mb-1 pl-1 text-sm font-medium text-gray-900">Distribupteur</label>
-                    <div id="distributeurdetail" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
-                                    block w-full p-2.5">
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label for="payeurdetail"
-                           class="block mb-1 pl-1 text-sm font-medium text-gray-900">Payeur</label>
-                    <div id="payeurdetail" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
-                                    block w-full p-2.5">
-
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <label for="montantdetail"
-                           class="block mb-1 pl-1 text-sm font-medium text-gray-900">Montant HT</label>
-                    <div id="montantdetail" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
-                                    block w-full p-2.5 text-right">
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label for="montantttcdetail"
-                           class="block mb-1 pl-1 text-sm font-medium text-gray-900">Montant TTC</label>
-                    <div id="montantttcdetail" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
-                                    block w-full p-2.5 text-right">
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label class="block mb-1 pl-1 text-sm font-medium text-gray-900">État</label>
-                    <div id="etatdetail"
-                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500
-                                            focus:border-blue-500 block w-full p-2.5">
-
-                    </div>
-                </div>
-                <div>
-                    <label for="filedetail"
-                           class="block text-sm font-medium text-gray-700 mb-1">FC Fichier</label>
-                    <div id="filedetail">
-
-                    </div>
-                </div>
-                <div>
-                    <label for="date_ajoutdetail"
-                           class="block mb-1 pl-1 text-sm font-medium text-gray-900">Date Ajout</label>
-                    <div id="date_ajoutdetail"
-                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block
-                         w-full p-2.5 "></div>
-                </div>
-                <div>
-                    <label for="date_echancedetail"
-                           class="block mb-1 pl-1 text-sm font-medium text-gray-900">Date Échéance</label>
-                    <div id="date_echancedetail"
-                         class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
-                         block w-full p-2.5"></div>
-                </div>
-            </div>
-            <div class="text-lg font-bold">Liste des encaissements</div>
-            <div class="grid grid-cols-3 text-gray-600 font-semibold gap-4">
-                <div class="capitalize">Type</div>
-                <div class="capitalize text-right pr-4">Montant</div>
-                <div class="capitalize">État</div>
-            </div>
-            <div class="flex-grow space-y-4 overflow-y-auto text-xs" id="listeencdetail">
-            </div>
-
+            <h3 class="text-lg font-semibold">Modifier la commande</h3>
+            <button id="closeEditSidebar" class="text-gray-500 hover:text-gray-700">&times;</button>
         </div>
 
+        <!-- Step 1: Select Products -->
+        <div id="editStep1" class="p-4 h-full">
+            <div class="p-4 h-28 flex justify-around border border-gray-300 rounded-lg mb-4 gap-4">
+                <!-- Type Filter -->
+                <div class="mb-4 w-64">
+                    <label for="editTypeFilter" class="block text-sm font-medium text-gray-700 mb-2">Type</label>
+                    <select id="editTypeFilter"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option value="">Tous</option>
+                        {% for fil in liste_type %}
+                            <option id="{{ fil.id }}">{{ fil.designation }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Measure Filter -->
+                <div class="mb-4 w-64">
+                    <label for="editMeasureFilter" class="block text-sm font-medium text-gray-700 mb-2">Mesure</label>
+                    <select id="editMeasureFilter"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option value="">Tous</option>
+                        {% for fil in liste_mesure %}
+                            <option id="{{ fil.id }}">{{ fil.designation }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Field Filter -->
+                <div class="mb-4 w-64">
+                    <label for="editColorfilter" class="block text-sm font-medium text-gray-700 mb-2">Couleur</label>
+                    <select id="editColorfilter"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option value="">Tous</option>
+                        {% for fil in liste_couleur %}
+                            <option id="{{ fil.id }}">{{ fil.designation }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Field Filter -->
+                <div class="mb-4 w-64">
+                    <label for="editDistfield" class="block text-sm font-medium text-gray-700 mb-2">Selectionner le
+                        distributeur</label>
+                    <select id="editDistfield"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        {% for fil in liste_distributeur %}
+                            <option data-designation="{{ fil.designation }}" data-username="{{ fil.user.nom }}"
+                                    data-email="{{ fil.user.email }}"
+                                    id="{{ fil.id }}" value="{{ fil.id }}">{{ fil.designation }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="h-4/6 overflow-y-auto">
+                <div id="editProductList" class="grid gap-4 w-full"></div>
+            </div>
+
+            <button id="goToEditStep2" class="goToEditStep2 h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">
+                Suivant
+            </button>
+        </div>
+
+        <!-- Step 2: Review Selected Products -->
+        <div id="editStep2" class="p-4 hidden">
+            <h3 class="text-lg font-semibold mb-4">Modifier les produits sélectionnés</h3>
+            <div class="h-4/6 overflow-y-auto">
+                <div id="editSelectedProducts"></div>
+            </div>
+
+            <div class="flex justify-end pr-28">
+                <div class="h-16">Total:</div>
+                <div class="h-16 w-1/6 text-right pr-8" id="editTotalPrice">0 DA</div>
+            </div>
+
+            <div class="flex justify-between items-center mt-4">
+                <button id="goToEditStep1" class="bg-gray-500 text-white px-4 py-2 rounded-lg">Retour</button>
+                <button id="goToEditStep3" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Suivant</button>
+            </div>
+        </div>
+
+        <!-- Step 3: Confirm Order -->
+        <div id="editStep3" class="p-4 hidden">
+            <!-- Logo Section -->
+            <div class="h-4/5 w-full flex flex-col  items-center">
+
+                <div class="w-2/3">
+                    <div class="flex justify-center mb-4">
+                        <img src="{% static 'images/puma.svg' %}" alt="Company Logo" class="h-16">
+                    </div>
+
+                    <!-- Facture Details -->
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <!-- Recipient Details -->
+                        <div class="">
+                            <p id="editRecipientCompany">Nom de l'entreprise</p>
+                            <p id="editRecipientName">Nom et prénom</p>
+                            <p id="editRecipientEmail">email@domaine.com</p>
+                        </div>
+
+                        <!-- Facture Info -->
+                        <div class="text-right">
+                            <!--<p id="editFactureCode">12345</p>-->
+                            <p id="editFactureDate">01/01/2024</p>
+                            <p id="editIssuerName">{{ request.user.nom }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Product Details Table -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-t border-b border-gray-300">
+                            <thead>
+                            <tr>
+                                <th class="p-2 text-left">Désignation & Référence</th>
+                                <th class="p-2 text-center">Prix Unitaire</th>
+                                <th class="p-2 text-center">Quantité</th>
+                                <th class="p-2 text-center">Total</th>
+                            </tr>
+                            </thead>
+                            <tbody id="editProductDetails">
+                            <!-- Product rows will be inserted here dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Total Section -->
+                    <div class="flex justify-end">
+                        <div class="mt-4 w-1/3">
+                            <div class="flex justify-between mt-2 font-semibold">
+                                <span>Total:</span>
+                                <span id="editTotalAmount" class="pr-2">0 DA</span>
+                            </div>
+                            <div class="flex justify-between mt-2 font-semibold">
+                                <span>TVA:</span>
+                                <span id="editTaxAmount" class="pr-2">0 DA</span>
+                            </div>
+                            <div class="flex justify-between mt-2 font-semibold">
+                                <span>Montant Total:</span>
+                                <span id="editAmountDue" class="pr-2">0 DA</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex justify-between items-center mt-4">
+                <button class="goToEditStep2 bg-gray-500 text-white px-4 py-2 rounded-lg">Retour</button>
+                <button id="confirmEditOrder" class="bg-green-500 text-white px-4 py-2 rounded-lg">Confirmer</button>
+            </div>
+        </div>
     </div>
 
     <!-- View Sidebar -->
@@ -314,7 +388,7 @@
 
     </div>
 
-    <div class="w-full h-full flex flex-col py-2 overflow-y-auto font-bold">
+    <div class="w-full h-full flex flex-col py-2 overflow-y-auto text-bold">
 
 
         <div class="flex justify-between items-center mb-4" style="margin-top: -8px">
@@ -326,21 +400,20 @@
                 <button id="addButton" class="addButton bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400">
                     Encaissement
                 </button>
-                <button id="popupButton"
-                        class="popupButton bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400">
+                <button id="popupButton" class="popupButton bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400">
                     facture
                 </button>
             </div>
 
         </div>
 
-        <div class="">
-            <!--<div class="flex text-gray-800 text-xs font-bold">
-                <div class="capitalize bg-green-300" style="width: 70px; min-width: 70px"></div>
-                <div class="p-2 flex-grow grid grid-cols-6 gap-2">
-                    <div class="capitalize text-right bg-green-300">
-                        <div><span>Totals</span><span class="pl-3"> HT</span></div>
-                        <div><span>Totals</span><span class="pl-1"> TTC</span></div>
+        <div class="px-2">
+            <div class="flex text-gray-800 text-xs font-bold">
+                <div class="capitalize" style="width: 70px"></div>
+                <div class="p-2 flex-grow grid grid-cols-6 gap-4">
+                    <div class="capitalize text-right">
+                        <div><span>Totals </span><span class="ml-3"> HT</span></div>
+                        <div><span>Totals</span><span class="ml-1"> TTC</span></div>
 
 
                     </div>
@@ -348,66 +421,21 @@
                         <p>{{ somme_total|floate_redefined }} DA</p>
                         <p>{{ somme_total|taxednumber }} DA</p>
                     </div>
-                    <div class="capitalize text-right">
+                    <div class="capitalize px-4 text-right">
                         <p>{{ somme_circu|floate_redefined }} DA</p>
                         <p></p>
                     </div>
-                    <div class="capitalize text-right">
+                    <div class="capitalize px-4 text-right">
                         <p>{{ somme_depot|floate_redefined }} DA</p>
                         <p></p>
                     </div>
-                    <div class="capitalize text-right">
+                    <div class="capitalize text-right pr-2">
                         <p>{{ somme_encai|floate_redefined }} DA</p>
                         <p></p>
                     </div>
-                    <div class="capitalize text-right">
-                        <p>{{ somme_echue|floate_redefined }} DA</p>
-                        <p></p>
-                    </div>
                 </div>
-                <div class="capitalize text-center" style="width: 100px"></div>
-            </div>-->
-
-            <div class="p-2 mb-2">
-                    <div class="flex text-gray-600 font-semibold">
-                        <div class="capitalize text-xs" style="width: 70px; min-width: 70px">{{ elem.code }}</div>
-                        <div class="flex-grow grid grid-cols-6 gap-2">
-                            <div class="capitalize text-right text-base pt-1">
-                                Totals
-                            </div>
-                            <div class="capitalize">
-                                <div class="flex w-full justify-between ">
-                                    <div class="text-xs font-bold text-gray-500">HT:</div>
-                                    <div class="text-xs font-bold text-gray-800 text-right">
-                                        {{ somme_total|floate_redefined }} DA
-                                    </div>
-                                </div>
-                                <div class="flex w-full justify-between ">
-                                    <div class="text-xs font-bold text-gray-500">TTC:</div>
-                                    <div class="text-xs font-bold text-gray-800 text-right">
-                                        {{ somme_total|taxednumber }} DA
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="text-xs capitalize text-right font-bold text-gray-800">
-                                {{ somme_circu|floate_redefined }} DA
-                            </div>
-                            <div class="text-xs capitalize text-right font-bold text-gray-800">
-                                {{ somme_depot|floate_redefined }} DA
-                            </div>
-                            <div class="text-xs capitalize text-right font-bold text-gray-800">
-                                {{ somme_encai|floate_redefined }} DA
-                            </div>
-                            <div class="text-xs capitalize text-right font-bold text-gray-800">
-                                {{ somme_echue|floate_redefined }} DA
-                            </div>
-                        </div>
-                        <div class="capitalize text-center pl-3" style="width: 80px; min-width: 80px">
-
-                        </div>
-                    </div>
-                </div>
-
+                <div class="capitalize text-center" style="width: 70px"></div>
+            </div>
         </div>
         <div class="bg-white shadow-md rounded-t-lg p-2 mb-4">
             <div class="flex text-gray-600 font-semibold">
@@ -424,11 +452,11 @@
                 <div class="capitalize text-center" style="width: 80px">Actions</div>
             </div>
         </div>
-        <div class="flex-grow overflow-y-auto">
+        <div class="flex-grow space-y-4 overflow-y-auto">
             {% for elem in lise_fact %}
-                <div class="bg-white shadow-md rounded-lg p-2 mb-2">
+                <div class="bg-white shadow-md rounded-lg p-2">
                     <div class="flex text-gray-600 font-semibold">
-                        <div class="capitalize text-xs" style="width: 70px; min-width: 70px">{{ elem.code }}</div>
+                        <div class="capitalize text-xs" style="width: 70px">{{ elem.code }}</div>
                         <div class="flex-grow grid grid-cols-6 gap-2">
                             <div class="capitalize">
                                 <p class="text-xs text-gray-500 truncate">{{ elem.distributeur }}</p>
@@ -456,36 +484,67 @@
                                 </div>
                             </div>
                             <div class="capitalize">
-                                <div class="text-xs font-bold text-gray-800 text-right">{{ elem.total_validation_depot_false|floate_redefined }}
-                                    DA
+                                <div class="flex w-full justify-between ">
+                                    <div class="text-xs text-gray-500">HT:</div>
+                                    <div class="text-xs font-bold text-gray-800 text-right">{{ elem.total_validation_depot_false|floate_redefined }}
+                                        DA
+                                    </div>
+                                </div>
+                                <div class="flex w-full justify-between ">
+                                    <div class="text-xs text-gray-500">TTC:</div>
+                                    <div class="text-xs font-bold text-gray-800 text-right">{{ elem.total_validation_depot_false|taxednumber }}
+                                        DA
+                                    </div>
                                 </div>
                             </div>
                             <div class="capitalize">
-                                <div class="text-xs font-bold text-gray-800 text-right">{{ elem.total_validation_depot_true|floate_redefined }}
-                                    DA
+                                <div class="flex w-full justify-between">
+                                    <div class="text-xs text-gray-500">HT:</div>
+                                    <div class="text-xs font-bold text-gray-800 text-right">{{ elem.total_validation_depot_true|floate_redefined }}
+                                        DA
+                                    </div>
+                                </div>
+                                <div class="flex w-full justify-between">
+                                    <div class="text-xs text-gray-500">TTC:</div>
+                                    <div class="text-xs font-bold text-gray-800 text-right">{{ elem.total_validation_depot_true|taxednumber }}
+                                        DA
+                                    </div>
                                 </div>
                             </div>
                             <div class="capitalize text-center">
-
-                                <div class="text-xs font-bold text-gray-800 text-right">{{ elem.total_encaissement|floate_redefined }}
-                                    DA
+                                <div class="flex w-full justify-between">
+                                    <div class="text-xs text-gray-500">HT:</div>
+                                    <div class="text-xs font-bold text-gray-800 text-right">{{ elem.total_encaissement|floate_redefined }}
+                                        DA
+                                    </div>
                                 </div>
-
+                                <div class="flex w-full justify-between">
+                                    <div class="text-xs text-gray-500">TTC:</div>
+                                    <div class="text-xs font-bold text-gray-800 text-right">{{ elem.total_encaissement|taxednumber }}
+                                        DA
+                                    </div>
+                                </div>
                             </div>
                             <div class="capitalize text-center">
-
-                                <div class="text-xs font-bold text-gray-800 text-right">{{ elem.montant_echue|floate_redefined }}
-                                    DA
+                                <div class="flex w-full justify-between">
+                                    <div class="text-xs text-gray-500">HT:</div>
+                                    <div class="text-xs font-bold text-gray-800 text-right">{{ elem.montant_echue|floate_redefined }}
+                                        DA
+                                    </div>
                                 </div>
-
+                                <div class="flex w-full justify-between">
+                                    <div class="text-xs text-gray-500">TTC:</div>
+                                    <div class="text-xs font-bold text-gray-800 text-right">{{ elem.montant_echue|taxednumber }}
+                                        DA
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="capitalize text-center pl-3" style="width: 80px; min-width: 80px">
-                            <button id="editButton" class="editButton bg-blue-500 text-white p-2 rounded" data-identifiant="{{ elem.id }}">
-                                <i class="fas fa-search"></i>
+                        <div class="capitalize text-center pl-3" style="width: 100px">
+                            <button class="bg-blue-500 text-white p-2 rounded">
+                                <i id="editButton" class="editButton fas fa-pencil-alt" onclick=""></i>
                             </button>
-                            <button class="bg-red-500 text-white p-2 rounded delete-btn" data-identifiant="{{ elem.id }}"><i
-                                class="fas fa-trash"></i></button>
+                            <button class="bg-red-500 text-white p-2 rounded"><i class="fas fa-trash"></i></button>
                         </div>
                     </div>
                 </div>
@@ -578,73 +637,6 @@
 
     <script>
 
-        // Toggle the sidebar edit
-        $('.editButton').on('click', function (e) {
-                identifiant = $(this).data('identifiant');
-
-                $listeencdetail = $("#listeencdetail");
-                $listeencdetail.html('');
-                let settings = {
-                    url: `/api/facture/${identifiant}`,
-                    method: "GET",
-                    timeout: 0,
-                    headers: {
-                        "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
-                    },
-                };
-                $.ajax(settings).done(function (response) {
-                    let responsedata = response;
-
-                    $("#title_code").html("Détail facture "+responsedata['code'])
-                    $('#distributeurdetail').html(responsedata["distributeur_designation"]);
-                    $('#payeurdetail').html(responsedata["payeur_designation"]);
-                    $('#montantdetail').html(formatNumber(responsedata["montant"])+ " DA");
-                    $('#montantttcdetail').html(formatNumber(responsedata["montant_ttc"])+ " DA");
-                    if (responsedata["complete"]) $('#etatdetail').html("Complete");
-                    else $('#etatdetail').html("Incomplete");
-                    if (responsedata["fc_file"]) {
-                        $('#filedetail').html(`<a href="${responsedata["fc_file"]}" class="bg-blue-500 text-white px-4 py-2 rounded-lg"> Fichier FC </a>`)
-                    } else {
-                        $('#filedetail').html(`<div class="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg"> Fichier FC </div>`)
-                    }
-                    $('#date_ajoutdetail').html(responsedata["date_ajout"].split('T')[0]);
-                    $('#date_echancedetail').html(responsedata["date_echeance"]);
-
-                    listeenc = responsedata['listeencaissement'];
-
-                    for (i = 0; i < listeenc.length; i++) {
-                        if(listeenc[i]['type'] === "Encaissement") etat = listeenc[i]['encaissement_etat'];
-                        else etat = "Validé";
-
-                        $listeencdetail.append(`
-                            <div class="grid grid-cols-3 text-sm text-gray-600 font-semibold py-4 px-2 gap-4 border border-blue-800 rounded-lg">
-                                <div class="capitalize">${listeenc[i]['type']}</div>
-                                <div class="capitalize text-right font-bold pr-4">${formatNumber(listeenc[i]['montant'])} DA</div>
-                                <div class="capitalize">${etat}</div>
-                            </div>
-                        `)
-
-
-                    }
-                    $('#editSidebar').toggleClass('translate-x-full');
-
-                });
-
-
-
-        });
-
-        // Close sidebar when clicking outside
-        $(document).on('click', function (e) {
-            if (!$(e.target).closest('.editButton, #editSidebar').length) {
-                $('#editSidebar').addClass('translate-x-full');
-            }
-        });
-
-         // Close the sidebar
-        $('.closeEditSidebar').on('click', function () {
-            $('#editSidebar').addClass('translate-x-full');
-        });
 
         function formatNumber(num) {
             return new Intl.NumberFormat('fr-FR', {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(num);
@@ -685,14 +677,8 @@
             $('#addSidebar').toggleClass('translate-x-full');
         });
 
-        $(document).on('click', function (e) {
-            if (!$(e.target).closest('#addButton, #addSidebar').length) {
-                $('#addSidebar').addClass('translate-x-full');
-            }
-        });
-
         // Close the sidebar
-        $('.closeSidebar').on('click', function () {
+        $('#closeSidebar').on('click', function () {
             $('#addSidebar').addClass('translate-x-full');
         });
 
@@ -1154,52 +1140,15 @@
                     // Disabling the fields
                     $('#banqueenc').prop('disabled', true);
                     $('#numeroenc').prop('disabled', true);
-                    $('#datedepot').prop('disabled', true);
-                    $('#datevalisation').prop('disabled', true);
                 } else {
                     // Enabling the fields
                     $('#banqueenc').prop('disabled', false);
                     $('#numeroenc').prop('disabled', false);
-                    $('#datedepot').prop('disabled', false);
-                    $('#datevalisation').prop('disabled', false);
                 }
             });
         });
 
 
-        $(document).ready(function () {
-            // Handle the delete button click
-            $('.delete-btn').on('click', function () {
-                // Get the element's identifier
-                const identifiant = $(this).data('identifiant');
-
-                // Create a confirmation popup
-                const isConfirmed = confirm("Etes vous sure de vouloir supprimer cette facture?");
-
-                // If the user confirms, make the delete request
-                if (isConfirmed) {
-                    let settings = {
-                        url: `/api/facture/${identifiant}/`,
-                        method: "DELETE",
-                        timeout: 0,
-                        headers: {
-                            "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
-                        },
-                        success: function (response) {
-                            // Handle success (e.g., remove the element from the DOM, show a success message)
-                            alert("Element deleted successfully.");
-                        },
-                        error: function (xhr) {
-                            // Handle error
-                            alert("An error occurred while deleting the element.");
-                        }
-                    };
-
-                    // Send the delete request
-                    $.ajax(settings);
-                }
-            });
-        });
 
     </script>
 

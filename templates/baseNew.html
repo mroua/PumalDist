@@ -1,0 +1,112 @@
+{% load static %}
+{% csrf_token %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Pumal{% endblock %}</title>
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.1.0/dist/css/tom-select.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.1.0/dist/js/tom-select.complete.min.js"></script>
+    {% block head %}{% endblock %}
+</head>
+
+
+
+<body class="w-full h-screen backslate p-4 flex flex-col-reverse lg:flex-row gap-4 relative text-gray-500">
+
+    <!-- Sidebar Navigation -->
+    <nav class="w-full h-20 lg:w-20 lg:h-full sticky bottom-0 flex-none p-4 z-10 overflow-hidden backprimer">
+        <div class="w-full h-full flex flex-col gap-8">
+
+            <a href="">
+                <img src="{% static 'images\puma logo.svg' %}" class="w-20 h-20" alt="">
+            </a>
+            <div class="w-full h-full flex backprimer flex-col items-center justify-center gap-4">
+                <a href="{% url 'dashboard' %}"
+                   class="btn btn-square hover:bg-blue-900 {% if request.path == '/dashboard/' %}bg-blue-900{% endif %} border-none flex items-center justify-center p-1 tooltip tooltip-right capitalize"
+                   data-tip="dashboard">
+                    <i class="uil uil-apps text-slate-300 text-xl"></i>
+                </a>
+                <a href="{% url 'users' %}"
+                   class="btn btn-square hover:bg-blue-900 {% if request.path == '/users/' %}bg-blue-900{% endif %} border-none flex items-center justify-center p-1 tooltip tooltip-right capitalize"
+                   data-tip="Utilisateurs">
+                    <i class="uil uil-users-alt text-slate-300 text-xl"></i>
+                </a>
+                <a href="{% url 'distributeur' %}"
+                   class="btn btn-square hover:bg-blue-900 {% if request.path == '/distributeur/' %}bg-blue-900
+                    {% elif request.path == '/distributeur/payeur' %}bg-blue-900
+                    {% elif request.path == '/distributeur/payeurdraft' %}bg-blue-900
+                    {% endif %} border-none flex items-center justify-center p-1 tooltip tooltip-right capitalize"
+                   data-tip="Utilisateurs">
+                    <i class="uil uil-house-user text-slate-300 text-xl"></i>
+                </a>
+                <a href=""
+                   class="btn btn-square backprimer hover:bg-blue-900 border-none flex items-center justify-center p-1 hover:text-primary tooltip tooltip-right capitalize"
+                   data-tip="commandes">
+                    <i class="uil uil-package text-primary text-xl"></i>
+                </a>
+                <a href=""
+                   class="btn btn-square  backprimer hover:bg-blue-900 border-none flex items-center justify-center p-1 hover:text-primary tooltip tooltip-right capitalize"
+                   data-tip="factures">
+                    <i class="uil uil-bill text-slate-300 text-xl"></i>
+                </a>
+                <a href=""
+                   class="btn btn-square  backprimer hover:bg-blue-900 border-none flex items-center justify-center p-1 hover:text-primary tooltip tooltip-right capitalize"
+                   data-tip="créances">
+                    <i class="uil uil-usd-circle text-slate-300 text-xl"></i>
+                </a>
+            </div>
+            <div class="w-full hidden lg:flex flex-col gap-4">
+
+                <!--begin notifications-->
+                <div class="dropdown dropdown-right dropdown-end">
+                    <label tabindex="0" class="btn btn-square backprimer hover:bg-blue-900 border-none mr-1 flex items-center
+                        justify-center p-1 relative">
+                        <div id="notifbell"></div>
+                        <i class="uil uil-bell text-primary text-xl"></i>
+                    </label>
+                    <!--<div tabindex="0"
+                         class="dropdown-content menu p-2 shadow bg-slate-800 rounded-box w-64 h-96 ml-2 overflow-hidden">
+                        <div class="w-full h-full flex flex-col gap-4 overflow-y-auto" id="listeNotifData">
+
+                        </div>
+
+                    </div>-->
+                </div>
+                <!--end notifications-->
+
+                <!--user setting-->
+                <a href=""
+                   class="btn btn-square  backprimer hover:bg-blue-900 border-none flex items-center justify-center p-1 capitalize  hover:text-primary tooltip tooltip-right"
+                   data-tip="autres">
+                    <i class="uil uil-setting text-primary text-xl"></i>
+                </a>
+                <!--end setting-->
+
+                <label for="my-modal"
+                       class="btn btn-square  backprimer hover:bg-blue-900 border-none mr-1 flex items-center justify-center p-1">
+                    <a href=""> <i class="uil uil-signout text-primary text-xl"></i></a>
+                </label>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="w-full h-full overflow-hidden flex gap-4">
+        {% block content %}
+        <!-- Page-specific content goes here -->
+        {% endblock %}
+    </div>
+
+
+</body>
+</html>

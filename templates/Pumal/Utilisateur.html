@@ -1,0 +1,783 @@
+{% extends "baseNew.html" %}
+{% load static %}
+{% block title %}Utilisateurs{% endblock %}
+
+{% block content %}
+
+
+    <div class="w-full h-full backprimer px-4 pb-4 flex flex-col">
+        <!-- Add User Sidebar -->
+        <div id="addSidebar" class="fixed right-0 top-0 bottom-0 w-2/5 backprimer textslate shadow-lg transform translate-x-full transition-transform
+             duration-300 z-50 h-full flex flex-col">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 class="text-lg font-semibold">Ajouter un utilisateur</h3>
+                <button id="closeSidebar" class="text-2xl textslate">&times;</button>
+            </div>
+
+            <!-- Add User Form -->
+            <div class="flex-grow overflow-hidden">
+                <form id="userForm" class="p-4 flex flex-col h-full">
+                    <!-- Other form fields -->
+                    <div class="flex justify-center">
+                        <div class="relative p-4">
+                            <input type="file" id="photo" name="photo"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md"
+                                   accept="image/*"
+                                   style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                            <div id="photoPreview"
+                                 class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden border border-gray-300">
+                                <img id="previewImage" src="{% static 'images/blank-profile.webp' %}" alt="Preview"
+                                     class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <input type="text" id="username" name="username" placeholder="Username"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <input type="email" id="email" name="email" placeholder="Email"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <input type="text" id="first_name" name="first_name" placeholder="first name"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <input type="text" id="last_name" name="last_name" placeholder="last name"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <input type="text" id="telephone" name="telephone" placeholder="Téléphone"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <select id="responsable" name="responsable"
+                                    class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                                <option value="">Résponsable</option>
+                                {% for worker in users_select %}
+                                    <option value="{{ worker.id }}">{{ worker.nom }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div>
+                            <select id="type" name="type"
+                                    class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                                <option value="Agent">Agent</option>
+                                <option value="Admin">Admin</option>
+                            </select>
+                        </div>
+                        <div>
+                            <select id="region" name="region"
+                                    class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                                <option value="Est">EST</option>
+                                <option value="Ouest">OUEST</option>
+                                <option value="Centre">Centre</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-5">
+                        <div>Permission</div>
+                        <div>Lecture</div>
+                        <div>Ajout</div>
+                        <div>Modification</div>
+                        <div>Suppression</div>
+                    </div>
+
+                    <!-- Adjusted section for scrollable content -->
+                    <div class="flex-grow overflow-y-auto bg-white rounded-md">
+                        <!-- Content goes here -->
+                        <div class="grid grid-cols-5 w-full bg-white border border-gray-200 rounded-md ">
+                            <div class="px-4 py-2 text-blue-900">Utilisateurs</div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          id="read_only_28"
+                                                          name="read_only_28"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="add_25"
+                                                          name="add_25"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          id="edit_26" name="edit_26"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          id="delete_27" name="delete_27"/></div>
+
+                            <div class="px-4 py-2 text-blue-900">Distributeur</div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="read_only_36"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="add_33"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="edit_34"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="delete_35"/></div>
+
+                            <div class="px-4 py-2 text-blue-900">Payeur</div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="read_only_40"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="add_37"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="edit_38"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="delete_39"/></div>
+                            <div class="px-4 py-2 text-blue-900">Produits</div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="read_only_56"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="add_53"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="edit_54"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="delete_55"/></div>
+
+                            <div class="px-4 py-2 text-blue-900">Commandes</div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="read_only_68"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="add_65"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="edit_66"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="delete_67"/></div>
+                            <div class="px-4 py-2 text-blue-900">Bon livraison</div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="read_only_60"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" name="add_57"/>
+                            </div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="edit_58"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="delete_59"/></div>
+                            <div class="px-4 py-2 text-blue-900">Encaissement</div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="read_only_84"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" name="add_81"/>
+                            </div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="edit_82"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="delete_83"/></div>
+                            <div class="px-4 py-2 text-blue-900">Formation</div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="read_only_96"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" name="add_93"/>
+                            </div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="edit_94"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="delete_95"/></div>
+                            <div class="px-4 py-2 text-blue-900">Ticket</div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="read_only_100"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" name="add_97"/>
+                            </div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="edit_98"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="delete_99"/></div>
+
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end mt-4">
+                        <button type="submit"
+                                class="bg-blue-500 h-10 text-white py-1.5 px-4 rounded-lg hover:bg-blue-400">
+                            Ajouter
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+        <!-- Edit User Sidebar -->
+        <div id="editSidebar"
+             class="fixed right-0 top-0 bottom-0 w-2/5 backprimer textslate shadow-lg transform translate-x-full transition-transform duration-300 z-50"
+             style="margin-top: -8px">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 class="text-lg font-semibold">Editer l'utilisateur: </h3>
+                <button id="closeEditSidebar" class="text-2xl hover:text-gray-700">&times;</button>
+            </div>
+            <!-- Edit User Form -->
+            <div class="">
+                <form id="edituserForm" class="p-4 flex flex-col overflow-hidden" style="height: calc(100vh - 50px)">
+                    <div class="flex justify-center">
+                        <div class="relative p-4">
+                            <input type="file" id="edit_photo" name="edit_photo"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md"
+                                   accept="image/*"
+                                   style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                            <div id="edit_photoPreview"
+                                 class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden border border-gray-300">
+                                <img id="edit_previewImage" src="{% static 'images/blank-profile.webp' %}" alt="Preview"
+                                     class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <input type="text" id="edit_username" name="edit_username" placeholder="Username"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <input type="edit_email" id="edit_email" name="email" placeholder="Email"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <input type="text" id="edit_first_name" name="edit_first_name" placeholder="first name"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <input type="text" id="edit_last_name" name="edit_last_name" placeholder="last name"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <input type="text" id="edit_telephone" name="edit_telephone" placeholder="Téléphone"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <select id="edit_responsable" name="edit_responsable"
+                                    class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                                <option value="">Résponsable</option>
+                                {% for worker in users_select %}
+                                    <option value="{{ worker.id }}">{{ worker.nom }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div>
+                            <select id="edit_type" name="edit_type"
+                                    class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                                <option value="Agent">Agent</option>
+                                <option value="Admin">Admin</option>
+                            </select>
+                        </div>
+                        <div>
+                            <select id="edit_region" name="edit_region"
+                                    class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                                <option value="Est">EST</option>
+                                <option value="Ouest">OUEST</option>
+                                <option value="Centre">Centre</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="checkbox-wrapper-6 flex items-center gap-6">
+                        <label>État</label>
+                        <input class="tgl tgl-light" id="edit_is_active" type="checkbox"/>
+                        <label class="tgl-btn" for="edit_is_active"></label>
+                    </div>
+
+
+                    <div class="grid grid-cols-5">
+                        <div>Permission</div>
+                        <div>Lecture</div>
+                        <div>Ajout</div>
+                        <div>Modification</div>
+                        <div>Suppression</div>
+                    </div>
+                    <div class="flex-grow overflow-y-auto bg-white rounded-md">
+                        <div class="grid grid-cols-5 w-full bg-white border border-gray-200 rounded-md ">
+                            <div class="px-4 py-2 text-blue-900">Utilisateurs</div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="put_right_28" id="put_right_28"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="put_right_25" id="put_right_25"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="put_right_26" id="put_right_26"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="put_right_27" id="put_right_27"/></div>
+
+                            <div class="px-4 py-2 text-blue-900">Distributeur</div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="read_only_36" id="put_right_36"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="add_33" id="put_right_33"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="edit_34" id="put_right_34"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="delete_35" id="put_right_35"/></div>
+                            <div class="px-4 py-2 text-blue-900">Payeur</div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="read_only_40" id="put_right_40"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="add_37" id="put_right_37"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="edit_38" id="put_right_38"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="delete_39" id="put_right_39"/></div>
+                            <div class="px-4 py-2 text-blue-900">Produits</div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="read_only_56" id="put_right_56"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="add_53" id="put_right_53"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="edit_54" id="put_right_54"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="delete_55" id="put_right_55"/></div>
+                            <div class="px-4 py-2 text-blue-900">Commandes</div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="read_only_68" id="put_right_68"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="add_65" id="put_right_65"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="edit_66" id="put_right_66"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="delete_67" id="put_right_67"/></div>
+                            <div class="px-4 py-2 text-blue-900">Bon livraison</div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="read_only_60" id="put_right_60"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="add_57" id="put_right_57"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="edit_58" id="put_right_58"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="delete_59" id="put_right_59"/></div>
+                            <div class="px-4 py-2 text-blue-900">Encaissement</div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="read_only_84" id="put_right_84"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="add_81" id="put_right_81"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="edit_82" id="put_right_82"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="delete_83" id="put_right_83"/></div>
+                            <div class="px-4 py-2 text-blue-900">Formation</div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="read_only_96" id="put_right_96"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="add_93" id="put_right_93"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="edit_94" id="put_right_94"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="delete_95" id="put_right_95"/></div>
+                            <div class="px-4 py-2 text-blue-900">Ticket</div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="read_only_100" id="put_right_100"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="add_97" id="put_right_97"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="edit_98" id="put_right_98"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="delete_99" id="put_right_99"/></div>
+                        </div>
+                    </div>
+                    <div class="flex justify-end pt-2">
+                        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400">
+                            Ajouter
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Filter Modal -->
+        <div id="filterModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40 flex items-center justify-center"
+             style="margin-top: -16px">
+            <div class="bg-white w-1/3 rounded-lg shadow-lg">
+                <div class="flex justify-between items-center p-4 border-b">
+                    <h3 class="text-lg font-semibold">Filtres</h3>
+                    <button id="closeFilterModal" class="text-gray-500 hover:text-gray-700">&times;</button>
+                </div>
+                <div class="p-4">
+                    <!-- Filter Form -->
+                </div>
+            </div>
+        </div>
+
+        <div class="flex justify-between items-center pt-8 mb-4" style="margin-top: -8px">
+            <h2 class="text-2xl font-bold textslate">Liste des utilisateurs</h2>
+            <div>
+                <button id="filterButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400 
+                    hover:bg-blue-900 hover:border-slate-400 rounded-md">Filtres
+                </button>
+                <button id="addButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400 
+                    hover:bg-blue-900 hover:border-slate-400 rounded-md">Ajouter
+                </button>
+            </div>
+        </div>
+        <hr/>
+
+        <!-- User List Headers -->
+        <div class="pt-4">
+            <div class="flex items-center justify-between text-gray-600 font-semibold px-4 defaultboldval">
+                <div class="w-1/4 capitalize">Utilisateur</div>
+                <div class="w-1/5 capitalize">Date création</div>
+                <div class="w-1/6 capitalize">Etat</div>
+                <div class="w-1/4 capitalize">émail</div>
+                <div class="w-1/6 capitalize text-right">Actions</div>
+            </div>
+        </div>
+
+        <!-- User List -->
+        <div class="flex-grow shadow-md rounded-b-lg backslateprime p-2">
+            {% for elem in liste_users %}
+
+                <div class="flex items-center justify-between p-2 backslateslite flex-none mb-2">
+                    <div class="flex items-center w-1/4">
+                        <img src="{% if elem.photo %} {{ elem.photo.url }} {% else %} {% static 'images/blank-profile.webp' %} {% endif %}"
+                             alt="Avatar" class="h-10 w-10 rounded-full mr-4">
+                        <div>
+                            <h3 class="text-md font-bold textslate">{{ elem.nom }}</h3>
+                            <p class="defaultval">{{ elem.type }}</p>
+                        </div>
+                    </div>
+                    <div class="defaultval w-1/5">{{ elem.date_joined|date:'d-m-Y' }}</div>
+                    <div class="w-1/6">
+                        <span class="bg-gray-500 text-white text-xs px-2 py-1 rounded">{% if elem.is_active %}
+                            Activé {% else %} Désactivé {% endif %}
+                        </span>
+                    </div>
+                    <div class="defaultval w-1/4">{{ elem.email }}</div>
+                    <div class="flex space-x-2 w-1/6 justify-end">
+                        <!--<button class="bg-blue-500 text-white p-2 rounded"><i class="fas fa-search"></i></button>-->
+                        <button class="bg-blue-700 text-white p-2 rounded" onclick="
+                                {% if elem.photo %}
+                                    newdatauser({{ elem.id }}, '{{ elem.photo.url|escapejs }}', '{{ elem.username|escapejs }}', '{{ elem.email|escapejs }}', '{{ elem.first_name|escapejs }}',
+                                    '{{ elem.last_name|escapejs }}', '{{ elem.telephone|escapejs }}', '{{ elem.responsable|escapejs }}', '{{ elem.type|escapejs }}', '{{ elem.region|escapejs }}', '{{ elem.permission_ids|escapejs }}',
+                                    '{{ elem.is_active }}');
+                                {% else %}
+                                    newdatauser({{ elem.id }}, '', '{{ elem.username|escapejs }}', '{{ elem.email|escapejs }}', '{{ elem.first_name|escapejs }}',
+                                    '{{ elem.last_name|escapejs }}', '{{ elem.telephone|escapejs }}', '{{ elem.responsable|escapejs }}', '{{ elem.type|escapejs }}', '{{ elem.region|escapejs }}', '{{ elem.permission_ids|escapejs }}',
+                                    '{{ elem.is_active }}');
+                                {% endif %}
+                                ">
+                            <i id="editButton" class="editButton fas fa-pencil-alt"></i>
+                        </button>
+                        <button class="bg-red-500 text-white p-2 rounded"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+
+    <script>
+        edit_elem = 0;
+        // Toggle the sidebar
+        $('#addButton').on('click', function () {
+            $('#addSidebar').toggleClass('translate-x-full');
+        });
+
+        // Toggle the sidebar edit
+        $('.editButton').on('click', function () {
+            $('#editSidebar').toggleClass('translate-x-full');
+        });
+
+        // Close the sidebar
+        $('#closeSidebar').on('click', function () {
+            $('#addSidebar').addClass('translate-x-full');
+        });
+
+        // Close the sidebar
+        $('#closeEditSidebar').on('click', function () {
+            $('#editSidebar').addClass('translate-x-full');
+        });
+
+        // Show the filter modal
+        $('#filterButton').on('click', function () {
+            $('#filterModal').removeClass('hidden');
+        });
+
+        // Close the filter modal
+        $('#closeFilterModal').on('click', function () {
+            $('#filterModal').addClass('hidden');
+        });
+
+        // Close sidebar when clicking outside
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('#addButton, #addSidebar').length) {
+                $('#addSidebar').addClass('translate-x-full');
+            }
+        });
+
+        // Close sidebar when clicking outside
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('#editButton, #editSidebar').length) {
+                $('#editSidebar').addClass('translate-x-full');
+            }
+        });
+
+        // Close filter modal when clicking outside
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('#filterButton, #filterModal').length) {
+                $('#filterModal').addClass('hidden');
+            }
+        });
+
+        // Update photo preview
+        document.getElementById('photo').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const previewImage = document.getElementById('previewImage');
+                    previewImage.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Update edit_photo preview
+        document.getElementById('edit_photo').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const previewImage = document.getElementById('edit_previewImage');
+                    previewImage.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        $(document).ready(function () {
+            $('#type').change(function () {
+                var selectedType = $(this).val();
+
+                if (selectedType === 'Admin') {
+                    // Select and disable all checkboxes with the class 'checked_add'
+                    $('.checked_add').each(function () {
+                        $(this).prop('checked', true);  // Check the checkbox
+                        $(this).prop('disabled', true); // Disable the checkbox
+                    });
+                } else {
+                    // Enable all checkboxes if type is not 'Admin'
+                    $('.checked_add').each(function () {
+                        $(this).prop('checked', false);
+                        $(this).prop('disabled', false); // Enable the checkbox
+                    });
+                }
+            });
+        });
+
+        $(document).ready(function () {
+            $('#edit_type').change(function () {
+                var selectedType = $(this).val();
+
+                if (selectedType === 'Admin') {
+                    // Select and disable all checkboxes with the class 'checked_add'
+                    $('.put_checked_add').each(function () {
+                        $(this).prop('checked', true);  // Check the checkbox
+                        $(this).prop('disabled', true); // Disable the checkbox
+                    });
+                } else {
+                    // Enable all checkboxes if type is not 'Admin'
+                    $('.put_checked_add').each(function () {
+                        $(this).prop('checked', false);
+                        $(this).prop('disabled', false); // Enable the checkbox
+                    });
+                }
+            });
+        });
+
+        function newdatauser(id, url, username, email, first_name, last_name, telephone, responsable, type, region, user_permissions, isactive) {
+            edit_elem = id;
+            $("#edit_username").val(username);
+            $("#edit_email").val(email);
+            $("#edit_first_name").val(first_name);
+            $("#edit_last_name").val(last_name);
+            $("#edit_telephone").val(telephone);
+            $("#edit_type").val(type);
+            $("#edit_region").val(region);
+
+            if (isactive === "True") {
+                $('#edit_is_active').prop('checked', true);
+            }
+
+            if (responsable === "None") {
+                $("#edit_responsable").val('');
+            } else {
+                $("#edit_responsable").val(responsable);
+            }
+
+            if (url === "") {
+                //$('#edit_photo').val("")
+                $('#edit_previewImage').attr('src', "")
+            } else {
+                //$('#edit_photo').val(url)
+                $('#edit_previewImage').attr('src', url)
+            }
+
+            $('.put_checked_add').each(function () {
+                $(this).prop('checked', false); // Uncheck the checkbox
+            });
+
+            liste_auth = JSON.parse('[' + user_permissions + ']');
+            for (i = 0; i < liste_auth.length; i++) {
+                //$("#put_right_"+liste_auth[i]).click()
+                $("#put_right_" + liste_auth[i]).prop('checked', true);
+            }
+
+
+        }
+
+        $('#userForm').on('submit', function (e) {
+            e.preventDefault(); // Prevent the default form submission
+
+            var checkedBoxes = $('.checked_add:checked');
+            var idList = [];
+
+            checkedBoxes.each(function () {
+                var name = $(this).attr('name');
+                var idNumber = parseInt(name.match(/\d+/)); // Extracts the integer from the ID
+                if (!isNaN(idNumber)) {
+                    idList.push(idNumber);
+                }
+            });
+
+            var form = new FormData();
+
+            // Add basic form data
+            form.append("username", $('#username').val());
+            form.append("password", '123456');
+            form.append("is_active", true);
+            form.append("first_name", $('#first_name').val());
+            form.append("last_name", $('#last_name').val());
+            form.append("email", $('#email').val());
+            form.append("telephone", $('#telephone').val());
+            form.append("responsable", $('#responsable').val());
+            form.append("type", $('#type').val());
+            form.append("region", $('#region').val());
+
+            // Add the photo
+            var photoFile = $('#photo')[0].files[0];
+            if (photoFile) {
+                form.append("photo", photoFile);
+            }
+
+            form.append('user_permissions', idList.join(','));
+
+
+            for (var pair of form.entries()) {
+                console.log(pair[0] + ": " + pair[1]);
+            }
+
+            var settings = {
+                "url": "/api/user/",
+                "method": "POST",
+                "timeout": 0,
+                "headers": {
+                    "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),  // Assuming you have CSRF token in your template context
+                },
+                "processData": false,
+                "contentType": false,
+                "data": form
+            };
+
+            $.ajax(settings)
+                .done(function (response) {
+                    console.log(response);
+
+                    window.location.href = "/users";
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    // Log the entire jqXHR object to see all details
+                    console.log('jqXHR:', jqXHR);
+
+                    // Log the status text
+                    console.log('Status:', textStatus);
+
+                    // Log the error thrown
+                    console.log('Error Thrown:', errorThrown);
+
+                    // Log the response text, which might contain detailed error messages
+                    console.log('Response Text:', jqXHR.responseText);
+
+                    // Optionally, parse the responseText as JSON if it's in JSON format
+                    try {
+                        var responseJSON = JSON.parse(jqXHR.responseText);
+                        console.log('Response JSON:', responseJSON);
+                    } catch (e) {
+                        console.error('Failed to parse response as JSON:', e);
+                    }
+
+                });
+        });
+
+        $('#edituserForm').on('submit', function (e) {
+            e.preventDefault(); // Prevent the default form submission
+
+            var checkedBoxes = $('.put_checked_add:checked');
+            var idList = [];
+
+            checkedBoxes.each(function () {
+                var id = $(this).attr('id');
+                var idNumber = parseInt(id.match(/\d+/)); // Extracts the integer from the ID
+                if (!isNaN(idNumber)) {
+                    idList.push(idNumber);
+                }
+            });
+
+            console.log(idList);
+
+            var form = new FormData();
+
+            // Add basic form data
+            form.append("username", $('#edit_username').val());
+            form.append("first_name", $('#edit_first_name').val());
+            form.append("last_name", $('#edit_last_name').val());
+            form.append("email", $('#edit_email').val());
+            form.append("telephone", $('#edit_telephone').val());
+            form.append("responsable", $('#edit_responsable').val());
+            form.append("type", $('#edit_type').val());
+            //form.append("region", $('#edit_region').val());
+            form.append("is_active", $('#edit_is_active').val());
+
+            // Add the photo
+            var photoFile = $('#edit_photo')[0].files[0];
+            if (photoFile) {
+                form.append("photo", photoFile);
+            }
+
+            form.append('user_permissions', idList.join(','));
+
+
+            for (var pair of form.entries()) {
+                console.log(pair[0] + ": " + pair[1]);
+            }
+
+            var settings = {
+                "url": "/api/user/" + edit_elem + '/',
+                "method": "PUT",
+                "timeout": 0,
+                "headers": {
+                    "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),  // Assuming you have CSRF token in your template context
+                },
+                "processData": false,
+                "contentType": false,
+                "data": form
+            };
+
+            $.ajax(settings)
+                .done(function (response) {
+                    console.log(response);
+                    window.location.href = "/users";
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    // Log the entire jqXHR object to see all details
+                    console.log('jqXHR:', jqXHR);
+
+                    // Log the status text
+                    console.log('Status:', textStatus);
+
+                    // Log the error thrown
+                    console.log('Error Thrown:', errorThrown);
+
+                    // Log the response text, which might contain detailed error messages
+                    console.log('Response Text:', jqXHR.responseText);
+
+                    // Optionally, parse the responseText as JSON if it's in JSON format
+                    try {
+                        var responseJSON = JSON.parse(jqXHR.responseText);
+                        console.log('Response JSON:', responseJSON);
+                    } catch (e) {
+                        console.error('Failed to parse response as JSON:', e);
+                    }
+
+                });
+        });
+
+
+    </script>
+{% endblock %}

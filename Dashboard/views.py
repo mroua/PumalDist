@@ -9,8 +9,16 @@ import datetime
 
 @login_required
 def DashView(request):
+    print(request)
     listedist = Distributeur.objects.all()
-    first_dist = listedist.first()
+    if(request.user.type != "Distributeur"):
+        dist_id = request.GET.get('distributeur', None)
+        if(dist_id):
+            first_dist = listedist.get(id=dist_id)
+        else:
+            first_dist = listedist.first()
+    else:
+        first_dist = Distributeur.objects.get(user=request.user)
     ristourn_a = first_dist.ristourn_a
     ristourn_na = first_dist.ristourn_na
     objectif_a = first_dist.objectif_a
@@ -18,7 +26,7 @@ def DashView(request):
     plafonnement = first_dist.plafonnement
     echeance_j = first_dist.echeance_jour
 
-    sqlcmd = """SELECT "month", "year", total FROM Total_BL WHERE 1=1"""
+    sqlcmd = """SELECT "month", "year", total FROM Total_BL WHERE distributeur_id="""+str(first_dist.id)
     #params = []
 
     this_month = float(datetime.datetime.today().month)
@@ -124,7 +132,7 @@ def DashView(request):
         produit = []
         prod_qte = []
         for row in rows:
-            produit.append(row[1])
+            produit.append(row[4])
             prod_qte.append(row[0])
 
         graph_5_famille = {
@@ -173,11 +181,11 @@ LEFT JOIN
     AND strftime('%Y', c.date_ajout) = ym.year
     AND c.distributeur_id = ym.distributeur_id
 where ym.distributeur_id = """+ str(first_dist.id) +"""
-GROUP BY 
-    ym.month, ym.year, ym.distributeur_id
-ORDER BY 
-    ym.distributeur_id, ym.year, ym.month;
-    """
+        GROUP BY 
+            ym.month, ym.year, ym.distributeur_id
+        ORDER BY 
+            ym.distributeur_id, ym.year, ym.month;
+            """
 
     cre_enc = []
     mois = []
@@ -234,6 +242,9 @@ ORDER BY
         'cre_enc': cre_enc,
         'rc_nbr': 0,
         'int_nbr': 0,
+        'first_dist': first_dist,
+        'listedist': listedist
     }
 
-    return render(request, 'DashboardPuma.html', context)
+    #return render(request, 'DashboardPuma.html', context)
+    return render(request, 'Pumal/Dashboard.html', context)

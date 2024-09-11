@@ -49,3 +49,6 @@ class Dist_BonLivraisonLine(models.Model):
     quantite = models.IntegerField()
     prixtotal = models.FloatField()
     prixunitaire = models.FloatField()
+
+
+

@@ -11,8 +11,8 @@
             <button id="closeSidebar" class="text-gray-500 hover:text-gray-700">&times;</button>
         </div>
         <!-- Add User Form -->
-        <div class="p-4 overflow-y-auto">
-            <form id="userForm">
+        <div>
+            <form id="userForm" class="p-4 h-full flex flex-col">
                 <div class="flex justify-center">
                     <div class="relative p-4">
                         <input type="file" id="photo" name="photo"
@@ -72,19 +72,24 @@
                         </select>
                     </div>
                 </div>
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700">Permissions</label>
-                    <div class="overflow-y-auto max-h-64">
+                <label class="block text-sm font-medium text-gray-700">Permissions</label>
+                <table class="w-full bg-white border border-gray-200 rounded-md">
+                    <thead>
+                    <tr class="bg-gray-50 text-left text-sm font-medium text-gray-700">
+                        <th class="px-4 py-2">Permission</th>
+                        <th class="px-4 py-2">Lecture</th>
+                        <th class="px-4 py-2">Ajout</th>
+                        <th class="px-4 py-2">Modification</th>
+                        <th class="px-4 py-2">Suppression</th>
+                    </tr>
+                    </thead>
+                </table>
+
+
+                <div class="mb-4 flex-grow overflow-y-auto">
+                    <div class=""><!-- overflow-y-auto -->
                         <table class="w-full bg-white border border-gray-200 rounded-md">
-                            <thead>
-                            <tr class="bg-gray-50 text-left text-sm font-medium text-gray-700">
-                                <th class="px-4 py-2">Permission</th>
-                                <th class="px-4 py-2">Lecture</th>
-                                <th class="px-4 py-2">Ajout</th>
-                                <th class="px-4 py-2">Modification</th>
-                                <th class="px-4 py-2">Suppression</th>
-                            </tr>
-                            </thead>
+
                             <tbody class="text-sm">
                             <tr class="border-t border-gray-200">
                                 <td class="px-4 py-2">Utilisateurs</td>
@@ -97,89 +102,101 @@
                                 <td class="px-4 py-2 text-center"><input class="checked_add" type="checkbox"
                                                                          id="delete_27" name="delete_27"/></td>
                             </tr>
-                            <!--<tr class="border-t border-gray-200">
+                            <tr class="border-t border-gray-200">
                                 <td class="px-4 py-2">Distributeur</td>
                                 <td class="px-4 py-2 text-center"><input class="checked_add" type="checkbox"
-                                                                         name="read_only_1"/></td>
+                                                                         name="read_only_36"/></td>
                                 <td class="px-4 py-2 text-center"><input class="checked_add" type="checkbox"
-                                                                         name="add_1"/></td>
+                                                                         name="add_33"/></td>
                                 <td class="px-4 py-2 text-center"><input class="checked_add" type="checkbox"
-                                                                         name="edit_1"/></td>
+                                                                         name="edit_34"/></td>
                                 <td class="px-4 py-2 text-center"><input class="checked_add" type="checkbox"
-                                                                         name="delete_1"/></td>
+                                                                         name="delete_35"/></td>
                             </tr>
                             <tr class="border-t border-gray-200">
                                 <td class="px-4 py-2">Payeur</td>
                                 <td class="px-4 py-2 text-center"><input class="checked_add" type="checkbox"
-                                                                         name="read_only_1"/></td>
+                                                                         name="read_only_40"/></td>
                                 <td class="px-4 py-2 text-center"><input class="checked_add" type="checkbox"
-                                                                         name="add_1"/></td>
+                                                                         name="add_37"/></td>
                                 <td class="px-4 py-2 text-center"><input class="checked_add" type="checkbox"
-                                                                         name="edit_1"/></td>
+                                                                         name="edit_38"/></td>
                                 <td class="px-4 py-2 text-center"><input class="checked_add" type="checkbox"
-                                                                         name="delete_1"/></td>
+                                                                         name="delete_39"/></td>
                             </tr>
                             <tr class="border-t border-gray-200">
                                 <td class="px-4 py-2">Produits</td>
                                 <td class="px-4 py-2 text-center"><input class="checked_add" type="checkbox"
-                                                                         name="read_only_1"/></td>
+                                                                         name="read_only_56"/></td>
                                 <td class="px-4 py-2 text-center"><input class="checked_add" type="checkbox"
-                                                                         name="add_1"/></td>
+                                                                         name="add_53"/></td>
                                 <td class="px-4 py-2 text-center"><input class="checked_add" type="checkbox"
-                                                                         name="edit_1"/></td>
+                                                                         name="edit_54"/></td>
                                 <td class="px-4 py-2 text-center"><input class="checked_add" type="checkbox"
-                                                                         name="delete_1"/></td>
+                                                                         name="delete_55"/></td>
                             </tr>
                             <tr class="border-t border-gray-200">
                                 <td class="px-4 py-2">Commandes</td>
                                 <td class="px-4 py-2 text-center"><input class="checked_add" type="checkbox"
-                                                                         name="read_only_1"/></td>
+                                                                         name="read_only_68"/></td>
                                 <td class="px-4 py-2 text-center"><input class="checked_add" type="checkbox"
-                                                                         name="add_1"/></td>
+                                                                         name="add_65"/></td>
                                 <td class="px-4 py-2 text-center"><input class="checked_add" type="checkbox"
-                                                                         name="edit_1"/></td>
+                                                                         name="edit_66"/></td>
                                 <td class="px-4 py-2 text-center"><input class="checked_add" type="checkbox"
-                                                                         name="delete_1"/></td>
+                                                                         name="delete_67"/></td>
                             </tr>
                             <tr class="border-t border-gray-200">
                                 <td class="px-4 py-2">Bon livraison</td>
                                 <td class="px-4 py-2 text-center"><input class="checked_add" type="checkbox"
-                                                                         name="read_only_1"/></td>
+                                                                         name="read_only_60"/></td>
                                 <td class="px-4 py-2 text-center"><input class="checked_add" type="checkbox"
-                                                                         name="add_1"/></td>
+                                                                         name="add_57"/></td>
                                 <td class="px-4 py-2 text-center"><input class="checked_add" type="checkbox"
-                                                                         name="edit_1"/></td>
+                                                                         name="edit_58"/></td>
                                 <td class="px-4 py-2 text-center"><input class="checked_add" type="checkbox"
-                                                                         name="delete_1"/></td>
+                                                                         name="delete_59"/></td>
                             </tr>
                             <tr class="border-t border-gray-200">
                                 <td class="px-4 py-2">Encaissement</td>
                                 <td class="px-4 py-2 text-center"><input class="checked_add" type="checkbox"
-                                                                         name="read_only_1"/></td>
+                                                                         name="read_only_84"/></td>
                                 <td class="px-4 py-2 text-center"><input class="checked_add" type="checkbox"
-                                                                         name="add_1"/></td>
+                                                                         name="add_81"/></td>
                                 <td class="px-4 py-2 text-center"><input class="checked_add" type="checkbox"
-                                                                         name="edit_1"/></td>
+                                                                         name="edit_82"/></td>
                                 <td class="px-4 py-2 text-center"><input class="checked_add" type="checkbox"
-                                                                         name="delete_1"/></td>
+                                                                         name="delete_83"/></td>
                             </tr>
                             <tr class="border-t border-gray-200">
-                                <td class="px-4 py-2">Formation/Ticket</td>
+                                <td class="px-4 py-2">Formation</td>
                                 <td class="px-4 py-2 text-center"><input class="checked_add" type="checkbox"
-                                                                         name="read_only_1"/></td>
+                                                                         name="read_only_96"/></td>
                                 <td class="px-4 py-2 text-center"><input class="checked_add" type="checkbox"
-                                                                         name="add_1"/></td>
+                                                                         name="add_93"/></td>
                                 <td class="px-4 py-2 text-center"><input class="checked_add" type="checkbox"
-                                                                         name="edit_1"/></td>
+                                                                         name="edit_94"/></td>
                                 <td class="px-4 py-2 text-center"><input class="checked_add" type="checkbox"
-                                                                         name="delete_1"/></td>
-                            </tr>-->
+                                                                         name="delete_95"/></td>
+                            </tr>
+                            <tr class="border-t border-gray-200">
+                                <td class="px-4 py-2">Ticket</td>
+                                <td class="px-4 py-2 text-center"><input class="checked_add" type="checkbox"
+                                                                         name="read_only_100"/></td>
+                                <td class="px-4 py-2 text-center"><input class="checked_add" type="checkbox"
+                                                                         name="add_97"/></td>
+                                <td class="px-4 py-2 text-center"><input class="checked_add" type="checkbox"
+                                                                         name="edit_98"/></td>
+                                <td class="px-4 py-2 text-center"><input class="checked_add" type="checkbox"
+                                                                         name="delete_99"/></td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <div class="flex justify-end">
-                    <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400">
+                <div class="flex h-40 justify-end pb-4">
+                    <button type="submit"
+                            class="bg-blue-500 block h-10 text-white py-1.5 px-4 rounded-lg hover:bg-blue-400">
                         Ajouter
                     </button>
                 </div>
@@ -196,8 +213,8 @@
             <button id="closeEditSidebar" class="text-gray-500 hover:text-gray-700">&times;</button>
         </div>
         <!-- Edit User Form -->
-        <div class="p-4 overflow-y-auto">
-            <form id="edituserForm">
+        <div class="">
+            <form id="edituserForm" class="p-4 flex flex-col overflow-hidden" style="height: calc(100vh - 50px)">
                 <div class="flex justify-center">
                     <div class="relative p-4">
                         <input type="file" id="edit_photo" name="edit_photo"
@@ -263,39 +280,126 @@
                     <input class="tgl tgl-light" id="edit_is_active" type="checkbox"/>
                     <label class="tgl-btn" for="edit_is_active"></label>
                 </div>
+                <label class="block text-sm font-medium text-gray-700">Permissions</label>
 
 
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700">Permissions</label>
-                    <div class="overflow-y-auto max-h-64">
-                        <table class="w-full bg-white border border-gray-200 rounded-md">
-                            <thead>
-                            <tr class="bg-gray-50 text-left text-sm font-medium text-gray-700">
-                                <th class="px-4 py-2">Permission</th>
-                                <th class="px-4 py-2">Lecture</th>
-                                <th class="px-4 py-2">Ajout</th>
-                                <th class="px-4 py-2">Modification</th>
-                                <th class="px-4 py-2">Suppression</th>
-                            </tr>
-                            </thead>
-                            <tbody class="text-sm">
-                            <tr class="border-t border-gray-200">
-                                <td class="px-4 py-2">Utilisateurs</td>
-                                <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
-                                                                         id="put_right_28" name="put_right_28"/></td>
-                                <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
-                                                                         id="put_right_25"
-                                                                         name="put_right_25"/></td>
-                                <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
-                                                                         id="put_right_26" name="put_right_26"/></td>
-                                <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
-                                                                         id="put_right_27" name="put_right_27"/></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <table class="w-full bg-white border border-gray-200 rounded-md">
+                    <thead>
+                    <tr class="bg-gray-50 text-left text-sm font-medium text-gray-700">
+                        <th class="px-4 py-2">Permission</th>
+                        <th class="px-4 py-2">Lecture</th>
+                        <th class="px-4 py-2">Ajout</th>
+                        <th class="px-4 py-2">Modification</th>
+                        <th class="px-4 py-2">Suppression</th>
+                    </tr>
+                    </thead>
+                </table>
+                <div class="flex-grow overflow-y-auto">
+                    <table class="w-full bg-white border border-gray-200 rounded-md">
+                        <tbody class="text-sm">
+                        <tr class="border-t border-gray-200">
+                            <td class="px-4 py-2">Utilisateurs</td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="put_right_28" id="put_right_28"/></td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="put_right_25" id="put_right_25"/></td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="put_right_26" id="put_right_26"/></td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="put_right_27" id="put_right_27"/></td>
+                        </tr>
+                        <tr class="border-t border-gray-200">
+                            <td class="px-4 py-2">Distributeur</td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="read_only_36" id="put_right_36"/></td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="add_33" id="put_right_33"/></td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="edit_34" id="put_right_34"/></td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="delete_35" id="put_right_35"/></td>
+                        </tr>
+                        <tr class="border-t border-gray-200">
+                            <td class="px-4 py-2">Payeur</td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="read_only_40" id="put_right_40"/></td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="add_37" id="put_right_37"/></td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="edit_38" id="put_right_38"/></td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="delete_39" id="put_right_39"/></td>
+                        </tr>
+                        <tr class="border-t border-gray-200">
+                            <td class="px-4 py-2">Produits</td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="read_only_56" id="put_right_56"/></td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="add_53" id="put_right_53"/></td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="edit_54" id="put_right_54"/></td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="delete_55" id="put_right_55"/></td>
+                        </tr>
+                        <tr class="border-t border-gray-200">
+                            <td class="px-4 py-2">Commandes</td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="read_only_68" id="put_right_68"/></td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="add_65" id="put_right_65"/></td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="edit_66" id="put_right_66"/></td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="delete_67" id="put_right_67"/></td>
+                        </tr>
+                        <tr class="border-t border-gray-200">
+                            <td class="px-4 py-2">Bon livraison</td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="read_only_60" id="put_right_60"/></td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="add_57" id="put_right_57"/></td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="edit_58" id="put_right_58"/></td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="delete_59" id="put_right_59"/></td>
+                        </tr>
+                        <tr class="border-t border-gray-200">
+                            <td class="px-4 py-2">Encaissement</td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="read_only_84" id="put_right_84"/></td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="add_81" id="put_right_81"/></td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="edit_82" id="put_right_82"/></td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="delete_83" id="put_right_83"/></td>
+                        </tr>
+                        <tr class="border-t border-gray-200">
+                            <td class="px-4 py-2">Formation</td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="read_only_96" id="put_right_96"/></td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="add_93" id="put_right_93"/></td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="edit_94" id="put_right_94"/></td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="delete_95" id="put_right_95"/></td>
+                        </tr>
+                        <tr class="border-t border-gray-200">
+                            <td class="px-4 py-2">Ticket</td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="read_only_100" id="put_right_100"/></td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="add_97" id="put_right_97"/></td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="edit_98" id="put_right_98"/></td>
+                            <td class="px-4 py-2 text-center"><input class="put_checked_add" type="checkbox"
+                                                                     name="delete_99" id="put_right_99"/></td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <div class="flex justify-end">
+                <div class="flex justify-end pt-2">
                     <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400">
                         Ajouter
                     </button>
@@ -340,13 +444,13 @@
     </div>
 
     <!-- User List -->
-    <div class="bg-white shadow-md rounded-b-lg p-4 space-y-4">
+    <div class=" shadow-md rounded-b-lg">
         {% for elem in liste_users %}
 
-            <div class="flex items-center justify-between bg-gray-50 p-4 rounded-lg">
+            <div class="flex items-center justify-between bg-gray-50 py-1 px-2 rounded-lg mt-2">
                 <div class="flex items-center w-1/4">
                     <img src="{% if elem.photo %} {{ elem.photo.url }} {% else %} {% static 'images/blank-profile.webp' %} {% endif %}"
-                         alt="Avatar" class="h-12 w-12 rounded-full mr-4">
+                         alt="Avatar" class="h-10 w-10 rounded-full mr-4">
                     <div>
                         <h3 class="text-lg font-bold text-blue-600">{{ elem.nom }}</h3>
                         <p class="text-sm text-gray-500">{{ elem.type }}</p>
@@ -527,9 +631,12 @@
                 $('#edit_previewImage').attr('src', url)
             }
 
+            $('.put_checked_add').each(function() {
+                $(this).prop('checked', false); // Uncheck the checkbox
+            });
+
             liste_auth = JSON.parse('[' + user_permissions + ']');
             for (i = 0; i < liste_auth.length; i++) {
-                console.log("#put_right_" + liste_auth[i]);
                 //$("#put_right_"+liste_auth[i]).click()
                 $("#put_right_" + liste_auth[i]).prop('checked', true);
             }
@@ -544,14 +651,12 @@
             var idList = [];
 
             checkedBoxes.each(function () {
-                var id = $(this).attr('id');
-                var idNumber = parseInt(id.match(/\d+/)); // Extracts the integer from the ID
+                var name = $(this).attr('name');
+                var idNumber = parseInt(name.match(/\d+/)); // Extracts the integer from the ID
                 if (!isNaN(idNumber)) {
                     idList.push(idNumber);
                 }
             });
-
-            console.log(idList);
 
             var form = new FormData();
 
@@ -665,7 +770,7 @@
             }
 
             var settings = {
-                "url": "/api/user/"+edit_elem+'/',
+                "url": "/api/user/" + edit_elem + '/',
                 "method": "PUT",
                 "timeout": 0,
                 "headers": {

@@ -81,13 +81,16 @@ def EncaissementView(request):
     somme_encai = 0
     somme_circu = 0
     somme_depot = 0
+    somme_echue = 0
 
     lise_fact = []
     for row in rows:
+        print(row)
         somme_total = somme_total + row[2]
         somme_encai = somme_encai + row[12]
         somme_circu = somme_circu + row[13]
         somme_depot = somme_depot + row[14]
+        somme_echue = somme_echue + row[15]
 
         lise_fact.append({
             "id": row[0],
@@ -119,7 +122,19 @@ def EncaissementView(request):
         "somme_total": somme_total,
         "somme_encai": somme_encai,
         "somme_circu": somme_circu,
-        "somme_depot": somme_depot
+        "somme_depot": somme_depot,
+        "somme_echue": somme_echue
+    })
+
+
+@login_required
+def EncaissementDetailView(request):
+    encaissement = Encaissement.objects.all()
+
+    print(encaissement)
+
+    return render(request, "EncaissementDetail.html", {
+        "encaissement": encaissement,
     })
 
 
@@ -183,7 +198,7 @@ def AccompteDist(request):
 
 @login_required
 def get_factures(request, payeur_id):
-    factures = Factures.objects.filter(payeur_id=payeur_id)
+    factures = Factures.objects.filter(payeur_id=payeur_id, complete=False)
     facture_data = [
         {
             'id': facture.id,

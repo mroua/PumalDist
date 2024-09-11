@@ -1,11 +1,180 @@
-{% extends "base.html" %}
+<div id="editSidebar" class="fixed right-0 top-0 bottom-0 w-2/5 backprimer textslate shadow-lg transform translate-x-full transition-transform
+             duration-300 z-50 h-full flex flex-col">
+    <div class="flex justify-between items-center p-4 border-b">
+        <h3 class="text-lg font-semibold">Editer utilisateur</h3>
+        <button id="closeSidebar" class="text-2xl textslate">&times;</button>
+    </div>
 
-{% block title %}Commandes{% endblock %}
+    <!-- Add User Form -->
+    <div class="flex-grow overflow-hidden">
+        <form id="userForm" class="p-4 flex flex-col h-full">
+            <!-- Other form fields -->
+            <div class="flex justify-center">
+                <div class="relative p-4">
+                    <input type="file" id="photo" name="photo"
+                           class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md"
+                           accept="image/*"
+                           style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                    <div id="photoPreview"
+                         class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden border border-gray-300">
+                        <img id="previewImage" src="{% static 'images/blank-profile.webp' %}" alt="Preview"
+                             class="w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                    <input type="text" id="username" name="username" placeholder="Username"
+                           class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                </div>
+                <div>
+                    <input type="email" id="email" name="email" placeholder="Email"
+                           class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                </div>
+                <div>
+                    <input type="text" id="first_name" name="first_name" placeholder="first name"
+                           class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                </div>
+                <div>
+                    <input type="text" id="last_name" name="last_name" placeholder="last name"
+                           class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                </div>
+                <div>
+                    <input type="text" id="telephone" name="telephone" placeholder="Téléphone"
+                           class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                </div>
+                <div>
+                    <select id="responsable" name="responsable"
+                            class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                        <option value="">Résponsable</option>
+                        {% for worker in users_select %}
+                            <option value="{{ worker.id }}">{{ worker.nom }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <select id="type" name="type"
+                            class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                        <option value="Agent">Agent</option>
+                        <option value="Admin">Admin</option>
+                    </select>
+                </div>
+                <div>
+                    <select id="region" name="region"
+                            class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                        <option value="Est">EST</option>
+                        <option value="Ouest">OUEST</option>
+                        <option value="Centre">Centre</option>
+                    </select>
+                </div>
+            </div>
+            <div class="grid grid-cols-5">
+                <div>Permission</div>
+                <div>Lecture</div>
+                <div>Ajout</div>
+                <div>Modification</div>
+                <div>Suppression</div>
+            </div>
 
-{% block page_heading %}
-    <h1>Coucou</h1>
-{% endblock %}
+            <!-- Adjusted section for scrollable content -->
+            <div class="flex-grow overflow-y-auto bg-white rounded-md">
+                <!-- Content goes here -->
+                <div class="grid grid-cols-5 w-full bg-white border border-gray-200 rounded-md ">
+                    <div class="px-4 py-2 text-blue-900">Utilisateurs</div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                  id="read_only_28"
+                                                  name="read_only_28"/></div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="add_25"
+                                                  name="add_25"/></div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                  id="edit_26" name="edit_26"/></div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                  id="delete_27" name="delete_27"/></div>
 
-{% block content %}
-    <!-- Your content here -->
-{% endblock %}
+                    <div class="px-4 py-2 text-blue-900">Distributeur</div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                  name="read_only_36"/></div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                  name="add_33"/></div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                  name="edit_34"/></div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                  name="delete_35"/></div>
+
+                    <div class="px-4 py-2 text-blue-900">Payeur</div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                  name="read_only_40"/></div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                  name="add_37"/></div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                  name="edit_38"/></div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                  name="delete_39"/></div>
+                    <div class="px-4 py-2 text-blue-900">Produits</div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                  name="read_only_56"/></div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                  name="add_53"/></div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                  name="edit_54"/></div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                  name="delete_55"/></div>
+
+                    <div class="px-4 py-2 text-blue-900">Commandes</div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                  name="read_only_68"/></div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                  name="add_65"/></div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                  name="edit_66"/></div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                  name="delete_67"/></div>
+                    <div class="px-4 py-2 text-blue-900">Bon livraison</div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                  name="read_only_60"/></div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox" name="add_57"/>
+                    </div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                  name="edit_58"/></div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                  name="delete_59"/></div>
+                    <div class="px-4 py-2 text-blue-900">Encaissement</div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                  name="read_only_84"/></div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox" name="add_81"/>
+                    </div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                  name="edit_82"/></div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                  name="delete_83"/></div>
+                    <div class="px-4 py-2 text-blue-900">Formation</div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                  name="read_only_96"/></div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox" name="add_93"/>
+                    </div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                  name="edit_94"/></div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                  name="delete_95"/></div>
+                    <div class="px-4 py-2 text-blue-900">Ticket</div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                  name="read_only_100"/></div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox" name="add_97"/>
+                    </div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                  name="edit_98"/></div>
+                    <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                  name="delete_99"/></div>
+
+                </div>
+            </div>
+
+            <div class="flex justify-end mt-4">
+                <button type="submit"
+                        class="bg-blue-500 h-10 text-white py-1.5 px-4 rounded-lg hover:bg-blue-400">
+                    Ajouter
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

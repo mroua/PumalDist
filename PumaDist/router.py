@@ -4,8 +4,9 @@ from rest_framework import routers
 from Session.views import ProfileViewSet
 from Distributeur.views import DistributeurViewSet, PayeurViewSet
 from Produits.views import ProduitViewSet
-from Commande.views import Dist_CommandeLinesViewSet, Dist_CommandeViewSet, Dist_BonLivraisonViewSet, Dist_BonLivraisonLineViewSet, Dist_CommandeDetailViewSet, \
-    Dist_BonLivraisonDetailViewset
+from Commande.views import Dist_CommandeLinesViewSet, Dist_CommandeViewSet, Dist_BonLivraisonViewSet, \
+    Dist_BonLivraisonLineViewSet, Dist_CommandeDetailViewSet, \
+    Dist_BonLivraisonDetailViewset, Dist_BonLivraisonNormalViewset
 
 from Encaissement.views import BanqueViewSet, AccountViewSet, FacturesViewSet, EncaissementViewSet
 from Formation.views import FormationViewSet, FormationSingupViewSet, EquipeViewSet, ProblematiqueViewSet
@@ -31,9 +32,14 @@ router1.register('commandelines', Dist_CommandeLinesViewSet)
 router1.register('commandedetail', Dist_CommandeDetailViewSet)"""
 router1.register('commande', Dist_CommandeViewSet, basename='commande')
 router1.register('commandedetail', Dist_CommandeDetailViewSet, basename='commandedetail')
-router1.register('blivraison', Dist_BonLivraisonViewSet, basename='blivraison')
+#router1.register('blivraison', Dist_BonLivraisonViewSet, basename='blivraison')
 router1.register('blivraisonlines', Dist_BonLivraisonLineViewSet)
 router1.register('blivraisondetail', Dist_BonLivraisonDetailViewset, basename='blivraisondetail')
+
+
+
+router1.register('blivraison', Dist_BonLivraisonNormalViewset, basename='blivraison')
+
 
 
 router1.register('formation', FormationViewSet, basename='formation')

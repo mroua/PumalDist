@@ -6,6 +6,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.db import connection
 from django.contrib.auth.decorators import login_required
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
 
 from .models import *
 from .Serializers import ProduitSerializer
@@ -14,6 +16,10 @@ from .Serializers import ProduitSerializer
 class ProduitViewSet(viewsets.ModelViewSet):
     queryset = Produit.objects.all()
     serializer_class = ProduitSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+
+    filterset_fields = ['type', 'mesure', 'couleur', 'active']
+
 
 
 @login_required
@@ -23,7 +29,6 @@ def ProduitView(request):
     liste_mesure = Mesure.objects.all()
 
     produit = Produit.objects.filter(active = True)
-    print(produit)
 
     return render(request, "Produit.html", {
         'liste_type': liste_type,
@@ -44,9 +49,9 @@ class ProductList(APIView):
         lise_prod = []
 
         # Retrieve filter parameters from the request
-        couleur = request.GET.get('couleur')
+        couleur_produit = request.GET.get('couleur_produit')
         mesure_id = request.GET.get('mesure_id')
-        typeproduit = request.GET.get('typeproduit')
+        typeproduit_id = request.GET.get('typeproduit_id')
         mesure_type = request.GET.get('mesure_type')
         active = request.GET.get('active')
         reference = request.GET.get('reference')
@@ -61,17 +66,17 @@ class ProductList(APIView):
         filters = []
         params = []
 
-        if couleur:
-            filters.append("couleur = %s")
-            params.append(couleur)
+        if couleur_produit:
+            filters.append("couleur_produit = %s")
+            params.append(couleur_produit)
 
         if mesure_id:
             filters.append("mesure_id = %s")
             params.append(mesure_id)
 
-        if typeproduit:
+        if typeproduit_id:
             filters.append("typeproduit_id = %s")
-            params.append(typeproduit)
+            params.append(typeproduit_id)
 
         if mesure_type:
             filters.append("mesure_type = %s")
@@ -88,14 +93,19 @@ class ProductList(APIView):
         # If there are any filters, append them to the query
         if filters:
             query += " AND " + " AND ".join(filters)
+        print(query)
+        print(params)
+
+        formatted_query = query.replace('%s', '{}').format(*params)
 
         with connection.cursor() as cursor:
             # Execute the SQL query with parameters
-            cursor.execute(query, params)
+            cursor.execute(formatted_query)
 
             rows = cursor.fetchall()
-
+            print(rows)
             for row in rows:
+                print(row)
                 lise_prod.append({
                     "produit_id": row[0],
                     "designation": row[1],

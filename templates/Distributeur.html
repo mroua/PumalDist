@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load mes_tags %}
 {% load static %}
 {% block title %}Distributeur{% endblock %}
 {% block page_heading %}
@@ -301,7 +302,7 @@
     <!-- User List Headers -->
     <div class="bg-white shadow-md rounded-t-lg p-4 pl-8">
         <div class="flex items-center justify-between text-gray-600 font-semibold">
-            <div class="w-1/4 capitalize">Code</div>
+            <div class="w-1/6 capitalize">Code</div>
             <div class="w-1/4 capitalize">Désignation</div>
             <div class="w-1/6 capitalize">Ville</div>
             <div class="w-1/6 capitalize">Téléphone</div>
@@ -315,13 +316,13 @@
     <!-- User List -->
     <div class="bg-white shadow-md rounded-b-lg p-4 space-y-4">
         {% for elem in dist_list %}
-            <div class="flex items-center justify-between bg-gray-50 p-4 rounded-lg">
-                <div class="text-gray-600 w-1/4">{{ elem.code }}</div>
+            <div class="flex items-center justify-between bg-gray-50 py-1 px-2 rounded-lg">
+                <div class="text-gray-600 w-1/6">{{ elem.code }}</div>
                 <div class="text-blue-600 w-1/4">{{ elem.designation }}</div>
                 <div class="text-gray-600 w-1/6">{{ elem.ville }}</div>
                 <div class="text-gray-600 w-1/6">{{ elem.user.telephone }}</div>
                 <div class="text-gray-600 w-1/6">{{ elem.user.date_joined|date:'d-m-Y' }}</div>
-                <div class="text-gray-600 w-1/6 text-right">{{ elem.plafonnement }}</div>
+                <div class="text-gray-600 w-1/6 text-right">{{ elem.plafonnement|floate_redefined }} DA</div>
                 <div class="w-1/6 text-center">
                 <span class="bg-gray-500 text-white text-xs px-2 py-1 rounded">{% if elem.bloque %}
                     Bloqué {% else %} Actif {% endif %}</span>
@@ -336,7 +337,7 @@
                                    '{{ elem.adresse|escapejs }}', '{{ elem.nif|escapejs }}', '{{ elem.nis|escapejs }}', '{{ elem.art|escapejs }}',
                                    '{{ elem.rc|escapejs }}', {{ elem.plafonnement }}, {{ elem.echeance_jour }}, {{ elem.ristourn_a }}
                                    ,{{ elem.ristourn_na }}, {{ elem.objectif_a }}, {{ elem.objectif_m }}, '{{ elem.user.is_active }}',
-                                   '{{ elem.user.username }}')">
+                                   '{{ elem.user.username }}', {{ elem.user.id }})">
                         </i>
                     </button>
                     <button class="bg-red-500 text-white p-2 rounded"><i class="fas fa-trash"></i></button>
@@ -347,6 +348,8 @@
 
     <script>
         edit_elem = 0;
+        edit_user = 0;
+        edit_username_old = "";
 
         $first_name = $('#first_name');
         $last_name = $('#last_name');
@@ -434,8 +437,10 @@
 
         function newdatauser(id, first_name, last_name, email, telephone, responsable, code, bloque, designation, ville,
                              adresse, nif, nis, art, rc, plafonnement, echeance, ristourne_a, ristourne_na, objectif_a, objectif_m,
-                             isactive, username) {
+                             isactive, username, user_id) {
             edit_elem = id;
+            edit_user = user_id;
+            edit_username_old = username;
             $("#edit_username").val(username);
             $("#edit_email").val(email);
             $("#edit_first_name").val(first_name);
@@ -558,7 +563,9 @@
 
             var form = new FormData();
 
-            form.append("user.username", $('#edit_username').val());
+            form.append("user.id", edit_user);
+
+            if(edit_username_old !== $('#edit_username').val()) {form.append("user.username", $('#edit_username').val());}
             form.append("user.email", $('#edit_email').val());
             form.append("user.type", 'Distributeur');
             form.append("user.first_name", $first_name.val());

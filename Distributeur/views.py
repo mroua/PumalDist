@@ -36,7 +36,8 @@ def DistribView(request):
         Q(type='Admin', is_active=True)
     ).order_by('id')
 
-    return render(request, "Distributeur.html",
+    #return render(request, "Distributeur.html",
+    return render(request, "Pumal/Distributeur.html",
                   {
                       'dist_list': dist_list,
                       'ville_list': ville_list,

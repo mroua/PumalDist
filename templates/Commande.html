@@ -14,7 +14,7 @@
          class="fixed right-0 top-0 bottom-0 w-4/5 bg-white shadow-lg transform translate-x-full transition-transform duration-300 z-50">
         <div class="flex justify-between items-center p-4 border-b">
             <h3 class="text-lg font-semibold">Ajouter une commande</h3>
-            <button id="closeSidebar" class="text-gray-500 hover:text-gray-700">&times;</button>
+            <button id="closeSidebar" class="text-gray-800 hover:text-gray-700">&times;</button>
         </div>
 
         <!-- Step 1: Select Products -->
@@ -178,16 +178,16 @@
          class="fixed right-0 top-0 bottom-0 w-4/5 bg-white shadow-lg transform translate-x-full transition-transform duration-300 z-50">
         <div class="flex justify-between items-center p-4 border-b">
             <h3 class="text-lg font-semibold">Modifier la commande</h3>
-            <button id="closeEditSidebar" class="text-gray-500 hover:text-gray-700">&times;</button>
+            <button id="closeEditSidebar" class="text-gray-800 hover:text-gray-700">&times;</button>
         </div>
 
         <!-- Step 1: Select Products -->
-        <div id="editStep1" class="p-4 h-full">
+        <div id="step1-edit" class="p-4 h-full">
             <div class="p-4 h-28 flex justify-around border border-gray-300 rounded-lg mb-4 gap-4">
                 <!-- Type Filter -->
                 <div class="mb-4 w-64">
-                    <label for="editTypeFilter" class="block text-sm font-medium text-gray-700 mb-2">Type</label>
-                    <select id="editTypeFilter"
+                    <label for="typeFilter" class="block text-sm font-medium text-gray-700 mb-2">Type</label>
+                    <select id="typeFilter"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                         <option value="">Tous</option>
                         {% for fil in liste_type %}
@@ -198,8 +198,8 @@
 
                 <!-- Measure Filter -->
                 <div class="mb-4 w-64">
-                    <label for="editMeasureFilter" class="block text-sm font-medium text-gray-700 mb-2">Mesure</label>
-                    <select id="editMeasureFilter"
+                    <label for="measureFilter" class="block text-sm font-medium text-gray-700 mb-2">Mesure</label>
+                    <select id="measureFilter"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                         <option value="">Tous</option>
                         {% for fil in liste_mesure %}
@@ -210,8 +210,8 @@
 
                 <!-- Field Filter -->
                 <div class="mb-4 w-64">
-                    <label for="editColorfilter" class="block text-sm font-medium text-gray-700 mb-2">Couleur</label>
-                    <select id="editColorfilter"
+                    <label for="colorfilter" class="block text-sm font-medium text-gray-700 mb-2">Couleur</label>
+                    <select id="colorfilter"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                         <option value="">Tous</option>
                         {% for fil in liste_couleur %}
@@ -222,9 +222,9 @@
 
                 <!-- Field Filter -->
                 <div class="mb-4 w-64">
-                    <label for="editDistfield" class="block text-sm font-medium text-gray-700 mb-2">Selectionner le
+                    <label for="distfield" class="block text-sm font-medium text-gray-700 mb-2">Selectionner le
                         distributeur</label>
-                    <select id="editDistfield"
+                    <select id="distfield"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                         {% for fil in liste_distributeur %}
                             <option data-designation="{{ fil.designation }}" data-username="{{ fil.user.nom }}"
@@ -233,39 +233,39 @@
                         {% endfor %}
                     </select>
                 </div>
-            </div>
 
+
+            </div>
             <div class="h-4/6 overflow-y-auto">
-                <div id="editProductList" class="grid gap-4 w-full"></div>
+                <div id="productList-edit" class="grid gap-4 w-full"></div>
             </div>
 
-            <button id="goToEditStep2" class="goToEditStep2 h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">
-                Suivant
+            <button id="goToStep2-edit" class="goToStep2-edit h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Suivant
             </button>
         </div>
 
         <!-- Step 2: Review Selected Products -->
-        <div id="editStep2" class="p-4 hidden">
-            <h3 class="text-lg font-semibold mb-4">Modifier les produits sélectionnés</h3>
+        <div id="step2-edit" class="p-4 hidden">
+            <h3 class="text-lg font-semibold mb-4">Review Products</h3>
             <div class="h-4/6 overflow-y-auto">
-                <div id="editSelectedProducts"></div>
+                <div id="selectedProducts-edit"></div>
             </div>
 
             <div class="flex justify-end pr-28">
                 <div class="h-16">Total:</div>
-                <div class="h-16 w-1/6 text-right pr-8" id="editTotalPrice">0 DA</div>
+                <div class="h-16 w-1/6 text-right pr-8" id="totalPrice-edit">0 DA</div>
             </div>
 
             <div class="flex justify-between items-center mt-4">
-                <button id="goToEditStep1" class="bg-gray-500 text-white px-4 py-2 rounded-lg">Retour</button>
-                <button id="goToEditStep3" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Suivant</button>
+                <button id="goToStep1-edit" class="bg-gray-500 text-white px-4 py-2 rounded-lg">Retour</button>
+                <button id="goToStep3-edit" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Suivant</button>
             </div>
         </div>
 
         <!-- Step 3: Confirm Order -->
-        <div id="editStep3" class="p-4 hidden">
+        <div id="step3-edit" class="p-4 hidden">
             <!-- Logo Section -->
-            <div class="h-4/5 w-full flex flex-col  items-center">
+            <div class="h-4/5 w-full flex flex-col items-center">
 
                 <div class="w-2/3">
                     <div class="flex justify-center mb-4">
@@ -276,16 +276,16 @@
                     <div class="grid grid-cols-2 gap-4 mb-4">
                         <!-- Recipient Details -->
                         <div class="">
-                            <p id="editRecipientCompany">Nom de l'entreprise</p>
-                            <p id="editRecipientName">Nom et prénom</p>
-                            <p id="editRecipientEmail">email@domaine.com</p>
+                            <p id="recipientCompany-edit">Nom de l'entreprise</p>
+                            <p id="recipientName-edit">Nom et prénom</p>
+                            <p id="recipientEmail-edit">email@domaine.com</p>
                         </div>
 
                         <!-- Facture Info -->
                         <div class="text-right">
-                            <!--<p id="editFactureCode">12345</p>-->
-                            <p id="editFactureDate">01/01/2024</p>
-                            <p id="editIssuerName">{{ request.user.nom }}</p>
+                            <!--<p id="factureCode">12345</p>-->
+                            <p id="factureDate-edit">01/01/2024</p>
+                            <p id="issuerName-edit">{{ request.user.nom }}</p>
                         </div>
                     </div>
 
@@ -300,7 +300,7 @@
                                 <th class="p-2 text-center">Total</th>
                             </tr>
                             </thead>
-                            <tbody id="editProductDetails">
+                            <tbody id="productDetails-edit">
                             <!-- Product rows will be inserted here dynamically -->
                             </tbody>
                         </table>
@@ -311,25 +311,27 @@
                         <div class="mt-4 w-1/3">
                             <div class="flex justify-between mt-2 font-semibold">
                                 <span>Total:</span>
-                                <span id="editTotalAmount" class="pr-2">0 DA</span>
+                                <span id="totalAmount-edit" class="pr-2">0 DA</span>
                             </div>
                             <div class="flex justify-between mt-2 font-semibold">
                                 <span>TVA:</span>
-                                <span id="editTaxAmount" class="pr-2">0 DA</span>
+                                <span id="taxAmount-edit" class="pr-2">0 DA</span>
                             </div>
                             <div class="flex justify-between mt-2 font-semibold">
                                 <span>Montant Total:</span>
-                                <span id="editAmountDue" class="pr-2">0 DA</span>
+                                <span id="amountDue-edit" class="pr-2">0 DA</span>
                             </div>
                         </div>
                     </div>
+
+
                 </div>
             </div>
 
             <!-- Buttons -->
             <div class="flex justify-between items-center mt-4">
-                <button class="goToEditStep2 bg-gray-500 text-white px-4 py-2 rounded-lg">Retour</button>
-                <button id="confirmEditOrder" class="bg-green-500 text-white px-4 py-2 rounded-lg">Confirmer</button>
+                <button class="goToStep2-edit bg-gray-500 text-white px-4 py-2 rounded-lg">Retour</button>
+                <button id="confirmOrder" class="bg-green-500 text-white px-4 py-2 rounded-lg">Confirmer</button>
             </div>
         </div>
     </div>
@@ -339,7 +341,7 @@
          class="flex flex-col fixed right-0 top-0 bottom-0 w-4/5 bg-white shadow-lg transform translate-x-full transition-transform duration-300 z-50">
         <div class="flex justify-between items-center p-4 border-b">
             <h3 class="text-lg font-semibold">Détail Commande</h3>
-            <button id="closeViewSidebar" class="text-gray-500 hover:text-gray-700">&times;</button>
+            <button id="closeViewSidebar" class="text-gray-800 hover:text-gray-700">&times;</button>
         </div>
 
         <div id="containerdatacmd" class="flex-grow flex flex-col p-8">
@@ -391,47 +393,47 @@
 
     <!-- Produit List
      <h3 class="text-lg font-bold text-blue-600">{ { elem.designation }}</h3>
-                        <p class="text-sm text-gray-500">{ { elem.reference }}</p>-->
+                        <p class="text-sm text-gray-800">{ { elem.reference }}</p>-->
     <div class="shadow-md space-y-4">
         {% for elem in liste_cmd %}
-            <div class="flex items-center justify-between bg-gray-50 p-4 rounded-lg">
+            <div class="flex items-center justify-between bg-gray-50 p-2 rounded-lg mt-2">
                 <div class="w-1/6">
-                    <p class="text-sm text-gray-500">{{ elem.code }}</p>
+                    <p class="text-sm text-gray-800">{{ elem.code }}</p>
                 </div>
                 <div class="w-1/4">
-                    <p class="text-sm text-gray-500">{{ elem.distributeur }}</p>
+                    <p class="text-sm text-gray-800">{{ elem.distributeur }}</p>
                 </div>
                 <div class="w-1/6">
-                    <p class="text-sm text-gray-500">{{ elem.ville }}</p>
+                    <p class="text-sm text-gray-800">{{ elem.ville }}</p>
                 </div>
                 <div class="w-1/6">
-                    <p class="text-sm text-gray-500">{{ elem.date_ajout }}</p>
+                    <p class="text-sm text-gray-800">{{ elem.date_ajout }}</p>
                 </div>
                 <div class="w-1/6 border-r-2 border-gray-700">
                     <div class="flex w-full justify-between pr-2">
-                        <div class="text-sm text-gray-500">HT:</div>
-                        <div class="text-sm text-gray-500 text-right">{{ elem.total|floate_redefined }} DA</div>
+                        <div class="text-sm text-gray-800">HT:</div>
+                        <div class="text-sm text-gray-800 text-right">{{ elem.total|floate_redefined }} DA</div>
                     </div>
                     <div class="flex w-full justify-between pr-2">
-                        <div class="text-sm text-gray-500">Taxe:</div>
-                        <div class="text-sm text-gray-500 text-right">{{ elem.taxedtotal|floate_redefined }} DA</div>
+                        <div class="text-sm text-gray-800">Taxe:</div>
+                        <div class="text-sm text-gray-800 text-right">{{ elem.taxedtotal|floate_redefined }} DA</div>
                     </div>
                 </div>
                 <div class="w-1/6">
                     <div class="flex w-full justify-between pl-2">
-                        <div class="text-sm text-gray-500">HT:</div>
-                        <div class="text-sm text-gray-500 text-right">{{ elem.total_blivraison|floate_redefined }} DA
+                        <div class="text-sm text-gray-800">HT:</div>
+                        <div class="text-sm text-gray-800 text-right">{{ elem.total_blivraison|floate_redefined }} DA
                         </div>
                     </div>
                     <div class="flex w-full justify-between pl-2">
-                        <div class="text-sm text-gray-500">Taxe:</div>
-                        <div class="text-sm text-gray-500 text-right">{{ elem.taxedtotal_blivraison|floate_redefined }}
+                        <div class="text-sm text-gray-800">Taxe:</div>
+                        <div class="text-sm text-gray-800 text-right">{{ elem.taxedtotal_blivraison|floate_redefined }}
                             DA
                         </div>
                     </div>
                 </div>
                 <div class="w-1/6">
-                    <p class="text-sm text-gray-500 text-center">{{ elem.etat }}</p>
+                    <p class="text-sm text-gray-800 text-center">{{ elem.etat }}</p>
                 </div>
                 <div class="flex space-x-2 w-1/6 justify-end">
                     <button id="popupButton" class="popupButton bg-blue-500 text-white p-2 rounded"
@@ -440,9 +442,10 @@
                     </button>
                     <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded"
                             data-identifiant="{{ elem.id }}"><i class="fas fa-search"></i></button>
-                    <!--<button class="bg-blue-500 text-white p-2 rounded">
-                        <i id="editButton" class="editButton fas fa-pencil-alt" onclick=""></i>
-                    </button>-->
+                    <button id="editButton" class="editButton bg-blue-500 text-white p-2 rounded"
+                            data-identifiant="{{ elem.id }}">
+                        <i class="fas fa-pencil-alt" onclick=""></i>
+                    </button>
                     <button class="bg-red-500 text-white p-2 rounded"><i class="fas fa-trash"></i></button>
                 </div>
             </div>
@@ -476,7 +479,7 @@
                         <div class="flex-grow">Quantité a livré</div>
                         <div class="flex-grow">Total</div>
                     </div>-->
-                    <div class="listeblprod flex-grow" id="listeblprod">
+                    <div class="listeblprod flex-grow overflow-y-auto" id="listeblprod">
                     </div>
                     <div class="grid grid-cols-8 text-right pr-4 text-lg">
                         <div class="col-span-7 mr-3.5">Total HT:</div>
@@ -500,24 +503,24 @@
                                 p-2.5" placeholder="Facture"/>
                             </div>
 
-                            <div class="flex items-center space-x-4 border border-gray-300 rounded-lg">
+                            <div class="flex items-center space-x-4 border border-gray-300 rounded-lg w-72">
                                 <label for="file-upload" class="block flex-shrink-0">
                                     <div class="flex items-center justify-center px-4 py-2 rounded-l-lg bg-white text-blue-500 cursor-pointer hover:bg-blue-500 hover:text-white transition-colors duration-300">
                                         <span>Fichier FC</span>
                                     </div>
                                     <input id="file-upload" type="file" class="hidden"/>
                                 </label>
-                                <span id="file-name" class="text-gray-500 w-64 truncate">No fc file</span>
+                                <span id="file-name" class="text-gray-800 w-64 truncate">No fc file</span>
                             </div>
 
-                            <div class="flex items-center space-x-4 border border-gray-300 rounded-lg">
+                            <div class="flex items-center space-x-4 border border-gray-300 rounded-lg w-72">
                                 <label for="file-upload2" class="block flex-shrink-0">
                                     <div class="flex items-center justify-center px-4 py-2 rounded-l-lg bg-white text-blue-500 cursor-pointer hover:bg-blue-500 hover:text-white transition-colors duration-300">
                                         <span>Fichier BL</span>
                                     </div>
                                     <input id="file-upload2" type="file" class="hidden"/>
                                 </label>
-                                <span id="file-name2" class="text-gray-500 w-64 truncate">No bl file</span>
+                                <span id="file-name2" class="text-gray-800 w-64 truncate">No bl file</span>
                             </div>
 
                         </div>
@@ -574,6 +577,7 @@
 
         // Initialize the selected products list
         var selectedProducts = [];
+        var selectedProductsedit = [];
 
         // Toggle the sidebar
         $('#addButton').on('click', function () {
@@ -582,6 +586,77 @@
 
         // Toggle the sidebar edit
         $('.editButton').on('click', function () {
+            identifiant = $(this).data('identifiant');
+            console.log(identifiant);
+            let $listeblprod = $('#listeblprod');
+            $listeblprod.html('');
+            $('#selectedProducts-edit').html("");
+
+            let settings = {
+                url: `/api/commandedetail/${identifiant}`,
+                method: "GET",
+                timeout: 0,
+                headers: {
+                    "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
+                },
+            };
+
+            $.ajax(settings).done(function (response) {
+                let responsedata = response;
+
+                console.log("liooooooooooooooooooooooooooo")
+                console.log(responsedata["commandesLines"].length)
+                console.log("liooooooooooooooooooooooooooo")
+                for (ind = 0; ind < responsedata["commandesLines"].length; ind++) {
+                    commanderow = responsedata["commandesLines"][ind];
+                    commanderowprod = commanderow["produit"];
+                    //addToSelectedProductsedit(productId, quantity, total)
+                    //addToSelectedProductsedit(commanderow['id'], commanderow['quantite'], commanderow['prixtotal'])
+                    /*selectedProductsedit.push({
+                        id: commanderowprod['id'],
+                        name: commanderowprod['designation'],
+                        reference: commanderowprod['reference'],
+                        type: commanderowprod['type']['designation'],
+                        weight: commanderowprod['mesure']["designation"],
+                        color: commanderowprod['couleur']['designation'],
+                        price: commanderow['prixunitaire'],
+                        priceFormatted: formatNumber(commanderow['prixunitaire']),
+                        quantity: commanderow['quantite'],
+                        total: commanderow['prixtotal'],
+                        image: commanderowprod["image"]
+                    });*/
+
+                    $elem = $("#itemeditable-"+commanderowprod['id']);
+
+
+                    $elem.find(".numbprod-edit").val(commanderow['quantite']);
+                    var price = commanderow['prixunitaire'];
+                    var total = commanderow['quantite'] * price;
+                    var productTotal = $elem.find('.product-total-edit');
+
+                    productTotal.text(formatNumber(total) + ' DA');
+                    $elem.addClass('bg-green-100');
+                    //addToSelectedProductsedit(commanderowprod['id'], commanderow['quantite'], total);
+                    //updateStep2Quantityedit(commanderowprod['id'], commanderow['quantite']);
+
+                    var product = {
+                        id: commanderowprod['id'],
+                        name: commanderowprod['designation'],
+                        reference: commanderowprod['reference'],
+                        type: commanderowprod['type']['designation'],
+                        weight: commanderowprod['mesure']["designation"],
+                        color: commanderowprod['couleur']['designation'],
+                        price: commanderow['prixunitaire'],
+                        priceFormatted: formatNumber(commanderow['prixunitaire']),
+                        quantity: commanderow['quantite'],
+                        total: commanderow['prixtotal'],
+                        image: commanderowprod["image"]
+                    };
+                        selectedProductsedit.push(product);
+
+
+                }
+            });
             $('#editSidebar').toggleClass('translate-x-full');
         });
 
@@ -656,7 +731,7 @@
                         <img src="${itemprod['produit']['image']}" alt="product" class="h-12 w-12 rounded-lg mr-4">
                         <div>
                             <h3 class="text-lg font-bold text-blue-600 productName">${itemprod['produit']['designation']}</h3>
-                            <p class="text-sm text-gray-500 productRef">${itemprod['produit']['reference']}</p>
+                            <p class="text-sm text-gray-800 productRef">${itemprod['produit']['reference']}</p>
                         </div>
                     </div>
                     <div class="w-3/5 flex">
@@ -736,7 +811,6 @@
             $('#filterModal').addClass('hidden');
         });
 
-        //pop up!!!!!!!!!!
         $(document).ready(function () {
             // Show the popup
             $('.popupButton').click(function () {
@@ -765,12 +839,12 @@
                                     <img src="${itemprod['produit']['image']}" alt="product" class="h-12 w-12 rounded-lg mr-4">
                                     <div>
                                         <h3 class="text-lg font-bold text-blue-600 productName">${itemprod['produit']['designation']}</h3>
-                                        <p class="text-sm text-gray-500 productRef">${itemprod['produit']['reference']}</p>
+                                        <p class="text-sm text-gray-800 productRef">${itemprod['produit']['reference']}</p>
                                     </div>
                                 </div>
                                 <div class="col-span-1">
                                     <h3 class="text-lg font-bold text-blue-600 productName">${itemprod['produit']['type']['designation']}</h3>
-                                    <p class="text-sm text-gray-500 productRef">${itemprod['produit']['mesure']['designation']}</p>
+                                    <p class="text-sm text-gray-800 productRef">${itemprod['produit']['mesure']['designation']}</p>
                                 </div>
                                 <div class="col-span-1">${itemprod['produit']['couleur']['designation']}</div>
                                 <div class="col-span-1 prixunitaire">${formatNumber(itemprod['prixunitaire'])} DA</div>
@@ -838,16 +912,6 @@
             });
         });
 
-        function getBase64(file, callback) {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = function () {
-                callback(reader.result);
-            };
-            reader.onerror = function (error) {
-                console.log('Error: ', error);
-            };
-        }
 
         $('#validatebl').on('click', function (e) {
             e.preventDefault();
@@ -856,17 +920,6 @@
                 var product_idbl = parseInt($(this).data('idprodelem'));
                 var quantity = parseInt($(this).find('.inputblquantity').val());
                 var nbrrestant = parseInt($(this).find('.nbrrestant').html());
-
-
-                /*
-                    var reader = new FileReader();
-
-            reader.onload = function(e) {
-                var base64String = e.target.result.split(',')[1];
-                console.log('Base64 String:', base64String);
-
-            };
-                */
 
                 if (quantity > nbrrestant) {
                     alert("Vous ne pouvez pas depasser la quantité réstante.")
@@ -877,26 +930,41 @@
                     })
                 }
             });
+            let liste_prodbl_json = JSON.stringify(liste_prodbl);
+
+            var form = new FormData();
+
+            var fcFile = $("#file-upload")[0].files[0];
+            var blFile = $("#file-upload2")[0].files[0];
+
+            if (fcFile) {
+                form.append("fc_file", fcFile);
+            }
+            if (blFile) {
+                form.append("bl_file", blFile);
+            }
+
             $facture_id = $('#facture_id');
 
             if ($facture_id.val() === "") facture = null;
             else facture = $facture_id.val();
+
+            // Additional data
+            form.append("facture", facture);
+            form.append("BonLivraison", liste_prodbl_json);
+            form.append("commandes", identifiant);
+
 
             var settings = {
                 "url": "/api/blivraison/",
                 "method": "POST",
                 "timeout": 0,
                 "headers": {
-                    "Content-Type": "application/json",
                     "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),
                 },
-                "data": JSON.stringify({
-                    "facture": facture,
-                    "fc_file": fileuploaddata,
-                    "bl_file": fileupload2data,
-                    "commandes": identifiant,
-                    "BonLivraison": liste_prodbl
-                }),
+                "processData": false,
+                "contentType": false,
+                "data": form,
             };
 
             $.ajax(settings)
@@ -965,21 +1033,19 @@
 
             // Make the AJAX request
             $.ajax(settings).done(function (response) {
-                console.log(response); // Log the response for debugging
-
                 // Clear existing product list
                 $('#productList').empty();
+                $('#productList-edit').empty();
 
-                // Populate the product list
                 response.forEach(function (product) {
-                    prix_publiqueformat = formatNumber(product.prix_publique);
+                    var prix_publiqueformat = formatNumber(product.prix_publique);
                     var productHtml = `
                     <div class="flex items-center justify-between bg-gray-50 p-4 rounded-lg product-row" data-price="${product.prix_publique}" data-product-id="${product.produit_id}">
                         <div class="flex items-center w-1/4">
                             <img src="/media/${product.image || 'default_image.png'}" alt="Avatar" class="h-12 w-12 rounded-lg mr-4 imageprod">
                             <div>
                                 <h3 class="text-lg font-bold text-blue-600 nameprod">${product.designation}</h3>
-                                <p class="text-sm text-gray-500 refprod">${product.reference}</p>
+                                <p class="text-sm text-gray-800 refprod">${product.reference}</p>
                             </div>
                         </div>
                         <div class="w-1/4 typeprod">Mortier</div>
@@ -995,10 +1061,39 @@
                     </div>
                 `;
                     $('#productList').append(productHtml);
+
+                    var productHtmledit = `
+                    <div id="itemeditable-${product.produit_id}" class="flex items-center justify-between bg-gray-50 p-4 rounded-lg product-row-edit"
+                        data-price="${product.prix_publique}" data-product-id="${product.produit_id}">
+                        <div class="flex items-center w-1/4">
+                            <img src="/media/${product.image || 'default_image.png'}" alt="Avatar" class="h-12 w-12 rounded-lg
+                                mr-4 imageprod-edit">
+                            <div>
+                                <h3 class="text-lg font-bold text-blue-600 nameprod-edit">${product.designation}</h3>
+                                <p class="text-sm text-gray-800 refprod-edit">${product.reference}</p>
+                            </div>
+                        </div>
+                        <div class="w-1/4 typeprod-edit">Mortier</div>
+                        <div class="w-1/5 mesureprod-edit">5 Kg</div>
+                        <div class="w-1/6 colorprod-edit">${product.couleur_produit}</div>
+                        <div class="w-1/6 priceprod-edit text-right pr-4" data-value="${product.prix_publique}">
+                            ${prix_publiqueformat} DA
+                        </div>
+                        <div class="w-1/6">
+                            <input type="number" class="numbprod-edit product-quantity-edit bg-gray-50 border border-gray-300
+                                text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                            value="0" min="0" />
+                        </div>
+                        <div class="w-1/6 product-total-edit text-right">0 DA</div>
+                    </div>
+                `;
+
+                    $('#productList-edit').append(productHtmledit);
                 });
 
-                // Reinitialize event handlers
+
                 initializeEventHandlers();
+                initializeEventHandlersedit();
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 console.error('Error:', textStatus, errorThrown);
             });
@@ -1042,7 +1137,7 @@
                                 <img src="${product.image}" alt="product" class="h-12 w-12 rounded-lg mr-4">
                                 <div>
                                     <h3 class="text-lg font-bold text-blue-600 productName">${product.name}</h3>
-                                    <p class="text-sm text-gray-500 productRef">${product.reference}</p>
+                                    <p class="text-sm text-gray-800 productRef">${product.reference}</p>
                                 </div>
                             </div>
                             <div class="w-1/4">${product.type}</div>
@@ -1255,7 +1350,7 @@
                 }, 0);
             }
 
-            //selectedProducts
+
             $('#confirmOrder').on('click', function () {
                 listteproducts = [];
                 for (i = 0; i < selectedProducts.length; i++) {
@@ -1310,30 +1405,300 @@
 
             });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            function initializeEventHandlersedit() {
+                // Update product total on quantity change and highlight the selected product
+                $('.product-quantity-edit').off('input').on('input', function () {
+                    var quantity = $(this).val();
+                    var productRow = $(this).closest('.product-row-edit');
+                    var price = productRow.data('price');
+                    var total = quantity * price;
+                    var productId = productRow.data('product-id');
+                    var productTotal = productRow.find('.product-total-edit');
+
+                    productTotal.text(formatNumber(total) + ' DA');
+
+                    // Highlight product if quantity > 0
+                    if (quantity > 0) {
+                        productRow.addClass('bg-green-100'); // Highlight with green background
+                        addToSelectedProductsedit(productId, quantity, total);
+                    } else {
+                        productRow.removeClass('bg-green-100'); // Remove highlight
+                        removeFromSelectedProductsedit(productId);
+                    }
+
+                    // Update Step 2 quantities
+                    updateStep2Quantityedit(productId, quantity);
+                });
+
+                // Move to Step 2 and review selected products
+                $('.goToStep2-edit').on('click', function () {
+                    var selectedProductsHtml = '';
+                    var totalPrice = 0;
+
+                    selectedProductsedit.forEach(function (product) {
+                        if (product.quantity > 0) {
+                            var productTotalFormatted = formatNumber(product.total);
+
+                            selectedProductsHtml += `<div class="flex items-center justify-between bg-gray-50 p-4 rounded-lg mb-2
+                            review-product-row-edit" data-product-id="${product.id}" data-price="${product.price}">
+                            <div class="flex items-center w-1/4">
+                                <img src="${product.image}" alt="product" class="h-12 w-12 rounded-lg mr-4">
+                                <div>
+                                    <h3 class="text-lg font-bold text-blue-600 productName-edit">${product.name}</h3>
+                                    <p class="text-sm text-gray-800 productRef-edit">${product.reference}</p>
+                                </div>
+                            </div>
+                            <div class="w-1/4">${product.type}</div>
+                            <div class="w-1/5">${product.weight}</div>
+                            <div class="w-1/6">${product.color}</div>
+                            <div class="w-1/6 text-right pr-4 productPrice-edit">${product.priceFormatted} DA</div>
+                            <div class="w-1/6">
+                                <input type="number" class="review-quantity-edit bg-gray-50 border border-gray-300 text-gray-900
+                                text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                value="${product.quantity}" min="0" />
+                            </div>
+                            <div class="w-1/6 text-right review-product-total-edit pr-4">${productTotalFormatted} DA</div>
+                            <button class="removeProduct-edit bg-red-500 text-white px-4 py-2 rounded-lg ml-4">Supprimer</button>
+                        </div>`;
+
+                            totalPrice += product.total;
+                        }
+                    });
+
+                    $('#selectedProducts-edit').html(selectedProductsHtml);
+                    $('#totalPrice-edit').text(formatNumber(totalPrice) + ' DA');
+
+                    $('#step1-edit').hide();
+                    $('#step2-edit').show();
+                });
+
+                // Move back to Step 1
+                $('#goToStep1-edit').on('click', function () {
+                    $('#step2-edit').hide();
+                    $('#step1-edit').show();
+                });
+
+                $('#goToStep3-edit').on('click', function () {
+                    console.log("etape 3 d'editer")
+                    // Fill in the distributor details
+                    var selectedDistributor = $('#distfield-edit option:selected');
+                    var distributorName = selectedDistributor.data('username');
+                    var distributorCompany = selectedDistributor.data('designation');
+                    var distributorEmail = selectedDistributor.data('email');
+
+
+                    $('#recipientCompany-edit').text(distributorCompany);
+                    $('#recipientName-edit').text(distributorName);
+                    $('#recipientEmail-edit').text(distributorEmail);
+
+                    // Generate a fake facture code and date for now
+                    /*var factureCode = 'FAC-' + Math.floor(Math.random() * 1000000);
+
+                    $('#factureCode').text(factureCode);*/
+                    var currentDate = new Date().toLocaleDateString('fr-FR');
+                    $('#factureDate-edit').text(currentDate);
+
+                    // Populate the product details in the facture
+                    var factureProductDetails = '';
+                    var totalAmount = 0;
+
+                    $('#selectedProducts-edit .review-product-row-edit:visible').each(function () {
+                        var productName = $(this).find('.productName-edit').text();
+                        var productRef = $(this).find('.productRef-edit').text();
+                        var productPrice = $(this).find('.productPrice-edit').text();
+                        var productQuantity = $(this).find('.review-quantity-edit').val();
+                        var productTotal = $(this).find('.review-product-total-edit').text();
+
+                        totalAmount += parseFormattedNumber(productTotal);
+
+                        factureProductDetails += `
+                            <tr>
+                                <td class="p-2">${productName} (${productRef})</td>
+                                <td class="p-2 text-right">${productPrice}</td>
+                                <td class="p-2 text-right">${productQuantity}</td>
+                                <td class="p-2 text-right">${productTotal}</td>
+                            </tr>
+                        `;
+                    });
+
+                    $('#productDetails-edit').html(factureProductDetails);
+
+                    // Calculate and display the totals
+                    var taxRate = 0.19; // Example tax rate of 19%
+                    var taxAmount = totalAmount * taxRate;
+                    var amountDue = totalAmount + taxAmount;
+
+                    $('#totalAstep2-edit').text(formatNumber(totalAmount) + ' DA');
+                    $('#taxAstep2-edit').text(formatNumber(taxAmount) + ' DA');
+                    $('#amoustep2-edit').text(formatNumber(amountDue) + ' DA');
+
+                    // Move to Step 3
+                    $('#step2-edit').hide();
+                    $('#step3-edit').show();
+                });
+
+
+                // Handle quantity change in Step 2 and update the total in Step 1
+                $('#selectedProducts-edit').on('input', '.review-quantity-edit', function () {
+                    var reviewRow = $(this).closest('.review-product-row-edit');
+                    var newQuantity = parseInt($(this).val(), 10);
+                    var price = reviewRow.data('price');
+                    var newTotal = newQuantity * price;
+                    var productId = reviewRow.data('product-id');
+
+                    reviewRow.find('.review-product-total-edit').text(formatNumber(newTotal) + ' DA');
+
+                    // Update Step 1 quantities
+                    updateStep1Quantityedit(productId, newQuantity, newTotal);
+
+                    // Update the total in the selectedProducts array
+                    updateSelectedProductedit(productId, newQuantity, newTotal);
+
+                    // Update the overall total price
+                    var overallTotal = calculateTotalPriceedit();
+                    $('#totalPrice-edit').text(formatNumber(overallTotal) + ' DA');
+                });
+
+                // Remove a product from Step 2
+                $('#selectedProducts-edit').on('click', '.removeProduct-edit', function () {
+                    var reviewRow = $(this).closest('.review-product-row-edit');
+                    var productId = reviewRow.data('product-id');
+
+                    reviewRow.remove();
+
+                    // Remove the product from Step 1
+                    removeProductFromStep1edit(productId);
+
+                    // Remove the product from the selectedProducts array
+                    removeFromSelectedProductsedit(productId);
+
+                    // Update the overall total price
+                    var overallTotal = calculateTotalPriceedit();
+                    $('#totalPrice-edit').text(formatNumber(overallTotal) + ' DA');
+                });
+            }
+
+            function addToSelectedProductsedit(productId, quantity, total) {
+                console.log("vouila")
+                var productRow = $('.product-row-edit[data-product-id="' + productId + '"]');
+
+                var product = {
+                    id: productId,
+                    name: productRow.find('.nameprod-edit').text(),
+                    reference: productRow.find('.refprod-edit').text(),
+                    type: productRow.find('.typeprod-edit').text(),
+                    weight: productRow.find('.mesureprod-edit').text(),
+                    color: productRow.find('.colorprod-edit').text(),
+                    price: productRow.data('price'),
+                    priceFormatted: productRow.find('.priceprod-edit').text(),
+                    quantity: quantity,
+                    total: total,
+                    image: productRow.find('.imageprod-edit').attr('src')
+                };
+
+                // Check if the product already exists in the selectedProducts array
+                var existingProduct = selectedProductsedit.find(function (p) {
+                    return p.id === productId;
+                });
+
+                if (existingProduct) {
+                    existingProduct.quantity = quantity;
+                    existingProduct.total = total;
+                } else {
+                    selectedProductsedit.push(product);
+                }
+            }
+
+            function updateSelectedProductedit(productId, quantity, total) {
+                var product = selectedProductsedit.find(function (p) {
+                    return p.id === productId;
+                });
+
+                if (product) {
+                    product.quantity = quantity;
+                    product.total = total;
+                }
+            }
+
+            function removeFromSelectedProductsedit(productId) {
+
+                selectedProductsedit = selectedProductsedit.filter(function (product) {
+                    return product.id !== productId;
+                });
+            }
+
+            function updateStep2Quantityedit(productId, quantity) {
+                console.log("je suis ici")
+                var reviewRow = $('.review-product-row-edit[data-product-id="' + productId + '"]');
+                reviewRow.find('.review-quantity-edit').val(quantity);
+
+                var price = reviewRow.data('price');
+                var newTotal = quantity * price;
+
+                reviewRow.find('.review-product-total-edit').text(formatNumber(newTotal) + ' DA');
+            }
+
+            function updateStep1Quantityedit(productId, quantity, total) {
+                var productRow = $('.product-row-edit[data-product-id="' + productId + '"]');
+
+                productRow.find('.product-quantity-edit').val(quantity);
+                productRow.find('.product-total-edit').text(formatNumber(total) + ' DA');
+
+                if (quantity > 0) {
+                    productRow.addClass('bg-green-100'); // Highlight with green background
+                } else {
+                    productRow.removeClass('bg-green-100'); // Remove highlight
+                }
+            }
+
+            function removeProductFromStep1edit(productId) {
+                var productRow = $('.product-row-edit[data-product-id="' + productId + '"]');
+                productRow.find('.product-quantity-edit').val(0);
+                productRow.find('.product-total-edit').text('0 DA');
+                productRow.removeClass('bg-green-100'); // Remove highlight
+            }
+
+            function calculateTotalPriceedit() {
+                return selectedProductsedit.reduce(function (total, product) {
+                    return total + product.total;
+                }, 0);
+            }
+
+
+
+
         });
 
 
-        $(document).ready(function () {
-            // When a file is selected in #file-upload
-            $("#file-upload").on('change', function () {
-                const file = $(this).prop('files')[0];
-                if (file) {
-                    getBase64(file, function (base64) {
-                        fileuploaddata = base64
-                    });
-                } else fileuploaddata = null
-            });
 
-            // When a file is selected in #file-upload2
-            $("#file-upload2").on('change', function () {
-                const file = $(this).prop('files')[0];
-                if (file) {
-                    getBase64(file, function (base64) {
-                        fileupload2data = base64
-                    });
-                } else fileupload2data = null
-            });
-        });
+
+
+
     </script>
 
 

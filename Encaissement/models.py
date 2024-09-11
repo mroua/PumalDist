@@ -1,6 +1,8 @@
 from django.db import models
 
 # Create your models here.
+from django.db.models import Q
+
 from Distributeur.models import Payeur
 
 typeencaissement = (
@@ -25,6 +27,7 @@ class Factures(models.Model):
     code = models.CharField(max_length=100)
     payeur = models.ForeignKey(Payeur, models.CASCADE)
     montant = models.FloatField(default=0)
+    montant_ttc = models.FloatField(default=0)
     date_ajout= models.DateTimeField(auto_now=True)
     date_echeance = models.DateField(blank=True , null=True)
     complete = models.BooleanField(default=False)
@@ -37,16 +40,15 @@ class Factures(models.Model):
     def restant(self):
         # Calculate the sum of all validated encaissements for this facture
         encaissements_sum = \
-        self.Facture_encaissement.filter(encaissement__validation=True).aggregate(total=models.Sum('montant'))[
-            'total'] or 0
+        self.Facture_encaissement.filter(Q(encaissement__validation=True)|Q(account__validation=True)).aggregate(total=models.Sum('montant'))['total'] or 0
 
-        # Calculate and return the remaining amount
-        return self.montant - encaissements_sum
+
+        return self.montant_ttc - encaissements_sum
 
 
 class Encaissement(models.Model):
     id = models.AutoField(primary_key=True)
-    code = models.CharField(max_length=100)
+    code = models.CharField(max_length=100, null=True, blank=True)
     montant = models.FloatField(default=0)
     payeur = models.ForeignKey(Payeur, models.CASCADE)
     type = models.CharField(max_length=20, choices=typeencaissement, default="Cheque")

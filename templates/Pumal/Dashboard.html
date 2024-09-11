@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "baseNew.html" %}
 {% load static %}
 {% load mes_tags %}
 {% block title %}Distributeur{% endblock %}
@@ -8,27 +8,29 @@
 {% endblock %}
 
 {% block content %}
-    <div class="w-full h-full flex flex-col py-2 overflow-y-auto text-bold">
+    <div class="w-full h-full flex flex-col overflow-y-auto text-bold">
 
-        <div class="flex justify-between items-center mb-4" style="margin-top: -8px">
-            <h2 class="text-2xl font-bold text-gray-700">Dashboard Distributeur</h2>
+        <div class="flex justify-between items-center mb-2">
+            <h2 class="text-xl font-bold text-gray-700">Dashboard Distributeur</h2>
             <div>
-                <button id="filterButton" class="bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-700">
-                    Filtrer
-                </button>
+                {% if request.user.type != "Distributeur" %}
+                    <button id="filterButton" class="popupButton backprimer text-white py-2 px-4 rounded-lg hover:bg-blue-900">
+                        Filtrer
+                    </button>
+                {% endif %}
             </div>
         </div>
 
 
         <div class="flex-grow flex overflow-y-auto text-xs gap-4">
-            <div class="w-1/3 h-full" style="background: #1E3A8A;">
+            <div class="w-1/3 h-full backprimer">
                 <div class="w-full h-full flex flex-col gap-2">
-                    <span class="text-sm font-semibold text-4xl text-white px-6 capitalize">achats</span>
+                    <span class="text-sm font-semibold text-2xl text-white px-6 capitalize">achats</span>
                     <div class="w-full h-full backprimer text-white flex flex-col gap-8 2xl:gap-14 p-4 2xl:p-6">
                         <div class="w-full h-fit grid grid-cols-5 gap-4">
                             <div class="w-full h-full flex flex-col gap-2  col-span-2">
                                 <span class="text-xs font-medium flex-none capitalize">objectif annuel</span>
-                                <span class="text-4xl text-green-400 font-bold">{{ obj_annuel_p }}%</span>
+                                <span class="text-2xl text-green-400 font-bold">{{ obj_annuel_p }}%</span>
                             </div>
 
                             <div class="w-full h-full flex flex-col gap-2 col-span-3 justify-between">
@@ -39,7 +41,7 @@
                                     </a>
                                 </div>
 
-                                <span class="text-xl 2xl:text-2xl text-slate-200 font-bold">{{ achat_annuelle }} <span
+                                <span class="text-lg 2xl:text-xl text-slate-200 font-bold">{{ achat_annuelle|floate_redefined }} <span
                                         class="text-xs font-medium">DA</span></span>
                             </div>
                         </div>
@@ -48,7 +50,7 @@
                         <div class="w-full h-fit grid grid-cols-5 gap-4">
                             <div class="w-full h-full flex flex-col gap-2  col-span-2">
                                 <span class="text-xs font-medium flex-none capitalize">objectif mensuel</span>
-                                <span class="text-4xl text-red-400 font-bold">{{ obj_menssuel_p }}</span>
+                                <span class="text-2xl text-red-400 font-bold">{{ obj_menssuel_p }}</span>
                             </div>
 
                             <div class="w-full h-full flex flex-col gap-2 col-span-3 justify-between">
@@ -59,7 +61,7 @@
                                     </a>
                                 </div>
 
-                                <span class="text-xl 2xl:text-2xl text-slate-200 font-bold">{{ achat_menssuelle }} <span
+                                <span class="text-lg 2xl:text-xl text-slate-200 font-bold">{{ achat_menssuelle }} <span
                                         class="text-xs font-medium">DA</span></span>
                             </div>
                         </div>
@@ -68,7 +70,7 @@
                         <div class="w-full h-fit grid grid-cols-2 gap-4">
                             <div class="w-full h-full flex flex-col gap-2  col-span-1">
                                 <span class="text-xs font-medium flex-none capitalize">ristourne allouée</span>
-                                <span class="text-xl 2xl:text-2xl text-white font-bold">{{ ristourn_a|floate_redefined }}<span
+                                <span class="text-lg 2xl:text-xl text-white font-bold">{{ ristourn_a|floate_redefined }}<span
                                         class="text-xs font-medium">DA</span></span>
                             </div>
 
@@ -77,7 +79,7 @@
                                     <span class="text-xs font-medium capitalize">ristourne non-allouée</span>
                                 </div>
 
-                                <span class="text-xl 2xl:text-2xl text-white font-bold">{{ ristourn_na|floate_redefined }}<span
+                                <span class="text-lg 2xl:text-xl text-white font-bold">{{ ristourn_na|floate_redefined }}<span
                                         class="text-xs font-medium">DA</span></span>
                             </div>
                         </div>
@@ -89,14 +91,14 @@
                     </div>
                 </div>
             </div>
-            <div class="w-1/3 h-full" style="background: #1E3A8A;">
+            <div class="w-1/3 h-full backprimer">
                 <div class="w-full h-full flex flex-col gap-2">
-                    <span class="text-sm font-semibold text-4xl text-white capitalize px-6">créances</span>
+                    <span class="text-sm font-semibold text-2xl text-white capitalize px-6">créances</span>
                     <div class="w-full h-full backprimer text-white  flex flex-col gap-8 2xl:gap-14 p-4 2xl:p-6">
                         <div class="w-full h-fit grid grid-cols-5 gap-4">
                             <div class="w-full h-full flex flex-col gap-2  col-span-2">
                                 <span class="text-xs font-medium flex-none capitalize">délais de payement</span>
-                                <span class="text-xl 2xl:text-2xl text-slate-200 font-bold capitalize">{{ echeance_jour }} <span
+                                <span class="text-lg 2xl:text-xl text-slate-200 font-bold capitalize">{{ echeance_jour }} <span
                                         class="text-lg">jours</span></span>
                             </div>
 
@@ -108,7 +110,7 @@
                                     </a>
                                 </div>
 
-                                <span class="text-xl 2xl:text-2xl text-slate-200 font-bold">{{ plafonnement|floate_redefined }}<span
+                                <span class="text-lg 2xl:text-xl text-slate-200 font-bold">{{ plafonnement|floate_redefined }}<span
                                         class="text-xs font-medium">DA</span></span>
                             </div>
                         </div>
@@ -116,7 +118,7 @@
                         <div class="w-full h-fit grid grid-cols-5 gap-4">
                             <div class="w-full h-full flex flex-col gap-2  col-span-2">
                                 <span class="text-xs font-medium flex-none capitalize">taux des en cours</span>
-                                <span class="text-4xl text-green-400 font-bold">{{ en_cour_p |floate_redefined }}</span>
+                                <span class="text-2xl text-green-400 font-bold">{{ en_cour_p |floate_redefined }}</span>
                             </div>
 
                             <div class="w-full h-full flex flex-col gap-2 col-span-3 justify-between">
@@ -127,7 +129,7 @@
                                     </a>
                                 </div>
 
-                                <span class="text-xl 2xl:text-2xl text-slate-200 font-bold">{{ en_cour |floate_redefined }} <span
+                                <span class="text-lg 2xl:text-xl text-slate-200 font-bold">{{ en_cour |floate_redefined }} <span
                                         class="text-xs font-medium">DA</span></span>
                             </div>
                         </div>
@@ -140,7 +142,7 @@
                                     </a>
                                 </div>
 
-                                <span class="text-xl 2xl:text-2xl text-slate-200 font-bold">{{ TotalCre|floate_redefined }} <span
+                                <span class="text-lg 2xl:text-xl text-slate-200 font-bold">{{ TotalCre|floate_redefined }} <span
                                         class="text-xs font-medium">DA</span></span>
                             </div>
 
@@ -152,7 +154,7 @@
                                     </a>
                                 </div>
 
-                                <span class="text-xl 2xl:text-2xl text-slate-200 font-bold">{{ TotalCreE|floate_redefined }} <span
+                                <span class="text-lg 2xl:text-xl text-slate-200 font-bold">{{ TotalCreE|floate_redefined }} <span
                                         class="text-xs font-medium">DA</span></span>
                             </div>
                         </div>
@@ -164,11 +166,11 @@
                     </div>
                 </div>
             </div>
-            <div class="w-1/3 h-full" style="background: #1E3A8A;">
+            <div class="w-1/3 h-full backprimer">
                 <div class="w-full h-full flex flex-col gap-2">
 
                     <div class="w-full flex flex-col gap-2">
-                        <span class="text-sm font-semibold text-4xl text-white capitalize px-6 capitalize">top commandes</span>
+                        <span class="text-sm font-semibold text-2xl text-white capitalize px-6 capitalize">top commandes</span>
                         <div class="w-full h-full p-6 ">
                             <canvas id="pie-chart"  height="60" width="100"></canvas>
                         </div>
@@ -176,34 +178,34 @@
 
 
                     <div class="w-full flex flex-col gap-2">
-                        <span class="text-sm font-semibold text-4xl text-white capitalize px-6 capitalize">commandes</span>
+                        <span class="text-sm font-semibold text-2xl text-white capitalize px-6 capitalize">commandes</span>
                         <div class="w-full h-full p-4 2xl:p-6 bg-white flex flex-col gap-4 text-white text-lg" style="background: transparent;">
 
                             <div class="w-full h-full flex flex-col gap-2 justify-between">
                                 <div class="w-full flex justify-between gap-5 items-center">
                                     <span class="text-xs font-medium capitalize">receptions et enregistrement</span>
-                                    <span class="text-xl text-primary font-bold">{{ r_e }}</span>
+                                    <span class="text-lg text-primary font-bold">{{ r_e }}</span>
                                 </div>
                             </div>
 
                             <div class="w-full h-full flex flex-col gap-2 justify-between">
                                 <div class="w-full flex justify-between gap-5 items-center">
                                     <span class="text-xs font-medium capitalize">validation et traitement</span>
-                                    <span class="text-xl text-primary font-bold">{{ v_t }}</span>
+                                    <span class="text-lg text-primary font-bold">{{ v_t }}</span>
                                 </div>
                             </div>
 
                             <div class="w-full h-full flex flex-col gap-2 justify-between">
                                 <div class="w-full flex justify-between gap-5 items-center">
                                     <span class="text-xs font-medium capitalize">preparation</span>
-                                    <span class="text-xl text-primary font-bold">{{ prep }}</span>
+                                    <span class="text-lg text-primary font-bold">{{ prep }}</span>
                                 </div>
                             </div>
 
                             <div class="w-full h-full flex flex-col gap-2 justify-between">
                                 <div class="w-full flex justify-between gap-5 items-center">
                                     <span class="text-xs font-medium capitalize">en cours d'expedition</span>
-                                    <span class="text-xl text-primary font-bold">{{ e_c }}</span>
+                                    <span class="text-lg text-primary font-bold">{{ e_c }}</span>
                                 </div>
                             </div>
                         </div>
@@ -217,14 +219,14 @@
                             <div class="w-full h-full flex flex-col gap-2 justify-between">
                                 <div class="w-full flex justify-between gap-5 items-center">
                                     <span class="text-xs font-medium capitalize">reclamations non traitées</span>
-                                    <span class="text-xl text-primary font-bold"> { rc_nbr }}</span>
+                                    <span class="text-lg text-primary font-bold"> { rc_nbr }}</span>
                                 </div>
                             </div>
 
                             <div class="w-full h-full flex flex-col gap-2 justify-between">
                                 <div class="w-full flex justify-between gap-5 items-center">
                                     <span class="text-xs font-medium capitalize">intervention non traitées</span>
-                                    <span class="text-xl text-primary font-bold">{ { int_nbr }}</span>
+                                    <span class="text-lg text-primary font-bold">{ { int_nbr }}</span>
                                 </div>
                             </div>
                         </div>
@@ -257,117 +259,56 @@
 
 
     <!-- Filter Modal -->
-    <div id="addbl" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
+    <div id="addbl" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden" style="z-index: 100">
         <form id="formaddaccompte">
             <div class="relative w-screen h-screen flex justify-center items-center">
-                <div class="bg-white w-1/3 h-auto p-6 rounded-lg shadow-lg gap-y-2 flex flex-col" id="backprimer"
-                     style="background: #1E3A8A">
+                <div class="backprimer w-1/3 h-auto p-6 rounded-lg shadow-lg gap-y-2 flex flex-col" id="backprimer">
                     <div class="w-full flex justify-between">
-                        <div><h3 class="text-lg font-semibold">Ajout Accompte</h3></div>
+                        <div><h3 class="text-lg textslate font-semibold">Filtrer tableau de bord</h3></div>
                         <div>
-                            <button class="closePopup text-gray-700 p-2">
+                            <button class="closePopup text-xl textslate ">
                                 <i class="fas fa-times"></i>
                             </button>
                         </div>
                     </div>
 
                     <div class="flex-grow grid grid-cols-1 overflow-y-auto mb-4">
-                        <div>
+                        <div class="px-2">
                             <div class="mb-3">
-                                <label for="distributeur" class="block mb-1 pl-1 text-sm font-medium text-gray-900">Distribupteur</label>
-                                <select id="distributeur" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                <label for="distributeur" class="block mb-1 pl-1 text-sm font-medium textslate">Distribupteur</label>
+                                <select id="distributeur" class="text-gray-900 text-sm rounded-lg
                                     block w-full p-2.5">
                                     {% for elem in listedist %}
-                                        <option class="p-2.5" value="{{ elem.id }}">{{ elem.designation }}</option>
+                                        <option class="p-2.5" value="{{ elem.id }}" {% if elem == first_dist %}selected{% endif %}>{{ elem.designation }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
-                            <div class="mb-3">
-                                <label for="payeur"
-                                       class="block mb-1 pl-1 text-sm font-medium text-gray-900">Payeur</label>
-                                <select id="payeur" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
-                                    block w-full p-2.5">
-                                    {% for elem in listepayeur %}
-                                        <option class="p-2.5" value="{{ elem.id }}">{{ elem.designation }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="account_montant"
-                                       class="block mb-1 pl-1 text-sm font-medium text-gray-900">Montant</label>
-                                <label for="account_montant" id="display_montant"
-                                       class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
-                                       block w-full p-2.5 text-right">0
-                                    DA</label>
-                                <input id="account_montant" value="" type="number" class="w-0 h-0">
-                            </div>
-                            <label class="block mb-1 pl-1 text-sm font-medium text-gray-900">Type d'accompte</label>
-                            <div class="mb-3 grid grid-cols-3 gap-2">
-                                <label for="hs-radio-on-right"
-                                       class="flex justify-between p-3 w-full bg-white border border-gray-200 rounded-lg text-sm focus:border-blue-500
-                                       focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
-                                    <span class="text-sm text-gray-500 dark:text-neutral-400">Cheque</span>
-                                    <input type="radio" name="options" value="Cheque" checked id="hs-radio-on-right">
-                                </label>
-
-                                <label for="hs-radio-on-right-checked1"
-                                       class="flex justify-between p-3 w-full bg-white border border-gray-200 rounded-lg text-sm
-                                       focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
-                                    <span class="text-sm text-gray-500 dark:text-neutral-400 p">Virement</span>
-                                    <input type="radio" name="options" value="Virement" id="hs-radio-on-right-checked1">
-                                </label>
-
-                                <label for="hs-radio-on-right-checked2"
-                                       class="flex justify-between p-3 w-full bg-white border border-gray-200 rounded-lg text-sm focus:border-blue-500
-                                       focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
-                                    <span class="text-sm text-gray-500 dark:text-neutral-400">Espece</span>
-                                    <input type="radio" name="options" value="Espece" id="hs-radio-on-right-checked2">
-                                </label>
-                            </div>
+                            <!--
                             <div class="grid grid-cols-2 mb-3 gap-2">
                                 <div>
-                                    <label for="banque"
-                                           class="block text-sm font-medium text-gray-700 mb-1">Banque</label>
-                                    <select id="banque"
-                                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500
-                                            focus:border-blue-500 block w-full p-2.5">
-                                        {% for bnq in listebanque %}
-                                            {{ bnq }}
-                                            <option value="{{ bnq.id }}">{{ bnq.designation }} ({{ bnq.code }})</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label for="numero"
-                                           class="block mb-1 pl-1 text-sm font-medium text-gray-900">Numéro</label>
-                                    <input id="numero"
-                                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-right"/>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-2 mb-3 gap-2">
-                                <div>
-                                    <label for="datedepot"
-                                           class="block mb-1 pl-1 text-sm font-medium text-gray-900">Date Cheque</label>
+                                    <label for="datedebut"
+                                           class="block mb-1 pl-1 text-sm font-medium textslate">Date début</label>
                                     <input type="date" id="date_cheque"
                                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                                 </div>
                                 <div>
-                                    <label for="datevalisation"
-                                           class="block mb-1 pl-1 text-sm font-medium text-gray-900">Date Dépot</label>
+                                    <label for="datefin"
+                                           class="block mb-1 pl-1 text-sm font-medium textslate">Date fin</label>
                                     <input type="date" id="date_depot"
                                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                                 </div>
-                            </div>
+                            </div> -->
 
 
                         </div>
                     </div>
 
                     <div class="flex justify-between">
-                        <button class="closePopup bg-gray-500 text-white p-2 rounded">Annuler</button>
-                        <button type="submit" class="bg-green-300 text-white p-2 rounded">Ajouter</button>
+                        <button class="closePopup text-white p-2 rounded btn capitalize bg-[#141b54] hover:bg-blue-900">Annuler</button>
+                        <button id="SearchApply"
+                                class="btn capitalize bg-[#141b54] px-4 rounded py-2 border border-slate-300 text-gray-400 text-sm hover:bg-blue-900 hover:border-slate-400">
+                            Recherche
+                        </button>
                     </div>
 
                 </div>
@@ -463,6 +404,33 @@
             },
         });
 
+
+
+        $(document).ready(function () {
+            // Show the popup
+            $('.popupButton').click(function () {
+                $('#addbl').fadeIn();
+            });
+
+            // Close the popup
+            $('.closePopup').click(function () {
+                $('#addbl').fadeOut();
+            });
+
+            // Optional: Close popup if clicking outside of the popup content
+            $(window).click(function (event) {
+                if ($(event.target).is('#addbl')) {
+                    $('#addbl').fadeOut();
+                }
+            });
+        });
+
+        $("#SearchApply").on('click', function (e) {
+            e.preventDefault();
+            link = "/dashboard/?distributeur=" + $('#distributeur').val();
+            //alert(link)
+            window.location.href = link;
+        })
 
     </script>
 
