@@ -1,0 +1,809 @@
+{% extends "baseNew.html" %}
+{% load mes_tags %}
+{% load static %}
+{% block title %}Distributeur{% endblock %}
+{% block page_heading %}
+
+    <div>
+        {{ request.name }}
+        <a href="{% url 'encaissement' %}" class="block px-4 py-2 hover:bg-gray-200 rounded
+            {% if request.path == '/encaissement/' %} bg-gray-200{% endif %}"
+        >Encaissements</a>
+    </div>
+
+    <div>
+        <a href="{% url 'encaissementvalidate' %}" class="block px-4 py-2 hover:bg-gray-200 rounded
+            {% if request.path == '/encaissement/encaissementvalidate' %} bg-gray-200{% endif %}"
+        >Validation</a>
+    </div>
+
+
+    <div>
+        <a href="{% url 'accompte' %}" class="block px-4 py-2 hover:bg-gray-200 rounded
+            {% if request.path == '/encaissement/accompte' %} bg-gray-200{% endif %}"
+        >Acompte</a>
+    </div>
+
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="w-full h-full backprimer px-4 pb-4 flex flex-col">
+        <style>
+            .disabledelem {
+                cursor: not-allowed; /* Change cursor to indicate it's disabled */
+                opacity: 0.6; /* Make it slightly transparent */
+                background-color: #cbd5e0;
+            }
+
+            .disabledelem:hover {
+                background-color: #cbd5e0; /* Keep the background color the same as when disabled */
+            }
+        </style>
+
+        <div id="editSidebar"
+             class="fixed right-0 top-0 bottom-0 w-2/5 bg-white shadow-lg transform translate-x-full transition-transform duration-300 z-50"
+             style="margin-top: -8px">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 class="text-lg font-semibold">Encaissement Détail: </h3>
+                <button id="closeEditSidebar" class="text-gray-500 hover:text-gray-700">&times;</button>
+            </div>
+            <!-- Edit User Form -->
+
+            <div class="p-4">
+                <form id="edituserForm">
+                    <div class="p-4" style="height: calc(100% - 10rem); overflow-y: auto;">
+
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div class="mb-3">
+                                <label for="distributeurdetail" class="block mb-1 pl-1 text-sm font-medium text-gray-900">Distribupteur</label>
+                                <div id="distributeurdetail" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                        block w-full p-2.5">
+
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="payeurdetail"
+                                       class="block mb-1 pl-1 text-sm font-medium text-gray-900">Payeur</label>
+                                <div id="payeurdetail" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                        block w-full p-2.5">
+
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="montantdetail"
+                                       class="block mb-1 pl-1 text-sm font-medium text-gray-900">Montant</label>
+                                <div id="montantdetail" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                        block w-full p-2.5 text-right">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="block mb-1 pl-1 text-sm font-medium text-gray-900">Type d'accompte</label>
+                                <div id="typeaccountt"
+                                     class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500
+                                                focus:border-blue-500 block w-full p-2.5">
+
+                                </div>
+                            </div>
+                            <div>
+                                <label for="banquedetail"
+                                       class="block text-sm font-medium text-gray-700 mb-1">Banque</label>
+                                <div id="banquedetail"
+                                     class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500
+                                                focus:border-blue-500 block w-full p-2.5">
+
+                                </div>
+                            </div>
+                            <div>
+                                <label for="numerodetail"
+                                       class="block mb-1 pl-1 text-sm font-medium text-gray-900">Numéro</label>
+                                <div id="numerodetail"
+                                     class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-right"></div>
+                            </div>
+                            <div>
+                                <label for="chequedetail"
+                                       class="block mb-1 pl-1 text-sm font-medium text-gray-900">Date Cheque</label>
+                                <div id="chequedetail"
+                                     class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-right"></div>
+                            </div>
+                            <div>
+                                <label for="substitutionedit"
+                                       class="block mb-1 pl-1 text-sm font-medium text-gray-900">Substitution</label>
+                                <div id="substitutionedit"
+                                     class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-right"></div>
+                            </div>
+                        </div>
+                        <div id="elemptdate" class="grid grid-cols-2 gap-3">
+
+                        </div>
+                    </div>
+                    <div class="flex justify-end py-8">
+                        <button type="submit" id="modifdates"
+                                class="modifdates bg-blue-500 text-white py-2 px-4 rounded-lg
+                   hover:bg-blue-400
+                   disabled:bg-gray-400">
+                            Modifier
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="w-full h-full flex flex-col py-2 overflow-y-auto text-bold">
+
+            <div class="flex justify-between items-center py-4 mb-4" style="margin-top: -8px">
+                <div class="flex">
+                    <div>
+                        <a href="{% url 'encaissement' %}"
+                           class="block px-4 py-2 hoverprimer rounded">Encaissement</a>
+                    </div>
+                    <div><!-- accomptes -->
+                        <a href="{% url 'encaissementvalidate' %}" class="block px-4 py-2 hoverprimer rounded">Validation</a>
+                    </div>
+                    <div><!-- accomptes -->
+                        <a href="{% url 'accompte' %}" class="block px-4 py-2 hoverprimer rounded">Accompte</a>
+                    </div>
+                </div>
+                <div>
+                    <button id="filterButton" class="bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-700">Filtrer
+                    </button>
+
+                </div>
+            </div>
+
+        <!--
+        montant
+    payeur
+    type
+    numero
+    date_validation
+    date_ajout
+    validation
+    validation_depot
+    banque
+    date_depot
+    date_cheque
+    substitution
+    listefacturesub
+        -->
+
+            <div class="shadow-md rounded-t-lg p-2 mb-4">
+                <div class="grid grid-cols-9 text-gray-600 font-semibold gap-4">
+                    <div class="capitalize col-span-2">Payeur</div>
+                    <div class="capitalize text-right pr-4">Montant</div>
+                    <div class="capitalize">mode paiement</div>
+                    <div class="capitalize">étape</div>
+                    <div class="capitalize">date Ajout</div>
+                    <div class="capitalize">date échéance</div>
+                    <div class="capitalize">Substitution</div>
+                    <div class="capitalize text-right pr-4">Actions</div>
+                </div>
+            </div>
+            <div class="flex-grow space-y-4 overflow-y-auto text-xs">
+                {% for elem in encaissement %}
+                    <div class="grid grid-cols-9 bg-white p-2 rounded-lg gap-4 text-gray-800 font-bold">
+                        <div class="col-span-2">
+                            <p class="truncate">{{ elem.payeur.designation }} ({{ elem.payeur.distributeur.designation }})</p>
+                        </div>
+                        <div class="text-right">
+                            <p>{{ elem.montant|floate_redefined }} DA</p>
+                        </div>
+                        <div class="">{{ elem.type }}</div>
+                        <div class="">
+                            {% if not elem.validation_depot %} En circulation {% elif not elem.validation %} En
+                                dépot {% else %}
+                                Validé {% endif %}
+                        </div>
+                        <div class="">{{ elem.date_ajout|date:'d-m-Y' }}</div>
+                        <div class="">
+                            {% if not validation_depot %}
+                                {{ elem.date_cheque|date:'d-m-Y' }}
+                            {% elif not validation %}
+                                {{ elem.date_depot|date:'d-m-Y' }}
+                            {% else %}
+                                /
+                            {% endif %}
+                        </div>
+                        <div class="">
+                            {% if elem.encaissement %}}
+                                Encaissement
+                            {% else %}
+                                Acompte
+                            {% endif %}
+                        </div>
+                        <div class="flex justify-end gap-2">
+                            {% if elem.validation %}
+                                <button id="editButton" data-identifiant="{{ elem.id }}"
+                                        class="editButton bg-blue-500 text-white p-2 rounded"><i class="fas fa-search"></i>
+                                </button>
+                            {% else %}
+                                <button id="editButton" data-identifiant="{{ elem.id }}"
+                                        class="editButton bg-blue-500 text-white p-2 rounded"><i
+                                        class="fas fa-pencil-alt"></i></button>
+                            {% endif %}
+                            <button class="bg-red-500 text-white p-2 rounded delete-btn" data-identifiant="{{ elem.id }}"><i
+                                    class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+
+        </div>
+
+
+
+        <!-- Filter Modal -->
+        <div id="addbl" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
+            <form id="formaddaccompte">
+                <div class="relative w-screen h-screen flex justify-center items-center">
+                    <div class="bg-white w-1/3 h-auto p-6 rounded-lg shadow-lg gap-y-2 flex flex-col">
+                        <div class="w-full flex justify-between">
+                            <div><h3 class="text-lg font-semibold">Ajout Accompte</h3></div>
+                            <div>
+                                <button class="closePopup text-gray-700 p-2">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="flex-grow overflow-y-auto mb-4">
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="mb-3">
+                                    <label for="distributeur" class="block mb-1 pl-1 text-sm font-medium text-gray-900">Distribupteur</label>
+                                    <select id="distributeur" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                        block w-full p-2.5">
+                                        {% for elem in listedist %}
+                                            <option class="p-2.5" value="{{ elem.id }}">{{ elem.designation }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="payeur"
+                                           class="block mb-1 pl-1 text-sm font-medium text-gray-900">Payeur</label>
+                                    <select id="payeur" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                        block w-full p-2.5">
+                                        {% for elem in listepayeur %}
+                                            <option class="p-2.5" value="{{ elem.id }}">{{ elem.designation }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="account_montant"
+                                           class="block mb-1 pl-1 text-sm font-medium text-gray-900">Montant</label>
+                                    <label for="account_montant" id="display_montant"
+                                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                           block w-full p-2.5 text-right">0
+                                        DA</label>
+                                    <input id="account_montant" value="" type="number" class="w-0 h-0">
+                                </div>
+
+                                <div>
+                                    <label for="datedepot"
+                                           class="block mb-1 pl-1 text-sm font-medium text-gray-900">Date Cheque</label>
+                                    <input type="date" id="date_cheque"
+                                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                </div>
+
+                                <div class="mb-3 col-span-2 grid grid-cols-3 gap-2">
+                                    <div class="col-span-3">
+                                        <label class="block mb-1 pl-1 text-sm font-medium text-gray-900">Type
+                                            d'accompte</label>
+                                    </div>
+                                    <label for="hs-radio-on-right"
+                                           class="flex justify-between p-3 w-full bg-white border border-gray-200 rounded-lg text-sm focus:border-blue-500
+                                           focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
+                                        <span class="text-sm text-gray-500 dark:text-neutral-400">Cheque</span>
+                                        <input type="radio" name="options" value="Cheque" checked id="hs-radio-on-right">
+                                    </label>
+
+                                    <label for="hs-radio-on-right-checked1"
+                                           class="flex justify-between p-3 w-full bg-white border border-gray-200 rounded-lg text-sm
+                                           focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
+                                        <span class="text-sm text-gray-500 dark:text-neutral-400 p">Virement</span>
+                                        <input type="radio" name="options" value="Virement" id="hs-radio-on-right-checked1">
+                                    </label>
+
+                                    <label for="hs-radio-on-right-checked2"
+                                           class="flex justify-between p-3 w-full bg-white border border-gray-200 rounded-lg text-sm focus:border-blue-500
+                                           focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
+                                        <span class="text-sm text-gray-500 dark:text-neutral-400">Espece</span>
+                                        <input type="radio" name="options" value="Espece" id="hs-radio-on-right-checked2">
+                                    </label>
+                                </div>
+                                <div>
+                                    <label for="banque"
+                                           class="block text-sm font-medium text-gray-700 mb-1">Banque</label>
+                                    <select id="banque"
+                                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500
+                                                focus:border-blue-500 block w-full p-2.5">
+                                        {% for bnq in listebanque %}
+                                            {{ bnq }}
+                                            <option value="{{ bnq.id }}">{{ bnq.designation }} ({{ bnq.code }})</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label for="numero"
+                                           class="block mb-1 pl-1 text-sm font-medium text-gray-900">Numéro</label>
+                                    <input id="numero"
+                                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-right"/>
+                                </div>
+                                <div>
+                                    <label for="datevalisation"
+                                           class="block mb-1 pl-1 text-sm font-medium text-gray-900">Date Échéance
+                                        Dépot</label>
+                                    <input type="date" id="date_depot"
+                                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                </div>
+                                <div>
+                                    <label for="datevalisation"
+                                           class="block mb-1 pl-1 text-sm font-medium text-gray-900">Date Échéance
+                                        validation</label>
+                                    <input type="date" id="date_echeance"
+                                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between">
+                            <button class="closePopup bg-gray-500 text-white p-2 rounded">Annuler</button>
+                            <button type="submit" class="bg-green-300 text-white p-2 rounded">Ajouter</button>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+        <script>
+
+            let payeurdetailid = 0;
+
+            function formatNumber(num) {
+                return new Intl.NumberFormat('fr-FR', {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(num);
+            }
+
+            function parseFormattedNumber(formattedNum) {
+                // Replace spaces and commas, then parse the string as a float
+                return parseFloat(formattedNum.replace(/\s/g, '').replace(',', '.'));
+            }
+
+            $(document).ready(function () {
+                // Show the popup
+                $('.popupButton').click(function () {
+                    $('#addbl').fadeIn();
+                });
+
+                // Close the popup
+                $('.closePopup').click(function () {
+                    $('#addbl').fadeOut();
+                });
+
+                // Optional: Close popup if clicking outside of the popup content
+                $(window).click(function (event) {
+                    if ($(event.target).is('#addbl')) {
+                        $('#addbl').fadeOut();
+                    }
+                });
+            });
+            // Toggle the sidebar edit
+            $('.editButton').on('click', function () {
+                identifiant = $(this).data('identifiant');
+
+                $elemptdate = $("#elemptdate");
+                $elemptdate.html('');
+                let settings = {
+                    url: `/api/encaissement/${identifiant}`,
+                    method: "GET",
+                    timeout: 0,
+                    headers: {
+                        "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
+                    },
+                };
+                $.ajax(settings).done(function (response) {
+                    let responsedata = response;
+                    payeurdetailid = responsedata['payeur'];
+                    $('#distributeurdetail').html(responsedata["distributeur_designation"]);
+                    $('#payeurdetail').html(responsedata["payeur_designation"]);
+                    $('#montantdetail').html(formatNumber(responsedata["montant"]) + " DA");
+                    $('#montantignitdetail').html(formatNumber(responsedata["montant_init"]) + " DA");
+                    $('#typeaccountt').html(responsedata["type"]);
+                    $('#banquedetail').html(responsedata["banque_designation"]);
+                    $('#substitutionedit').html(responsedata[""]);
+                    if (responsedata["type"] === "Espece") {
+                        $('#numerodetail').html("Aucun");
+                        $('#chequedetail').html("Aucun");
+                    } else {
+                        $('#numerodetail').html(responsedata["numero"]);
+                        $('#chequedetail').html(responsedata["date_cheque"]);
+                    }
+
+
+                    if (responsedata['validation']) {
+                        $elemptdate.append(`
+                                <div>
+                                    <label class="block mb-1 pl-1 text-sm font-medium text-gray-900">Date Dépot</label>
+                                    <div class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                            block w-full p-2.5">${responsedata['date_depot']}</div>
+                                </div>
+                                <div>
+                                   <label for="datedepot" class="block mb-1 pl-1 text-sm font-medium text-gray-900">Statut</label>
+                                    <div class="border border-gray-300 text-green-600 text-sm rounded-lg focus:ring-blue-500
+                                                focus:border-blue-500 block w-full p-2.5">validé
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block mb-1 pl-1 text-sm font-medium text-gray-900">Date Validation</label>
+                                    <div class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                            block w-full p-2.5">${responsedata['date_validation']}</div>
+                                </div>
+                                <div>
+                                   <label for="datedepot" class="block mb-1 pl-1 text-sm font-medium text-gray-900">Statut</label>
+                                    <div class="border border-gray-300 text-green-600 text-sm rounded-lg focus:ring-blue-500
+                                                focus:border-blue-500 block w-full p-2.5">validé
+                                    </div>
+                                </div>
+                            `);
+
+                        $('#modifdates').addClass("disabledelem")
+
+                    } else if (responsedata['validation_depot']) {
+                        $elemptdate.append(`
+                                <div>
+                                    <label class="block mb-1 pl-1 text-sm font-medium text-gray-900">Date Échéance Dépot</label>
+                                    <div class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                            block w-full p-2.5">${responsedata['date_depot']}</div>
+                                </div>
+                                <div>
+                                   <label for="datedepot" class="block mb-1 pl-1 text-sm font-medium text-gray-900">Statut</label>
+                                    <div class="border border-gray-300 text-green-600 text-sm rounded-lg focus:ring-blue-500
+                                                focus:border-blue-500 block w-full p-2.5">validé
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block mb-1 pl-1 text-sm font-medium text-gray-900">Date Échéance Validation</label>
+                                    <input type="date" id="editdate_validate"
+                                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                            block w-full p-2.5" value="${responsedata['date_validation']}">
+                                </div>
+                                <div>
+                                    <label for="datedepot" class="block mb-1 pl-1 text-sm font-medium text-gray-900">Statut</label>
+                                    <div class="py-4">
+                                        <input id="editdate_validate" class="tgl tgl-light" type="checkbox"/>
+                                    </div>
+                                </div>
+                            `);
+
+
+                    } else {
+                        $('#modifdates').removeClass("disabledelem");
+                        $elemptdate.append(`
+                                <div>
+                                    <label class="block mb-1 pl-1 text-sm font-medium text-gray-900">Date Échéance Dépot</label>
+
+                                    <input type="date" id="date_depotedit"
+                                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                            block w-full p-2.5" value="${responsedata["date_depot"]}">
+
+                                </div>
+                                <div>
+                                    <label for="datedepot" class="block mb-1 pl-1 text-sm font-medium text-gray-900">Statut</label>
+                                    <div class="py-4">
+                                        <input id="editdate_depot" class="tgl tgl-light" type="checkbox"/>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block mb-1 pl-1 text-sm font-medium text-gray-900">Date Échéance Validation</label>
+
+                                    <input type="date" id="date_validateedit"
+                                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                            block w-full p-2.5" value="${responsedata["date_validation"]}">
+
+                                </div>
+                                <div>
+                                    <label for="datedepot" class="block mb-1 pl-1 text-sm font-medium text-gray-900">Statut</label>
+                                    <div class="py-4">
+                                        <input id="editdate_validate" class="tgl tgl-light" type="checkbox"/>
+                                    </div>
+                                </div>
+                            `);
+                    }
+
+
+                    $('#editSidebar').toggleClass('translate-x-full');
+                });
+
+
+            });
+
+
+            // Close the sidebar
+            $('#closeEditSidebar').on('click', function () {
+                $('#editSidebar').addClass('translate-x-full');
+            });
+
+            // Show the filter modal
+            $('#filterButton').on('click', function () {
+                $('#filterModal').removeClass('hidden');
+            });
+
+            // Close the filter modal
+            $('#closeFilterModal').on('click', function () {
+                $('#filterModal').addClass('hidden');
+            });
+
+            // Close sidebar when clicking outside
+            $(document).on('click', function (e) {
+                if (!$(e.target).closest('#editButton, #editSidebar').length) {
+                    $('#editSidebar').addClass('translate-x-full');
+                }
+            });
+
+            // Close filter modal when clicking outside
+            $(document).on('click', function (e) {
+                if (!$(e.target).closest('#filterButton, #filterModal').length) {
+                    $('#filterModal').addClass('hidden');
+                }
+            });
+
+
+            $(document).ready(function () {
+                // Show the popup
+                $('.popupButton').click(function () {
+                    $('#addbl').fadeIn();
+                });
+
+                // Close the popup
+                $('.closePopup').click(function () {
+                    $('#addbl').fadeOut();
+                });
+
+                // Optional: Close popup if clicking outside of the popup content
+                $(window).click(function (event) {
+                    if ($(event.target).is('#addbl')) {
+                        $('#addbl').fadeOut();
+                    }
+                });
+            });
+
+
+            $display_montant = $('#display_montant');
+            $account_montant = $('#account_montant');
+
+            $display_montant.on('click', function () {
+                $account_montant.trigger('click')
+            });
+
+
+            $account_montant.on('keyup', function () {
+
+                if ($account_montant.val().length === 0) $display_montant.html('0.00 DA');
+                else $display_montant.html(formatNumber($account_montant.val()) + ' DA');
+            });
+
+            $account_montant.focus(function () {
+                if ($display_montant.hasClass('border-blue-500')) {
+                } else $display_montant.addClass('border-blue-500');
+            });
+
+
+            $account_montant.focusout(function () {
+                $display_montant.removeClass('border-blue-500')
+            });
+
+            $('#distributeur').change(function () {
+                var distributeurId = $(this).val();
+
+                $.ajax({
+                    url: '/api/payeur?distributeur=' + distributeurId, // Update this with your actual API endpoint
+                    method: 'GET',
+                    data: {
+                        distributeur: distributeurId
+                    },
+                    success: function (response) {
+                        // Assuming 'response' contains the list of payeurs in JSON format
+                        var payeurSelect = $('#payeur');
+                        payeurSelect.empty(); // Clear the current options
+
+                        $.each(response, function (index, payeur) {
+                            payeurSelect.append(new Option(payeur.designation, payeur.id));
+                        });
+                    },
+                    error: function (error) {
+                        console.log("Error fetching payeur data:", error);
+                    }
+                });
+            });
+
+            // banque/ numero
+
+            $(document).ready(function () {
+                $('input[name="options"]').on('change', function () {
+
+                    if ($(this).val() === 'Espece') {
+                        $('#banque').prop('disabled', true);
+                        $('#numero').prop('disabled', true);
+                        $('#date_cheque').prop('disabled', true);
+                        $('#date_depot').prop('disabled', true);
+                        $('#date_echeance').prop('disabled', true);
+                    } else {
+                        $('#banque').prop('disabled', false);
+                        $('#numero').prop('disabled', false);
+                        $('#date_cheque').prop('disabled', false);
+                        $('#date_depot').prop('disabled', false);
+                        $('#date_echeance').prop('disabled', false);
+                    }
+                });
+            });
+
+
+            $('#formaddaccompte').on('submit', function (e) {
+                e.preventDefault(); // Prevent the default form submission
+                console.log("ici");
+
+
+                if ($('input[name="options"]:checked').val() === "Espece") {
+                    dataaccount = {
+                        "payeur": $('#payeur').val(),
+                        "montant_init": $('#account_montant').val(),
+                        "montant": $('#account_montant').val(),
+                        "type": "Espece",
+                        "validation_depot": true,
+                        "validation": true
+                    };
+                } else {
+                    dataaccount = {
+                        "payeur": $('#payeur').val(),
+                        "montant_init": $('#account_montant').val(),
+                        "montant": $('#account_montant').val(),
+                        "type": $('input[name="options"]:checked').val(),
+                        "banque": $('#banque').val(),
+                        "numero": $('#numero').val(),
+                        "date_depot": $("#datedepot").val(),
+                        "date_cheque": $("#date_cheque").val(),
+                        "date_validation": $("#date_echeance").val(),
+                    };
+                }
+
+
+                var settings = {
+                    "url": '/api/account/', // Replace with your actual API endpoint
+                    "method": "POST",
+                    "timeout": 0,
+                    "headers": {
+                        "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val() // Set the CSRF token in the header
+                    },
+                    "contentType": "application/json",
+                    "data": JSON.stringify(dataaccount)
+
+                };
+
+                $.ajax(settings)
+                    .done(function (response) {
+
+                        window.location.href = "/encaissement/accompte";
+                    })
+                    .fail(function (jqXHR, textStatus, errorThrown) {
+                        // Log the entire jqXHR object to see all details
+                        console.log('jqXHR:', jqXHR);
+
+                        // Log the status text
+                        console.log('Status:', textStatus);
+
+                        // Log the error thrown
+                        console.log('Error Thrown:', errorThrown);
+
+                        // Log the response text, which might contain detailed error messages
+                        console.log('Response Text:', jqXHR.responseText);
+
+                        // Optionally, parse the responseText as JSON if it's in JSON format
+                        try {
+                            var responseJSON = JSON.parse(jqXHR.responseText);
+                            console.log('Response JSON:', responseJSON);
+                        } catch (e) {
+                            console.error('Failed to parse response as JSON:', e);
+                        }
+
+                    });
+            });
+
+
+            $('#edituserForm').on('submit', function (e) {
+                e.preventDefault();
+
+
+                dataaccount = {
+                    "date_depot": $("#date_depotedit").val(),
+                    "date_validation": $("#date_validateedit").val(),
+                    "validation_depot": $("#editdate_depot").is(':checked'),
+                    "validation": $("#editdate_validate").is(':checked'),
+                    "payeur": payeurdetailid
+                };
+
+                var settings = {
+                    "url": '/api/account/' + identifiant + '/',
+                    "method": "PUT",
+                    "timeout": 0,
+                    "headers": {
+                        "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val()
+                    },
+                    "contentType": "application/json",
+                    "data": JSON.stringify(dataaccount)
+
+                };
+
+                $.ajax(settings)
+                    .done(function (response) {
+
+                        window.location.href = "/encaissement/accompte";
+                    })
+                    .fail(function (jqXHR, textStatus, errorThrown) {
+                        // Log the entire jqXHR object to see all details
+                        console.log('jqXHR:', jqXHR);
+
+                        // Log the status text
+                        console.log('Status:', textStatus);
+
+                        // Log the error thrown
+                        console.log('Error Thrown:', errorThrown);
+
+                        // Log the response text, which might contain detailed error messages
+                        console.log('Response Text:', jqXHR.responseText);
+
+                        // Optionally, parse the responseText as JSON if it's in JSON format
+                        try {
+                            var responseJSON = JSON.parse(jqXHR.responseText);
+                            console.log('Response JSON:', responseJSON);
+                        } catch (e) {
+                            console.error('Failed to parse response as JSON:', e);
+                        }
+
+                    });
+            });
+
+            $(document).ready(function () {
+                // Handle the delete button click
+                $('.delete-btn').on('click', function () {
+                    // Get the element's identifier
+                    const identifiant = $(this).data('identifiant');
+
+                    // Create a confirmation popup
+                    const isConfirmed = confirm("Are you sure you want to delete this element?");
+
+                    // If the user confirms, make the delete request
+                    if (isConfirmed) {
+                        let settings = {
+                            url: `/api/account/${identifiant}/`,
+                            method: "DELETE",
+                            timeout: 0,
+                            headers: {
+                                "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
+                            },
+                            success: function (response) {
+                                // Handle success (e.g., remove the element from the DOM, show a success message)
+                                alert("Element deleted successfully.");
+                            },
+                            error: function (xhr) {
+                                // Handle error
+                                alert("An error occurred while deleting the element.");
+                            }
+                        };
+
+                        // Send the delete request
+                        $.ajax(settings);
+                    }
+                });
+            });
+
+        </script>
+    </div>
+
+{% endblock %}

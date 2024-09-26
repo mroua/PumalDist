@@ -113,7 +113,7 @@ def EncaissementView(request):
         })
 
     # Pass the results and lists to the template
-    return render(request, "Encaissement.html", {
+    return render(request, "Pumal/Encaissement.html", {
         "listedist": listedist,
         "listebanque": listebanque,
         "listepayeur": listepayeur,
@@ -133,7 +133,7 @@ def EncaissementDetailView(request):
 
     print(encaissement)
 
-    return render(request, "EncaissementDetail.html", {
+    return render(request, "Pumal/EncaissementDetail.html", {
         "encaissement": encaissement,
     })
 

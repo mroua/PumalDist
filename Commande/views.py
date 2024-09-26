@@ -117,7 +117,8 @@ def CommandeView(request):
             })
 
 
-    return render(request, "Commande.html", {
+    #return render(request, "Commande.html", {
+    return render(request, "Pumal/Commande.html", {
         'liste_type': liste_type,
         'liste_couleur': liste_couleur,
         'liste_mesure': liste_mesure,

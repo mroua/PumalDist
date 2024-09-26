@@ -1,580 +1,607 @@
-{% extends "base.html" %}
+{% extends "baseNew.html" %}
 {% load mes_tags %}
 {% load static %}
 {% block title %}Commandes{% endblock %}
 
 {% block content %}
     <style>
-        .hidden {
+        .hiddenelem {
             display: none;
         }
     </style>
-    <!-- Add Produit Sidebar -->
-    <div id="addSidebar" style="margin-top: -10px"
-         class="fixed right-0 top-0 bottom-0 w-4/5 bg-white shadow-lg transform translate-x-full transition-transform duration-300 z-50">
-        <div class="flex justify-between items-center p-4 border-b">
-            <h3 class="text-lg font-semibold">Ajouter une commande</h3>
-            <button id="closeSidebar" class="text-gray-800 hover:text-gray-700 text-md">&times;</button>
-        </div>
 
-        <!-- Step 1: Select Products -->
-        <div id="step1" class="p-4 h-full">
-            <div class="p-4 h-28 flex justify-around border border-gray-300 rounded-lg mb-4 gap-4">
-                <!-- Type Filter -->
-                <div class="mb-4 w-64">
-                    <label for="typeFilter" class="block text-sm font-medium text-gray-700 mb-2">Type</label>
-                    <select id="typeFilter"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                        {% for fil in liste_type %}
-                            <option value="{{ fil.id }}">{{ fil.designation }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <!-- Measure Filter -->
-                <div class="mb-4 w-64">
-                    <label for="measureFilter" class="block text-sm font-medium text-gray-700 mb-2">Mesure</label>
-                    <select id="measureFilter"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-
-                        {% for fil in liste_mesure %}
-                            <option value="{{ fil.id }}">{{ fil.designation }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <!-- Field Filter -->
-                <div class="mb-4 w-64">
-                    <label for="colorfilter" class="block text-sm font-medium text-gray-700 mb-2">Couleur</label>
-                    <select id="colorfilter"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-
-                        {% for fil in liste_couleur %}
-                            <option value="{{ fil.id }}">{{ fil.designation }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <!-- Field Filter -->
-                <div class="mb-4 w-64">
-                    <label for="distfield" class="block text-sm font-medium text-gray-700 mb-2">Selectionner le
-                        distributeur</label>
-                    <select id="distfield"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                        {% for fil in liste_distributeur %}
-                            <option data-designation="{{ fil.designation }}" data-username="{{ fil.user.nom }}"
-                                    data-email="{{ fil.user.email }}"
-                                    id="{{ fil.id }}" value="{{ fil.id }}">{{ fil.designation }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-
+    <div class="w-full h-full backprimer px-4 pb-4 flex flex-col">
+        <!-- Add Produit Sidebar -->
+        <div id="addSidebar" style="margin-top: -10px"
+             class="fixed right-0 top-0 bottom-0 w-4/5 backprimer shadow-lg transform translate-x-full transition-transform duration-300 z-50">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 class="text-lg font-semibold textslate">Ajouter une commande</h3>
+                <button id="closeSidebar" class="text-xl textslate text-md">&times;</button>
             </div>
-            <div class="h-4/6 overflow-y-auto">
-                <div id="productList" class="grid gap-4 w-full"></div>
-            </div>
-
-            <div class="flex justify-end pb-2">
-                <button id="goToStep2" class="goToStep2 h-10 bg-blue-500 text-white px-4 py-2 rounded-lg">Suivant
-                </button>
-            </div>
-
-        </div>
-
-        <!-- Step 2: Review Selected Products -->
-        <div id="step2" class="p-4 hidden">
-            <h3 class="text-lg font-semibold mb-4">Review Products</h3>
-            <div class="h-4/6 overflow-y-auto">
-                <div id="selectedProducts"></div>
-            </div>
-
-            <div class="flex justify-end font-bold">
-                <div class="grid grid-cols-4">
-                    <div class="defaultvaldark">Total HT:</div>
-                    <div class="text-right col-span-3 defaultvaldark" id="totalPrice">0 DA</div>
-
-                    <div class="defaultvaldark">Total TTC:</div>
-                    <div class="text-right col-span-3 defaultvaldark" id="totalPriceTTC">0 DA</div>
-                </div>
-            </div>
-
-            <div class="flex justify-between items-center mt-4">
-                <button id="goToStep1" class="bg-gray-500 text-white px-4 py-2 rounded-lg">Retour</button>
-                <button id="goToStep3" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Suivant</button>
-            </div>
-        </div>
-
-        <!-- Step 3: Confirm Order -->
-        <div id="step3" class="p-4 hidden">
-            <!-- Logo Section -->
-            <div class="h-4/5 w-full flex flex-col  items-center">
-
-                <div class="w-2/3">
-                    <div class="flex justify-center mb-4">
-                        <img src="{% static 'images/puma.svg' %}" alt="Company Logo" class="h-16">
+            <!-- Step 1: Select Products -->
+            <div id="step1" class="p-4 containerdef flex flex-col">
+                <div class="p-4 h-28 flex justify-around border border-gray-300 rounded-lg mb-4 gap-4">
+                    <!-- Type Filter -->
+                    <div class="mb-4 w-64">
+                        <label for="typeFilter"
+                               class="block text-sm font-medium text-gray-700 mb-2 textslate">Type</label>
+                        <select id="typeFilter"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                            {% for fil in liste_type %}
+                                <option value="{{ fil.id }}">{{ fil.designation }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
 
-                    <!-- Facture Details -->
-                    <div class="grid grid-cols-2 gap-4 mb-4">
-                        <!-- Recipient Details -->
-                        <div class="">
-                            <p id="recipientCompany">Nom de l'entreprise</p>
-                            <p id="recipientName">Nom et prénom</p>
-                            <p id="recipientEmail">email@domaine.com</p>
-                        </div>
+                    <!-- Measure Filter -->
+                    <div class="mb-4 w-64">
+                        <label for="measureFilter"
+                               class="block text-sm font-medium text-gray-700 mb-2 textslate">Mesure</label>
+                        <select id="measureFilter"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
 
-                        <!-- Facture Info -->
-                        <div class="text-right">
-                            <!--<p id="factureCode">12345</p>-->
-                            <p id="factureDate">01/01/2024</p>
-                            <p id="issuerName">{{ request.user.nom }}</p>
-                        </div>
+                            {% for fil in liste_mesure %}
+                                <option value="{{ fil.id }}">{{ fil.designation }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
 
-                    <!-- Product Details Table -->
-                    <div class="overflow-x-auto">
-                        <table class="w-full border-t border-b border-gray-300">
-                            <thead>
-                            <tr>
-                                <th class="p-2 text-left">Désignation & Référence</th>
-                                <th class="p-2 text-center">Prix Unitaire</th>
-                                <th class="p-2 text-center">Quantité</th>
-                                <th class="p-2 text-center">Total</th>
-                            </tr>
-                            </thead>
-                            <tbody id="productDetails">
-                            <!-- Product rows will be inserted here dynamically -->
-                            </tbody>
-                        </table>
+                    <!-- Field Filter -->
+                    <div class="mb-4 w-64">
+                        <label for="colorfilter"
+                               class="block text-sm font-medium text-gray-700 mb-2 textslate">Couleur</label>
+                        <select id="colorfilter"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+
+                            {% for fil in liste_couleur %}
+                                <option value="{{ fil.id }}">{{ fil.designation }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
 
-                    <!-- Total Section -->
-                    <div class="flex justify-end">
-                        <div class="mt-4 w-1/3">
-                            <div class="flex justify-between mt-2 font-semibold">
-                                <span>Total:</span>
-                                <span id="totalAmount" class="pr-2">0 DA</span>
-                            </div>
-                            <div class="flex justify-between mt-2 font-semibold">
-                                <span>TVA:</span>
-                                <span id="taxAmount" class="pr-2">0 DA</span>
-                            </div>
-                            <div class="flex justify-between mt-2 font-semibold">
-                                <span>Montant Total:</span>
-                                <span id="amountDue" class="pr-2">0 DA</span>
-                            </div>
-                        </div>
+                    <!-- Field Filter -->
+                    <div class="mb-4 w-64">
+                        <label for="distfield" class="block text-sm font-medium text-gray-700 mb-2 textslate">Selectionner
+                            le
+                            distributeur</label>
+                        <select id="distfield"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                            {% for fil in liste_distributeur %}
+                                <option data-designation="{{ fil.designation }}" data-username="{{ fil.user.nom }}"
+                                        data-email="{{ fil.user.email }}"
+                                        id="{{ fil.id }}" value="{{ fil.id }}">{{ fil.designation }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
 
 
                 </div>
-            </div>
-
-            <!-- Buttons -->
-            <div class="flex justify-between items-center mt-4">
-                <button class="goToStep2 bg-gray-500 text-white px-4 py-2 rounded-lg">Retour</button>
-                <button id="confirmOrder" class="bg-green-500 text-white px-4 py-2 rounded-lg">Confirmer</button>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- edit Produit Sidebar -->
-    <div id="editSidebar" style="margin-top: -10px"
-         class="fixed right-0 top-0 bottom-0 w-4/5 bg-white shadow-lg transform translate-x-full transition-transform duration-300 z-50">
-        <div class="flex justify-between items-center p-4 border-b">
-            <h3 class="text-lg font-semibold">Editer une commande</h3>
-            <button id="closeEditSidebar" class="text-gray-800 hover:text-gray-700">&times;</button>
-        </div>
-
-        <!-- Step 1: Select Products -->
-        <div id="editstep1" class="p-4 h-full">
-            <div class="p-4 h-28 flex justify-around border border-gray-300 rounded-lg mb-4 gap-4">
-                <!-- Type Filter -->
-                <div class="mb-4 w-64">
-                    <label for="edittypeFilter" class="block text-sm font-medium text-gray-700 mb-2">Type</label>
-                    <select id="edittypeFilter"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                        {% for fil in liste_type %}
-                            <option value="{{ fil.id }}">{{ fil.designation }}</option>
-                        {% endfor %}
-                    </select>
+                <div class="overflow-y-auto flex-grow">
+                    <div id="productList" class="grid gap-4 w-full"></div>
                 </div>
 
-                <!-- Measure Filter -->
-                <div class="mb-4 w-64">
-                    <label for="editmeasureFilter" class="block text-sm font-medium text-gray-700 mb-2">Mesure</label>
-                    <select id="editmeasureFilter"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-
-                        {% for fil in liste_mesure %}
-                            <option value="{{ fil.id }}">{{ fil.designation }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <!-- Field Filter -->
-                <div class="mb-4 w-64">
-                    <label for="editcolorfilter" class="block text-sm font-medium text-gray-700 mb-2">Couleur</label>
-                    <select id="editcolorfilter"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-
-                        {% for fil in liste_couleur %}
-                            <option value="{{ fil.id }}">{{ fil.designation }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <!-- Field Filter -->
-                <div class="mb-4 w-64">
-                    <label for="editdistfield" class="block text-sm font-medium text-gray-700 mb-2">Selectionner le
-                        distributeur</label>
-                    <select id="editdistfield"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                        {% for fil in liste_distributeur %}
-                            <option data-designation="{{ fil.designation }}" data-username="{{ fil.user.nom }}"
-                                    data-email="{{ fil.user.email }}"
-                                    id="{{ fil.id }}" value="{{ fil.id }}">{{ fil.designation }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-
-            </div>
-            <div class="h-4/6 overflow-y-auto">
-                <div id="editproductList" class="grid gap-4 w-full"></div>
-            </div>
-            <div class="flex justify-end pb-2">
-                <button id="editgoToStep2" class="editgoToStep2 h-10 bg-blue-500 text-white px-4 py-2 rounded-lg">
-                    Suivant
-                </button>
-            </div>
-        </div>
-
-        <!-- Step 2: Review Selected Products -->
-        <div id="editstep2" class="p-4 hidden">
-            <h3 class="text-lg font-semibold mb-4">Review Products</h3>
-            <div class="h-4/6 overflow-y-auto">
-                <div id="editselectedProducts"></div>
-            </div>
-
-
-            <div class="flex justify-end font-bold">
-                <div class="grid grid-cols-4">
-                    <div class="defaultvaldark">Total HT:</div>
-                    <div class="text-right col-span-3 defaultvaldark" id="edittotalPrice">0 DA</div>
-
-                    <div class="defaultvaldark">Total TTC:</div>
-                    <div class="text-right col-span-3 defaultvaldark" id="edittotalPriceTTC">0 DA</div>
-                </div>
-            </div>
-
-
-            <div class="flex justify-between items-center mt-4">
-                <button id="editgoToStep1" class="bg-gray-500 text-white px-4 py-2 rounded-lg">Retour</button>
-                <button id="editgoToStep3" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Suivant</button>
-            </div>
-        </div>
-
-        <!-- Step 3: Confirm Order -->
-        <div id="editstep3" class="p-4 hidden">
-            <!-- Logo Section -->
-            <div class="h-4/5 w-full flex flex-col  items-center">
-
-                <div class="w-2/3">
-                    <div class="flex justify-center mb-4">
-                        <img src="{% static 'images/puma.svg' %}" alt="Company Logo" class="h-16">
-                    </div>
-
-                    <!-- Facture Details -->
-                    <div class="grid grid-cols-2 gap-4 mb-4">
-                        <!-- Recipient Details -->
-                        <div class="">
-                            <p id="editrecipientCompany">Nom de l'entreprise</p>
-                            <p id="editrecipientName">Nom et prénom</p>
-                            <p id="editrecipientEmail">email@domaine.com</p>
-                        </div>
-
-                        <!-- Facture Info -->
-                        <div class="text-right">
-                            <!--<p id="factureCode">12345</p>-->
-                            <p id="editfactureDate">01/01/2024</p>
-                            <p id="editissuerName">{{ request.user.nom }}</p>
-                        </div>
-                    </div>
-
-                    <!-- Product Details Table -->
-                    <div class="overflow-x-auto">
-                        <table class="w-full border-t border-b border-gray-300">
-                            <thead>
-                            <tr>
-                                <th class="p-2 text-left">Désignation & Référence</th>
-                                <th class="p-2 text-center">Prix Unitaire</th>
-                                <th class="p-2 text-center">Quantité</th>
-                                <th class="p-2 text-center">Total</th>
-                            </tr>
-                            </thead>
-                            <tbody id="editproductDetails">
-                            <!-- Product rows will be inserted here dynamically -->
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- Total Section -->
-                    <div class="flex justify-end">
-                        <div class="mt-4 w-1/3">
-                            <div class="flex justify-between mt-2 font-semibold">
-                                <span>Total:</span>
-                                <span id="edittotalAmount" class="pr-2">0 DA</span>
-                            </div>
-                            <div class="flex justify-between mt-2 font-semibold">
-                                <span>TVA:</span>
-                                <span id="edittaxAmount" class="pr-2">0 DA</span>
-                            </div>
-                            <div class="flex justify-between mt-2 font-semibold">
-                                <span>Montant Total:</span>
-                                <span id="editamountDue" class="pr-2">0 DA</span>
-                            </div>
-                        </div>
-                    </div>
-
-
-                </div>
-            </div>
-
-            <!-- Buttons -->
-            <div class="flex justify-between items-center mt-4">
-                <button class="editgoToStep2 bg-gray-500 text-white px-4 py-2 rounded-lg">Retour</button>
-                <button id="editconfirmOrder" class="bg-green-500 text-white px-4 py-2 rounded-lg">Confirmer</button>
-            </div>
-        </div>
-
-    </div>
-
-    <div class="flex justify-between items-center pt-8 mb-4" style="margin-top: -8px">
-        <h2 class="text-2xl font-bold text-gray-700">Liste des commandes</h2>
-        <div>
-            <button id="filterButton" class="bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-700">Filtrer
-            </button>
-            <button id="addButton" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400">Ajouter
-            </button>
-        </div>
-
-    </div>
-
-    <!-- Produit List Headers -->
-    <div class="bg-white shadow-md rounded-t-lg p-4">
-        <div class="flex items-center justify-between text-gray-600 font-semibold">
-            <div class="w-1/6 capitalize">Code</div>
-            <div class="w-1/4 capitalize">Distributeur</div>
-            <div class="w-1/6 capitalize">Ville</div>
-            <div class="w-1/6 capitalize">Date</div>
-            <div class="w-1/6 capitalize px-4">Total CMD</div>
-            <div class="w-1/6 capitalize px-4">Total BL</div>
-            <div class="w-1/6 capitalize text-center">Etat</div>
-            <div class="w-1/6 capitalize text-center">Actions</div>
-        </div>
-    </div>
-
-    <div class="shadow-md space-y-4">
-        {% for elem in liste_cmd %}
-            <div class="flex items-center justify-between bg-gray-50 p-2 rounded-lg mt-2">
-                <div class="w-1/6">
-                    <p class="text-sm text-gray-800">{{ elem.code }}</p>
-                </div>
-                <div class="w-1/4">
-                    <p class="text-sm text-gray-800">{{ elem.distributeur }}</p>
-                </div>
-                <div class="w-1/6">
-                    <p class="text-sm text-gray-800">{{ elem.ville }}</p>
-                </div>
-                <div class="w-1/6">
-                    <p class="text-sm text-gray-800">{{ elem.date_ajout }}</p>
-                </div>
-                <div class="w-1/6 border-r-2 border-gray-700">
-                    <div class="flex w-full justify-between pr-2">
-                        <div class="text-sm text-gray-800">HT:</div>
-                        <div class="text-sm text-gray-800 text-right">{{ elem.total|floate_redefined }} DA</div>
-                    </div>
-                    <div class="flex w-full justify-between pr-2">
-                        <div class="text-sm text-gray-800">Taxe:</div>
-                        <div class="text-sm text-gray-800 text-right">{{ elem.taxedtotal|floate_redefined }} DA</div>
-                    </div>
-                </div>
-                <div class="w-1/6">
-                    <div class="flex w-full justify-between pl-2">
-                        <div class="text-sm text-gray-800">HT:</div>
-                        <div class="text-sm text-gray-800 text-right">{{ elem.total_blivraison|floate_redefined }} DA
-                        </div>
-                    </div>
-                    <div class="flex w-full justify-between pl-2">
-                        <div class="text-sm text-gray-800">Taxe:</div>
-                        <div class="text-sm text-gray-800 text-right">{{ elem.taxedtotal_blivraison|floate_redefined }}
-                            DA
-                        </div>
-                    </div>
-                </div>
-                <div class="w-1/6">
-                    <p class="text-sm text-gray-800 text-center">{{ elem.etat }}</p>
-                </div>
-
-                <!-- <div class="flex space-x-2 w-1/6 justify-end group">
-                    <button class="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                        Actions
-                        <svg class="w-5 h-5 ml-2 -mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M5.292 7.292a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                        </svg>
+                <div class="h-12 flex justify-end pt-2">
+                    <button id="goToStep2" class="goToStep2 h-10 bg-blue-500 text-white px-4 py-2 rounded-lg">Suivant
                     </button>
+                </div>
 
-                    <div class="dropdownMenu absolute right-4 z-10 hidden w-56 mt-8 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
-                        <div class="py-1">
-                            <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 popupButton" id="popupButton"
-                                data-identifiant="{ { elem.id }}">Ajoout BL
-                            </a>
-                            <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 viewButton" id="viewButton"
-                                data-identifiant="{ { elem.id }}">Voir détail</a>
-                            <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 editButton" id="editButton"
-                                data-identifiant="{ { elem.id }}">Éditer</a>
-                            <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" id="supButton"
-                                data-identifiant="{ { elem.id }}">Supprimer</a>
-                        </div>
-                    </div>
+            </div>
+
+            <!-- Step 2: Review Selected Products -->
+            <div id="step2" class="p-4 containerdef flex flex-col">
+                <div class="h-7 text-lg font-semibold mb-4 defaultboldval">
+                    Liste des produits sélectionnes
+                </div>
+
+                <!--<h3 class="text-lg font-semibold mb-4 defaultboldval bg-blue-300">Liste des produits sélectionnes</h3>-->
+
+                <!-- <div class="overflow-y-auto flex-grow">
+                    <div id="productList" class="grid gap-4 w-full"></div>
                 </div> -->
-                <div class="flex space-x-2 w-1/6 justify-end">
-                    <button id="popupButton" class="popupButton bg-blue-500 text-white p-2 rounded"
-                            data-identifiant="{{ elem.id }}"><i
-                            class="fa-solid fa-truck"></i>
-                    </button>
-                    <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded"
-                            data-identifiant="{{ elem.id }}"><i class="fas fa-search"></i></button>
-                    <button id="editButton" class="editButton bg-blue-500 text-white p-2 rounded"
-                            data-identifiant="{{ elem.id }}">
-                        <i class="fas fa-pencil-alt" onclick=""></i>
-                    </button>
-                    <button class="bg-red-500 text-white p-2 rounded delete-btn" data-identifiant="{{ elem.id }}">
-                        <i class="fas fa-trash"></i>
+                <div class="overflow-y-auto flex-grow">
+                    <div id="selectedProducts"></div>
+                </div>
+
+                <div class="h-12 flex justify-end font-bold">
+                    <div class="grid grid-cols-4">
+                        <div class="defaultboldval">Total HT:</div>
+                        <div class="text-right col-span-3 defaultboldval" id="totalPrice">0 DA</div>
+
+                        <div class="defaultboldval">Total TTC:</div>
+                        <div class="text-right col-span-3 defaultboldval" id="totalPriceTTC">0 DA</div>
+                    </div>
+                </div>
+
+                <div class="h-12 flex justify-between pt-2 items-center">
+                    <button id="goToStep1" class="bg-gray-500 text-white px-4 py-2 rounded-lg">Retour</button>
+                    <button id="goToStep3" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Suivant</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Confirm Order -->
+            <div id="step3" class="p-4 containerdef flex flex-col defaultboldval">
+                <!-- Logo Section -->
+                <div class="flex-grow w-full flex flex-col items-center">
+
+                    <div class="w-2/3">
+                        <div class="flex justify-center mb-4">
+                            <img src="{% static 'images/puma.svg' %}" alt="Company Logo" class="h-16">
+                        </div>
+
+                        <!-- Facture Details -->
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <!-- Recipient Details -->
+                            <div class="">
+                                <p id="recipientCompany">Nom de l'entreprise</p>
+                                <p id="recipientName">Nom et prénom</p>
+                                <p id="recipientEmail">email@domaine.com</p>
+                            </div>
+
+                            <!-- Facture Info -->
+                            <div class="text-right">
+                                <!--<p id="factureCode">12345</p>-->
+                                <p id="factureDate">01/01/2024</p>
+                                <p id="issuerName">{{ request.user.nom }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Product Details Table -->
+                        <div class="overflow-x-auto">
+                            <table class="w-full border-t border-b border-gray-300">
+                                <thead>
+                                <tr>
+                                    <th class="p-2 text-left">Désignation & Référence</th>
+                                    <th class="p-2 text-center">Prix Unitaire</th>
+                                    <th class="p-2 text-center">Quantité</th>
+                                    <th class="p-2 text-center">Total</th>
+                                </tr>
+                                </thead>
+                                <tbody id="productDetails">
+                                <!-- Product rows will be inserted here dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Total Section -->
+                        <div class="flex justify-end">
+                            <div class="mt-4 w-1/3">
+                                <div class="flex justify-between mt-2 font-semibold">
+                                    <span>Total:</span>
+                                    <span id="totalAmount" class="pr-2">0 DA</span>
+                                </div>
+                                <div class="flex justify-between mt-2 font-semibold">
+                                    <span>TVA:</span>
+                                    <span id="taxAmount" class="pr-2">0 DA</span>
+                                </div>
+                                <div class="flex justify-between mt-2 font-semibold">
+                                    <span>Montant Total:</span>
+                                    <span id="amountDue" class="pr-2">0 DA</span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="h-12 flex justify-between pt-2 items-center">
+                    <button class="goToStep2 bg-gray-500 text-white px-4 py-2 rounded-lg">Retour</button>
+                    <button id="confirmOrder" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Confirmer</button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- edit Produit Sidebar -->
+        <div id="editSidebar" style="margin-top: -10px"
+             class="fixed right-0 top-0 bottom-0 w-4/5 backprimer shadow-lg transform translate-x-full transition-transform duration-300 z-50">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 class="text-lg font-semibold textslate">Editer commande</h3>
+                <button id="closeEditSidebar" class="text-xl textslate text-md">&times;</button>
+            </div>
+            <!-- Step 1: Select Products -->
+            <div id="editstep1" class="p-4 containerdef flex flex-col">
+                <div class="p-4 h-28 flex justify-around border border-gray-300 rounded-lg mb-4 gap-4">
+                    <!-- Type Filter -->
+                    <div class="mb-4 w-64">
+                        <label for="edittypeFilter"
+                               class="block text-sm font-medium text-gray-700 mb-2 textslate">Type</label>
+                        <select id="edittypeFilter"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                            {% for fil in liste_type %}
+                                <option value="{{ fil.id }}">{{ fil.designation }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Measure Filter -->
+                    <div class="mb-4 w-64">
+                        <label for="editmeasureFilter" class="block text-sm font-medium text-gray-700 mb-2 textslate">Mesure</label>
+                        <select id="editmeasureFilter"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+
+                            {% for fil in liste_mesure %}
+                                <option value="{{ fil.id }}">{{ fil.designation }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Field Filter -->
+                    <div class="mb-4 w-64">
+                        <label for="editcolorfilter" class="block text-sm font-medium text-gray-700 mb-2 textslate">Couleur</label>
+                        <select id="editcolorfilter"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+
+                            {% for fil in liste_couleur %}
+                                <option value="{{ fil.id }}">{{ fil.designation }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Field Filter -->
+                    <div class="mb-4 w-64">
+                        <label for="editdistfield" class="block text-sm font-medium text-gray-700 mb-2 textslate">Selectionner
+                            le
+                            distributeur</label>
+                        <select id="editdistfield"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                            {% for fil in liste_distributeur %}
+                                <option data-designation="{{ fil.designation }}" data-username="{{ fil.user.nom }}"
+                                        data-email="{{ fil.user.email }}"
+                                        id="{{ fil.id }}" value="{{ fil.id }}">{{ fil.designation }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+
+                </div>
+                <div class="overflow-y-auto flex-grow">
+                    <div id="editproductList" class="grid gap-4 w-full"></div>
+                </div>
+
+                <div class="h-12 flex justify-end pt-2">
+                    <button id="editgoToStep2" class="editgoToStep2 h-10 bg-blue-500 text-white px-4 py-2 rounded-lg">
+                        Suivant
                     </button>
                 </div>
 
             </div>
-        {% endfor %}
-    </div>
 
+            <!-- Step 2: Review Selected Products -->
+            <div id="editstep2" class="p-4 containerdef flex flex-col">
+                <div class="h-7 text-lg font-semibold mb-4 defaultboldval">
+                    Liste des produits sélectionnes
+                </div>
 
-    <div id="deleteModal" class="fixed inset-0 flex items-center justify-center hidden bg-gray-800 bg-opacity-50">
-        <div class="bg-white p-4 rounded-lg w-96">
-            <h2 class="text-lg font-semibold text-gray-700 mb-4">Confirm Delete</h2>
-            <p>Are you sure you want to delete this item?</p>
-            <div class="mt-6 flex justify-end space-x-4">
-                <button id="cancelDelete" class="px-4 py-2 bg-gray-300 rounded">Cancel</button>
-                <button id="confirmDelete" class="px-4 py-2 bg-red-500 text-white rounded">Delete</button>
-            </div>
-        </div>
-    </div>
+                <!--<h3 class="text-lg font-semibold mb-4 defaultboldval bg-blue-300">Liste des produits sélectionnes</h3>-->
 
+                <!-- <div class="overflow-y-auto flex-grow">
+                    <div id="productList" class="grid gap-4 w-full"></div>
+                </div> -->
+                <div class="overflow-y-auto flex-grow">
+                    <div id="editselectedProducts"></div>
+                </div>
 
+                <div class="h-12 flex justify-end font-bold">
+                    <div class="grid grid-cols-4">
+                        <div class="defaultboldval">Total HT:</div>
+                        <div class="text-right col-span-3 defaultboldval" id="edittotalPrice">0 DA</div>
 
-
-    <!-- View Sidebar -->
-    <div id="viewSidebar" style="margin-top: -10px"
-         class="flex flex-col fixed right-0 top-0 bottom-0 w-4/5 bg-white shadow-lg transform translate-x-full transition-transform duration-300 z-50">
-        <div class="flex justify-between items-center p-4 border-b">
-            <h3 class="text-lg font-semibold">Détail Commande</h3>
-            <button id="closeViewSidebar" class="text-gray-800 hover:text-gray-700">&times;</button>
-        </div>
-
-        <div id="containerdatacmd" class="flex-grow flex flex-col p-8">
-
-        </div>
-
-
-    </div>
-
-    <!-- Pop up -->
-    <div id="addbl" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
-        <form>
-            <div class="relative w-screen h-screen flex justify-center items-center">
-                <div class="bg-white w-3/4 h-3/4 p-6 rounded-lg shadow-lg flex flex-col gap-y-2">
-                    <h3 class="text-lg font-semibold">Ajout BL</h3>
-                    <!-- div list products -->
-                    <div class="grid grid-cols-8 p-4">
-                        <div class="col-span-2">Produit</div>
-                        <div class="col-span-1">Type/Mesure</div>
-                        <div class="col-span-1">Couleur</div>
-                        <div class="col-span-1">Prix unitaire</div>
-                        <div class="col-span-1">Quantité restante</div>
-                        <div class="col-span-1">Quantité à livrer</div>
-                        <div class="col-span-1 text-right">Total</div>
+                        <div class="defaultboldval">Total TTC:</div>
+                        <div class="text-right col-span-3 defaultboldval" id="edittotalPriceTTC">0 DA</div>
                     </div>
-                    <!--<div class="bg-blue-300 flex w-full">
-                        <div class="flex-grow">Produit</div>
-                        <div class="flex-grow"></div>
-                        <div class="flex-grow"></div>
-                        <div class="flex-grow">Type/Mesure</div>
-                        <div class="flex-grow">Couleur</div>
-                        <div class="flex-grow">Prix unitaire</div>
-                        <div class="flex-grow">Quantité restante</div>
-                        <div class="flex-grow">Quantité a livré</div>
-                        <div class="flex-grow">Total</div>
-                    </div>-->
-                    <div class="listeblprod flex-grow overflow-y-auto" id="listeblprod">
-                    </div>
-                    <div class="grid grid-cols-8 text-right pr-4 text-lg">
-                        <div class="col-span-7 mr-3.5">Total HT:</div>
-                        <div class="col-span-1" id="totalhtbl">0 DA</div>
-                    </div>
-                    <div class="grid grid-cols-8 text-right pr-4 text-lg">
-                        <div class="col-span-7">Total Taxe:</div>
-                        <div class="col-span-1" id="totaltaxebl">0 DA</div>
-                    </div>
-                    <div class="flex justify-around">
-                        <div class="">
-                            <button type="button" id="closePopup" class="bg-gray-500 text-white px-4 py-2 rounded-lg">
-                                Annuler
-                            </button>
-                        </div>
+                </div>
 
-                        <div class="flex-grow flex items-center justify-around space-x-4">
-                            <div class="flex items-center justify-center space-x-4">
-                                <input id="facture_id" class="border border-gray-300
-                                text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block
-                                p-2.5" placeholder="Facture"/>
-                            </div>
-
-                            <div class="flex items-center space-x-4 border border-gray-300 rounded-lg w-72 fileinputback">
-                                <label for="file-upload" class="block flex-shrink-0">
-                                    <div class="flex items-center justify-center px-4 py-2 rounded-l-lg bg-white text-blue-500 cursor-pointer hover:bg-blue-500 hover:text-white transition-colors duration-300">
-                                        <span>Fichier FC</span>
-                                    </div>
-                                    <input id="file-upload" type="file" class="hidden"/>
-                                </label>
-                                <span id="file-name" class="text-gray-800 w-64 truncate">No fc file</span>
-                            </div>
-
-                            <div class="flex items-center space-x-4 border border-gray-300 rounded-lg w-72 fileinputback">
-                                <label for="file-upload2" class="block flex-shrink-0">
-                                    <div class="flex items-center justify-center px-4 py-2 rounded-l-lg bg-white text-blue-500 cursor-pointer hover:bg-blue-500 hover:text-white transition-colors duration-300">
-                                        <span>Fichier BL</span>
-                                    </div>
-                                    <input id="file-upload2" type="file" class="hidden"/>
-                                </label>
-                                <span id="file-name2" class="text-gray-800 w-64 truncate">No bl file</span>
-                            </div>
-
-                        </div>
-
-                        <div class="">
-                            <input type="submit" class="bg-green-300 text-white px-4 py-2 rounded-lg" id="validatebl"
-                                   value="Valider">
-                        </div>
-                    </div>
-
-
+                <div class="h-12 flex justify-between pt-2 items-center">
+                    <button id="editgoToStep1" class="bg-gray-500 text-white px-4 py-2 rounded-lg">Retour</button>
+                    <button id="editgoToStep3" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Suivant</button>
                 </div>
             </div>
-        </form>
 
+            <!-- Step 3: Confirm Order -->
+            <div id="editstep3" class="p-4 containerdef flex flex-col defaultboldval">
+                <!-- Logo Section -->
+                <div class="flex-grow w-full flex flex-col items-center">
+
+                    <div class="w-2/3">
+                        <div class="flex justify-center mb-4">
+                            <img src="{% static 'images/puma.svg' %}" alt="Company Logo" class="h-16">
+                        </div>
+
+                        <!-- Facture Details -->
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <!-- Recipient Details -->
+                            <div class="">
+                                <p id="editrecipientCompany">Nom de l'entreprise</p>
+                                <p id="editrecipientName">Nom et prénom</p>
+                                <p id="editrecipientEmail">email@domaine.com</p>
+                            </div>
+
+                            <!-- Facture Info -->
+                            <div class="text-right">
+                                <!--<p id="factureCode">12345</p>-->
+                                <p id="editfactureDate">01/01/2024</p>
+                                <p id="editissuerName">{{ request.user.nom }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Product Details Table -->
+                        <div class="overflow-x-auto">
+                            <table class="w-full border-t border-b border-gray-300">
+                                <thead>
+                                <tr>
+                                    <th class="p-2 text-left">Désignation & Référence</th>
+                                    <th class="p-2 text-center">Prix Unitaire</th>
+                                    <th class="p-2 text-center">Quantité</th>
+                                    <th class="p-2 text-center">Total</th>
+                                </tr>
+                                </thead>
+                                <tbody id="editproductDetails">
+                                <!-- Product rows will be inserted here dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Total Section -->
+                        <div class="flex justify-end">
+                            <div class="mt-4 w-1/3">
+                                <div class="flex justify-between mt-2 font-semibold">
+                                    <span>Total:</span>
+                                    <span id="edittotalAmount" class="pr-2">0 DA</span>
+                                </div>
+                                <div class="flex justify-between mt-2 font-semibold">
+                                    <span>TVA:</span>
+                                    <span id="edittaxAmount" class="pr-2">0 DA</span>
+                                </div>
+                                <div class="flex justify-between mt-2 font-semibold">
+                                    <span>Montant Total:</span>
+                                    <span id="editamountDue" class="pr-2">0 DA</span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="h-12 flex justify-between pt-2 items-center">
+                    <button class="editgoToStep2 bg-gray-500 text-white px-4 py-2 rounded-lg">Retour</button>
+                    <button id="editconfirmOrder" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Confirmer</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="flex justify-between items-center pt-4 mb-4" style="margin-top: -8px">
+            <h2 class="text-2xl font-bold textslate">Liste des commandes</h2>
+            <div>
+                <button id="filterButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
+                    hover:bg-blue-900 hover:border-slate-400 rounded-md">Filtrer
+                </button>
+                <button id="addButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
+                    hover:bg-blue-900 hover:border-slate-400 rounded-md">Ajouter
+                </button>
+            </div>
+        </div>
+        <hr/>
+
+        <!-- Produit List Headers -->
+        <div class="pt-4">
+            <div class="flex items-center justify-between text-gray-600 font-semibold px-4 defaultboldval">
+                <div class="w-1/6 capitalize">Code</div>
+                <div class="w-1/4 capitalize">Distributeur</div>
+                <div class="w-1/6 capitalize">Ville</div>
+                <div class="w-1/6 capitalize">Date</div>
+                <div class="w-1/6 capitalize px-4">Total CMD</div>
+                <div class="w-1/6 capitalize px-4">Total BL</div>
+                <div class="w-1/6 capitalize text-center">Etat</div>
+                <div class="w-1/6 capitalize text-center">Actions</div>
+            </div>
+        </div>
+
+        <div class="flex-grow shadow-md rounded-b-lg backslateprime p-2 overflow-y-auto">
+            {% for elem in liste_cmd %}
+                <div class="flex items-center justify-between p-2 backslateslite flex-none mb-2">
+                    <div class="w-1/6">
+                        <p class="text-sm textslate">{{ elem.code }}</p>
+                    </div>
+                    <div class="w-1/4">
+                        <p class="text-sm textslate">{{ elem.distributeur }}</p>
+                    </div>
+                    <div class="w-1/6">
+                        <p class="text-sm textslate">{{ elem.ville }}</p>
+                    </div>
+                    <div class="w-1/6">
+                        <p class="text-sm textslate">{{ elem.date_ajout|date:'d-m-Y' }}</p>
+                    </div>
+                    <div class="w-1/6 border-r-2 border-gray-700">
+                        <div class="flex w-full justify-between pr-2">
+                            <div class="text-sm textslate">HT:</div>
+                            <div class="text-sm textslate text-right">{{ elem.total|floate_redefined }} DA</div>
+                        </div>
+                        <div class="flex w-full justify-between pr-2">
+                            <div class="text-sm textslate">Taxe:</div>
+                            <div class="text-sm textslate text-right">{{ elem.taxedtotal|floate_redefined }} DA</div>
+                        </div>
+                    </div>
+                    <div class="w-1/6">
+                        <div class="flex w-full justify-between pl-2">
+                            <div class="text-sm textslate">HT:</div>
+                            <div class="text-sm textslate text-right">{{ elem.total_blivraison|floate_redefined }} DA
+                            </div>
+                        </div>
+                        <div class="flex w-full justify-between pl-2">
+                            <div class="text-sm textslate">Taxe:</div>
+                            <div class="text-sm textslate text-right">{{ elem.taxedtotal_blivraison|floate_redefined }}
+                                DA
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-1/6">
+                        <p class="text-sm textslate text-center">{{ elem.etat }}</p>
+                    </div>
+
+                    <!-- <div class="flex space-x-2 w-1/6 justify-end group">
+                        <button class="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            Actions
+                            <svg class="w-5 h-5 ml-2 -mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M5.292 7.292a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+
+                        <div class="dropdownMenu absolute right-4 z-10 hidden w-56 mt-8 origin-top-right backslate divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
+                            <div class="py-1">
+                                <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 popupButton" id="popupButton"
+                                    data-identifiant="{ { elem.id }}">Ajoout BL
+                                </a>
+                                <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 viewButton" id="viewButton"
+                                    data-identifiant="{ { elem.id }}">Voir détail</a>
+                                <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 editButton" id="editButton"
+                                    data-identifiant="{ { elem.id }}">Éditer</a>
+                                <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" id="supButton"
+                                    data-identifiant="{ { elem.id }}">Supprimer</a>
+                            </div>
+                        </div>
+                    </div> -->
+                    <div class="flex space-x-2 w-1/6 justify-end">
+                        <button id="popupButton" class="popupButton bg-blue-500 text-white p-2 rounded"
+                                data-identifiant="{{ elem.id }}"><i
+                                class="fa-solid fa-truck"></i>
+                        </button>
+                        <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded"
+                                data-identifiant="{{ elem.id }}" data-etat="{{ elem.etat }}"><i class="fas fa-search"></i></button>
+                        <button id="editButton" class="editButton bg-blue-500 text-white p-2 rounded"
+                                data-identifiant="{{ elem.id }}">
+                            <i class="fas fa-pencil-alt" onclick=""></i>
+                        </button>
+                        <button class="bg-red-500 text-white p-2 rounded delete-btn" data-identifiant="{{ elem.id }}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+
+                </div>
+            {% endfor %}
+        </div>
+
+
+        <div id="deleteModal" class="fixed inset-0 flex items-center justify-center hidden bg-gray-800 bg-opacity-50">
+            <div class="backslate p-4 rounded-lg w-96 backprimer">
+                <h2 class="text-lg font-semibold text-gray-700 mb-4">Confirm Delete</h2>
+                <p>Are you sure you want to delete this item?</p>
+                <div class="mt-6 flex justify-end space-x-4">
+                    <button id="cancelDelete" class="px-4 py-2 bg-gray-300 rounded">Cancel</button>
+                    <button id="confirmDelete" class="px-4 py-2 bg-red-500 text-white rounded">Delete</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- View Sidebar -->
+        <div id="viewSidebar" style="margin-top: -10px"
+             class="flex flex-col fixed right-0 top-0 bottom-0 w-4/5 backprimer shadow-lg transform translate-x-full transition-transform duration-300 z-50">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 class="text-lg font-semibold textslate">Détail Commande</h3>
+                <button id="closeViewSidebar" class="text-xl textslate hover:text-gray-700">&times;</button>
+            </div>
+
+            <div id="containerdatacmd" class="flex-grow flex flex-col p-8">
+
+            </div>
+
+
+        </div>
+
+        <!-- Pop up -->
+        <div id="addbl" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
+            <form>
+                <div class="relative w-screen h-screen flex justify-center items-center">
+                    <div class="backprimer textslate w-3/4 h-3/4 p-6 rounded-lg shadow-lg flex flex-col gap-y-2">
+                        <h3 class="text-lg font-semibold">Ajout BL</h3>
+
+
+                        <!-- div list products -->
+                        <div class="grid grid-cols-8 text-gray-600 font-semibold px-4 capitalize">
+                            <div class="col-span-2">Produit</div>
+                            <div class="col-span-1">Type/Mesure</div>
+                            <div class="col-span-1">Couleur</div>
+                            <div class="col-span-1">Prix unitaire</div>
+                            <div class="col-span-1">Quantité restante</div>
+                            <div class="col-span-1">Quantité à livrer</div>
+                            <div class="col-span-1 text-right">Total</div>
+                        </div>
+                        <!--<div class="bg-blue-300 flex w-full">
+                            <div class="flex-grow">Produit</div>
+                            <div class="flex-grow"></div>
+                            <div class="flex-grow"></div>
+                            <div class="flex-grow">Type/Mesure</div>
+                            <div class="flex-grow">Couleur</div>
+                            <div class="flex-grow">Prix unitaire</div>
+                            <div class="flex-grow">Quantité restante</div>
+                            <div class="flex-grow">Quantité a livré</div>
+                            <div class="flex-grow">Total</div>
+                        </div>-->
+                        <div class="listeblprod flex-grow shadow-md rounded-b-lg backslateprime p-2 overflow-y-auto defaultval"
+                             id="listeblprod">
+                        </div>
+                        <div class="grid grid-cols-8 text-right pr-4 text-lg">
+                            <div class="col-span-7 mr-3.5">Total HT:</div>
+                            <div class="col-span-1" id="totalhtbl">0 DA</div>
+                        </div>
+                        <div class="grid grid-cols-8 text-right pr-4 text-lg">
+                            <div class="col-span-7">Total Taxe:</div>
+                            <div class="col-span-1" id="totaltaxebl">0 DA</div>
+                        </div>
+                        <div class="flex justify-around">
+                            <div class="">
+                                <button type="button" id="closePopup"
+                                        class="bg-gray-500 text-white px-4 py-2 rounded-lg">
+                                    Annuler
+                                </button>
+                            </div>
+
+                            <div class="flex-grow flex items-center justify-around space-x-4">
+                                <div class="flex items-center justify-center space-x-4">
+                                    <input id="facture_id" class="border border-gray-300
+                                    text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block
+                                    p-2.5" placeholder="Facture"/>
+                                </div>
+
+                                <div class="flex items-center space-x-4 border border-gray-300 rounded-lg w-72 fileinputback">
+                                    <label for="file-upload" class="block flex-shrink-0">
+                                        <div class="flex items-center justify-center px-4 py-2 rounded-l-lg backslate text-blue-500 cursor-pointer hover:bg-blue-500 hover:text-white transition-colors duration-300">
+                                            <span>Fichier FC</span>
+                                        </div>
+                                        <input id="file-upload" type="file" class="hidden"/>
+                                    </label>
+                                    <span id="file-name" class="text-gray-800 w-64 truncate">No fc file</span>
+                                </div>
+
+                                <div class="flex items-center space-x-4 border border-gray-300 rounded-lg w-72 fileinputback">
+                                    <label for="file-upload2" class="block flex-shrink-0">
+                                        <div class="flex items-center justify-center px-4 py-2 rounded-l-lg backslate text-blue-500 cursor-pointer hover:bg-blue-500 hover:text-white transition-colors duration-300">
+                                            <span>Fichier BL</span>
+                                        </div>
+                                        <input id="file-upload2" type="file" class="hidden"/>
+                                    </label>
+                                    <span id="file-name2" class="text-gray-800 w-64 truncate">No bl file</span>
+                                </div>
+
+                            </div>
+
+                            <div class="">
+                                <input type="submit" class="bg-green-300 text-white px-4 py-2 rounded-lg"
+                                       id="validatebl"
+                                       value="Valider">
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </form>
+
+        </div>
     </div>
 
 
@@ -666,7 +693,7 @@
                 totalAmount += product.total;
 
                 factureProductDetails += `
-                    <tr>
+                    <tr class="defaultboldval">
                         <td class="p-2">${productName} (${productRef})</td>
                         <td class="p-2 text-right">${productPrice}</td>
                         <td class="p-2 text-right">${productQuantity}</td>
@@ -739,7 +766,8 @@
                         var prixttc = product.prix_publique + product.prix_publique * 0.19;
 
                         var productHtml = `
-                            <div class="text-xs grid grid-cols-12 items-center justify-between ${isSelected ? 'bg-green-100' : 'bg-gray-50'} p-2 rounded-lg product-row" data-price="${product.prix_publique}" data-product-id="${productId}">
+                            <div class="text-xs grid grid-cols-12 items-center justify-between ${isSelected ? 'backslate defaultdark' : 'backslateslite text-slate'} p-2 rounded-lg product-row"
+                                data-price="${product.prix_publique}" data-product-id="${productId}">
                                 <div class="flex items-center col-span-3">
                                     <img src="/media/${product.image || 'default_image.png'}" alt="Avatar" class="h-12 w-12 rounded-lg mr-4 imageprod">
                                     <div>
@@ -812,6 +840,10 @@
                     productRow.find('.product-total').text(`${formatNumber(total)} DA`);
                     productRow.find('.product-totalttc').text(`${formatNumber(totalttc)} DA`);
 
+                    productRow.removeClass("backslateslite");
+                    productRow.removeClass("text-slate");
+                    productRow.addClass("backslate");
+                    productRow.addClass("defaultdark");
                     // Add or update in selectedProducts list
                     var existingProduct = selectedProducts.find(p => p.id === productId);
                     if (existingProduct) {
@@ -839,7 +871,8 @@
 
                         // Add the product to the second slider
                         $('#selectedProducts').append(
-                            `<div class="relative text-xs grid grid-cols-12 items-center justify-between py-2 pr-4 rounded-lg product-row pb-3" data-product-id="${productId}">
+                            `<div class="relative text-xs grid grid-cols-12 items-center justify-between py-2 rounded-lg product-row mb-3
+                                backslate defaultdark px-2 pr-6" data-product-id="${productId}">
                                 <div class="flex items-center col-span-3">
                                     <img src="${productRow.find('.imageprod').attr('src')}" alt="Avatar" class="h-12 w-12 rounded-lg mr-4">
                                     <div>
@@ -877,7 +910,7 @@
                                         ${formatNumber(total + total * 0.19)} DA
                                     </div>
                                 </div>
-                                <button class="absolute top-4 right-0 removeProduct bg-red-500 text-white p-2 rounded-lg hover:bg-red-400" data-product-id="${productId}">
+                                <button class="absolute top-4 right-2 removeProduct bg-red-500 text-white p-2 rounded-lg hover:bg-red-400" data-product-id="${productId}">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </div>`
@@ -886,6 +919,11 @@
                 } else {
                     productRow.find('.product-total').text('0 DA');
                     productRow.find('.product-totalttc').text('0 DA');
+
+                    productRow.addClass("backslateslite");
+                    productRow.addClass("text-slate");
+                    productRow.removeClass("backslate");
+                    productRow.removeClass("defaultdark");
 
                     selectedProducts = selectedProducts.filter(p => p.id !== productId);
 
@@ -901,7 +939,9 @@
 
                 // Reset quantity and deselect
                 productRow.find('.product-quantity').val('0');
-                productRow.removeClass('bg-green-100');
+                productRow.removeClass('backslate');
+                productRow.removeClass('defaultdark');
+
                 productRow.find('.product-total').text('0 DA');
                 productRow.find('.product-totalttc').text('0 DA');
 
@@ -1096,7 +1136,8 @@
                         });
 
                         $('#editselectedProducts').append(
-                            `<div class="relative text-xs grid grid-cols-12 items-center justify-between py-2 pr-4 rounded-lg editproduct-row pb-3" data-product-id="${item.id}">
+                            `<div class="relative text-xs grid grid-cols-12 items-center justify-between py-2 rounded-lg editproduct-row mb-3
+                                backslate defaultdark px-2 pr-6" data-product-id="${item.id}">
                                 <div class="flex items-center col-span-3">
                                     <img src="${item.produit.image}" alt="Avatar" class="h-12 w-12 rounded-lg mr-4">
                                     <div>
@@ -1135,7 +1176,7 @@
                                         ${formatNumber(item.prixtotal + item.prixtotal * 0.19)} DA
                                     </div>
                                 </div>
-                                <button class="absolute top-4 right-0 editremoveProduct bg-red-500 text-white p-2 rounded-lg hover:bg-red-400" data-product-id="${item.id}">
+                                <button class="absolute top-4 right-2 editremoveProduct bg-red-500 text-white p-2 rounded-lg hover:bg-red-400" data-product-id="${item.id}">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </div>`
@@ -1180,7 +1221,7 @@
                         var prixttc = product.prix_publique + product.prix_publique * 0.19;
 
                         var productHtml = `
-                            <div class="text-xs grid grid-cols-12 items-center justify-between ${isSelected ? 'bg-green-100' : 'bg-gray-50'} p-2
+                            <div class="text-xs grid grid-cols-12 items-center justify-between ${isSelected ? 'backslate defaultdark' : 'backslateslite text-slate'} p-2
                                 rounded-lg editproduct-row" data-price="${product.prix_publique}" data-product-id="${productId}">
                                 <div class="flex items-center col-span-3">
                                     <img src="/media/${product.image || 'default_image.png'}" alt="Avatar" class="h-12 w-12 rounded-lg mr-4 editimageprod">
@@ -1254,6 +1295,11 @@
                     productRow.find('.editproduct-total').text(`${formatNumber(total)} DA`);
                     productRow.find('.editproduct-totalttc').text(`${formatNumber(totalttc)} DA`);
 
+                    productRow.removeClass("backslateslite");
+                    productRow.removeClass("text-slate");
+                    productRow.addClass("backslate");
+                    productRow.addClass("defaultdark");
+
                     // Add or update in selectedProducts list
                     var existingProduct = editselectedProducts.find(p => p.id === productId);
                     if (existingProduct) {
@@ -1281,7 +1327,8 @@
 
                         // Add the product to the second slider
                         $('#editselectedProducts').append(
-                            `<div class="relative text-xs grid grid-cols-12 items-center justify-between py-2 pr-4 rounded-lg editproduct-row pb-3" data-product-id="${productId}">
+                            `<div class="relative text-xs grid grid-cols-12 items-center justify-between py-2 rounded-lg editproduct-row mb-3
+                                backslate defaultdark px-2 pr-6" data-product-id="${productId}">
                                 <div class="flex items-center col-span-3">
                                     <img src="${productRow.find('.imageprod').attr('src')}" alt="Avatar" class="h-12 w-12 rounded-lg mr-4">
                                     <div>
@@ -1319,7 +1366,7 @@
                                         ${formatNumber(total + total * 0.19)} DA
                                     </div>
                                 </div>
-                                <button class="absolute top-4 right-0 editremoveProduct bg-red-500 text-white p-2 rounded-lg hover:bg-red-400" data-product-id="${productId}">
+                                <button class="absolute top-4 right-2 editremoveProduct bg-red-500 text-white p-2 rounded-lg hover:bg-red-400" data-product-id="${productId}">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </div>`
@@ -1328,6 +1375,11 @@
                 } else {
                     productRow.find('.editproduct-total').text('0 DA');
                     productRow.find('.editproduct-totalttc').text('0 DA');
+
+                    productRow.addClass("backslateslite");
+                    productRow.addClass("text-slate");
+                    productRow.removeClass("backslate");
+                    productRow.removeClass("defaultdark");
 
                     editselectedProducts = editselectedProducts.filter(p => p.id !== productId);
 
@@ -1343,7 +1395,8 @@
 
                 // Reset quantity and deselect
                 productRow.find('.editproduct-quantity').val('0');
-                productRow.removeClass('bg-green-100');
+                productRow.removeClass('backslate');
+                productRow.removeClass('defaultdark');
                 productRow.find('.editproduct-total').text('0 DA');
                 productRow.find('.editproduct-totalttc').text('0 DA');
 
@@ -1415,7 +1468,29 @@
 
         $('.viewButton').on('click', function () {
             identifiantview = $(this).data('identifiant');
-            console.log(identifiantview);
+            etatview = $(this).data('etat');
+            /*
+
+
+En cours
+Complete
+Annule*/
+            if(etatview === "Reception"){
+                textbtn = "Valider cmd";
+                linkbtn = "/commande/etatview?etat=Traitement"
+            }else if(etatview === "Traitement"){
+                textbtn = "Traiter cmd";
+                linkbtn = "/commande/etatview?etat=Preparation"
+            }else if(etatview === "Preparation"){
+                textbtn = "Preparer cmd";
+                linkbtn = "/commande/etatview?etat=Preparation"
+            }else if(etatview === "Traitement"){
+                textbtn = "Traiter cmd";
+                linkbtn = "/commande/etatview?etat=Preparation"
+            }else{
+
+            }
+
             $containerdatacmd.html('');
             let settings = {
                 url: `/api/commandedetail/${identifiantview}`,
@@ -1429,7 +1504,7 @@
             $.ajax(settings).done(function (response) {
                 let responsedata = response;
                 $containerdatacmd.append(`
-                    <div class="flex text-gray-700">
+                    <div class="flex defaultval">
                         <div class="w-28 h-24">
                             <img src="/static/images/puma.svg" alt="Image" class="w-24 h-24">
                         </div>
@@ -1471,19 +1546,19 @@
                     <div id="listeitemsprod" class="flex-grow listeprodview overflow-y-auto py-4">
                         <p class="font-bold text-lg mb-4">Liste des produits:</p>
                     </div>
-                    <div class="h-14 flex justify-between" id="totalproducts"></div>
+                    <div class="h-14 flex justify-between items-center" id="totalproducts"></div>
                 `);
                 totalprodlines = 0;
                 for (i = 0; i < responsedata['commandesLines'].length; i++) {
                     $listeitemsprod = $("#listeitemsprod");
                     itemprod = responsedata['commandesLines'][i];
                     totalprodlines = totalprodlines + itemprod['total_prixtotal'];
-                    $listeitemsprod.append(`<div class="flex items-center justify-between bg-gray-50 p-4 rounded-lg mb-2">
+                    $listeitemsprod.append(`<div class="flex items-center justify-between p-2 backslateslite flex-none mb-2 defaultval">
                     <div class="flex items-center w-1/5">
                         <img src="${itemprod['produit']['image']}" alt="product" class="h-12 w-12 rounded-lg mr-4">
                         <div>
-                            <h3 class="text-lg font-bold text-blue-600 productName">${itemprod['produit']['designation']}</h3>
-                            <p class="text-sm text-gray-800 productRef">${itemprod['produit']['reference']}</p>
+                            <h3 class="font-bold text-blue-600 productName">${itemprod['produit']['designation']}</h3>
+                            <p class="text-sm productRef">${itemprod['produit']['reference']}</p>
                         </div>
                     </div>
                     <div class="w-3/5 flex">
@@ -1516,8 +1591,13 @@
                 }
 
                 $("#totalproducts").append(`
-                <a href="/commande/bl?commandes=${identifiantview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Voir détail BL</a>
-                <div class="text-right pr-4">
+                <div>
+                    <a href="/commande/bl?commandes=${identifiantview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Voir détail BL</a>
+
+                    <a href="/commande/etatview?etat=${etatview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Valider CMD</a>
+                </div>
+
+                <div class="text-right pr-4 defaultboldval">
                         <div class="w-full flex">
                             <span class="w-48">Total Commandé</span>
                             <span class="w-48">${formatNumber(itemprod['prixtotal'])} DA HT</span>
@@ -1559,18 +1639,18 @@
                     itemprod = responsedata['commandesLines'][i];
                     nbrrestant = itemprod['quantite'] - itemprod['total_quantite'];
                     $listeblprod.append(`
-                            <div class="grid grid-cols-8 bg-gray-50 p-4 rounded-lg mb-2 product-line"
+                            <div class="grid grid-cols-8 bg-gray-50 p-4 rounded-lg mb-2 product-line backslateslite"
                                 data-unitprice="${itemprod['prixunitaire']}" data-idprodelem="${itemprod['produit']['id']}">
                                 <div class="flex items-center col-span-2">
                                     <img src="${itemprod['produit']['image']}" alt="product" class="h-12 w-12 rounded-lg mr-4">
                                     <div>
-                                        <h3 class="text-lg font-bold text-blue-600 productName">${itemprod['produit']['designation']}</h3>
-                                        <p class="text-sm text-gray-800 productRef">${itemprod['produit']['reference']}</p>
+                                        <h3 class="font-bold text-blue-600 productName">${itemprod['produit']['designation']}</h3>
+                                        <p class="text-sm productRef">${itemprod['produit']['reference']}</p>
                                     </div>
                                 </div>
                                 <div class="col-span-1">
-                                    <h3 class="text-lg font-bold text-blue-600 productName">${itemprod['produit']['type']['designation']}</h3>
-                                    <p class="text-sm text-gray-800 productRef">${itemprod['produit']['mesure']['designation']}</p>
+                                    <h3 class="font-bold productName">${itemprod['produit']['type']['designation']}</h3>
+                                    <p class="text-sm productRef">${itemprod['produit']['mesure']['designation']}</p>
                                 </div>
                                 <div class="col-span-1">${itemprod['produit']['couleur']['designation']}</div>
                                 <div class="col-span-1 prixunitaire">${formatNumber(itemprod['prixunitaire'])} DA</div>
@@ -1838,7 +1918,7 @@
 
         // Open modal when delete button is clicked
         $('.delete-btn').on('click', function () {
-            currentDeleteId =  $(this).data('identifiant');
+            currentDeleteId = $(this).data('identifiant');
             console.log(currentDeleteId);
             $('#deleteModal').removeClass('hidden');
         });

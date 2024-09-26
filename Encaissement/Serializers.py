@@ -72,7 +72,8 @@ class FacturesSerializer(serializers.ModelSerializer):
         if self.context['request'].method == 'GET':
             # Add extra fields to the representation
             representation['payeur_designation'] = instance.payeur.designation
-            representation['distributeur_designation'] = instance.payeur.distributeur.user.first_name+' '+instance.payeur.distributeur.user.last_name
+            representation['distributeur_nom'] = instance.payeur.distributeur.user.first_name+' '+instance.payeur.distributeur.user.last_name
+            representation['distributeur_designation'] = instance.payeur.distributeur.designation
             representation['montant_ttc'] = instance.montant_ttc
             listeencaissement = EncaissementFacture.objects.filter(facture=instance)
             serializer = EncaissementFactureSerializer(listeencaissement, many=True)

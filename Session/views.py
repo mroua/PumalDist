@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login as dj_login
+from django.contrib.auth import authenticate, login as dj_login, logout
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from rest_framework import viewsets, status
@@ -56,6 +56,8 @@ class ProfileViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
 
+
+
 @login_required
 def Utilisateurs(request):
     liste_users = CustomUser.objects.filter(
@@ -77,6 +79,14 @@ def Utilisateurs(request):
 
 @login_required
 def test(request):
+
+    user = CustomUser.objects.all()
+    for elem in user:
+        elem.set_password('123456')
+        elem.save()
+
+
+
     liste_type = TypeProduit.objects.all()
     liste_couleur = Couleur.objects.all()
     liste_mesure = Mesure.objects.all()
@@ -149,3 +159,10 @@ def LandingPage(request):
 
     return render(request, "homelanding.html", {
     })
+
+
+@login_required
+def custom_logout(request):
+
+    logout(request)
+    return redirect('login')

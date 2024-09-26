@@ -188,7 +188,6 @@
             </div>
         </div>
 
-
         <!-- Edit User Sidebar -->
         <div id="editSidebar"
              class="fixed right-0 top-0 bottom-0 w-2/5 backprimer textslate shadow-lg transform translate-x-full transition-transform duration-300 z-50"
@@ -384,7 +383,7 @@
             </div>
         </div>
 
-        <div class="flex justify-between items-center pt-8 mb-4" style="margin-top: -8px">
+        <div class="flex justify-between items-center pt-4 mb-4" style="margin-top: -8px">
             <h2 class="text-2xl font-bold textslate">Liste des utilisateurs</h2>
             <div>
                 <button id="filterButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400 
@@ -409,7 +408,7 @@
         </div>
 
         <!-- User List -->
-        <div class="flex-grow shadow-md rounded-b-lg backslateprime p-2">
+        <div class="flex-grow shadow-md rounded-b-lg backslateprime p-2 overflow-y-auto">
             {% for elem in liste_users %}
 
                 <div class="flex items-center justify-between p-2 backslateslite flex-none mb-2">
@@ -709,7 +708,6 @@
                 }
             });
 
-            console.log(idList);
 
             var form = new FormData();
 
@@ -722,7 +720,7 @@
             form.append("responsable", $('#edit_responsable').val());
             form.append("type", $('#edit_type').val());
             //form.append("region", $('#edit_region').val());
-            form.append("is_active", $('#edit_is_active').val());
+            form.append("is_active", $('#edit_is_active').prop('checked'));$('#edit_is_active').val()
 
             // Add the photo
             var photoFile = $('#edit_photo')[0].files[0];

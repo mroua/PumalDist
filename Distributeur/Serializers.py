@@ -20,6 +20,21 @@ class DistributeurSerializer(serializers.ModelSerializer):
 
         distributeur = Distributeur.objects.create(user=user, **validated_data)
 
+        payeur = Payeur.objects.create(
+            distributeur = distributeur,
+            code = distributeur.code,
+            designation = distributeur.designation,
+            ville = distributeur.ville,
+            telephone = distributeur.user.telephone,
+            adresse = distributeur.adresse,
+            nif = distributeur.nif,
+            nis = distributeur.nis,
+            art = distributeur.art,
+            rc = distributeur.rc
+        )
+        payeur.save()
+
+
         return distributeur
 
     def update(self, instance, validated_data):
