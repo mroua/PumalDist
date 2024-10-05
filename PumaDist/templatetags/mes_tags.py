@@ -22,6 +22,15 @@ def taxednumber(value):
         pass
 
 
+
+def pretaxednumber(value):
+    try:
+        total = value/1.19
+        return floate_redefined(total)
+    except Exception:
+        pass
+
+
 def Date_redefined(value):
     c =str(value)
     a = str(c).split("-")
@@ -31,4 +40,5 @@ def Date_redefined(value):
 
 register.filter('floate_redefined', floate_redefined)
 register.filter('taxednumber', taxednumber)
+register.filter('pretaxednumber', taxednumber)
 register.filter('Date_redefined', Date_redefined)

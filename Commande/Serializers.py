@@ -181,7 +181,7 @@ class Dist_BonLivraisonSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         fc_file_base64 = validated_data.pop('fc_file', None)
         bl_file_base64 = validated_data.pop('bl_file', None)
-        bon_livraison_lines_data = validated_data.pop('BonLivraison')
+        bon_livraison_lines_data = validated_data.pop('BonLivraison', [])
         bon_livraison = Dist_BonLivraison.objects.create(**validated_data)
         total = 0
 
@@ -212,9 +212,34 @@ class Dist_BonLivraisonSerializer(serializers.ModelSerializer):
         return bon_livraison
 
     def update(self, instance, validated_data):
+        # Pop BonLivraison data to avoid modifying existing lines
+        bon_livraison_lines_data = validated_data.pop('BonLivraison', [])
+
+        # Update remaining fields
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        # Save the updated instance
+        instance.save()
+
+        # Handle fc_file and bl_file (similar logic as in create)
         fc_file_base64 = validated_data.pop('fc_file', None)
         bl_file_base64 = validated_data.pop('bl_file', None)
-        bon_livraison_lines_data = validated_data.pop('BonLivraison', None)
+        if fc_file_base64:
+            fc_file = self._base64_to_file(fc_file_base64)
+            instance.fc_file.save('fc_file', fc_file)
+        if bl_file_base64:
+            bl_file = self._base64_to_file(bl_file_base64)
+            instance.bl_file.save('bl_file', bl_file)
+
+        # Do not update BonLivraisonLine objects
+        # You can handle modifications to BonLivraisonLine objects separately if needed
+
+        return instance
+    """def update(self, instance, validated_data):
+        fc_file_base64 = validated_data.pop('fc_file', None)
+        bl_file_base64 = validated_data.pop('bl_file', None)
+        bon_livraison_lines_data = validated_data.pop('BonLivraison', [])
 
         instance.facture = validated_data.get('facture', instance.facture)
         instance.date_facturation = validated_data.get('date_facturation', instance.date_facturation)
@@ -264,7 +289,7 @@ class Dist_BonLivraisonSerializer(serializers.ModelSerializer):
             instance.total = total
             instance.save()
 
-        return instance
+        return instance"""
 
     def _base64_to_file(self, base64_string):
         try:
@@ -384,7 +409,8 @@ class Dist_BonLivraisonNormalSerializer(serializers.ModelSerializer):
         return bon_livraison
 
     def update(self, instance, validated_data):
-        # Extract fields
+        bon_livraison_lines_data = validated_data.pop('BonLivraison')
+
         facture = validated_data.get('facture', None)
         fc_file = validated_data.get('fc_file', None)
         bl_file = validated_data.get('bl_file', None)

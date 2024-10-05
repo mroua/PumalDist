@@ -175,22 +175,24 @@
         </div>
 
         <div class="flex justify-between items-center pt-8 mb-4" style="margin-top: -8px">
-            <div class="flex">
+            <div class="flex gap-2">
                 <div>
                     <a href="{% url 'distributeur' %}"
                        class="block px-4 py-2 hoverprimer rounded">Distributeur</a>
                 </div>
                 <div><!-- accomptes -->
-                    <a href="{% url 'payeur' %}" class="block px-4 py-2 hoverprimer rounded">Payeur</a>
+                    <a href="{% url 'payeur' %}" class="block px-4 py-2 actualprimer rounded">Payeur</a>
                 </div>
                 <div><!-- accomptes -->
                     <a href="{% url 'payeurdraft' %}" class="block px-4 py-2 hoverprimer rounded">Nouveau Payeur</a>
                 </div>
             </div>
             <div>
-                <button id="filterButton" class="bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-700">Filtrer
+                <button id="filterButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
+                    hover:bg-blue-900 hover:border-slate-400 rounded-md">Filtrer
                 </button>
-                <button id="addButton" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400">Ajouter
+                <button id="addButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
+                    hover:bg-blue-900 hover:border-slate-400 rounded-md">Ajouter
                 </button>
             </div>
         </div>

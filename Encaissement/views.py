@@ -1,13 +1,15 @@
 from django.db.models import Sum
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
-from rest_framework import viewsets
 from django.db import connection
 
 from Distributeur.models import Distributeur, Payeur
 from .Serializers import BanqueSerializer, AccountSerializer, FacturesSerializer, EncaissementSerializer
 from .models import Banque, Account, Factures, Encaissement
 from django.contrib.auth.decorators import login_required
+from rest_framework import viewsets, status
+from rest_framework.response import Response
+from datetime import date
 
 
 # Create your views here.
@@ -129,12 +131,38 @@ def EncaissementView(request):
 
 @login_required
 def EncaissementDetailView(request):
+    sqlcdm = """
+                SELECT id, distributeur, payeur, montant, "type", validation_depot, validation, date_ajout, date_cheque, date_depot, type_validation 
+                FROM creancevalidation where validation = false order by  date_ajout desc
+             """
+
+    with connection.cursor() as cursor:
+        # Execute the SQL query with the applied filters
+        cursor.execute(sqlcdm)
+        rows = cursor.fetchall()
+
+    list_elems = []
+    for row in rows:
+        list_elems.append({
+            "id": row[0],
+            "distributeur": row[1],
+            "payeur": row[2],
+            "montant": row[3],
+            "type": row[4],
+            "validation_depot": row[5],
+            "validation": row[6],
+            "date_ajout": row[7],
+            "date_cheque": row[8],
+            "date_depot": row[9],
+            "type_validation": row[10],
+
+        })
     encaissement = Encaissement.objects.all()
 
     print(encaissement)
 
     return render(request, "Pumal/EncaissementDetail.html", {
-        "encaissement": encaissement,
+        "encaissement": list_elems,
     })
 
 
@@ -150,7 +178,7 @@ def AccompteView(request):
     listeaccompte = Account.objects.filter(montant__gt=0)
 
 
-    return render(request, "Accompte.html", {
+    return render(request, "Pumal/Accompte.html", {
         "listedist": listedist,
         "listebanque": listebanque,
         "listepayeur": listepayeur,
@@ -171,6 +199,33 @@ class AccountViewSet(viewsets.ModelViewSet):
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
 
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+
+        print(request.data)
+        date_validation = request.data["date_validation"]
+        validation = request.data["validation"]
+        date_depot = request.data["date_depot"]
+        validation_depot = request.data["validation_depot"]
+
+        if (date_validation and date_validation != ""):
+            instance.date_validation = date_validation
+        if (date_depot and date_depot != ""):
+            instance.date_depot = date_depot
+        if(validation):
+            instance.validation = validation
+            instance.date_validation = date.today()
+        if(validation_depot):
+            instance.validation = validation
+            instance.date_depot = date.today()
+
+
+        instance.validation_depot = validation_depot
+        instance.save()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 class FacturesViewSet(viewsets.ModelViewSet):
     queryset = Factures.objects.all()
     serializer_class = FacturesSerializer
@@ -178,6 +233,42 @@ class FacturesViewSet(viewsets.ModelViewSet):
 class EncaissementViewSet(viewsets.ModelViewSet):
     queryset = Encaissement.objects.all()
     serializer_class = EncaissementSerializer
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+
+        print(request.data)
+        date_validation = request.data["date_validation"]
+        validation = request.data["validation"]
+        date_depot = request.data["date_depot"]
+        validation_depot = request.data["validation_depot"]
+
+        if (date_validation and date_validation != ""):
+            instance.date_validation = date_validation
+        if (date_depot and date_depot != ""):
+            instance.date_depot = date_depot
+        if(validation):
+            instance.validation = validation
+            instance.date_validation = date.today()
+            listeaccompt = Account.objects.filter(encaissement = instance)
+            for el in listeaccompt:
+                el.validation = validation
+                el.date_validation = date.today()
+                el.save()
+        if(validation_depot):
+            instance.validation = validation
+            instance.date_depot = date.today()
+            listeaccompt = Account.objects.filter(encaissement = instance)
+            for el in listeaccompt:
+                el.validation_depot = validation_depot
+                el.date_depot = date.today()
+                el.save()
+
+
+        instance.validation_depot = validation_depot
+        instance.save()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 @login_required
 def AccompteDist(request):
@@ -208,4 +299,5 @@ def get_factures(request, payeur_id):
         }
         for facture in factures
     ]
+
     return JsonResponse({'factures': facture_data})

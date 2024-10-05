@@ -30,7 +30,7 @@ def ProduitView(request):
 
     produit = Produit.objects.filter(active = True)
 
-    return render(request, "Produit.html", {
+    return render(request, "Pumal/Produit.html", {
         'liste_type': liste_type,
         'liste_couleur': liste_couleur,
         'liste_mesure': liste_mesure,

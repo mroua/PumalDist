@@ -464,21 +464,81 @@
                                     data-identifiant="{ { elem.id }}">Supprimer</a>
                             </div>
                         </div>
-                    </div> -->
+                    </div>
+-->
                     <div class="flex space-x-2 w-1/6 justify-end">
-                        <button id="popupButton" class="popupButton bg-blue-500 text-white p-2 rounded"
-                                data-identifiant="{{ elem.id }}"><i
-                                class="fa-solid fa-truck"></i>
-                        </button>
-                        <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded"
-                                data-identifiant="{{ elem.id }}" data-etat="{{ elem.etat }}"><i class="fas fa-search"></i></button>
-                        <button id="editButton" class="editButton bg-blue-500 text-white p-2 rounded"
-                                data-identifiant="{{ elem.id }}">
-                            <i class="fas fa-pencil-alt" onclick=""></i>
-                        </button>
-                        <button class="bg-red-500 text-white p-2 rounded delete-btn" data-identifiant="{{ elem.id }}">
-                            <i class="fas fa-trash"></i>
-                        </button>
+
+                        {% if elem.etat == 'Reception' %}
+                            <div class="bg-gray-300 text-white p-2 rounded"
+                                 data-identifiant="{{ elem.id }}"><i
+                                    class="fa-solid fa-truck"></i>
+                            </div>
+                            <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded"
+                                    data-identifiant="{{ elem.id }}" data-etat="{{ elem.etat }}"><i
+                                    class="fas fa-search"></i></button>
+                            <button id="editButton" class="editButton bg-blue-500 text-white p-2 rounded"
+                                    data-identifiant="{{ elem.id }}">
+                                <i class="fas fa-pencil-alt" onclick=""></i>
+                            </button>
+
+                            <button class="bg-red-500 text-white p-2 rounded delete-btn"
+                                    data-identifiant="{{ elem.id }}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+
+                        {% elif elem.etat in 'Traitement, Preparation' %}
+                            <div class="bg-gray-300 text-white p-2 rounded"
+                                 data-identifiant="{{ elem.id }}"><i
+                                    class="fa-solid fa-truck"></i>
+                            </div>
+                            <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded"
+                                    data-identifiant="{{ elem.id }}" data-etat="{{ elem.etat }}"><i
+                                    class="fas fa-search"></i></button>
+                            <div class=" bg-gray-300 text-white p-2 rounded"
+                                 data-identifiant="{{ elem.id }}">
+                                <i class="fas fa-pencil-alt" onclick=""></i>
+                            </div>
+
+                            <div class="bg-gray-300 text-white p-2 rounded">
+                                <i class="fas fa-trash"></i>
+                            </div>
+
+                        {% elif elem.etat == 'En cours' %}
+                            <button id="popupButton" class="popupButton bg-blue-500 text-white p-2 rounded"
+                                    data-identifiant="{{ elem.id }}"><i
+                                    class="fa-solid fa-truck"></i>
+                            </button>
+                            <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded"
+                                    data-identifiant="{{ elem.id }}" data-etat="{{ elem.etat }}"><i
+                                    class="fas fa-search"></i></button>
+                            <div class=" bg-gray-300 text-white p-2 rounded"
+                                 data-identifiant="{{ elem.id }}">
+                                <i class="fas fa-pencil-alt" onclick=""></i>
+                            </div>
+
+                            <div class="bg-gray-300 text-white p-2 rounded">
+                                <i class="fas fa-trash"></i>
+                            </div>
+
+                        {% elif elem.etat in 'Complete, Annule' %}
+                            <div class=" bg-gray-300 text-white p-2 rounded"
+                                 data-identifiant="{{ elem.id }}"><i
+                                    class="fa-solid fa-truck"></i>
+                            </div>
+                            <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded"
+                                    data-identifiant="{{ elem.id }}" data-etat="{{ elem.etat }}"><i
+                                    class="fas fa-search"></i></button>
+                            <div class=" bg-gray-300 text-white p-2 rounded"
+                                 data-identifiant="{{ elem.id }}">
+                                <i class="fas fa-pencil-alt" onclick=""></i>
+                            </div>
+
+                            <div class="bg-gray-300 text-white p-2 rounded">
+                                <i class="fas fa-trash"></i>
+                            </div>
+                        {% endif %}
+
+
                     </div>
 
                 </div>
@@ -489,10 +549,10 @@
         <div id="deleteModal" class="fixed inset-0 flex items-center justify-center hidden bg-gray-800 bg-opacity-50">
             <div class="backslate p-4 rounded-lg w-96 backprimer">
                 <h2 class="text-lg font-semibold text-gray-700 mb-4">Confirm Delete</h2>
-                <p>Are you sure you want to delete this item?</p>
+                <p>Etes vous sure de vouloir supprimer cette commande?</p>
                 <div class="mt-6 flex justify-end space-x-4">
-                    <button id="cancelDelete" class="px-4 py-2 bg-gray-300 rounded">Cancel</button>
-                    <button id="confirmDelete" class="px-4 py-2 bg-red-500 text-white rounded">Delete</button>
+                    <button id="cancelDelete" class="px-4 py-2 bg-gray-300 rounded">Annuler</button>
+                    <button id="confirmDelete" class="px-4 py-2 bg-red-500 text-white rounded">Supprimer</button>
                 </div>
             </div>
         </div>
@@ -1469,26 +1529,36 @@
         $('.viewButton').on('click', function () {
             identifiantview = $(this).data('identifiant');
             etatview = $(this).data('etat');
-            /*
+            annulelink = "";
 
+            if (etatview === "Reception") {
+                buttonslist = `
+                    <button data-href="/commande/etatview?commande=${identifiantview}&etat=Traitement" class="callstate h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Valider CMD</button>
+                    <button data-href="/commande/etatview?commande=${identifiantview}&etat=Annule" class="callstate h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Annuler CMD</button>
 
-En cours
-Complete
-Annule*/
-            if(etatview === "Reception"){
-                textbtn = "Valider cmd";
-                linkbtn = "/commande/etatview?etat=Traitement"
-            }else if(etatview === "Traitement"){
-                textbtn = "Traiter cmd";
-                linkbtn = "/commande/etatview?etat=Preparation"
-            }else if(etatview === "Preparation"){
-                textbtn = "Preparer cmd";
-                linkbtn = "/commande/etatview?etat=Preparation"
-            }else if(etatview === "Traitement"){
-                textbtn = "Traiter cmd";
-                linkbtn = "/commande/etatview?etat=Preparation"
-            }else{
+                `;
+            } else if (etatview === "Traitement") {
+                //<a data-href="/commande/bl?commandes=${identifiantview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2.5 rounded-lg">Voir BL</a>
+                buttonslist = `
+                    <button data-href="/commande/etatview?commande=${identifiantview}&etat=Preparation" class="callstate h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Preparation CMD</button>
 
+                `;
+            } else if (etatview === "Preparation") {
+                //<a data-href="/commande/bl?commandes=${identifiantview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2.5 rounded-lg">Voir BL</a>
+                buttonslist = `
+                    <button data-href="/commande/etatview?commande=${identifiantview}&etat=En cours" class="callstate h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Lancer Livraison</button>
+                `;
+            } else if (etatview === "En cours") {
+                //<a data-href="/commande/bl?commandes=${identifiantview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2.5 rounded-lg">Voir BL</a>
+                buttonslist = `
+                    <a href="/commande/bl?commandes=${identifiantview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2.5 rounded-lg">Voir BL</a>
+                    <button data-href="/commande/etatview?commande=${identifiantview}&etat=Complete" class="callstate h-10 mt-4 bg-blue-500
+                        text-white px-4 py-2 rounded-lg">Completer CMD</button>
+                `;
+            } else {
+                buttonslist = `
+                    <a href="/commande/bl?commandes=${identifiantview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2.5 rounded-lg">Voir BL</a>
+                `;
             }
 
             $containerdatacmd.html('');
@@ -1505,8 +1575,8 @@ Annule*/
                 let responsedata = response;
                 $containerdatacmd.append(`
                     <div class="flex defaultval">
-                        <div class="w-28 h-24">
-                            <img src="/static/images/puma.svg" alt="Image" class="w-24 h-24">
+                        <div class="w-12 h-12">
+                            <img src="/static/images/puma.svg" alt="Image" class="w-12 h-12">
                         </div>
                         <div class="flex-grow flex flex-wrap">
                             <div class="w-1/4 p-2 flex items-center space-x-2">
@@ -1592,9 +1662,7 @@ Annule*/
 
                 $("#totalproducts").append(`
                 <div>
-                    <a href="/commande/bl?commandes=${identifiantview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Voir détail BL</a>
-
-                    <a href="/commande/etatview?etat=${etatview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Valider CMD</a>
+                    ${buttonslist}
                 </div>
 
                 <div class="text-right pr-4 defaultboldval">
@@ -1611,6 +1679,19 @@ Annule*/
                     </div>
                 </div>
                 `);
+
+
+                $('.callstate').on('click', function (event) {
+                    event.preventDefault();
+                    let link = $(this).data('href');
+                    $.ajax({
+                        url: link,
+                        type: 'GET',
+                        success: function (result) {
+                            location.reload();  // Refresh the page on success
+                        }
+                    });
+                });
 
                 $('#viewSidebar').toggleClass('translate-x-full');
             });
@@ -1639,7 +1720,7 @@ Annule*/
                     itemprod = responsedata['commandesLines'][i];
                     nbrrestant = itemprod['quantite'] - itemprod['total_quantite'];
                     $listeblprod.append(`
-                            <div class="grid grid-cols-8 bg-gray-50 p-4 rounded-lg mb-2 product-line backslateslite"
+                            <div class="grid grid-cols-8 bg-gray-50 p-2 rounded-lg mb-2 product-line backslateslite"
                                 data-unitprice="${itemprod['prixunitaire']}" data-idprodelem="${itemprod['produit']['id']}">
                                 <div class="flex items-center col-span-2">
                                     <img src="${itemprod['produit']['image']}" alt="product" class="h-12 w-12 rounded-lg mr-4">
@@ -1846,71 +1927,74 @@ Annule*/
                     })
                 }
             });
-            let liste_prodbl_json = JSON.stringify(liste_prodbl);
+            if (!quantity > nbrrestant) {
+                let liste_prodbl_json = JSON.stringify(liste_prodbl);
 
-            var form = new FormData();
+                var form = new FormData();
 
-            var fcFile = $("#file-upload")[0].files[0];
-            var blFile = $("#file-upload2")[0].files[0];
+                var fcFile = $("#file-upload")[0].files[0];
+                var blFile = $("#file-upload2")[0].files[0];
 
-            if (fcFile) {
-                form.append("fc_file", fcFile);
+                if (fcFile) {
+                    form.append("fc_file", fcFile);
+                }
+                if (blFile) {
+                    form.append("bl_file", blFile);
+                }
+
+                $facture_id = $('#facture_id');
+
+                if ($facture_id.val() === "") facture = null;
+                else facture = $facture_id.val();
+
+                // Additional data
+                form.append("facture", facture);
+                form.append("BonLivraison", liste_prodbl_json);
+                form.append("commandes", identifiant);
+
+
+                var settings = {
+                    "url": "/api/blivraison/",
+                    "method": "POST",
+                    "timeout": 0,
+                    "headers": {
+                        "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),
+                    },
+                    "processData": false,
+                    "contentType": false,
+                    "data": form,
+                };
+
+                $.ajax(settings)
+                    .done(function (response) {
+
+                        window.location.href = "/commande/";
+                        console.log(response);
+                    })
+                    .fail(function (jqXHR, textStatus, errorThrown) {
+                        // Log the entire jqXHR object to see all details
+                        console.log('jqXHR:', jqXHR);
+
+                        // Log the status text
+                        console.log('Status:', textStatus);
+
+                        // Log the error thrown
+                        console.log('Error Thrown:', errorThrown);
+
+                        // Log the response text, which might contain detailed error messages
+                        console.log('Response Text:', jqXHR.responseText);
+
+                        // Optionally, parse the responseText as JSON if it's in JSON format
+                        try {
+                            var responseJSON = JSON.parse(jqXHR.responseText);
+                            console.log('Response JSON:', responseJSON);
+                        } catch (e) {
+                            console.error('Failed to parse response as JSON:', e);
+                        }
+
+                    });
             }
-            if (blFile) {
-                form.append("bl_file", blFile);
-            }
 
-            $facture_id = $('#facture_id');
-
-            if ($facture_id.val() === "") facture = null;
-            else facture = $facture_id.val();
-
-            // Additional data
-            form.append("facture", facture);
-            form.append("BonLivraison", liste_prodbl_json);
-            form.append("commandes", identifiant);
-
-
-            var settings = {
-                "url": "/api/blivraison/",
-                "method": "POST",
-                "timeout": 0,
-                "headers": {
-                    "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),
-                },
-                "processData": false,
-                "contentType": false,
-                "data": form,
-            };
-
-            $.ajax(settings)
-                .done(function (response) {
-
-                    window.location.href = "/commande/";
-                    console.log(response);
-                })
-                .fail(function (jqXHR, textStatus, errorThrown) {
-                    // Log the entire jqXHR object to see all details
-                    console.log('jqXHR:', jqXHR);
-
-                    // Log the status text
-                    console.log('Status:', textStatus);
-
-                    // Log the error thrown
-                    console.log('Error Thrown:', errorThrown);
-
-                    // Log the response text, which might contain detailed error messages
-                    console.log('Response Text:', jqXHR.responseText);
-
-                    // Optionally, parse the responseText as JSON if it's in JSON format
-                    try {
-                        var responseJSON = JSON.parse(jqXHR.responseText);
-                        console.log('Response JSON:', responseJSON);
-                    } catch (e) {
-                        console.error('Failed to parse response as JSON:', e);
-                    }
-
-                });
 
         });
 
@@ -1951,6 +2035,17 @@ Annule*/
 
 
             }
+        });
+
+
+        $('#file-upload').on('change', function () {
+            const fileName = $(this).val().split('\\').pop() || 'No fc file';
+            $('#file-name').text(fileName);
+        });
+
+        $('#file-upload2').on('change', function () {
+            const fileName = $(this).val().split('\\').pop() || 'No bl file';
+            $('#file-name2').text(fileName);
         });
 
 

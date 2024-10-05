@@ -44,6 +44,7 @@ class Dist_BonLivraisonViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
     filterset_fields = ['commandes']
 
+
 class Dist_BonLivraisonLineViewSet(viewsets.ModelViewSet):
     queryset = Dist_BonLivraisonLine.objects.all()
     serializer_class = Dist_BonLivraisonLineSerializer
@@ -56,6 +57,7 @@ class Dist_BonLivraisonDetailViewset(viewsets.ModelViewSet):
 class Dist_BonLivraisonNormalViewset(viewsets.ModelViewSet):
     queryset = Dist_BonLivraison.objects.all()
     serializer_class = Dist_BonLivraisonNormalSerializer
+
 
 @login_required
 def CommandeView(request):
@@ -144,10 +146,25 @@ def BlivraisonView(request):
     for elem in blist:
         print(elem)
 
-    return render(request, "Blivraison.html", {
+    return render(request, "Pumal/Blivraison.html", {
         "blist": blist,
         "cmd":commandes
     })
+
+@login_required
+def EtatViewChange(request):
+    try:
+        commande = Dist_Commande.objects.get(id=int(request.GET.get('commande')))
+        etat = request.GET.get('etat')
+
+        commande.etat = etat
+        commande.save()
+
+
+    except Exception:
+        pass
+
+    return HttpResponse("Done")
 
 
 class CMDList(APIView):

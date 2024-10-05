@@ -1,0 +1,391 @@
+{% extends "baseNew.html" %}
+{% load mes_tags %}
+{% load static %}
+{% block title %}Commandes{% endblock %}
+
+{% block content %}
+
+    <div class="w-full h-full backprimer px-4 pb-4 flex flex-col">
+        <style>
+            .hiddenelem {
+                display: none;
+            }
+        </style>
+
+        <div class="flex justify-between items-center pt-8 mb-4" style="margin-top: -8px">
+            <h2 class="text-2xl font-bold textslate">Liste des BL</h2>
+        </div>
+        <hr/>
+
+
+
+        <!-- Produit List Headers -->
+        <div class="pt-4">
+            <div class="flex items-center justify-between text-gray-600 font-semibold px-4 defaultboldval">
+                <div class="w-1/6 capitalize">Code</div>
+                <div class="w-1/4 capitalize">Facture</div>
+                <div class="w-1/6 capitalize">date ajout</div>
+                <div class="w-1/6 capitalize">date échéance</div>
+                <div class="w-1/6 capitalize px-4">fc file</div>
+                <div class="w-1/6 capitalize px-4">bl file</div>
+                <div class="w-1/6 capitalize text-center">Total</div>
+                <div class="w-1/6 capitalize text-center">Actions</div>
+            </div>
+        </div>
+
+        <!-- Produit List
+         <h3 class="text-lg font-bold text-blue-600">{ { elem.designation }}</h3>
+                            <p class="text-sm text-gray-500">{ { elem.reference }}</p>-->
+        <div class="flex-grow shadow-md rounded-b-lg backslateprime p-2 overflow-y-auto">
+            {% for elem in blist %}
+                <div class="flex items-center justify-between p-2 backslateslite flex-none mb-2">
+                    <div class="w-1/6">
+                        <p class="text-sm text-gray-500">bl_{{ elem.commandes__distributeur__code }}{{ cmd }}</p>
+                    </div>
+                    <div class="w-1/4">
+                        <p class="text-sm text-gray-500">{{ elem.facture }}</p>
+                    </div>
+                    <div class="w-1/6">
+                        <p class="text-sm text-gray-500">{{ elem.date_ajout }}</p>
+                    </div>
+                    <div class="w-1/6">
+                        <p class="text-sm text-gray-500">{{ elem.date_echeance }}</p>
+                    </div>
+                    <div class="w-1/6">
+                        <a href="/media/{{ elem.fc_file }}"
+                           class="{% if elem.fc_file %}bg-blue-500{% else %}bg-gray-300{% endif %} text-white px-4 py-2 rounded-lg">
+                            Fichier FC
+                        </a>
+                    </div>
+                    <div class="w-1/6">
+                        <a href="/media/{{ elem.bl_file }}"
+                           class="{% if elem.bl_file %}bg-blue-500{% else %}bg-gray-300{% endif %} text-white px-4 py-2 rounded-lg">
+                            Fichier BL
+                        </a>
+                    </div>
+                    <div class="w-1/6">
+                        <div class="flex w-full justify-between pl-2">
+                            <div class="text-sm text-gray-500">HT:</div>
+                            <div class="text-sm text-gray-500 text-right">{{ elem.total|floate_redefined }} DA
+                            </div>
+                        </div>
+                        <div class="flex w-full justify-between pl-2">
+                            <div class="text-sm text-gray-500">Taxe:</div>
+                            <div class="text-sm text-gray-500 text-right">{{ elem.total|taxednumber }}
+                                DA
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex space-x-2 w-1/6 justify-end">
+                        <button id="popupButton" class="popupButton bg-blue-500 text-white p-2 rounded"
+                                data-identifiant="{{ elem.id }}"><i
+                                class="fas fa-pencil-alt"></i>
+                        </button>
+                        <button class="bg-red-500 text-white p-2 rounded delete-btn" data-code="{{ elem.commandes__distributeur__code }}"
+                                data-identifiant="{{ elem.id }}" data-cmd="{{ cmd }}"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Filter Modal -->
+        <div id="addbl" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
+            <form>
+                <div class="relative w-screen h-screen flex justify-center items-center">
+                    <div class="bg-white w-3/4 h-3/4 p-6 rounded-lg shadow-lg flex flex-col gap-y-2 backprimer textslate">
+                        <h3 class="text-lg font-semibold">Edit BL</h3>
+                        <div class="grid grid-cols-8 p-4">
+                            <div class="col-span-2">Produit</div>
+                            <div class="col-span-2">Type/Mesure</div>
+                            <div class="col-span-1">Couleur</div>
+                            <div class="col-span-1">Prix unitaire</div>
+                            <div class="col-span-1">Quantité</div>
+                            <div class="col-span-1 text-right">Total</div>
+                        </div>
+
+                        <div class="listeblprod flex-grow" id="listeblprod">
+                        </div>
+                        <div class="grid grid-cols-8 text-right pr-4 text-lg">
+                            <div class="col-span-7 mr-3.5">Total HT:</div>
+                            <div class="col-span-1" id="totalhtbl">0 DA</div>
+                        </div>
+                        <div class="grid grid-cols-8 text-right pr-4 text-lg">
+                            <div class="col-span-7">Total Taxe:</div>
+                            <div class="col-span-1" id="totaltaxebl">0 DA</div>
+                        </div>
+                        <div class="flex justify-around">
+                            <div class="">
+                                <button type="button" id="closePopup" class="bg-gray-500 text-white px-4 py-2 rounded-lg">
+                                    Annuler
+                                </button>
+                            </div>
+
+                            <div class="flex-grow flex items-center justify-around space-x-4">
+                                <div class="flex items-center justify-center space-x-4">
+                                    <input id="facture_id" class="border border-gray-300
+                                    text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block
+                                    p-2.5" placeholder="Facture"/>
+                                </div>
+
+                                <div class="flex items-center space-x-4 border border-gray-300 rounded-lg w-72 fileinputback">
+                                    <label for="file-upload" class="block flex-shrink-0">
+                                        <div class="flex items-center justify-center px-4 py-2 rounded-l-lg bg-white text-blue-500 cursor-pointer hover:bg-blue-500 hover:text-white transition-colors duration-300">
+                                            <span>Fichier FC</span>
+                                        </div>
+                                        <input id="file-upload" type="file" class="hidden"/>
+                                    </label>
+                                    <span id="file-name" class="text-gray-500 w-64 truncate">No fc file</span>
+                                </div>
+
+                                <div class="flex items-center space-x-4 border border-gray-300 rounded-lg w-72 fileinputback">
+                                    <label for="file-upload2" class="block flex-shrink-0">
+                                        <div class="flex items-center justify-center px-4 py-2 rounded-l-lg bg-white text-blue-500 cursor-pointer hover:bg-blue-500 hover:text-white transition-colors duration-300">
+                                            <span>Fichier BL</span>
+                                        </div>
+                                        <input id="file-upload2" type="file" class="hidden"/>
+                                    </label>
+                                    <span id="file-name2" class="text-gray-500 w-64 truncate">No bl file</span>
+                                </div>
+
+                            </div>
+
+                            <div class="">
+                                <input type="submit" class="bg-green-300 text-white px-4 py-2 rounded-lg" id="validatebl"
+                                       value="Valider">
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+
+
+    <script>
+
+        var fileuploaddata = null;
+        var fileupload2data = null;
+        var identifiant = 0;
+        var commandesid = 0;
+
+        function formatNumber(num) {
+            return new Intl.NumberFormat('fr-FR', {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(num);
+        }
+
+        function parseFormattedNumber(formattedNum) {
+            // Replace spaces and commas, then parse the string as a float
+            return parseFloat(formattedNum.replace(/\s/g, '').replace(',', '.'));
+        }
+
+
+        $(document).ready(function () {
+            // Show the popup
+            $('.popupButton').click(function () {
+                identifiant = $(this).data('identifiant');
+                console.log(identifiant);
+                let $listeblprod = $('#listeblprod');
+                $listeblprod.html('');
+
+                let settings = {
+                    url: `/api/blivraisondetail/${identifiant}`,
+                    method: "GET",
+                    timeout: 0,
+                    headers: {
+                        "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
+                    },
+                };
+
+                $.ajax(settings).done(function (response) {
+                    let responsedata = response;
+                    let commandesid = responsedata['commandes']['id'];
+
+                    // Populate the product details
+                    for (let i = 0; i < responsedata['BonLivraison'].length; i++) {
+                        let itemprod = responsedata['BonLivraison'][i];
+                        $listeblprod.append(`
+                <div class="grid grid-cols-8 bg-gray-50 p-4 rounded-lg mb-2 product-line">
+                    <div class="flex items-center col-span-2">
+                        <img src="${itemprod['produit']['image']}" alt="product" class="h-12 w-12 rounded-lg mr-4">
+                        <div>
+                            <h3 class="text-lg font-bold text-blue-600 productName">${itemprod['produit']['designation']}</h3>
+                            <p class="text-sm text-gray-500 productRef">${itemprod['produit']['reference']}</p>
+                        </div>
+                    </div>
+                    <div class="col-span-2">
+                        <h3 class="text-lg font-bold text-blue-600 productName">${itemprod['produit']['type']['designation']}</h3>
+                        <p class="text-sm text-gray-500 productRef">${itemprod['produit']['mesure']['designation']}</p>
+                    </div>
+                    <div class="col-span-1">${itemprod['produit']['couleur']['designation']}</div>
+                    <div class="col-span-1 prixunitaire">${formatNumber(itemprod['prixunitaire'])} DA</div>
+                    <div class="col-span-1 prixunitaire">${itemprod['quantite']}</div>
+                    <div class="col-span-1 text-right pr-4">${formatNumber(itemprod['prixtotal'])} DA</div>
+                </div>
+            `);
+                    }
+
+                    // Update total price
+                    let totalprice = responsedata['total'];
+                    $('#totalhtbl').text(formatNumber(totalprice) + ' DA');
+
+                    // Update tax
+                    const totalTaxe = totalprice + totalprice * 0.19;
+                    $('#totaltaxebl').text(formatNumber(totalTaxe) + ' DA');
+
+                    // Populate form fields
+                    $('#facture_id').val(responsedata['facture']);
+
+                    // Handle file previews
+                    let fc_file = responsedata['fc_file'];
+                    let bl_file = responsedata['bl_file'];
+
+
+                    if (fc_file) {
+                        //$('#file-upload').siblings('span').text('');
+                        $('#file-name').text(fc_file.replace('/media/Factures/', '') || 'FC File Selected');
+                    } else {
+                        $('#file-upload').siblings('span').text('No FC File');
+                    }
+
+                    if (bl_file) {
+                        //$('#file-upload2').siblings('span').text('BL File Selected');
+                        $('#file-name2').text(bl_file.replace('/media/BonLivraison/', '') || 'BL File Selected');
+                    } else {
+                        $('#file-upload2').siblings('span').text('No BL File');
+                    }
+
+                    $('#addbl').fadeIn();
+                });
+            });
+
+
+            // Close the popup
+            $('#closePopup').click(function () {
+                $('#addbl').fadeOut();
+            });
+
+            // Optional: Close popup if clicking outside of the popup content
+            $(window).click(function (event) {
+                if ($(event.target).is('#addbl')) {
+                    $('#addbl').fadeOut();
+                }
+            });
+        });
+
+        $('#file-upload').on('change', function () {
+            const fileName = $(this).val().split('\\').pop() || 'No fc file';
+            $('#file-name').text(fileName);
+        });
+
+        $('#file-upload2').on('change', function () {
+            const fileName = $(this).val().split('\\').pop() || 'No bl file';
+            $('#file-name2').text(fileName);
+        });
+
+
+        $('#validatebl').on('click', function (e) {
+            e.preventDefault();
+
+
+            var form = new FormData();
+
+            var fcFile = $("#file-upload")[0].files[0];
+            var blFile = $("#file-upload2")[0].files[0];
+
+            if (fcFile) {
+                form.append("fc_file", fcFile);
+            }
+            if (blFile) {
+                form.append("bl_file", blFile);
+            }
+
+            $facture_id = $('#facture_id');
+
+            if ($facture_id.val() === "") facture = null;
+            else facture = $facture_id.val();
+            form.append("BonLivraison", ["sol"]);
+
+            var settings = {
+                "url": "/api/blivraison/" + identifiant + "/",
+                "method": "put",
+                "timeout": 0,
+                "headers": {
+                    "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),
+                },
+                "processData": false,
+                "contentType": false,
+                "data": form
+            };
+
+            $.ajax(settings)
+                .done(function (response) {
+                    location.reload();
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    // Log the entire jqXHR object to see all details
+                    console.log('jqXHR:', jqXHR);
+
+                    // Log the status text
+                    console.log('Status:', textStatus);
+
+                    // Log the error thrown
+                    console.log('Error Thrown:', errorThrown);
+
+                    // Log the response text, which might contain detailed error messages
+                    console.log('Response Text:', jqXHR.responseText);
+
+                    // Optionally, parse the responseText as JSON if it's in JSON format
+                    try {
+                        var responseJSON = JSON.parse(jqXHR.responseText);
+                        console.log('Response JSON:', responseJSON);
+                    } catch (e) {
+                        console.error('Failed to parse response as JSON:', e);
+                    }
+
+                });
+
+        });
+
+
+        $(document).ready(function () {
+            // Handle the delete button click
+            $('.delete-btn').on('click', function () {
+                // Get the element's identifier
+                const cmd = $(this).data('cmd');
+                const code = $(this).data('code');
+                const identifiant = $(this).data('identifiant');
+
+                // Create a confirmation popup
+                const isConfirmed = confirm("Etes vous sure de vouloir supprimer le BL bl_"+code+cmd+"?");
+
+                // If the user confirms, make the delete request
+                if (isConfirmed) {
+                    let settings = {
+                        url: `/api/blivraison/${identifiant}/`,
+                        method: "DELETE",
+                        timeout: 0,
+                        headers: {
+                            "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
+                        },
+                        success: function (response) {
+                            window.location.href = "/commande/";
+                        },
+                        error: function (xhr) {
+                            // Handle error
+                            alert("Une erreur s'est produite lors de la suppression de l'élément.");
+                        }
+                    };
+
+                    // Send the delete request
+                    $.ajax(settings);
+                }
+            });
+        });
+
+    </script>
+
+
+{% endblock %}

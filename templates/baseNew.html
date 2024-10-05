@@ -41,6 +41,11 @@
                    data-tip="Utilisateurs">
                     <i class="uil uil-users-alt text-slate-300 text-xl"></i>
                 </a>
+                <a href="{% url 'produit' %}"
+                   class="btn btn-square hover:bg-blue-900 {% if request.path == '/produit/' %}bg-blue-900{% endif %} border-none flex items-center justify-center p-1 tooltip tooltip-right capitalize"
+                   data-tip="Utilisateurs">
+                    <i class="uil uil-box text-slate-300 text-xl"></i>
+                </a>
                 <a href="{% url 'distributeur' %}"
                    class="btn btn-square hover:bg-blue-900 {% if request.path == '/distributeur/' %}bg-blue-900
                     {% elif request.path == '/distributeur/payeur' %}bg-blue-900

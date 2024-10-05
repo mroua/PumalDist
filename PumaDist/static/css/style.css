@@ -189,6 +189,11 @@ input::placeholder, select::placeholder {
 .dropdownMenu {
     display: none; /* Initially hidden */
 }
+
+.actualprimer{
+    background: #1e293b;
+    color: #ffffff;
+}
     
 .hoverprimer:hover {
     background: #1e293b;
@@ -206,4 +211,7 @@ input::placeholder, select::placeholder {
 
 .containerdef {
   height: calc(100vh - 52px); /* Full viewport height minus 50px */
+}
+.containerdef2 {
+  height: calc(100vh - 126px); /* Full viewport height minus 50px */
 }

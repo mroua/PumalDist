@@ -621,6 +621,8 @@
 
         $('#validatebl').on('click', function (e) {
             e.preventDefault();
+
+
             var form = new FormData();
 
             var fcFile = $("#file-upload")[0].files[0];
@@ -637,6 +639,7 @@
 
             if ($facture_id.val() === "") facture = null;
             else facture = $facture_id.val();
+            form.append("BonLivraison", ["sol"]);
 
             var settings = {
                 "url": "/api/blivraison/" + identifiant + "/",
@@ -652,7 +655,7 @@
 
             $.ajax(settings)
                 .done(function (response) {
-                    window.location.href = "/commande/";
+                    location.reload();
                 })
                 .fail(function (jqXHR, textStatus, errorThrown) {
                     // Log the entire jqXHR object to see all details

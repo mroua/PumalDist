@@ -217,7 +217,7 @@
                 <h3 class="text-lg font-semibold textslate" id="title_code">Détail</h3>
                 <button id="closeEditSidebar" class="closeEditSidebar text-xl textslate">&times;</button>
             </div>
-            <div class="flex-grow overflow-y-auto p-4 textslate" id="editenc">
+            <div class="flex-grow overflow-y-auto p-4 textslate containerdef" id="editenc">
                 <div class="grid grid-cols-2 gap-4 mb-4">
                     <div class="mb-3">
                         <label for="distributeurdetail"
@@ -312,10 +312,10 @@
 
             <div class="flex justify-between items-center pt-4 mb-4" style="margin-top: -8px">
 
-                <div class="flex">
+                <div class="flex gap-2">
                     <div>
                         <a href="{% url 'encaissement' %}"
-                           class="block px-4 py-2 hoverprimer rounded">Encaissement</a>
+                           class="block px-4 py-2 actualprimer rounded">Encaissement</a>
                     </div>
                     <div><!-- accomptes -->
                         <a href="{% url 'encaissementvalidate' %}" class="block px-4 py-2 hoverprimer rounded">Validation</a>
@@ -557,7 +557,7 @@
                                     <div class="flex w-full justify-between ">
                                         <div class="text-xs font-bold">TTC:</div>
                                         <div class="text-xs font-bold text-right">
-                                            {{ elem.total_encaissement|taxednumber }}
+                                            {{ elem.total_encaissement|floate_redefined }}
                                             DA
                                         </div>
                                     </div>
@@ -653,16 +653,16 @@
                                     DA</label>
                                 <input id="facture_montant" value="" type="number" class="w-0 h-0">
                             </div>
-                            <div class="flex items-center space-x-4 border border-gray-300 rounded-lg h-11">
+                            <div class="flex items-center space-x-4 border border-gray-300 rounded-lg h-11 defaultdark">
                                 <label for="fc_facture" class="block flex-shrink-0">
                                     <div class="flex items-center justify-center px-4 h-full rounded-l-lg
                                             bg-white text-blue-500 cursor-pointer hover:bg-blue-500 hover:text-white
                                             transition-colors duration-300">
-                                        <span class="">Fichier FC</span>
+                                        <span class="defaultdark">Fichier FC</span>
                                     </div>
                                     <input id="fc_facture" type="file" class="hidden"/>
                                 </label>
-                                <span id="file-name" class="text-gray-500 w-64 truncate">No fc file</span>
+                                <span id="file-name" class="defaultdark w-64 truncate">Aucun fc file</span>
                             </div>
 
                             <div>
@@ -713,7 +713,7 @@
                     if (responsedata["fc_file"]) {
                         $('#filedetail').html(`<a href="${responsedata["fc_file"]}" class="bg-blue-500 text-white px-4 py-2 rounded-lg"> Fichier FC </a>`)
                     } else {
-                        $('#filedetail').html(`<div class="bg-gray-300 px-4 py-2 rounded-lg"> Fichier FC </div>`)
+                        $('#filedetail').html(`<div class="bg-gray-300 defaultdark px-4 py-2 rounded-lg"> Aucun Fichier FC </div>`)
                     }
                     $('#date_ajoutdetail').html(responsedata["date_ajout"].split('T')[0]);
                     $('#date_echancedetail').html(responsedata["date_echeance"]);
@@ -1046,7 +1046,8 @@
                 });
 
                 function appendFactures(factures) {
-                    $('#listefacture').empty(); // Clear existing content
+                    console.log(factures);
+                    $('#listefacture').empty();
                     factures.forEach(function (facture) {
                         var factureHtml = `
                     <div class="grid grid-cols-4 col-span-2 border-t">
@@ -1183,8 +1184,6 @@
                     listefacturesub = $('#creance_subfacpayeur').val();
                 } else listefacturesub = null;
 
-                alert($('input[name="options"]:checked').val());
-
                 if ($('input[name="options"]:checked').val() === "Espece") {
                     var encaissementData = {
                         montant: $('#montantenc').val(),
@@ -1227,8 +1226,8 @@
                 $.ajax(settings)
                     .done(function (response) {
                         console.log(response);
-                        alert('Encaissement ajouté avec succès');
-                        window.location.href = "/users";
+                        //alert('Encaissement ajouté avec succès');
+                        //window.location.href = "/encaissement/";
                     })
                     .fail(function (jqXHR, textStatus, errorThrown) {
                         console.log('jqXHR:', jqXHR);
