@@ -88,6 +88,24 @@ body {
 }
 
 
+.checkbox-wrapper-6 .tgl-light2 + .tgl-btn {
+    background: #f0f0f0;
+    border-radius: 2em;
+    padding: 2px;
+    transition: all 0.4s ease;
+}
+
+.checkbox-wrapper-6 .tgl-light2 + .tgl-btn:after {
+    border-radius: 50%;
+    background: #fff;
+    transition: all 0.2s ease;
+}
+
+.checkbox-wrapper-6 .tgl-light2:checked + .tgl-btn {
+    background: #f87171;
+}
+
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
     margin-left: 4px;
@@ -173,6 +191,10 @@ input::placeholder, select::placeholder {
 .defaultdark {
     font-weight: 400;
     font-size: 12px;
+    color: #0f172a;
+}
+
+.defaultdarktext {
     color: #0f172a;
 }
 

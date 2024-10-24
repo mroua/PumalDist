@@ -317,6 +317,8 @@
                         <a href="{% url 'encaissement' %}"
                            class="block px-4 py-2 actualprimer rounded">Encaissement</a>
                     </div>
+
+
                     <div><!-- accomptes -->
                         <a href="{% url 'encaissementvalidate' %}" class="block px-4 py-2 hoverprimer rounded">Validation</a>
                     </div>
@@ -331,16 +333,22 @@
                         Filtrer
                     </button>
 
-                    <button id="addButton"
-                            class="addButton btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
-                    hover:bg-blue-900 hover:border-slate-400 rounded-md">
-                        Encaissement
-                    </button>
-                    <button id="popupButton"
-                            class="popupButton btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
-                    hover:bg-blue-900 hover:border-slate-400 rounded-md">
-                        facture
-                    </button>
+                    {% if 81 in listeauth %}
+                        <button id="addButton"
+                                class="addButton btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400 hover:bg-blue-900 hover:border-slate-400 rounded-md">
+                            Encaissement
+                        </button>
+                        <button id="popupButton"
+                                class="popupButton btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
+                        hover:bg-blue-900 hover:border-slate-400 rounded-md">
+                            facture
+                        </button>
+                    {% else %}
+                        <button class="btn capitalize bg-gray-500 text-white px-4 py-2 border rounded-md cursor-not-allowed">Encaissement</button>
+                        <button class="btn capitalize bg-gray-500 text-white px-4 py-2 border rounded-md cursor-not-allowed">facture</button>
+                    {% endif %}
+
+
                 </div>
 
             </div>
@@ -402,60 +410,68 @@
                                 </div>
                             </div>
                             <div class="text-xs capitalize text-right font-bold">
-                                <div class="flex w-full justify-between ">
+                                <div class="h-full flex w-full items-center justify-end">{{ somme_circu|floate_redefined }} DA</div>
+                                <!--<div class="flex w-full justify-between">
+                                    h-full flex text-xs font-bold justify-end	items-center
                                     <div class="text-xs font-bold">HT:</div>
                                     <div class="text-xs font-bold text-right">
-                                        {{ somme_circu|floate_redefined }} DA
+                                        { { somme_circu|floate_redefined }} DA
                                     </div>
                                 </div>
                                 <div class="flex w-full justify-between ">
                                     <div class="text-xs font-bold">TTC:</div>
                                     <div class="text-xs font-bold text-right">
-                                        {{ somme_circu|taxednumber }} DA
+                                        { { somme_circu|taxednumber }} DA
                                     </div>
-                                </div>
+                                </div>-->
                             </div>
                             <div class="text-xs capitalize text-right font-bold">
-                                <div class="flex w-full justify-between ">
+                                <div class="h-full flex w-full items-center justify-end">{{ somme_depot|floate_redefined }} DA</div>
+
+                                <!--<div class="flex w-full justify-between ">
                                     <div class="text-xs font-bold">HT:</div>
                                     <div class="text-xs font-bold text-right">
-                                        {{ somme_depot|floate_redefined }} DA
+                                        { { somme_depot|floate_redefined }} DA
                                     </div>
                                 </div>
                                 <div class="flex w-full justify-between ">
                                     <div class="text-xs font-bold">TTC:</div>
                                     <div class="text-xs font-bold text-right">
-                                        {{ somme_depot|taxednumber }} DA
+                                        { { somme_depot|taxednumber }} DA
                                     </div>
-                                </div>
+                                </div>-->
                             </div>
                             <div class="text-xs capitalize text-right font-bold">
-                                <div class="flex w-full justify-between ">
+                                <div class="h-full flex w-full items-center justify-end">{{ somme_encai|floate_redefined }} DA</div>
+
+                                <!--<div class="flex w-full justify-between ">
                                     <div class="text-xs font-bold">HT:</div>
                                     <div class="text-xs font-bold text-right">
-                                        {{ somme_encai|floate_redefined }} DA
+                                        { { somme_encai|floate_redefined }} DA
                                     </div>
                                 </div>
                                 <div class="flex w-full justify-between ">
                                     <div class="text-xs font-bold">TTC:</div>
                                     <div class="text-xs font-bold text-right">
-                                        {{ somme_encai|taxednumber }} DA
+                                        { { somme_encai|taxednumber }} DA
                                     </div>
-                                </div>
+                                </div>-->
                             </div>
                             <div class="text-xs capitalize text-right font-bold">
-                                <div class="flex w-full justify-between ">
+                                <div class="h-full flex w-full items-center justify-end">{{ somme_echue|floate_redefined }} DA</div>
+
+                                 <!--<div class="flex w-full justify-between ">
                                     <div class="text-xs font-bold">HT:</div>
                                     <div class="text-xs font-bold text-right">
-                                        {{ somme_echue|floate_redefined }} DA
+                                        { { somme_echue|floate_redefined }} DA
                                     </div>
                                 </div>
                                 <div class="flex w-full justify-between ">
                                     <div class="text-xs font-bold">TTC:</div>
                                     <div class="text-xs font-bold text-right">
-                                        {{ somme_echue|taxednumber }} DA
+                                        { { somme_echue|taxednumber }} DA
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                         <div class="capitalize text-center pl-3" style="width: 80px; min-width: 80px">
@@ -512,85 +528,92 @@
                                     </div>
                                 </div>
                                 <div class="capitalize">
-                                    <div class="flex w-full justify-between ">
+                                    <div class="h-full flex text-xs font-bold justify-end	items-center">{{ elem.total_validation_depot_false|floate_redefined }} DA</div>
+                                    <!--<div class="flex w-full justify-between ">
                                         <div class="text-xs font-bold">HT:</div>
                                         <div class="text-xs font-bold text-right">
-                                            {{ elem.total_validation_depot_false|floate_redefined }}
+                                            { { elem.total_validation_depot_false|floate_redefined }}
                                             DA
                                         </div>
                                     </div>
                                     <div class="flex w-full justify-between ">
                                         <div class="text-xs font-bold">TTC:</div>
                                         <div class="text-xs font-bold text-right">
-                                            {{ elem.total_validation_depot_false|taxednumber }}
+                                            { { elem.total_validation_depot_false|taxednumber }}
                                             DA
                                         </div>
-                                    </div>
+                                    </div>-->
                                 </div>
                                 <div class="capitalize">
-
-                                    <div class="flex w-full justify-between ">
+                                    <div class="h-full flex text-xs font-bold justify-end	items-center">{{ elem.total_validation_depot_true|floate_redefined }} DA</div>
+                                    <!--<div class="flex w-full justify-between ">
                                         <div class="text-xs font-bold">HT:</div>
                                         <div class="text-xs font-bold text-right">
-                                            {{ elem.total_validation_depot_true|floate_redefined }}
+                                            { { elem.total_validation_depot_true|floate_redefined }}
                                             DA
                                         </div>
                                     </div>
                                     <div class="flex w-full justify-between ">
                                         <div class="text-xs font-bold">TTC:</div>
                                         <div class="text-xs font-bold text-right">
-                                            {{ elem.total_validation_depot_true|taxednumber }}
+                                            { { elem.total_validation_depot_true|taxednumber }}
                                             DA
                                         </div>
-                                    </div>
+                                    </div>-->
 
                                 </div>
                                 <div class="capitalize text-center">
-
-                                    <div class="flex w-full justify-between ">
+                                    <div class="h-full flex text-xs font-bold justify-end	items-center">{{ elem.total_encaissement|floate_redefined }} DA</div>
+                                    <!--<div class="flex w-full justify-between ">
                                         <div class="text-xs font-bold">HT:</div>
                                         <div class="text-xs font-bold text-right">
-                                            {{ elem.total_encaissement|floate_redefined }}
-                                            DA
+                                            { { elem.total_encaissement|floate_redefined }} DA
                                         </div>
                                     </div>
                                     <div class="flex w-full justify-between ">
                                         <div class="text-xs font-bold">TTC:</div>
                                         <div class="text-xs font-bold text-right">
-                                            {{ elem.total_encaissement|floate_redefined }}
+                                            { { elem.total_encaissement|floate_redefined }}
                                             DA
                                         </div>
-                                    </div>
+                                    </div>-->
 
                                 </div>
                                 <div class="capitalize text-center">
-
-                                    <div class="flex w-full justify-between ">
+                                    <div class="h-full flex text-xs font-bold justify-end	items-center">{{ elem.montant_echue|floate_redefined }} DA</div>
+                                    <!--<div class="flex w-full justify-between ">
                                         <div class="text-xs font-bold">HT:</div>
                                         <div class="text-xs font-bold text-right">
-                                            {{ elem.montant_echue|floate_redefined }}
-                                            DA
+                                            { { elem.montant_echue|floate_redefined }} DA
                                         </div>
                                     </div>
                                     <div class="flex w-full justify-between ">
                                         <div class="text-xs font-bold">TTC:</div>
                                         <div class="text-xs font-bold text-right">
-                                            {{ elem.montant_echue|taxednumber }}
+                                            { { elem.montant_echue|taxednumber }}
                                             DA
                                         </div>
-                                    </div>
+                                    </div>-->
 
 
                                 </div>
                             </div>
                             <div class="capitalize text-center pl-3" style="width: 80px; min-width: 80px">
-                                <button id="editButton" class="editButton bg-blue-500 text-white p-2 rounded"
+                                {% if 84 in listeauth %}
+                                    <button id="editButton" class="editButton bg-blue-500 text-white p-2 rounded"
                                         data-identifiant="{{ elem.id }}">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                                <button class="bg-red-500 text-white p-2 rounded delete-btn"
-                                        data-identifiant="{{ elem.id }}"><i
-                                        class="fas fa-trash"></i></button>
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                {% else %}
+                                    <button class="cursor-not-allowed bg-gray-500 text-white p-2 rounded"><i class="fas fa-search"></i></button>
+                                {% endif %}
+
+
+                                {% if 83 in listeauth %}
+                                    <button class="bg-red-500 text-white p-2 rounded delete-btn" data-identifiant="{{ elem.id }}"><i class="fas fa-trash"></i></button>
+                                {% else %}
+                                    <button class="cursor-not-allowed bg-gray-500 text-white p-2 rounded"><i class="fas fa-trash"></i></button>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -616,7 +639,8 @@
 
                         <div class="flex-grow grid grid-cols-1 overflow-y-auto mb-4  pr-2">
                             <div class="mb-3">
-                                <label for="distributeur" class="block mb-1 pl-1 text-sm font-medium">Distribupteur</label>
+                                <label for="distributeur"
+                                       class="block mb-1 pl-1 text-sm font-medium">Distribupteur</label>
                                 <select id="distributeur" class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
                                         block w-full p-2.5">
                                     {% for elem in listedist %}
@@ -701,7 +725,7 @@
                 $.ajax(settings).done(function (response) {
                     let responsedata = response;
 
-                    console.log(responsedata)
+                    console.log(responsedata);
 
                     $("#title_code").html("Détail facture " + responsedata['code']);
                     $('#distributeurdetail').html(responsedata["distributeur_designation"]);
@@ -1227,7 +1251,7 @@
                     .done(function (response) {
                         console.log(response);
                         //alert('Encaissement ajouté avec succès');
-                        //window.location.href = "/encaissement/";
+                        window.location.href = "/encaissement/";
                     })
                     .fail(function (jqXHR, textStatus, errorThrown) {
                         console.log('jqXHR:', jqXHR);

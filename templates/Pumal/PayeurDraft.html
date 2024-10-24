@@ -9,7 +9,7 @@
              translate-x-full transition-transform duration-300 z-50 ">
             <div class="flex justify-between items-center p-4 border-b">
                 <h3 class="text-lg font-semibold">Ajouter un Payeur</h3>
-                <button id="closeSidebar" class="text-gray-500 hover:text-gray-700">&times;</button>
+                <button id="closeSidebar" class="text-2xl textslate">&times;</button>
             </div>
             <!-- Add User Form -->
             <div class="p-4">
@@ -82,7 +82,7 @@
              style="margin-top: -8px">
             <div class="flex justify-between items-center p-4 border-b">
                 <h3 class="text-lg font-semibold">Editer payeur: </h3>
-                <button id="closeEditSidebar" class="text-gray-500 hover:text-gray-700">&times;</button>
+                <button id="closeEditSidebar" class="text-2xl textslate">&times;</button>
             </div>
             <!-- Edit User Form -->
 
@@ -168,6 +168,67 @@
             </div>
         </div>
 
+        <!-- View User Sidebar -->
+        <div id="viewSidebar"
+             class="fixed right-0 top-0 bottom-0 w-2/5 backprimer shadow-lg transform translate-x-full transition-transform duration-300 z-50"
+             style="margin-top: -8px">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 class="text-lg font-semibold">Editer payeur: </h3>
+                <button id="closeViewSidebar" class="text-2xl textslate">&times;</button>
+            </div>
+            <!-- Edit User Form -->
+
+            <div class="p-4">
+                    <div class="p-4" style="height: calc(100% - 10rem); overflow-y: auto;">
+
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <div id="view_distributeur" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                            </div>
+                            <div>
+                                <div id="view_code" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                            </div>
+                            <div>
+                                <div id="view_designation" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                            </div>
+                            <div>
+                                <div id="view_telephone" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                            </div>
+                            <div>
+                                <div id="view_ville" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                            </div>
+                            <div>
+                                <div id="view_adresse" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                            </div>
+                            <div>
+                                <div id="view_nif" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                            </div>
+                            <div>
+                                <div id="view_nis" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                            </div>
+                            <div>
+                                <div id="view_art" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                            </div>
+                            <div>
+                                <div id="view_rc" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                            </div>
+
+                            <div class="flex items-center gap-4">
+                                <label>Active</label>
+                                <div class="checkbox-wrapper-6">
+                                    <input class="tgl tgl-light" id="view_is_active" type="checkbox"/>
+                                    <label class="tgl-btn" for="view_is_active"></label>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="flex justify-end py-8">
+                    </div>
+            </div>
+        </div>
+
         <!-- Filter Modal -->
         <div id="filterModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40 flex items-center justify-center"
              style="margin-top: -16px">
@@ -182,7 +243,7 @@
             </div>
         </div>
 
-        <div class="flex justify-between items-center pt-8 mb-4" style="margin-top: -8px">
+        <div class="flex justify-between items-center pt-4 mb-4" style="margin-top: -8px">
             <div class="flex gap-2">
                 <div>
                     <a href="{% url 'distributeur' %}"
@@ -198,8 +259,17 @@
             <div>
                 <button id="filterButton" class="bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-700">Filtrer
                 </button>
-                <button id="addButton" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400">Ajouter
-                </button>
+
+
+                {% if 37 in listeauth %}
+                    <button id="addButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
+                        hover:bg-blue-900 hover:border-slate-400 rounded-md">Ajouter
+                    </button>
+                {% else %}
+                    <button class="btn capitalize bg-gray-500 text-white px-4 py-2 border rounded-md cursor-not-allowed">Ajouter
+                    </button>
+                {% endif %}
+
             </div>
         </div>
         <hr/>
@@ -234,16 +304,41 @@
                         Bloqué {% else %} Actif {% endif %}</span>
                     </div>
                     <div class="flex space-x-2 w-1/6 justify-end">
-                        <!--<button class="bg-blue-500 text-white p-2 rounded"><i class="fas fa-search"></i></button>-->
-                        <button class="bg-blue-500 text-white p-2 rounded">
-                            <i id="editButton" class="editButton fas fa-pencil-alt"
-                               onclick="newdatauser({{ elem.id }}, {{ elem.distributeur.id }}, '{{ elem.code }}', '{{ elem.designation }}', {{ elem.ville.id }}
-                                       , '{{ elem.telephone }}', '{{ elem.adresse }}', '{{ elem.nif }}', '{{ elem.nis }}', '{{ elem.art }}',
-                                        '{{ elem.rc }}', '{{ elem.active }}'
-                                       )">
-                            </i>
-                        </button>
-                        <button class="bg-red-500 text-white p-2 rounded delete-btn" data-identifiant="{{ elem.id }}"><i class="fas fa-trash"></i></button>
+                        {% if 40 in listeauth %}
+                            <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded">
+                                <i class="fas fa-search"
+                                   onclick="newdatauserview({{ elem.id }}, {{ elem.distributeur.id }}, '{{ elem.code }}', '{{ elem.designation }}', {{ elem.ville.id }}
+                                           , '{{ elem.telephone }}', '{{ elem.adresse }}', '{{ elem.nif }}', '{{ elem.nis }}', '{{ elem.art }}',
+                                            '{{ elem.rc }}', '{{ elem.active }}'
+                                           )">
+                                </i>
+                            </button>
+                        {% else %}
+                            <button class="cursor-not-allowed bg-gray-500 text-white p-2 rounded">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        {% endif %}
+
+                        {% if 38 in listeauth %}
+                            <button id="editButton" class="editButton bg-blue-500 text-white p-2 rounded">
+                                <i class="fas fa-pencil-alt"
+                                   onclick="newdatauser({{ elem.id }}, {{ elem.distributeur.id }}, '{{ elem.code }}', '{{ elem.designation }}', {{ elem.ville.id }}
+                                           , '{{ elem.telephone }}', '{{ elem.adresse }}', '{{ elem.nif }}', '{{ elem.nis }}', '{{ elem.art }}',
+                                            '{{ elem.rc }}', '{{ elem.active }}'
+                                           )">
+                                </i>
+                            </button>
+                        {% else %}
+                            <button class="cursor-not-allowed bg-gray-500 text-white p-2 rounded">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                        {% endif %}
+
+                        {% if 39 in listeauth %}
+                            <button class="bg-red-500 text-white p-2 rounded delete-btn" data-identifiant="{{ elem.id }}"><i class="fas fa-trash"></i></button>
+                        {% else %}
+                            <button class="cursor-not-allowed bg-gray-500 text-white p-2 rounded"><i class="fas fa-trash"></i></button>
+                        {% endif %}
                     </div>
                 </div>
             {% endfor %}
@@ -292,6 +387,12 @@
             $('#addSidebar').addClass('translate-x-full');
         });
 
+        // Toggle the sidebar edit
+        $('.viewButton').on('click', function () {
+            $('#viewSidebar').toggleClass('translate-x-full');
+        });
+
+
         // Close the sidebar
         $('#closeEditSidebar').on('click', function () {
             $('#editSidebar').addClass('translate-x-full');
@@ -305,6 +406,9 @@
         // Close the filter modal
         $('#closeFilterModal').on('click', function () {
             $('#filterModal').addClass('hidden');
+        });
+        $('#closeViewSidebar').on('click', function () {
+            $('#viewSidebar').addClass('hidden');
         });
 
         // Close sidebar when clicking outside
@@ -333,6 +437,32 @@
         function getRandomInt(max) {
             return Math.floor(Math.random() * max);
         }
+
+
+
+        function newdatauserview(id, distributeur, code, designation, ville, telephone, adresse, nif, nis, art, rc, active) {
+
+            edit_elem = id;
+            $("#view_code").html(code);
+            $("#view_designation").html(designation);
+            $("#view_adresse").html(adresse);
+            $("#view_telephone").html(telephone);
+            $("#view_ville").html(ville);
+            $("#view_nif").html(nif);
+            $("#view_nis").html(nis);
+            $("#view_art").html(art);
+            $("#view_rc").html(rc);
+
+            if (active === "True") {
+                $('#view_is_active').prop('checked', true);
+            }else{
+                $('#view_is_active').prop('checked', false);
+            }
+
+
+
+        }
+
 
         function newdatauser(id, distributeur, code, designation, ville, telephone, adresse, nif, nis, art, rc, active) {
 

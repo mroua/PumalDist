@@ -17,33 +17,32 @@
                 background-color: #cbd5e0; /* Keep the background color the same as when disabled */
             }
         </style>
-
-        <div id="editSidebar"
-             class="fixed right-0 top-0 bottom-0 w-2/5 bg-white shadow-lg transform translate-x-full transition-transform duration-300 z-50"
+        <div id="addSidebar"
+             class="fixed right-0 top-0 bottom-0 w-2/5 backprimer shadow-lg transform translate-x-full transition-transform duration-300 z-50"
              style="margin-top: -8px">
             <div class="flex justify-between items-center p-4 border-b">
-                <h3 class="text-lg font-semibold">Encaissement Détail: </h3>
-                <button id="closeEditSidebar" class="text-gray-500 hover:text-gray-700">&times;</button>
+                <h3 class="text-lg font-semibold textslate">Encaissement Détail: </h3>
+                <button id="closeEditSidebar" class="text-xl textslate">&times;</button>
             </div>
             <!-- Edit User Form -->
 
             <div class="p-4">
-                <form id="edituserForm">
+                <form id="viewuserForm">
                     <div class="p-4" style="height: calc(100% - 10rem); overflow-y: auto;">
 
-                        <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div class="grid grid-cols-2 gap-4 mb-4 textslate">
                             <div class="mb-3">
-                                <label for="distributeurdetail"
-                                       class="block mb-1 pl-1 text-sm font-medium text-gray-900">Distribupteur</label>
-                                <div id="distributeurdetail" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                <label for="viewdistributeurdetail"
+                                       class="block text-sm font-medium mb-2">Distribupteur</label>
+                                <div id="viewdistributeurdetail" class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
                                         block w-full p-2.5">
 
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label for="payeurdetail"
-                                       class="block mb-1 pl-1 text-sm font-medium text-gray-900">Payeur</label>
-                                <div id="payeurdetail" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                       class="block text-sm font-medium mb-2">Payeur</label>
+                                <div id="payeurdetail" class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
                                         block w-full p-2.5">
 
                                 </div>
@@ -51,45 +50,136 @@
 
                             <div class="mb-3">
                                 <label for="montantdetail"
-                                       class="block mb-1 pl-1 text-sm font-medium text-gray-900">Montant</label>
-                                <div id="montantdetail" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                       class="block text-sm font-medium mb-2">Montant</label>
+                                <div id="montantdetail" class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
                                         block w-full p-2.5 text-right">
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label class="block mb-1 pl-1 text-sm font-medium text-gray-900">Type d'accompte</label>
+                                <label class="block text-sm font-medium mb-2">Type d'accompte</label>
                                 <div id="typeaccountt"
-                                     class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500
+                                     class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500
                                                 focus:border-blue-500 block w-full p-2.5">
 
                                 </div>
                             </div>
                             <div>
                                 <label for="banquedetail"
-                                       class="block text-sm font-medium text-gray-700 mb-1">Banque</label>
+                                       class="block text-sm font-medium mb-2 mb-1">Banque</label>
                                 <div id="banquedetail"
-                                     class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500
+                                     class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500
                                                 focus:border-blue-500 block w-full p-2.5">
 
                                 </div>
                             </div>
                             <div>
                                 <label for="numerodetail"
-                                       class="block mb-1 pl-1 text-sm font-medium text-gray-900">Numéro</label>
+                                       class="block text-sm font-medium mb-2">Numéro</label>
                                 <div id="numerodetail"
-                                     class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-right"></div>
+                                     class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-right"></div>
                             </div>
                             <div>
                                 <label for="chequedetail"
-                                       class="block mb-1 pl-1 text-sm font-medium text-gray-900">Date Cheque</label>
+                                       class="block text-sm font-medium mb-2">Date Cheque</label>
                                 <div id="chequedetail"
-                                     class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-right"></div>
+                                     class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-right"></div>
                             </div>
                             <div>
                                 <label for="substitutionedit"
-                                       class="block mb-1 pl-1 text-sm font-medium text-gray-900">Substitution</label>
+                                       class="block text-sm font-medium mb-2">Substitution</label>
                                 <div id="substitutionedit"
-                                     class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"></div>
+                                     class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"></div>
+                            </div>
+                        </div>
+                        <div id="elemptdate" class="grid grid-cols-2 gap-3">
+
+                        </div>
+                    </div>
+                    <div class="flex justify-end py-8">
+                        <button type="submit" id="modifdates"
+                                class="modifdates bg-blue-500 text-white py-2 px-4 rounded-lg
+                   hover:bg-blue-400
+                   disabled:bg-gray-400">
+                            Modifier
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+        <div id="editSidebar"
+             class="fixed right-0 top-0 bottom-0 w-2/5 backprimer shadow-lg transform translate-x-full transition-transform duration-300 z-50"
+             style="margin-top: -8px">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 class="text-lg font-semibold textslate">Encaissement Détail: </h3>
+                <button id="closeEditSidebar" class="text-xl textslate">&times;</button>
+            </div>
+            <!-- Edit User Form -->
+
+            <div class="p-4">
+                <form id="edituserForm">
+                    <div class="p-4" style="height: calc(100% - 10rem); overflow-y: auto;">
+
+                        <div class="grid grid-cols-2 gap-4 mb-4 textslate">
+                            <div class="mb-3">
+                                <label for="distributeurdetail"
+                                       class="block text-sm font-medium mb-2">Distribupteur</label>
+                                <div id="distributeurdetail" class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                        block w-full p-2.5">
+
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="payeurdetail"
+                                       class="block text-sm font-medium mb-2">Payeur</label>
+                                <div id="payeurdetail" class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                        block w-full p-2.5">
+
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="montantdetail"
+                                       class="block text-sm font-medium mb-2">Montant</label>
+                                <div id="montantdetail" class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                        block w-full p-2.5 text-right">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="block text-sm font-medium mb-2">Type d'accompte</label>
+                                <div id="typeaccountt"
+                                     class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500
+                                                focus:border-blue-500 block w-full p-2.5">
+
+                                </div>
+                            </div>
+                            <div>
+                                <label for="banquedetail"
+                                       class="block text-sm font-medium mb-2 mb-1">Banque</label>
+                                <div id="banquedetail"
+                                     class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500
+                                                focus:border-blue-500 block w-full p-2.5">
+
+                                </div>
+                            </div>
+                            <div>
+                                <label for="numerodetail"
+                                       class="block text-sm font-medium mb-2">Numéro</label>
+                                <div id="numerodetail"
+                                     class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-right"></div>
+                            </div>
+                            <div>
+                                <label for="chequedetail"
+                                       class="block text-sm font-medium mb-2">Date Cheque</label>
+                                <div id="chequedetail"
+                                     class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-right"></div>
+                            </div>
+                            <div>
+                                <label for="substitutionedit"
+                                       class="block text-sm font-medium mb-2">Substitution</label>
+                                <div id="substitutionedit"
+                                     class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"></div>
                             </div>
                         </div>
                         <div id="elemptdate" class="grid grid-cols-2 gap-3">
@@ -110,7 +200,7 @@
 
         <div class="w-full h-full flex flex-col py-2 overflow-y-auto text-bold">
 
-            <div class="flex justify-between items-center py-4 mb-4" style="margin-top: -8px">
+            <div class="flex justify-between items-center pt-4 mb-4" style="margin-top: -8px" >
                 <div class="flex gap-2">
                     <div>
                         <a href="{% url 'encaissement' %}"
@@ -131,6 +221,8 @@
 
                 </div>
             </div>
+            <hr/>
+
 
 
             <div class="pt-4">
@@ -215,8 +307,9 @@
                         <div class="flex-grow overflow-y-auto mb-4">
                             <div class="grid grid-cols-2 gap-3">
                                 <div class="mb-3">
-                                    <label for="distributeur" class="block mb-1 pl-1 text-sm font-medium text-gray-900">Distribupteur</label>
-                                    <select id="distributeur" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                    <label for="distributeur"
+                                           class="block mb-1 pl-1 text-sm font-medium">Distribupteur</label>
+                                    <select id="distributeur" class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
                                         block w-full p-2.5">
                                         {% for elem in listedist %}
                                             <option class="p-2.5" value="{{ elem.id }}">{{ elem.designation }}</option>
@@ -225,8 +318,8 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="payeur"
-                                           class="block mb-1 pl-1 text-sm font-medium text-gray-900">Payeur</label>
-                                    <select id="payeur" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                           class="block mb-1 pl-1 text-sm font-medium">Payeur</label>
+                                    <select id="payeur" class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
                                         block w-full p-2.5">
                                         {% for elem in listepayeur %}
                                             <option class="p-2.5" value="{{ elem.id }}">{{ elem.designation }}</option>
@@ -236,9 +329,9 @@
 
                                 <div class="mb-3">
                                     <label for="account_montant"
-                                           class="block mb-1 pl-1 text-sm font-medium text-gray-900">Montant</label>
+                                           class="block mb-1 pl-1 text-sm font-medium">Montant</label>
                                     <label for="account_montant" id="display_montant"
-                                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                           class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
                                            block w-full p-2.5 text-right">0
                                         DA</label>
                                     <input id="account_montant" value="" type="number" class="w-0 h-0">
@@ -246,14 +339,14 @@
 
                                 <div>
                                     <label for="datedepot"
-                                           class="block mb-1 pl-1 text-sm font-medium text-gray-900">Date Cheque</label>
+                                           class="block mb-1 pl-1 text-sm font-medium">Date Cheque</label>
                                     <input type="date" id="date_cheque"
-                                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                           class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                                 </div>
 
                                 <div class="mb-3 col-span-2 grid grid-cols-3 gap-2">
                                     <div class="col-span-3">
-                                        <label class="block mb-1 pl-1 text-sm font-medium text-gray-900">Type
+                                        <label class="block mb-1 pl-1 text-sm font-medium">Type
                                             d'accompte</label>
                                     </div>
                                     <label for="hs-radio-on-right"
@@ -284,7 +377,7 @@
                                     <label for="banque"
                                            class="block text-sm font-medium text-gray-700 mb-1">Banque</label>
                                     <select id="banque"
-                                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500
+                                            class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500
                                                 focus:border-blue-500 block w-full p-2.5">
                                         {% for bnq in listebanque %}
                                             {{ bnq }}
@@ -295,23 +388,23 @@
 
                                 <div>
                                     <label for="numero"
-                                           class="block mb-1 pl-1 text-sm font-medium text-gray-900">Numéro</label>
+                                           class="block mb-1 pl-1 text-sm font-medium">Numéro</label>
                                     <input id="numero"
-                                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-right"/>
+                                           class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-right"/>
                                 </div>
                                 <div>
                                     <label for="datevalisation"
-                                           class="block mb-1 pl-1 text-sm font-medium text-gray-900">Date Échéance
+                                           class="block mb-1 pl-1 text-sm font-medium">Date Échéance
                                         Dépot</label>
                                     <input type="date" id="date_depot"
-                                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                           class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                                 </div>
                                 <div>
                                     <label for="datevalisation"
-                                           class="block mb-1 pl-1 text-sm font-medium text-gray-900">Date Échéance
+                                           class="block mb-1 pl-1 text-sm font-medium">Date Échéance
                                         validation</label>
                                     <input type="date" id="date_echeance"
-                                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                           class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                                 </div>
 
 
@@ -402,39 +495,39 @@
                     if (responsedata['validation']) {
                         /*
                                 <div>
-                                    <label class="block mb-1 pl-1 text-sm font-medium text-gray-900">Date Dépot</label>
-                                    <div class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                    <label class="block mb-1 pl-1 text-sm font-medium">Date Dépot</label>
+                                    <div class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
                                             block w-full p-2.5">${responsedata['date_depot']}</div>
                                 </div>
                                 <div>
-                                   <label for="datedepot" class="block mb-1 pl-1 text-sm font-medium text-gray-900">Statut</label>
+                                   <label for="datedepot" class="block mb-1 pl-1 text-sm font-medium">Statut</label>
                                     <div class="border border-gray-300 text-green-600 text-sm rounded-lg focus:ring-blue-500
                                                 focus:border-blue-500 block w-full p-2.5">validé
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block mb-1 pl-1 text-sm font-medium text-gray-900">Date Validation</label>
-                                    <div class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                    <label class="block mb-1 pl-1 text-sm font-medium">Date Validation</label>
+                                    <div class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
                                             block w-full p-2.5">${responsedata['date_validation']}</div>
                                 </div>
                                 <div>
-                                   <label for="datedepot" class="block mb-1 pl-1 text-sm font-medium text-gray-900">Statut</label>
+                                   <label for="datedepot" class="block mb-1 pl-1 text-sm font-medium">Statut</label>
                                     <div class="border border-gray-300 text-green-600 text-sm rounded-lg focus:ring-blue-500
                                                 focus:border-blue-500 block w-full p-2.5">validé
                                     </div>
                                 </div>*/
                         $elemptdate.append(`
                             <div>
-                                    <label class="block mb-1 pl-1 text-sm font-medium text-gray-900">Date Échéance Dépot</label>
-                                    <div class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                    <label class="block mb-1 pl-1 text-sm font-medium textslate">Date Échéance Dépot</label>
+                                    <div class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
                                             block w-full p-2.5">${responsedata['date_depot']}</div>
                                     <input type="date" id="date_depotedit"
-                                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                           class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
                                             block w-full p-2.5 hidden" value="${responsedata["date_depot"]}">
 
                             </div>
                             <div>
-                                    <label for="datedepot" class="block mb-1 pl-1 text-sm font-medium text-gray-900">Statut</label>
+                                    <label for="datedepot" class="block mb-1 pl-1 text-sm font-medium textslate">Statut</label>
 
                                         <div class="border border-gray-300 text-green-600 text-sm rounded-lg focus:ring-blue-500
                                                 focus:border-blue-500 block w-full p-2.5">validé
@@ -444,16 +537,16 @@
                                     </div>
                             </div>
                             <div>
-                                    <label class="block mb-1 pl-1 text-sm font-medium text-gray-900">Date Échéance Validation</label>
-                                    <div class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                    <label class="block mb-1 pl-1 text-sm font-medium textslate">Date Échéance Validation</label>
+                                    <div class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
                                             block w-full p-2.5">${responsedata['date_depot']}</div>
                                     <input type="date" id="date_validateedit"
-                                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                           class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
                                             block w-full p-2.5 hidden" value="${responsedata["date_validation"]}">
 
                             </div>
                             <div>
-                                    <label for="datedepot" class="block mb-1 pl-1 text-sm font-medium text-gray-900">Statut</label>
+                                    <label for="datedepot" class="block mb-1 pl-1 text-sm font-medium textslate">Statut</label>
                                     <div class="border border-gray-300 text-green-600 text-sm rounded-lg focus:ring-blue-500
                                                 focus:border-blue-500 block w-full p-2.5">validé
                                         <input id="editdate_validate" class="tgl tgl-light hidden" type="checkbox"/>
@@ -463,45 +556,44 @@
 
                         $('#modifdates').addClass("disabledelem")
 
-                    }
-                    else if (responsedata['validation_depot']) {
+                    } else if (responsedata['validation_depot']) {
 
                         /*<div>
-                                <label class="block mb-1 pl-1 text-sm font-medium text-gray-900">Date Échéance Dépot</label>
-                                <div class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                <label class="block mb-1 pl-1 text-sm font-medium">Date Échéance Dépot</label>
+                                <div class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
                                         block w-full p-2.5">${responsedata['date_depot']}</div>
                             </div>
                             <div>
-                               <label for="datedepot" class="block mb-1 pl-1 text-sm font-medium text-gray-900">Statut</label>
+                               <label for="datedepot" class="block mb-1 pl-1 text-sm font-medium">Statut</label>
                                 <div class="border border-gray-300 text-green-600 text-sm rounded-lg focus:ring-blue-500
                                             focus:border-blue-500 block w-full p-2.5">validé
                                     <input id="editdate_depot" class="tgl tgl-light hidden" checked type="checkbox"/>
                                 </div>
                             </div>
                             <div>
-                                <label class="block mb-1 pl-1 text-sm font-medium text-gray-900">Date Échéance Validation</label>
+                                <label class="block mb-1 pl-1 text-sm font-medium">Date Échéance Validation</label>
                                 <input type="date" id="editdate_validate"
-                                       class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                       class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
                                         block w-full p-2.5" value="${responsedata['date_validation']}">
                             </div>
                             <div>
-                                <label for="datedepot" class="block mb-1 pl-1 text-sm font-medium text-gray-900">Statut</label>
+                                <label for="datedepot" class="block mb-1 pl-1 text-sm font-medium">Statut</label>
                                 <div class="py-4">
                                     <input id="editdate_validate" class="tgl tgl-light" type="checkbox"/>
                                 </div>
                             </div>*/
                         $elemptdate.append(`
                                 <div>
-                                    <label class="block mb-1 pl-1 text-sm font-medium text-gray-900">Date Échéance Dépot</label>
-                                    <div class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                    <label class="block mb-1 pl-1 text-sm font-medium textslate">Date Échéance Dépot</label>
+                                    <div class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
                                             block w-full p-2.5">${responsedata['date_depot']}</div>
                                     <input type="date" id="date_depotedit"
-                                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                           class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
                                             block w-full p-2.5 hidden" value="${responsedata["date_depot"]}">
 
                                 </div>
                                 <div>
-                                    <label for="datedepot" class="block mb-1 pl-1 text-sm font-medium text-gray-900">Statut</label>
+                                    <label for="datedepot" class="block mb-1 pl-1 text-sm font-medium textslate">Statut</label>
 
                                         <div class="border border-gray-300 text-green-600 text-sm rounded-lg focus:ring-blue-500
                                                 focus:border-blue-500 block w-full p-2.5">validé
@@ -511,15 +603,15 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block mb-1 pl-1 text-sm font-medium text-gray-900">Date Échéance Validation</label>
+                                    <label class="block mb-1 pl-1 text-sm font-medium textslate">Date Échéance Validation</label>
 
                                     <input type="date" id="date_validateedit"
-                                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                           class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
                                             block w-full p-2.5" value="${responsedata["date_validation"]}">
 
                                 </div>
                                 <div>
-                                    <label for="datedepot" class="block mb-1 pl-1 text-sm font-medium text-gray-900">Statut</label>
+                                    <label for="datedepot" class="block mb-1 pl-1 text-sm font-medium textslate">Statut</label>
                                     <div class="py-4">
                                         <input id="editdate_validate" class="tgl tgl-light" type="checkbox"/>
                                     </div>
@@ -531,29 +623,29 @@
                         $('#modifdates').removeClass("disabledelem");
                         $elemptdate.append(`
                                 <div>
-                                    <label class="block mb-1 pl-1 text-sm font-medium text-gray-900">Date Échéance Dépot</label>
+                                    <label class="block mb-1 pl-1 text-sm font-medium textslate">Date Échéance Dépot</label>
 
                                     <input type="date" id="date_depotedit"
-                                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                           class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
                                             block w-full p-2.5" value="${responsedata["date_depot"]}">
 
                                 </div>
                                 <div>
-                                    <label for="datedepot" class="block mb-1 pl-1 text-sm font-medium text-gray-900">Statut</label>
+                                    <label for="datedepot" class="block mb-1 pl-1 text-sm font-medium textslate">Statut</label>
                                     <div class="py-4">
                                         <input id="editdate_depot" class="tgl tgl-light" type="checkbox"/>
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block mb-1 pl-1 text-sm font-medium text-gray-900">Date Échéance Validation</label>
+                                    <label class="block mb-1 pl-1 text-sm font-medium textslate">Date Échéance Validation</label>
 
                                     <input type="date" id="date_validateedit"
-                                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                           class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
                                             block w-full p-2.5" value="${responsedata["date_validation"]}">
 
                                 </div>
                                 <div>
-                                    <label for="datedepot" class="block mb-1 pl-1 text-sm font-medium text-gray-900">Statut</label>
+                                    <label for="datedepot" class="block mb-1 pl-1 text-sm font-medium textslate">Statut</label>
                                     <div class="py-4">
                                         <input id="editdate_validate" class="tgl tgl-light" type="checkbox"/>
                                     </div>

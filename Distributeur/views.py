@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login as dj_login
+from django.contrib.auth.models import Permission
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from rest_framework import viewsets, status
@@ -71,6 +72,12 @@ class PayeurViewSet(viewsets.ModelViewSet):
 
 @login_required
 def DistribView(request):
+    listeauth = list(
+        set(
+            Permission.objects.filter(user=request.user, content_type = 9).values_list('id', flat=True)
+        )
+    )
+
     dist_list = Distributeur.objects.all()
     ville_list = Ville.objects.all()
 
@@ -84,11 +91,18 @@ def DistribView(request):
                   {
                       'dist_list': dist_list,
                       'ville_list': ville_list,
-                      'users_select': users_select
+                      'users_select': users_select,
+                      'listeauth': listeauth
                   })
 
 @login_required
 def PayView(request):
+    listeauth = list(
+        set(
+            Permission.objects.filter(user=request.user, content_type = 10).values_list('id', flat=True)
+        )
+    )
+
     dist_list = Payeur.objects.filter(draft = False)
     ville_list = Ville.objects.all()
 
@@ -100,11 +114,18 @@ def PayView(request):
                   {
                       'dist_list': dist_list,
                       'ville_list': ville_list,
-                      'users_select': users_select
+                      'users_select': users_select,
+                      'listeauth': listeauth
                   })
 
 @login_required
 def PayDiftView(request):
+    listeauth = list(
+        set(
+            Permission.objects.filter(user=request.user, content_type = 10).values_list('id', flat=True)
+        )
+    )
+
     dist_list = Payeur.objects.filter(draft = True)
     ville_list = Ville.objects.all()
 
@@ -116,5 +137,6 @@ def PayDiftView(request):
                   {
                       'dist_list': dist_list,
                       'ville_list': ville_list,
-                      'users_select': users_select
+                      'users_select': users_select,
+                      'listeauth': listeauth
                   })

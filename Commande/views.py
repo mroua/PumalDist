@@ -1,4 +1,6 @@
 import requests
+from django.contrib.auth.models import Permission
+from django.db.models import Q
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
@@ -61,6 +63,14 @@ class Dist_BonLivraisonNormalViewset(viewsets.ModelViewSet):
 
 @login_required
 def CommandeView(request):
+    listeauth = list(
+        set(
+            Permission.objects.filter(Q(user=request.user, content_type = 15)|
+                                      Q(user=request.user, content_type = 17)).values_list('id', flat=True)
+        )
+    )
+
+
     liste_type = TypeProduit.objects.all()
     liste_couleur = Couleur.objects.all()
     liste_mesure = Mesure.objects.all()
@@ -68,68 +78,137 @@ def CommandeView(request):
 
     lise_prod = []
 
-    # Initialize the base SQL query
-    query = """SELECT id, code, distributeur, ville, date_ajout, total, etat, total_blivraison, taxedtotal, taxedtotal_blivraison FROM cmdlist WHERE 1=1"""
-    params = []  # This will hold the parameters for the SQL query
 
-    filters = []  # This will hold the filter conditions
+    if(request.user.type == "Disributeur"):
+        dist = Distributeur.objects.get(user=request.user)
+        query = """SELECT id, code, distributeur, ville, date_ajout, total, etat, total_blivraison, taxedtotal, taxedtotal_blivraison FROM cmdlist WHERE distributeur_id = """+ str(dist.id)
+        params = []  # This will hold the parameters for the SQL query
 
-    # Extract filter values from request parameters
-    code = request.GET.get('code')
-    date_ajout_min = request.GET.get('date_ajout_min')
-    date_ajout_max = request.GET.get('date_ajout_max')
-    etat = request.GET.get('etat')
+        filters = []  # This will hold the filter conditions
 
-    # Add filters to the query based on the provided values
-    if code:
-        filters.append("code = %s")
-        params.append(code)
-    if date_ajout_min:
-        filters.append("date_ajout >= %s")
-        params.append(date_ajout_min)
-    if date_ajout_max:
-        filters.append("date_ajout <= %s")
-        params.append(date_ajout_max)
-    if etat:
-        filters.append("etat = %s")
-        params.append(etat)
+        # Extract filter values from request parameters
+        code = request.GET.get('code')
+        date_ajout_min = request.GET.get('date_ajout_min')
+        date_ajout_max = request.GET.get('date_ajout_max')
+        etat = request.GET.get('etat')
 
-    # Append the filters to the query if there are any
-    if filters:
-        query += " AND " + " AND ".join(filters)
+        # Add filters to the query based on the provided values
+        if code:
+            filters.append("code = %s")
+            params.append(code)
+        if date_ajout_min:
+            filters.append("date_ajout >= %s")
+            params.append(date_ajout_min)
+        if date_ajout_max:
+            filters.append("date_ajout <= %s")
+            params.append(date_ajout_max)
+        if etat:
+            filters.append("etat = %s")
+            params.append(etat)
 
-    with connection.cursor() as cursor:
-        # Execute the SQL query with parameters
-        cursor.execute(query, params)
+        # Append the filters to the query if there are any
+        if filters:
+            query += " AND " + " AND ".join(filters)
 
-        rows = cursor.fetchall()
+        with connection.cursor() as cursor:
+            # Execute the SQL query with parameters
+            cursor.execute(query, params)
 
-        for row in rows:
-            lise_prod.append({
-                "id": row[0],
-                "code": row[1],
-                "distributeur": row[2],
-                "ville": row[3],
-                "date_ajout": row[4],
-                "total": row[5],
-                "etat": row[6],
-                "total_blivraison": row[7],
-                "taxedtotal": row[8],
-                "taxedtotal_blivraison": row[9],
-            })
+            rows = cursor.fetchall()
+
+            for row in rows:
+                lise_prod.append({
+                    "id": row[0],
+                    "code": row[1],
+                    "distributeur": row[2],
+                    "ville": row[3],
+                    "date_ajout": row[4],
+                    "total": row[5],
+                    "etat": row[6],
+                    "total_blivraison": row[7],
+                    "taxedtotal": row[8],
+                    "taxedtotal_blivraison": row[9],
+                })
 
 
-    #return render(request, "Commande.html", {
-    return render(request, "Pumal/Commande.html", {
-        'liste_type': liste_type,
-        'liste_couleur': liste_couleur,
-        'liste_mesure': liste_mesure,
-        'liste_distributeur': liste_distributeur,
-        'liste_cmd': lise_prod
-    })
+        #return render(request, "Commande.html", {
+        return render(request, "Pumal/Commande.html", {
+            'liste_type': liste_type,
+            'liste_couleur': liste_couleur,
+            'liste_mesure': liste_mesure,
+            'liste_distributeur': liste_distributeur,
+            'liste_cmd': lise_prod,
+            'listeauth': listeauth
+        })
+    else:
+        query = """SELECT id, code, distributeur, ville, date_ajout, total, etat, total_blivraison, taxedtotal, taxedtotal_blivraison FROM cmdlist WHERE 1=1"""
+        params = []  # This will hold the parameters for the SQL query
+
+        filters = []  # This will hold the filter conditions
+
+        # Extract filter values from request parameters
+        code = request.GET.get('code')
+        date_ajout_min = request.GET.get('date_ajout_min')
+        date_ajout_max = request.GET.get('date_ajout_max')
+        etat = request.GET.get('etat')
+
+        # Add filters to the query based on the provided values
+        if code:
+            filters.append("code = %s")
+            params.append(code)
+        if date_ajout_min:
+            filters.append("date_ajout >= %s")
+            params.append(date_ajout_min)
+        if date_ajout_max:
+            filters.append("date_ajout <= %s")
+            params.append(date_ajout_max)
+        if etat:
+            filters.append("etat = %s")
+            params.append(etat)
+
+        # Append the filters to the query if there are any
+        if filters:
+            query += " AND " + " AND ".join(filters)
+
+        with connection.cursor() as cursor:
+            # Execute the SQL query with parameters
+            cursor.execute(query, params)
+
+            rows = cursor.fetchall()
+
+            for row in rows:
+                lise_prod.append({
+                    "id": row[0],
+                    "code": row[1],
+                    "distributeur": row[2],
+                    "ville": row[3],
+                    "date_ajout": row[4],
+                    "total": row[5],
+                    "etat": row[6],
+                    "total_blivraison": row[7],
+                    "taxedtotal": row[8],
+                    "taxedtotal_blivraison": row[9],
+                })
+
+        # return render(request, "Commande.html", {
+        return render(request, "Pumal/Commande.html", {
+            'liste_type': liste_type,
+            'liste_couleur': liste_couleur,
+            'liste_mesure': liste_mesure,
+            'liste_distributeur': liste_distributeur,
+            'liste_cmd': lise_prod,
+            'listeauth': listeauth
+        })
 
 @login_required
 def BlivraisonView(request):
+    listeauth = list(
+        set(
+            Permission.objects.filter(Q(user=request.user, content_type = 15)|
+                                      Q(user=request.user, content_type = 17)).values_list('id', flat=True)
+        )
+    )
+
     commandes = request.GET.get('commandes')
     blist = Dist_BonLivraison.objects.filter(commandes=commandes).values(
         'id',
@@ -148,7 +227,8 @@ def BlivraisonView(request):
 
     return render(request, "Pumal/Blivraison.html", {
         "blist": blist,
-        "cmd":commandes
+        "cmd":commandes,
+        "listeauth": listeauth,
     })
 
 @login_required

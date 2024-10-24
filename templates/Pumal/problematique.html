@@ -194,55 +194,63 @@
             </div>
             <!-- Edit Produit Form -->
             <div class="p-4 overflow-y-auto">
-                    <div class="overflow-y-auto containerdef2">
-                        <div class="flex justify-center">
-                            <div class="relative p-4">
-                                <div id="view_photoPreview"
-                                     class="w-24 h-24 bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden border border-gray-300">
-                                    <img id="view_previewImage" src="{% static 'images/product.png' %}" alt="Preview"
-                                         class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4 mb-4">
-                            <div>
-                                <div id="view_reference" class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
-                            </div>
-                            <div>
-                                <div id="view_designation" class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
-                            </div>
-                            <div>
-                                <div id="view_type" class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
-                            </div>
-                            <div>
-                                <div id="view_couleur" class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
-                            </div>
-                            <div>
-                                <div id="view_typemesure" class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
-                            </div>
-                            <div>
-                                <div id="view_mesure" class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
-                            </div>
-                            <div>
-                                <div id="view_prix_publique" class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
-                            </div>
-                            <div>
-                                <div id="view_Prix_Gros" class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
-                            </div>
-
-                            <div class="checkbox-wrapper-6">
-                                <input class="tgl tgl-light" id="view_active" disabled type="checkbox"/>
-                                <label class="tgl-btn" for="edit_active"></label>
+                <div class="overflow-y-auto containerdef2">
+                    <div class="flex justify-center">
+                        <div class="relative p-4">
+                            <div id="view_photoPreview"
+                                 class="w-24 h-24 bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden border border-gray-300">
+                                <img id="view_previewImage" src="{% static 'images/product.png' %}" alt="Preview"
+                                     class="w-full h-full object-cover">
                             </div>
                         </div>
                     </div>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <div id="view_reference"
+                                 class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                        </div>
+                        <div>
+                            <div id="view_designation"
+                                 class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                        </div>
+                        <div>
+                            <div id="view_type"
+                                 class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                        </div>
+                        <div>
+                            <div id="view_couleur"
+                                 class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                        </div>
+                        <div>
+                            <div id="view_typemesure"
+                                 class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                        </div>
+                        <div>
+                            <div id="view_mesure"
+                                 class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                        </div>
+                        <div>
+                            <div id="view_prix_publique"
+                                 class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                        </div>
+                        <div>
+                            <div id="view_Prix_Gros"
+                                 class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                        </div>
 
-
-                    <div class="flex justify-end">
-                        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400">
-                            Modifier
-                        </button>
+                        <div class="checkbox-wrapper-6">
+                            <input class="tgl tgl-light" id="view_active" disabled type="checkbox"/>
+                            <label class="tgl-btn" for="edit_active"></label>
+                        </div>
                     </div>
+                </div>
+
+
+                <div class="flex justify-end">
+                    <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400">
+                        Modifier
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -261,7 +269,15 @@
         </div>
 
         <div class="flex justify-between items-center pt-4 mb-4" style="margin-top: -8px">
-            <h2 class="text-2xl font-bold textslate">Liste des produits</h2>
+            <div class="flex gap-2">
+                <div>
+                    <a href="{% url 'formation' %}"
+                       class="block px-4 py-2 hoverprimer rounded">Formation</a>
+                </div>
+                <div><!-- accomptes -->
+                    <a href="{% url 'problematique' %}" class="block px-4 py-2 actualprimer rounded">Problematique</a>
+                </div>
+            </div>
             <div>
                 <button id="filterButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
                     hover:bg-blue-900 hover:border-slate-400 rounded-md">Filtrer
@@ -272,7 +288,8 @@
                         hover:bg-blue-900 hover:border-slate-400 rounded-md">Ajouter
                     </button>
                 {% else %}
-                    <button class="btn capitalize bg-gray-500 text-white px-4 py-2 border rounded-md cursor-not-allowed">Ajouter
+                    <button class="btn capitalize bg-gray-500 text-white px-4 py-2 border rounded-md cursor-not-allowed">
+                        Ajouter
                     </button>
                 {% endif %}
 
@@ -323,12 +340,12 @@
 
                         {% if 56 in listeauth %}
                             <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded"
-                                data-identifiant="{{ elem.id }}">
+                                    data-identifiant="{{ elem.id }}">
                                 <i class="fas fa-search"></i>
                             </button>
                         {% else %}
                             <button class="cursor-not-allowed bg-gray-500 text-white p-2 rounded"
-                                data-identifiant="{{ elem.id }}">
+                                    data-identifiant="{{ elem.id }}">
                                 <i class="fas fa-search"></i>
                             </button>
                         {% endif %}
@@ -340,15 +357,17 @@
                             </button>
                         {% else %}
                             <button class="cursor-not-allowed bg-gray-500 text-white p-2 rounded"
-                                data-identifiant="{{ elem.id }}">
+                                    data-identifiant="{{ elem.id }}">
                                 <i class="fas fa-pencil-alt"></i>
                             </button>
                         {% endif %}
 
                         {% if 55 in listeauth %}
-                            <button class="bg-red-500 text-white p-2 rounded delete-btn" data-identifiant="{{ elem.id }}"><i class="fas fa-trash"></i></button>
+                            <button class="bg-red-500 text-white p-2 rounded delete-btn"
+                                    data-identifiant="{{ elem.id }}"><i class="fas fa-trash"></i></button>
                         {% else %}
-                            <button class="cursor-not-allowed bg-gray-500 text-white p-2 rounded"><i class="fas fa-trash"></i></button>
+                            <button class="cursor-not-allowed bg-gray-500 text-white p-2 rounded"><i
+                                    class="fas fa-trash"></i></button>
                         {% endif %}
 
 
@@ -367,7 +386,6 @@
                 </div>
             </div>
         </div>
-
 
 
         <script>
@@ -469,8 +487,6 @@
             $('#closeViewSidebar').on('click', function () {
                 $('#viewSidebar').addClass('translate-x-full');
             });
-
-
 
 
             // Show the filter modal
@@ -629,14 +645,14 @@
 
                 var form = new FormData();
 
-                form.append("reference",$('#edit_reference').val());
-                form.append("designation",$('#edit_designation').val());
-                form.append("type",$('#edit_type').val());
-                form.append("couleur",$('#edit_couleur').val());
-                form.append("typemesure",$('#edit_typemesure').val());
-                form.append("mesure",$('#edit_mesure').val());
-                form.append("prix_publique",$('#edit_prix_publique').val());
-                form.append("prix_gros",$('#edit_Prix_Gros').val());
+                form.append("reference", $('#edit_reference').val());
+                form.append("designation", $('#edit_designation').val());
+                form.append("type", $('#edit_type').val());
+                form.append("couleur", $('#edit_couleur').val());
+                form.append("typemesure", $('#edit_typemesure').val());
+                form.append("mesure", $('#edit_mesure').val());
+                form.append("prix_publique", $('#edit_prix_publique').val());
+                form.append("prix_gros", $('#edit_Prix_Gros').val());
                 form.append("active", $('#edit_active').prop('checked'));
 
                 // Add the photo
@@ -688,44 +704,44 @@
             });
 
 
-        // Open modal when delete button is clicked
-        $('.delete-btn').on('click', function () {
-            currentDeleteId =  $(this).data('identifiant');
+            // Open modal when delete button is clicked
+            $('.delete-btn').on('click', function () {
+                currentDeleteId = $(this).data('identifiant');
 
-            console.log(currentDeleteId);
-            $('#deleteModal').removeClass('hidden');
-        });
+                console.log(currentDeleteId);
+                $('#deleteModal').removeClass('hidden');
+            });
 
-        // Close modal when cancel is clicked
-        $('#cancelDelete').on('click', function () {
-            $('#deleteModal').addClass('hidden');
-            currentDeleteId = null;
-        });
+            // Close modal when cancel is clicked
+            $('#cancelDelete').on('click', function () {
+                $('#deleteModal').addClass('hidden');
+                currentDeleteId = null;
+            });
 
-        // Confirm delete action
-        $('#confirmDelete').on('click', function () {
-            if (currentDeleteId) {
-                // Perform the delete action, e.g., make an AJAX call or redirect
-                console.log('Deleting item with ID:', currentDeleteId);
+            // Confirm delete action
+            $('#confirmDelete').on('click', function () {
+                if (currentDeleteId) {
+                    // Perform the delete action, e.g., make an AJAX call or redirect
+                    console.log('Deleting item with ID:', currentDeleteId);
 
-                var settings = {
-                    "url": "/api/produit/" + currentDeleteId + "/",
-                    "method": "DELETE",
-                    "timeout": 0,
-                    "headers": {
-                        "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
-                    },
-                };
+                    var settings = {
+                        "url": "/api/produit/" + currentDeleteId + "/",
+                        "method": "DELETE",
+                        "timeout": 0,
+                        "headers": {
+                            "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
+                        },
+                    };
 
-                $.ajax(settings).done(function (response) {
-                    console.log(response);
-                    $('#deleteModal').addClass('hidden');
-                    window.location.href = "/produit/";
-                });
+                    $.ajax(settings).done(function (response) {
+                        console.log(response);
+                        $('#deleteModal').addClass('hidden');
+                        window.location.href = "/produit/";
+                    });
 
 
-            }
-        });
+                }
+            });
 
         </script>
     </div>

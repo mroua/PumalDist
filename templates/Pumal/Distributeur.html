@@ -116,7 +116,7 @@
                             <div class="flex items-center gap-4">
                                 <label>Bloqué commande</label>
                                 <div class="checkbox-wrapper-6">
-                                    <input class="tgl tgl-light" id="bloquer" type="checkbox"/>
+                                    <input class="tgl tgl-light2" id="bloquer" type="checkbox"/>
                                     <label class="tgl-btn" for="bloquer"></label>
                                 </div>
                             </div>
@@ -139,7 +139,7 @@
              style="margin-top: -8px">
             <div class="flex justify-between items-center p-4 border-b">
                 <h3 class="text-lg font-semibold">Editer distributeur: </h3>
-                <button id="closeEditSidebar" class="text-gray-500 hover:text-gray-700">&times;</button>
+                <button id="closeEditSidebar" class="text-2xl textslate">&times;</button>
             </div>
             <!-- Edit User Form -->
 
@@ -256,7 +256,7 @@
                             <div class="flex items-center gap-4">
                                 <label>Bloqué commande</label>
                                 <div class="checkbox-wrapper-6">
-                                    <input class="tgl tgl-light" id="edit_bloquer" type="checkbox"/>
+                                    <input class="tgl tgl-light2" id="edit_bloquer" type="checkbox"/>
                                     <label class="tgl-btn" for="edit_bloquer"></label>
                                 </div>
                             </div>
@@ -268,6 +268,108 @@
                         <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400">
                             Modifier
                         </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+        <!-- View User Sidebar -->
+        <div id="viewSidebar"
+             class="fixed right-0 top-0 bottom-0 w-2/5 backprimer shadow-lg transform translate-x-full transition-transform duration-300 z-50"
+             style="margin-top: -8px">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 class="text-lg font-semibold">Page distributeur: </h3>
+                <button id="closeViewSidebar" class="text-2xl textslate">&times;</button>
+            </div>
+            <!-- Edit User Form -->
+
+            <div class="p-4">
+                <form id="edituserForm">
+                    <div class="p-4" style="height: calc(100% - 10rem); overflow-y: auto;">
+
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <div id="view_username" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                            </div>
+                            <div>
+                                <div id="view_email" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                            </div>
+                            <div>
+                                <div id="view_first_name" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                            </div>
+                            <div>
+                                <div id="view_last_name" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                            </div>
+                            <div>
+                                <div id="view_code" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                            </div>
+                            <div>
+                                <div id="view_responsable" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                            </div>
+                            <div>
+                                <div id="view_designation" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                            </div>
+                            <div>
+                                <div id="view_telephone" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                            </div>
+                            <div>
+                                <div id="view_ville" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                            </div>
+                            <div>
+                                <div id="view_adresse" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                            </div>
+                            <div>
+                                <div id="view_nif" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                            </div>
+                            <div>
+                                <div id="view_nis" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                            </div>
+                            <div>
+                                <div id="view_art" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                            </div>
+                            <div>
+                                <div id="view_rc" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                            </div>
+                            <div>
+                                <div id="view_plafonnement" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                            </div>
+                            <div>
+                                <div id="view_echeance_jour" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                            </div>
+                            <div>
+                                <div id="view_ristourne_a" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                            </div>
+                            <div>
+                                <div id="view_ristourne_na" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                            </div>
+                            <div>
+                                <div id="view_objectif_a" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                            </div>
+                            <div>
+                                <div id="view_objectif_m" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                            </div>
+
+                            <div class="flex items-center gap-4">
+                                <label>Accées</label>
+                                <div class="checkbox-wrapper-6">
+                                    <input class="tgl tgl-light" id="view_is_active" disabled type="checkbox"/>
+                                    <label class="tgl-btn" for="view_is_active"></label>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-4">
+                                <label>Bloqué commande</label>
+                                <div class="checkbox-wrapper-6">
+                                    <input class="tgl tgl-light2" id="view_bloquer" disabled type="checkbox"/>
+                                    <label class="tgl-btn" for="view_bloquer"></label>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="flex justify-end py-8">
                     </div>
                 </form>
             </div>
@@ -304,9 +406,17 @@
                 <button id="filterButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
                     hover:bg-blue-900 hover:border-slate-400 rounded-md">Filtrer
                 </button>
-                <button id="addButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
-                    hover:bg-blue-900 hover:border-slate-400 rounded-md">Ajouter
-                </button>
+
+                {% if 33 in listeauth %}
+                    <button id="addButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
+                        hover:bg-blue-900 hover:border-slate-400 rounded-md">Ajouter
+                    </button>
+                {% else %}
+                    <button class="btn capitalize bg-gray-500 text-white px-4 py-2 border rounded-md cursor-not-allowed">Ajouter
+                    </button>
+                {% endif %}
+
+
             </div>
         </div>
         <hr/>
@@ -340,8 +450,26 @@
                         Bloqué {% else %} Actif {% endif %}</span>
                     </div>
                     <div class="flex space-x-2 w-1/6 justify-end">
-                        <button class="bg-blue-500 text-white p-2 rounded">
-                            <i id="editButton" class="editButton fas fa-pencil-alt"
+
+                        {% if 36 in listeauth %}
+                            <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded"
+                                   onclick="newdatauserview({{ elem.id }}, '{{ elem.user.first_name|escapejs }}', '{{ elem.user.last_name|escapejs }}',
+                                           '{{ elem.user.email|escapejs }}', '{{ elem.user.telephone|escapejs }}', '{{ elem.user.responsable|escapejs }}',
+                                           '{{ elem.code|escapejs }}',  '{{ elem.bloquer }}', '{{ elem.designation|escapejs }}', {{ elem.ville.id }},
+                                           '{{ elem.adresse|escapejs }}', '{{ elem.nif|escapejs }}', '{{ elem.nis|escapejs }}', '{{ elem.art|escapejs }}',
+                                           '{{ elem.rc|escapejs }}', {{ elem.plafonnement }}, {{ elem.echeance_jour }}, {{ elem.ristourn_a }}
+                                           ,{{ elem.ristourn_na }}, {{ elem.objectif_a }}, {{ elem.objectif_m }}, '{{ elem.user.is_active }}',
+                                           '{{ elem.user.username }}', {{ elem.user.id }})">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        {% else %}
+                            <button class="cursor-not-allowed bg-gray-500 text-white p-2 rounded">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        {% endif %}
+
+                        {% if 34 in listeauth %}
+                            <button id="editButton" class="editButton bg-blue-500 text-white p-2 rounded"
                                onclick="newdatauser({{ elem.id }}, '{{ elem.user.first_name|escapejs }}', '{{ elem.user.last_name|escapejs }}',
                                        '{{ elem.user.email|escapejs }}', '{{ elem.user.telephone|escapejs }}', '{{ elem.user.responsable|escapejs }}',
                                        '{{ elem.code|escapejs }}',  '{{ elem.bloquer }}', '{{ elem.designation|escapejs }}', {{ elem.ville.id }},
@@ -349,9 +477,22 @@
                                        '{{ elem.rc|escapejs }}', {{ elem.plafonnement }}, {{ elem.echeance_jour }}, {{ elem.ristourn_a }}
                                        ,{{ elem.ristourn_na }}, {{ elem.objectif_a }}, {{ elem.objectif_m }}, '{{ elem.user.is_active }}',
                                        '{{ elem.user.username }}', {{ elem.user.id }})">
-                            </i>
-                        </button>
-                        <button class="bg-red-500 text-white p-2 rounded delete-btn" data-identifiant="{{ elem.id }}"><i class="fas fa-trash"></i></button>
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                        {% else %}
+                            <button class="cursor-not-allowed bg-gray-500 text-white p-2 rounded">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                        {% endif %}
+
+                        {% if 35 in listeauth %}
+                            <button class="bg-red-500 text-white p-2 rounded delete-btn" data-identifiant="{{ elem.id }}"><i class="fas fa-trash"></i></button>
+                        {% else %}
+                            <button class="cursor-not-allowed bg-gray-500 text-white p-2 rounded"><i class="fas fa-trash"></i></button>
+                        {% endif %}
+
+
+
                     </div>
                 </div>
             {% endfor %}
@@ -410,9 +551,19 @@
             $('#editSidebar').toggleClass('translate-x-full');
         });
 
+        // Toggle the sidebar edit
+        $('.viewButton').on('click', function () {
+            $('#viewSidebar').toggleClass('translate-x-full');
+        });
+
         // Close the sidebar
         $('#closeSidebar').on('click', function () {
             $('#addSidebar').addClass('translate-x-full');
+        });
+
+        // Close the sidebar
+        $('#closeViewSidebar').on('click', function () {
+            $('#viewSidebar').addClass('translate-x-full');
         });
 
         // Close the sidebar
@@ -498,14 +649,92 @@
 
         }
 
+
+        function newdatauserview(id, first_name, last_name, email, telephone, responsable, code, bloque, designation, ville,
+                             adresse, nif, nis, art, rc, plafonnement, echeance, ristourne_a, ristourne_na, objectif_a, objectif_m,
+                             isactive, username, user_id) {
+            edit_elem = id;
+            edit_user = user_id;
+            edit_username_old = username;
+            $("#view_username").html(username);
+            $("#view_email").html(email);
+            $("#view_first_name").html(first_name);
+            $("#view_last_name").html(last_name);
+            $("#view_telephone").html(telephone);
+
+            $("#view_code").html(code);
+            $("#view_bloque").html(bloque);
+            $("#view_designation").html(designation);
+            $("#view_ville").html(ville);
+            $("#view_nif").html(nif);
+            $("#view_nis").html(nis);
+            $("#view_art").html(art);
+            $("#view_rc").html(rc);
+            $("#view_plafonnement").html(plafonnement);
+            $("#view_echeance_jour").html(echeance);
+            $("#view_ristourne_a").html(ristourne_a);
+            $("#view_ristourne_na").html(ristourne_na);
+            $("#view_objectif_a").html(objectif_a);
+            $("#view_objectif_m").html(objectif_m);
+
+
+            if (isactive === "True") {
+                $('#view_is_active').prop('checked', true);
+            }
+
+            if (responsable === "None") {
+                $("#view_responsable").html('');
+            } else {
+                $("#view_responsable").html(responsable);
+            }
+
+
+        }
+
         $('#userForm').on('submit', function (e) {
             e.preventDefault(); // Prevent the default form submission
 
-            var form = new FormData();
+            //var form = new FormData();
 
             usernamedefault = 'default_' + getRandomInt(600000);
 
-            form.append("user.username", usernamedefault);
+
+            var data = {
+                user: {
+                    id: edit_user,
+                    username: usernamedefault,
+                    email: usernamedefault + '@pumaldefault.co',
+                    type: 'Distributeur',
+                    first_name: $first_name.val(),
+                    last_name: $last_name.val(),
+                    password: "123456",
+                    telephone: $telephone.val(),
+                    responsable: $responsable.val(),
+                    region: $ville.find('option:selected').data('region'),
+                    //user_permissions: "1,2,3", // Assuming this is a string
+                    is_active: $('#is_active').prop('checked'),
+                },
+                code: $code.val(),
+                designation: $designation.val(),
+                ville: $ville.val(),
+                numero: $numero.val(),
+                adresse: $adresse.val(),
+                nif: $nif.val(),
+                nis: $nis.val(),
+                art: $art.val(),
+                rc: $rc.val(),
+                plafonnement: $plafonnement.val(),
+                bloquer: $('#edit_bloquer').prop('checked'), //
+                echeance_jour: $echeance_jour.val(),
+                ristourn_a: $ristourn_a.val(),
+                ristourn_na: $ristourn_na.val(),
+                objectif_a: $objectif_a.val(),
+                objectif_m: $objectif_m.val()
+            };
+
+            console.log(data)
+
+            /*form.append("user.username", usernamedefault);
             form.append("user.email", usernamedefault + '@pumaldefault.co');
             form.append("user.type", 'Distributeur');
             form.append("user.password", '123456');
@@ -514,7 +743,8 @@
             form.append("user.telephone", $telephone.val());
             form.append("user.responsable", $responsable.val());
             form.append("user.region", $ville.find('option:selected').data('region'));
-            form.append("user.user_permissions", "1,2,3");
+            form.append("user.user_permissions", "37, 38, 39, 40, 60, 65, 66, 67, 68, 78, 84, 96, 100, 101");
+            form.append("user.is_active", $('#is_active').prop('checked'));
             form.append("code", $code.val());
             form.append("designation", $designation.val());
             form.append("ville", $ville.val());
@@ -525,28 +755,25 @@
             form.append("art", $art.val());
             form.append("rc", $rc.val());
             form.append("plafonnement", $plafonnement.val());
-            form.append("bloquer", $bloquer.val());
+            form.append("bloquer", $('#bloquer').prop('checked'));
             form.append("echeance_jour", $echeance_jour.val());
             form.append("ristourn_a", $ristourn_a.val());
             form.append("ristourn_na", $ristourn_na.val());
             form.append("objectif_a", $objectif_a.val());
-            form.append("objectif_m", $objectif_m.val());
+            form.append("objectif_m", $objectif_m.val());*/
 
-
-            for (var pair of form.entries()) {
-                console.log(pair[0] + ": " + pair[1]);
-            }
 
             var settings = {
                 "url": "/api/distributeur/",
                 "method": "POST",
                 "timeout": 0,
                 "headers": {
-                    "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),  // Assuming you have CSRF token in your template context
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val()
                 },
+                "data": JSON.stringify(data),
                 "processData": false,
-                "contentType": false,
-                "data": form
+                "contentType": "application/json"
             };
 
             $.ajax(settings)

@@ -1,0 +1,195 @@
+{% extends "baseNew.html" %}
+{% load static %}
+{% block title %}Formations{% endblock %}
+
+{% block content %}
+<style>
+    .disabledelem {
+        cursor: not-allowed;
+        opacity: 0.6;
+        background-color: #cbd5e0;
+    }
+
+    .disabledelem:hover {
+        background-color: #cbd5e0;
+    }
+</style>
+
+<!-- Add/Edit Formation Sidebar -->
+<div id="editSidebar"
+    class="fixed right-0 top-0 bottom-0 w-2/5 bg-white shadow-lg transform translate-x-full transition-transform duration-300 z-50">
+    <div class="flex justify-between items-center p-4 border-b">
+        <h3 id="sliderTitle" class="text-lg font-semibold">Ajouter/Modifier Formation</h3>
+        <button id="closeEditSidebar" class="text-gray-500 hover:text-gray-700">&times;</button>
+    </div>
+    <div class="p-4">
+        <form id="formationForm">
+            {% csrf_token %}
+            <div class="p-4" style="height: calc(100% - 10rem); overflow-y: auto;">
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div class="mb-3">
+                        <label for="titre" class="block mb-1 pl-1 text-sm font-medium text-gray-900">Titre</label>
+                        <input type="text" id="titre" name="titre"
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    </div>
+                    <div class="mb-3">
+                        <label for="nbrplace" class="block mb-1 pl-1 text-sm font-medium text-gray-900">Nombre de
+                            Places</label>
+                        <input type="number" id="nbrplace" name="nbrplace"
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    </div>
+                    <div class="mb-3">
+                        <label for="duree" class="block mb-1 pl-1 text-sm font-medium text-gray-900">Durée (en
+                            jours)</label>
+                        <input type="number" id="duree" name="duree"
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    </div>
+                    <div class="mb-3">
+                        <label for="tarif" class="block mb-1 pl-1 text-sm font-medium text-gray-900">Tarif</label>
+                        <input type="number" step="0.01" id="tarif" name="tarif"
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    </div>
+                    <div class="mb-3">
+                        <label for="datedebut" class="block mb-1 pl-1 text-sm font-medium text-gray-900">Date de
+                            Début</label>
+                        <input type="date" id="datedebut" name="datedebut"
+                            class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-end py-8">
+                <button type="submit" id="confirmerFormation"
+                    class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400 disabled:bg-gray-400">
+                    Confirmer
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Main Content Area -->
+<div class="w-full h-full flex flex-col py-2 overflow-y-auto text-bold">
+    <div class="flex justify-between items-center mb-4" style="margin-top: -8px">
+        <h2 class="text-2xl font-bold text-gray-700">Liste des Formations</h2>
+        <div>
+            <button id="addFormationButton"
+                class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400">Ajouter</button>
+        </div>
+    </div>
+
+    <div class="bg-white shadow-md rounded-t-lg p-2 mb-4">
+        <div class="grid grid-cols-7 text-gray-600 font-semibold gap-4">
+            <div class="capitalize">Titre</div>
+            <div class="capitalize">Nombre de Places</div>
+            <div class="capitalize">Durée</div>
+            <div class="capitalize">Tarif</div>
+            <div class="capitalize">Date de Début</div>
+            <div class="capitalize">Date d'Ajout</div>
+            <div class="capitalize text-center">Actions</div>
+        </div>
+    </div>
+    <div class="flex-grow space-y-4 overflow-y-auto text-xs">
+        {% for formation in formations %}
+        <div class="grid grid-cols-7 bg-white p-2 rounded-lg gap-4 text-gray-800 font-bold">
+            <div>{{ formation.titre }}</div>
+            <div>{{ formation.nbrplace }}</div>
+            <div>{{ formation.duree }}</div>
+            <div>{{ formation.tarif }}</div>
+            <div>{{ formation.datedebut|date:'d-m-Y' }}</div>
+            <div>{{ formation.dateajout|date:'d-m-Y' }}</div>
+            <div class="flex justify-end gap-2">
+                <button data-id="{{ formation.id }}" class="editButton bg-blue-500 text-white p-2 rounded"><i
+                        class="fas fa-pencil-alt"></i></button>
+                <button class="bg-red-500 text-white p-2 rounded delete-btn" data-id="{{ formation.id }}"><i
+                        class="fas fa-trash"></i></button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        // Show the popup
+        $('#addFormationButton').click(function () {
+            $('#editSidebar').toggleClass('translate-x-full');
+            $('#formationForm').trigger("reset");
+            $('#sliderTitle').text('Ajouter Formation');
+            $('#formationForm').attr('data-id', '');
+        });
+
+        // Close the popup
+        $('#closeEditSidebar').click(function () {
+            $('#editSidebar').toggleClass('translate-x-full');
+        });
+
+        // Close sidebar when clicking outside
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('#addFormationButton, #editSidebar').length) {
+                $('#editSidebar').addClass('translate-x-full');
+            }
+        });
+
+        // Handle form submission
+        $('#formationForm').on('submit', function (e) {
+            e.preventDefault();
+            const id = $(this).attr('data-id');
+            const url = id ? `/formations/update/${id}/` : '/formations/create/';
+            const method = id ? 'POST' : 'POST';
+            $.ajax({
+                url: url,
+                method: method,
+                data: $(this).serialize(),
+                success: function (response) {
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        });
+
+        // Handle edit button click
+        $('.editButton').on('click', function () {
+            const id = $(this).data('id');
+            $.ajax({
+                url: `/formations/update/${id}/`,
+                method: 'GET',
+                success: function (data) {
+                    $('#editSidebar').removeClass('translate-x-full');
+                    $('#sliderTitle').text('Modifier Formation');
+                    $('#formationForm').attr('data-id', id);
+                    $('#titre').val(data.titre);
+                    $('#nbrplace').val(data.nbrplace);
+                    $('#duree').val(data.duree);
+                    $('#tarif').val(data.tarif);
+                    $('#datedebut').val(data.datedebut);
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        });
+
+        // Handle delete button click
+        $('.delete-btn').on('click', function () {
+            const id = $(this).data('id');
+            if (confirm('Are you sure you want to delete this formation?')) {
+                $.ajax({
+                    url: `/formations/delete/${id}/`,
+                    method: 'POST',
+                    data: {
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    success: function (response) {
+                        location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}

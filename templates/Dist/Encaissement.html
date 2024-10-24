@@ -1,0 +1,422 @@
+{% extends "baseNew.html" %}
+{% load mes_tags %}
+{% load static %}
+{% block title %}Encaissement{% endblock %}
+
+
+{% block content %}
+
+    <div class="w-full h-full backprimer px-4 pb-4 flex flex-col">
+
+        <style>
+            .hiddenelem {
+                display: none;
+            }
+
+            .tom-select .option,
+            .tom-select .item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .tom-select .left {
+                flex-grow: 1;
+                text-align: left;
+            }
+
+            .tom-select .right {
+                flex-shrink: 0;
+                text-align: right;
+                margin-left: 10px;
+            }
+        </style>
+
+        <!-- Edit Sidebar -->
+        <div id="editSidebar" style="margin-top: -10px"
+             class="fixed right-0 top-0 bottom-0 w-2/5 backprimer shadow-lg transform translate-x-full transition-transform duration-300 z-50">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 class="text-lg font-semibold textslate" id="title_code">Détail</h3>
+                <button id="closeEditSidebar" class="closeEditSidebar text-xl textslate">&times;</button>
+            </div>
+            <div class="flex-grow overflow-y-auto p-4 textslate containerdef" id="editenc">
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div class="mb-3">
+                        <label for="distributeurdetail"
+                               class="block mb-1 pl-1 text-sm font-medium">Distribupteur</label>
+                        <div id="distributeurdetail" class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                        block w-full p-2.5">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="payeurdetail"
+                               class="block mb-1 pl-1 text-sm font-medium">Payeur</label>
+                        <div id="payeurdetail" class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                        block w-full p-2.5">
+
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="montantdetail"
+                               class="block mb-1 pl-1 text-sm font-medium">Montant HT</label>
+                        <div id="montantdetail" class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                        block w-full p-2.5 text-right">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="montantttcdetail"
+                               class="block mb-1 pl-1 text-sm font-medium">Montant TTC</label>
+                        <div id="montantttcdetail" class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                        block w-full p-2.5 text-right">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="block mb-1 pl-1 text-sm font-medium">État</label>
+                        <div id="etatdetail"
+                             class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500
+                                                focus:border-blue-500 block w-full p-2.5">
+
+                        </div>
+                    </div>
+                    <div>
+                        <label for="filedetail"
+                               class="block text-sm font-medium mb-3">FC Fichier</label>
+                        <div id="filedetail">
+
+                        </div>
+                    </div>
+                    <div>
+                        <label for="date_ajoutdetail"
+                               class="block mb-1 pl-1 text-sm font-medium">Date Ajout</label>
+                        <div id="date_ajoutdetail"
+                             class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block
+                             w-full p-2.5 "></div>
+                    </div>
+                    <div>
+                        <label for="date_echancedetail"
+                               class="block mb-1 pl-1 text-sm font-medium">Date Échéance</label>
+                        <div id="date_echancedetail"
+                             class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                             block w-full p-2.5"></div>
+                    </div>
+                </div>
+                <div class="text-lg font-bold">Liste des encaissements</div>
+                <div class="grid grid-cols-3 font-semibold gap-4">
+                    <div class="capitalize">Type</div>
+                    <div class="capitalize text-right pr-4">Montant</div>
+                    <div class="capitalize">État</div>
+                </div>
+                <div class="flex-grow space-y-4 overflow-y-auto text-xs" id="listeencdetail">
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="w-full h-full flex flex-col py-2 overflow-y-auto font-bold">
+
+
+            <div class="flex justify-between items-center pt-4 mb-4" style="margin-top: -8px">
+
+                <div class="flex gap-2">
+                    <div>
+                        <a href="{% url 'encaissement' %}"
+                           class="block px-4 py-2 actualprimer rounded">Encaissement</a>
+                    </div>
+
+                    <div><!-- accomptes -->
+                        <a href="{% url 'accompte' %}" class="block px-4 py-2 hoverprimer rounded">Accompte</a>
+                    </div>
+                </div>
+
+                <div>
+                    <button id="filterButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
+                    hover:bg-blue-900 hover:border-slate-400 rounded-md">
+                        Filtrer
+                    </button>
+                </div>
+
+            </div>
+            <hr/>
+
+            <div class="textslate">
+                <div class="p-2 mb-2">
+                    <div class="flex font-semibold">
+                        <div class="capitalize text-xs" style="width: 70px; min-width: 70px">{{ elem.code }}</div>
+                        <div class="flex-grow grid grid-cols-6 gap-2">
+                            <div class="capitalize text-right text-base pt-1">
+                                Totals
+                            </div>
+                            <div class="capitalize">
+                                <div class="flex w-full justify-between ">
+                                    <div class="text-xs font-bold">HT:</div>
+                                    <div class="text-xs font-bold text-right">
+                                        {{ somme_total|floate_redefined }} DA
+                                    </div>
+                                </div>
+                                <div class="flex w-full justify-between ">
+                                    <div class="text-xs font-bold">TTC:</div>
+                                    <div class="text-xs font-bold text-right">
+                                        {{ somme_total|taxednumber }} DA
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-xs capitalize text-right font-bold">
+                                <div class="h-full flex w-full items-center justify-end">{{ somme_circu|floate_redefined }} DA</div>
+
+                            </div>
+                            <div class="text-xs capitalize text-right font-bold">
+                                <div class="h-full flex w-full items-center justify-end">{{ somme_depot|floate_redefined }} DA</div>
+
+                            </div>
+                            <div class="text-xs capitalize text-right font-bold">
+                                <div class="h-full flex w-full items-center justify-end">{{ somme_encai|floate_redefined }} DA</div>
+
+                            </div>
+                            <div class="text-xs capitalize text-right font-bold">
+                                <div class="h-full flex w-full items-center justify-end">{{ somme_echue|floate_redefined }} DA</div>
+
+                            </div>
+                        </div>
+                        <div class="capitalize text-center pl-3" style="width: 80px; min-width: 80px">
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="pt-4">
+                <div class="flex items-center justify-between text-gray-600 font-semibold px-4 defaultboldval">
+                    <div class="capitalize" style="width: 70px">Code</div>
+                    <div class="flex-grow grid grid-cols-6 gap-4">
+                        <div class="capitalize">Distributeur</div>
+                        <div class="capitalize pr-4 text-right">Vente</div>
+                        <div class="capitalize pr-4 text-right">Circulation</div>
+                        <div class="capitalize pr-4 text-right">Depot</div>
+                        <div class="capitalize pr-4 text-right">Encaissement</div>
+                        <div class="capitalize pr-4 text-right">échue</div>
+                    </div>
+                    <div class="capitalize text-center" style="width: 80px">Actions</div>
+                </div>
+            </div>
+            <div class="flex-grow shadow-md rounded-b-lg backslateprime p-2 overflow-y-auto textslate">
+                {% for elem in lise_fact %}
+                    <div class="backslateslite flex-none mb-2">
+                        <div class="flex font-semibold p-2">
+                            <div class="capitalize text-xs" style="width: 70px; min-width: 70px">{{ elem.code }}</div>
+                            <div class="flex-grow grid grid-cols-6 gap-2">
+                                <div class="capitalize">
+                                    <p class="text-xs truncate">{{ elem.distributeur }}</p>
+                                    <p class="text-xs truncate">{{ elem.payeur }}</p>
+                                </div>
+                                <div class="capitalize">
+                                    <div class="flex w-full justify-between ">
+                                        <div class="text-xs font-bold">HT:</div>
+                                        <div class="text-xs font-bold text-right">
+                                            {{ elem.total|floate_redefined }}
+                                            DA
+                                        </div>
+                                    </div>
+                                    <div class="flex w-full justify-between ">
+                                        <div class="text-xs font-bold">TTC:</div>
+                                        <div class="text-xs font-bold text-right">
+                                            {{ elem.total|taxednumber }}
+                                            DA
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="capitalize">
+                                    <div class="h-full flex text-xs font-bold justify-end	items-center">{{ elem.total_validation_depot_false|floate_redefined }} DA</div>
+                                </div>
+                                <div class="capitalize">
+                                    <div class="h-full flex text-xs font-bold justify-end	items-center">{{ elem.total_validation_depot_true|floate_redefined }} DA</div>
+                                </div>
+                                <div class="capitalize text-center">
+                                    <div class="h-full flex text-xs font-bold justify-end	items-center">{{ elem.total_encaissement|floate_redefined }} DA</div>
+                                </div>
+                                <div class="capitalize text-center">
+                                    <div class="h-full flex text-xs font-bold justify-end	items-center">{{ elem.montant_echue|floate_redefined }} DA</div>
+                                </div>
+                            </div>
+                            <div class="capitalize text-center pl-3" style="width: 80px; min-width: 80px">
+                                    <button id="editButton" class="editButton bg-blue-500 text-white p-2 rounded"
+                                        data-identifiant="{{ elem.id }}">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+
+        </div>
+
+        <!-- Filter Modal -->
+        <div id="addbl" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
+            <form id="formaddfacture">
+                <div class="relative w-screen h-screen flex justify-center items-center">
+                    <div class="bg-white w-96 h-3/4 p-6 backprimer textprimer rounded-lg shadow-lg gap-y-2 flex flex-col">
+                        <div class="w-full flex justify-between">
+                            <div><h3 class="text-lg font-semibold">Ajout Facture</h3></div>
+                            <div>
+                                <button class="closePopup p-2">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="flex-grow grid grid-cols-1 overflow-y-auto mb-4  pr-2">
+                            <div class="mb-3">
+                                <label for="distributeur"
+                                       class="block mb-1 pl-1 text-sm font-medium">Distribupteur</label>
+                                <select id="distributeur" class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                        block w-full p-2.5">
+                                    {% for elem in listedist %}
+                                        <option class="p-2.5" value="{{ elem.id }}">{{ elem.designation }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="payeur"
+                                       class="block mb-1 pl-1 text-sm font-medium">Payeur</label>
+                                <select id="payeur" class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
+                                        block w-full p-2.5">
+                                    {% for elem in listepayeur %}
+                                        <option class="p-2.5" value="{{ elem.id }}">{{ elem.designation }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="code" class="block mb-1 pl-1 text-sm font-medium">Code</label>
+                                <input type="text" id="code" name="code" placeholder="AZER01"
+                                       class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                            </div>
+                            <div class="mb-3">
+                                <label for="date_facture" class="block mb-1 pl-1 text-sm font-medium">Date
+                                    échéance</label>
+                                <input type="date" id="date_facture"
+                                       class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                            </div>
+                            <div class="mb-3">
+                                <label for="facture_montant"
+                                       class="block mb-1 pl-1 text-sm font-medium">Montant</label>
+                                <label for="facture_montant" id="display_montant"
+                                       class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-right">0
+                                    DA</label>
+                                <input id="facture_montant" value="" type="number" class="w-0 h-0">
+                            </div>
+                            <div class="flex items-center space-x-4 border border-gray-300 rounded-lg h-11 defaultdark">
+                                <label for="fc_facture" class="block flex-shrink-0">
+                                    <div class="flex items-center justify-center px-4 h-full rounded-l-lg
+                                            bg-white text-blue-500 cursor-pointer hover:bg-blue-500 hover:text-white
+                                            transition-colors duration-300">
+                                        <span class="defaultdark">Fichier FC</span>
+                                    </div>
+                                    <input id="fc_facture" type="file" class="hidden"/>
+                                </label>
+                                <span id="file-name" class="defaultdark w-64 truncate">Aucun fc file</span>
+                            </div>
+
+                            <div>
+
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between">
+                            <button class="closePopup bg-gray-500 text-white p-2 rounded">Annuler</button>
+                            <button type="submit" class="bg-green-300 text-white p-2 rounded">Ajouter</button>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+
+        <script>
+
+            // Toggle the sidebar edit
+            $('.editButton').on('click', function (e) {
+                identifiant = $(this).data('identifiant');
+
+                $listeencdetail = $("#listeencdetail");
+                $listeencdetail.html('');
+                let settings = {
+                    url: `/api/facture/${identifiant}`,
+                    method: "GET",
+                    timeout: 0,
+                    headers: {
+                        "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
+                    },
+                };
+                $.ajax(settings).done(function (response) {
+                    let responsedata = response;
+
+                    console.log(responsedata);
+
+                    $("#title_code").html("Détail facture " + responsedata['code']);
+                    $('#distributeurdetail').html(responsedata["distributeur_designation"]);
+                    $('#payeurdetail').html(responsedata["payeur_designation"]);
+                    $('#montantdetail').html(formatNumber(responsedata["montant"]) + " DA");
+                    $('#montantttcdetail').html(formatNumber(responsedata["montant_ttc"]) + " DA");
+                    if (responsedata["complete"]) $('#etatdetail').html("Complete");
+                    else $('#etatdetail').html("Incomplete");
+                    if (responsedata["fc_file"]) {
+                        $('#filedetail').html(`<a href="${responsedata["fc_file"]}" class="bg-blue-500 text-white px-2 py-3 rounded-lg"> Fichier FC </a>`)
+                    } else {
+                        $('#filedetail').html(`<div class="bg-gray-300 defaultdark px-2 py-3 rounded-lg"> Aucun Fichier FC </div>`)
+                    }
+                    $('#date_ajoutdetail').html(responsedata["date_ajout"].split('T')[0]);
+                    $('#date_echancedetail').html(responsedata["date_echeance"]);
+
+                    listeenc = responsedata['listeencaissement'];
+
+                    for (i = 0; i < listeenc.length; i++) {
+                        if (listeenc[i]['type'] === "Encaissement") etat = listeenc[i]['encaissement_etat'];
+                        else etat = "Validé";
+
+                        $listeencdetail.append(`
+                                <div class="grid grid-cols-3 text-sm font-semibold py-4 px-2 gap-4 border border-blue-800 rounded-lg">
+                                    <div class="capitalize">${listeenc[i]['type']}</div>
+                                    <div class="capitalize text-right font-bold pr-4">${formatNumber(listeenc[i]['montant'])} DA</div>
+                                    <div class="capitalize">${etat}</div>
+                                </div>
+                            `)
+
+
+                    }
+                    $('#editSidebar').toggleClass('translate-x-full');
+
+                });
+
+
+            });
+
+            // Close sidebar when clicking outside
+            $(document).on('click', function (e) {
+                if (!$(e.target).closest('.editButton, #editSidebar').length) {
+                    $('#editSidebar').addClass('translate-x-full');
+                }
+            });
+
+            // Close the sidebar
+            $('.closeEditSidebar').on('click', function () {
+                $('#editSidebar').addClass('translate-x-full');
+            });
+
+            function formatNumber(num) {
+                return new Intl.NumberFormat('fr-FR', {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(num);
+            }
+
+            function parseFormattedNumber(formattedNum) {
+                // Replace spaces and commas, then parse the string as a float
+                return parseFloat(formattedNum.replace(/\s/g, '').replace(',', '.'));
+            }
+
+        </script>
+    </div>
+
+{% endblock %}

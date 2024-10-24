@@ -20,21 +20,30 @@
             <i class="uil uil-apps text-4xl"></i>
             <span class="text-xl">dashboard</span>
         </a>
-        <a href="/users/"
-           class="btn btn-square hover:bg-[#151e66] hover:text-white backprimer w-64 h-16 border-none flex gap-2 justify-between px-4 text-slate-300 ">
-            <i class="uil uil-clipboard-alt text-4xl"></i>
-            <span class="text-xl">Utilisateur</span>
-        </a>
-        <a href="/distributeur/"
-           class="btn btn-square backprimer w-64 h-16 hover:bg-[#151e66] border-none flex gap-2 justify-between px-4 text-slate-300 hover:text-white">
-            <i class="uil uil-bill text-4xl"></i>
-            <span class="text-xl">Distributeur</span>
-        </a>
-        <a href="/produit/"
-           class="btn btn-square backprimer w-64 h-16 hover:bg-[#151e66] border-none flex gap-2 justify-between px-4 text-slate-300 hover:text-white">
-            <i class="uil uil-box text-4xl"></i>
-            <span class="text-xl">Produits</span>
-        </a>
+        {% if 7 in listeauth %}
+            <a href="/users/"
+               class="btn btn-square hover:bg-[#151e66] hover:text-white backprimer w-64 h-16 border-none flex gap-2 justify-between px-4 text-slate-300 ">
+                <i class="uil uil-users-alt text-4xl"></i>
+                <span class="text-xl">Utilisateur</span>
+            </a>
+         {% endif %}
+        {% if 9 in listeauth %}
+            <a href="/distributeur/"
+               class="btn btn-square backprimer w-64 h-16 hover:bg-[#151e66] border-none flex gap-2 justify-between px-4 text-slate-300 hover:text-white">
+                <i class="uil uil-truck-loading text-4xl"></i>
+                <span class="text-xl">Distributeur</span>
+            </a>
+         {% endif %}
+        {% if 14 in listeauth %}
+            <a href="/produit/"
+               class="btn btn-square backprimer w-64 h-16 hover:bg-[#151e66] border-none flex gap-2 justify-between px-4 text-slate-300 hover:text-white">
+                <i class="uil uil-box text-4xl"></i>
+                <span class="text-xl">Produits</span>
+            </a>
+         {% endif %}
+
+
+
     </div>
 
     <!-- Logo in the Middle -->
@@ -54,26 +63,43 @@
 
     <!-- Right Side Links -->
     <div class="w-1/3 flex flex-col gap-2 items-start">
-        <a href="/commande/"
-           class="btn btn-square backprimer w-64 h-16 hover:bg-[#151e66] border-none flex gap-2 justify-between px-4 text-slate-300 hover:text-white">
-            <i class="uil uil-usd-circle text-4xl"></i>
-            <span class="text-xl">Commandes</span>
-        </a>
-        <a href="/commande/bl"
-           class="btn btn-square backprimer w-64 h-16 hover:bg-[#151e66] border-none flex gap-2 justify-between px-4 text-slate-300 hover:text-white">
-            <i class="uil uil-usd-circle text-4xl"></i>
-            <span class="text-xl">Bon livraison</span>
-        </a>
-        <a href="/encaissement/"
-           class="btn btn-square backprimer w-64 h-16 hover:bg-[#151e66] border-none flex gap-2 justify-between px-4 text-slate-300 hover:text-white">
-            <i class="uil uil-setting text-4xl"></i>
-            <span class="text-xl">Créance</span>
-        </a>
-        <a href=""
-           class="btn btn-square backprimer w-64 h-16 hover:bg-[#151e66] border-none flex gap-2 justify-between px-4 text-slate-300 hover:text-white">
-            <i class="uil uil-setting text-4xl"></i>
-            <span class="text-xl">Formation</span>
-        </a>
+        {% if 17 in listeauth %}
+            <a href="/commande/"
+               class="btn btn-square backprimer w-64 h-16 hover:bg-[#151e66] border-none flex gap-2 justify-between px-4 text-slate-300 hover:text-white">
+                <i class="uil uil-clipboard-alt text-4xl"></i>
+                <span class="text-xl">Commandes</span>
+            </a>
+        {% endif %}
+
+        {% if 15 in listeauth %}
+            <a href="/commande/bl"
+               class="btn btn-square backprimer w-64 h-16 hover:bg-[#151e66] border-none flex gap-2 justify-between px-4 text-slate-300 hover:text-white">
+                <i class="uil uil-bill text-4xl"></i>
+                <span class="text-xl">Bon livraison</span>
+            </a>
+        {% endif %}
+
+
+
+        {% if 21 in listeauth %}
+            <a href="/encaissement/"
+               class="btn btn-square backprimer w-64 h-16 hover:bg-[#151e66] border-none flex gap-2 justify-between px-4 text-slate-300 hover:text-white">
+                <i class="uil uil-usd-circle text-4xl"></i>
+                <span class="text-xl">Créance</span>
+            </a>
+        {% endif %}
+
+
+
+        {% if 26 in listeauth %}
+            <a href=""
+               class="btn btn-square backprimer w-64 h-16 hover:bg-[#151e66] border-none flex gap-2 justify-between px-4 text-slate-300 hover:text-white">
+                <i class="uil uil-setting text-4xl"></i>
+                <span class="text-xl">Formation</span>
+            </a>
+        {% endif %}
+
+
     </div>
 </div>
 

@@ -32,6 +32,7 @@ urlpatterns = [
     path('produit/', include("Produits.urls")),
     path('commande/', include("Commande.urls")),
     path('encaissement/', include("Encaissement.urls")),
+    path('formation/', include("Formation.urls")),
     path('api/products', ProductList.as_view()),
 
 

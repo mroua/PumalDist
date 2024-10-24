@@ -95,14 +95,6 @@
 
                         </div>
                     </div>
-                    <div class="flex justify-end py-8">
-                        <button type="submit" id="modifdates"
-                                class="modifdates bg-blue-500 text-white py-2 px-4 rounded-lg
-                   hover:bg-blue-400
-                   disabled:bg-gray-400">
-                            Modifier
-                        </button>
-                    </div>
                 </form>
             </div>
         </div>
@@ -131,20 +123,12 @@
                            class="block px-4 py-2 hoverprimer rounded">Encaissement</a>
                     </div>
                     <div><!-- accomptes -->
-                        <a href="{% url 'encaissementvalidate' %}" class="block px-4 py-2 hoverprimer rounded">Validation</a>
-                    </div>
-                    <div><!-- accomptes -->
                         <a href="{% url 'accompte' %}" class="block px-4 py-2 actualprimer rounded">Accompte</a>
                     </div>
                 </div>
                 <div>
                     <button id="filterButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
                     hover:bg-blue-900 hover:border-slate-400 rounded-md">Filtrer
-                    </button>
-                    <button id="popupButton"
-                            class="popupButton btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
-                    hover:bg-blue-900 hover:border-slate-400 rounded-md">
-                        Ajouter
                     </button>
                 </div>
             </div>
@@ -204,8 +188,6 @@
                                         class="editButton bg-blue-500 text-white p-2 rounded"><i
                                         class="fas fa-pencil-alt"></i></button>
                             {% endif %}
-                            <button class="bg-red-500 text-white p-2 rounded delete-btn" data-identifiant="{{ elem.id }}"><i
-                                    class="fas fa-trash"></i></button>
                         </div>
                     </div>
                 {% endfor %}
@@ -215,134 +197,6 @@
         </div>
 
 
-
-        <!-- Filter Modal -->
-        <div id="addbl" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
-            <form id="formaddaccompte">
-                <div class="relative w-screen h-screen flex justify-center items-center">
-                    <div class="backprimer w-1/3 h-auto p-6 rounded-lg shadow-lg gap-y-2 flex flex-col textslate">
-                        <div class="w-full flex justify-between">
-                            <div><h3 class="text-lg font-semibold">Ajout Accompte</h3></div>
-                            <div>
-                                <button class="closePopup p-2">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="flex-grow overflow-y-auto mb-4">
-                            <div class="grid grid-cols-2 gap-3">
-                                <div class="mb-3">
-                                    <label for="distributeur" class="block mb-1 pl-1 text-sm font-medium ">Distribupteur</label>
-                                    <select id="distributeur" class="border border-gray-300  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
-                                        block w-full p-2.5">
-                                        {% for elem in listedist %}
-                                            <option class="p-2.5" value="{{ elem.id }}">{{ elem.designation }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="payeur"
-                                           class="block mb-1 pl-1 text-sm font-medium ">Payeur</label>
-                                    <select id="payeur" class="border border-gray-300  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
-                                        block w-full p-2.5">
-                                        {% for elem in listepayeur %}
-                                            <option class="p-2.5" value="{{ elem.id }}">{{ elem.designation }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="account_montant"
-                                           class="block mb-1 pl-1 text-sm font-medium ">Montant</label>
-                                    <label for="account_montant" id="display_montant"
-                                           class="border border-gray-300  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
-                                           block w-full p-2.5 text-right">0
-                                        DA</label>
-                                    <input id="account_montant" value="" type="number" class="w-0 h-0">
-                                </div>
-
-                                <div>
-                                    <label for="datedepot"
-                                           class="block mb-1 pl-1 text-sm font-medium ">Date Cheque</label>
-                                    <input type="date" id="date_cheque"
-                                           class="border border-gray-300  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                                </div>
-
-                                <div class="mb-3 col-span-2 grid grid-cols-3 gap-2">
-                                    <div class="col-span-3">
-                                        <label class="block mb-1 pl-1 text-sm font-medium ">Type
-                                            d'accompte</label>
-                                    </div>
-                                    <label for="hs-radio-on-right"
-                                           class="flex justify-between p-3 w-full bg-white border border-gray-200 rounded-lg text-sm focus:border-blue-500
-                                           focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
-                                        <span class="text-sm text-gray-500 dark:text-neutral-400">Cheque</span>
-                                        <input type="radio" name="options" value="Cheque" checked id="hs-radio-on-right">
-                                    </label>
-
-                                    <label for="hs-radio-on-right-checked1"
-                                           class="flex justify-between p-3 w-full bg-white border border-gray-200 rounded-lg text-sm
-                                           focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
-                                        <span class="text-sm text-gray-500 dark:text-neutral-400 p">Virement</span>
-                                        <input type="radio" name="options" value="Virement" id="hs-radio-on-right-checked1">
-                                    </label>
-
-                                    <label for="hs-radio-on-right-checked2"
-                                           class="flex justify-between p-3 w-full bg-white border border-gray-200 rounded-lg text-sm focus:border-blue-500
-                                           focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
-                                        <span class="text-sm text-gray-500 dark:text-neutral-400">Espece</span>
-                                        <input type="radio" name="options" value="Espece" id="hs-radio-on-right-checked2">
-                                    </label>
-                                </div>
-                                <div>
-                                    <label for="banque"
-                                           class="block text-sm font-medium mb-1">Banque</label>
-                                    <select id="banque"
-                                            class="border border-gray-300  text-sm rounded-lg focus:ring-blue-500
-                                                focus:border-blue-500 block w-full p-2.5">
-                                        {% for bnq in listebanque %}
-                                            {{ bnq }}
-                                            <option value="{{ bnq.id }}">{{ bnq.designation }} ({{ bnq.code }})</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <label for="numero"
-                                           class="block mb-1 pl-1 text-sm font-medium ">Numéro</label>
-                                    <input id="numero"
-                                           class="border border-gray-300  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-right"/>
-                                </div>
-                                <div>
-                                    <label for="datevalisation"
-                                           class="block mb-1 pl-1 text-sm font-medium ">Date Échéance
-                                        Dépot</label>
-                                    <input type="date" id="date_depot"
-                                           class="border border-gray-300  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                                </div>
-                                <div>
-                                    <label for="datevalisation"
-                                           class="block mb-1 pl-1 text-sm font-medium ">Date Échéance
-                                        validation</label>
-                                    <input type="date" id="date_echeance"
-                                           class="border border-gray-300  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                                </div>
-
-
-                            </div>
-                        </div>
-
-                        <div class="flex justify-between">
-                            <button class="closePopup bg-gray-500 text-white p-2 rounded">Annuler</button>
-                            <button type="submit" class="bg-green-300 text-white p-2 rounded">Ajouter</button>
-                        </div>
-
-                    </div>
-                </div>
-            </form>
-
-        </div>
 
         <script>
 
@@ -357,24 +211,7 @@
                 return parseFloat(formattedNum.replace(/\s/g, '').replace(',', '.'));
             }
 
-            $(document).ready(function () {
-                // Show the popup
-                $('.popupButton').click(function () {
-                    $('#addbl').fadeIn();
-                });
 
-                // Close the popup
-                $('.closePopup').click(function () {
-                    $('#addbl').fadeOut();
-                });
-
-                // Optional: Close popup if clicking outside of the popup content
-                $(window).click(function (event) {
-                    if ($(event.target).is('#addbl')) {
-                        $('#addbl').fadeOut();
-                    }
-                });
-            });
             // Toggle the sidebar edit
             $('.editButton').on('click', function () {
                 identifiant = $(this).data('identifiant');
@@ -622,131 +459,6 @@
                         $('#date_echeance').prop('disabled', false);
                     }
                 });
-            });
-
-
-            $('#formaddaccompte').on('submit', function (e) {
-                e.preventDefault(); // Prevent the default form submission
-                console.log("ici");
-
-
-                if ($('input[name="options"]:checked').val() === "Espece") {
-                    dataaccount = {
-                        "payeur": $('#payeur').val(),
-                        "montant_init": $('#account_montant').val(),
-                        "montant": $('#account_montant').val(),
-                        "type": "Espece",
-                        "validation_depot": true,
-                        "validation": true
-                    };
-                } else {
-                    dataaccount = {
-                        "payeur": $('#payeur').val(),
-                        "montant_init": $('#account_montant').val(),
-                        "montant": $('#account_montant').val(),
-                        "type": $('input[name="options"]:checked').val(),
-                        "banque": $('#banque').val(),
-                        "numero": $('#numero').val(),
-                        "date_depot": $("#datedepot").val(),
-                        "date_cheque": $("#date_cheque").val(),
-                        "date_validation": $("#date_echeance").val(),
-                    };
-                }
-
-
-                var settings = {
-                    "url": '/api/account/', // Replace with your actual API endpoint
-                    "method": "POST",
-                    "timeout": 0,
-                    "headers": {
-                        "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val() // Set the CSRF token in the header
-                    },
-                    "contentType": "application/json",
-                    "data": JSON.stringify(dataaccount)
-
-                };
-
-                $.ajax(settings)
-                    .done(function (response) {
-
-                        window.location.href = "/encaissement/accompte";
-                    })
-                    .fail(function (jqXHR, textStatus, errorThrown) {
-                        // Log the entire jqXHR object to see all details
-                        console.log('jqXHR:', jqXHR);
-
-                        // Log the status text
-                        console.log('Status:', textStatus);
-
-                        // Log the error thrown
-                        console.log('Error Thrown:', errorThrown);
-
-                        // Log the response text, which might contain detailed error messages
-                        console.log('Response Text:', jqXHR.responseText);
-
-                        // Optionally, parse the responseText as JSON if it's in JSON format
-                        try {
-                            var responseJSON = JSON.parse(jqXHR.responseText);
-                            console.log('Response JSON:', responseJSON);
-                        } catch (e) {
-                            console.error('Failed to parse response as JSON:', e);
-                        }
-
-                    });
-            });
-
-
-            $('#edituserForm').on('submit', function (e) {
-                e.preventDefault();
-
-
-                dataaccount = {
-                    "date_depot": $("#date_depotedit").val(),
-                    "date_validation": $("#date_validateedit").val(),
-                    "validation_depot": $("#editdate_depot").is(':checked'),
-                    "validation": $("#editdate_validate").is(':checked'),
-                    "payeur": payeurdetailid
-                };
-
-                var settings = {
-                    "url": '/api/account/' + identifiant + '/',
-                    "method": "PUT",
-                    "timeout": 0,
-                    "headers": {
-                        "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val()
-                    },
-                    "contentType": "application/json",
-                    "data": JSON.stringify(dataaccount)
-
-                };
-
-                $.ajax(settings)
-                    .done(function (response) {
-
-                        window.location.href = "/encaissement/accompte";
-                    })
-                    .fail(function (jqXHR, textStatus, errorThrown) {
-                        // Log the entire jqXHR object to see all details
-                        console.log('jqXHR:', jqXHR);
-
-                        // Log the status text
-                        console.log('Status:', textStatus);
-
-                        // Log the error thrown
-                        console.log('Error Thrown:', errorThrown);
-
-                        // Log the response text, which might contain detailed error messages
-                        console.log('Response Text:', jqXHR.responseText);
-
-                        // Optionally, parse the responseText as JSON if it's in JSON format
-                        try {
-                            var responseJSON = JSON.parse(jqXHR.responseText);
-                            console.log('Response JSON:', responseJSON);
-                        } catch (e) {
-                            console.error('Failed to parse response as JSON:', e);
-                        }
-
-                    });
             });
 
             $(document).ready(function () {

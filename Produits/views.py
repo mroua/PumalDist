@@ -1,3 +1,4 @@
+from django.contrib.auth.models import Permission
 from django.http import JsonResponse
 from django.shortcuts import render
 from rest_framework import viewsets, status
@@ -24,6 +25,12 @@ class ProduitViewSet(viewsets.ModelViewSet):
 
 @login_required
 def ProduitView(request):
+    listeauth = list(
+        set(
+            Permission.objects.filter(user=request.user, content_type = 14).values_list('id', flat=True)
+        )
+    )
+
     liste_type = TypeProduit.objects.all()
     liste_couleur = Couleur.objects.all()
     liste_mesure = Mesure.objects.all()
@@ -34,7 +41,8 @@ def ProduitView(request):
         'liste_type': liste_type,
         'liste_couleur': liste_couleur,
         'liste_mesure': liste_mesure,
-        'produit': produit
+        'produit': produit,
+        'listeauth': listeauth
     })
 
 

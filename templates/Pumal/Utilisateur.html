@@ -88,7 +88,7 @@
                     <!-- Adjusted section for scrollable content -->
                     <div class="flex-grow overflow-y-auto bg-white rounded-md">
                         <!-- Content goes here -->
-                        <div class="grid grid-cols-5 w-full bg-white border border-gray-200 rounded-md ">
+                        <div class="grid grid-cols-5 w-full bg-white border border-gray-200 rounded-md listaddcheck">
                             <div class="px-4 py-2 text-blue-900">Utilisateurs</div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
                                                           id="read_only_28"
@@ -183,6 +183,139 @@
                                 class="bg-blue-500 h-10 text-white py-1.5 px-4 rounded-lg hover:bg-blue-400">
                             Ajouter
                         </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- view User Sidebar -->
+        <div id="viewSidebar" class="fixed right-0 top-0 bottom-0 w-2/5 backprimer textslate shadow-lg transform translate-x-full transition-transform
+             duration-300 z-50 h-full flex flex-col">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 class="text-lg font-semibold">Page utilisateur</h3>
+                <button id="closeSidebarview" class="text-2xl textslate">&times;</button>
+            </div>
+
+            <!-- Add User Form -->
+            <div class="flex-grow overflow-hidden">
+                <form class="p-4 flex flex-col h-full">
+                    <!-- Other form fields -->
+                    <div class="flex justify-center">
+                        <div class="relative p-4">
+
+                            <div id="photoPreviewview"
+                                 class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden border border-gray-300">
+                                <img id="previewImageview" src="{% static 'images/blank-profile.webp' %}" alt="Preview"
+                                     class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mb-4 defaultdarktext">
+                        <div>
+                            <div id="usernameview" class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 bg-white rounded-md"></div>
+                        </div>
+                        <div>
+                            <div id="emailview" class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 bg-white rounded-md"></div>
+                        </div>
+                        <div>
+                            <div id="first_nameview" class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 bg-white rounded-md"></div>
+                        </div>
+                        <div>
+                            <div id="last_nameview" class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 bg-white rounded-md"></div>
+                        </div>
+                        <div>
+                            <div id="telephoneview" class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 bg-white rounded-md"></div>
+                        </div>
+                        <div>
+                            <div id="responsableview" class="mt-1 h-10 p-2 block w-full shadow-sm sm:border-gray-300 bg-white rounded-md"></div>
+                        </div>
+                        <div>
+                            <div id="typeview" class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 bg-white rounded-md"></div>
+                        </div>
+                        <div>
+                            <div id="regionview" class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 bg-white rounded-md"></div>
+                        </div>
+
+
+                        <div class="checkbox-wrapper-6 flex items-center gap-6">
+                            <label class="textslate">État</label>
+                            <input class="tgl tgl-light" id="is_activeview" disabled type="checkbox"/>
+                            <label class="tgl-btn" for="is_activeview"></label>
+                        </div>
+
+
+                    </div>
+                    <div class="grid grid-cols-5">
+                        <div>Permission</div>
+                        <div>Lecture</div>
+                        <div>Ajout</div>
+                        <div>Modification</div>
+                        <div>Suppression</div>
+                    </div>
+
+                    <!-- Adjusted section for scrollable content -->
+                    <div class="flex-grow overflow-y-auto bg-white rounded-md">
+                        <!-- Content goes here -->
+                        <div class="grid grid-cols-5 w-full bg-white border border-gray-200 rounded-md ">
+                            <div class="px-4 py-2 text-blue-900">Utilisateurs</div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_28" disabled/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_25" disabled/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_26" disabled/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_27" disabled/></div>
+
+                            <div class="px-4 py-2 text-blue-900">Distributeur</div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_36" disabled/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_33" disabled/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_34" disabled/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_35" disabled/></div>
+
+                            <div class="px-4 py-2 text-blue-900">Payeur</div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_40" disabled/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_37" disabled/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_38" disabled/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_39" disabled/></div>
+
+                            <div class="px-4 py-2 text-blue-900">Produits</div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_56" disabled/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_53" disabled/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_54" disabled/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_55" disabled/></div>
+
+                            <div class="px-4 py-2 text-blue-900">Commandes</div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_68" disabled/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_65" disabled/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_66" disabled/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_67" disabled/></div>
+
+                            <div class="px-4 py-2 text-blue-900">Bon livraison</div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_60" disabled/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_57" disabled/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_58" disabled/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_59" disabled/></div>
+
+                            <div class="px-4 py-2 text-blue-900">Encaissement</div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_84" disabled/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_81" disabled/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_82" disabled/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_83" disabled/></div>
+
+                            <div class="px-4 py-2 text-blue-900">Formation</div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_96" disabled/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_93" disabled/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_94" disabled/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_95" disabled/></div>
+
+                            <div class="px-4 py-2 text-blue-900">Ticket</div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_100" disabled/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_97" disabled/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_98" disabled/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_99" disabled/></div>
+
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end mt-4">
+
                     </div>
                 </form>
             </div>
@@ -389,9 +522,14 @@
                 <button id="filterButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400 
                     hover:bg-blue-900 hover:border-slate-400 rounded-md">Filtres
                 </button>
-                <button id="addButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400 
-                    hover:bg-blue-900 hover:border-slate-400 rounded-md">Ajouter
-                </button>
+                {% if 25 in listeauth %}
+                    <button id="addButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
+                        hover:bg-blue-900 hover:border-slate-400 rounded-md">Ajouter
+                    </button>
+                {% else %}
+                    <button class="btn capitalize bg-gray-500 text-white px-4 py-2 border rounded-md cursor-not-allowed">Ajouter
+                    </button>
+                {% endif %}
             </div>
         </div>
         <hr/>
@@ -429,7 +567,28 @@
                     <div class="defaultval w-1/4">{{ elem.email }}</div>
                     <div class="flex space-x-2 w-1/6 justify-end">
                         <!--<button class="bg-blue-500 text-white p-2 rounded"><i class="fas fa-search"></i></button>-->
-                        <button class="bg-blue-700 text-white p-2 rounded" onclick="
+                        {% if 28 in listeauth %}
+                            <button class="bg-blue-700 text-white p-2 rounded" onclick="
+                                {% if elem.photo %}
+                                    newdatauserview({{ elem.id }}, '{{ elem.photo.url|escapejs }}', '{{ elem.username|escapejs }}', '{{ elem.email|escapejs }}', '{{ elem.first_name|escapejs }}',
+                                    '{{ elem.last_name|escapejs }}', '{{ elem.telephone|escapejs }}', '{{ elem.responsable|escapejs }}', '{{ elem.type|escapejs }}', '{{ elem.region|escapejs }}', '{{ elem.permission_ids|escapejs }}',
+                                    '{{ elem.is_active }}');
+                                {% else %}
+                                    newdatauserview({{ elem.id }}, '', '{{ elem.username|escapejs }}', '{{ elem.email|escapejs }}', '{{ elem.first_name|escapejs }}',
+                                    '{{ elem.last_name|escapejs }}', '{{ elem.telephone|escapejs }}', '{{ elem.responsable|escapejs }}', '{{ elem.type|escapejs }}', '{{ elem.region|escapejs }}', '{{ elem.permission_ids|escapejs }}',
+                                    '{{ elem.is_active }}');
+                                {% endif %}
+                                ">
+                                <i id="ViewButton" class="ViewButton fas fa-search"></i>
+                            </button>
+                        {% else %}
+                            <button class="cursor-not-allowed bg-gray-500 text-white p-2 rounded">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        {% endif %}
+
+                        {% if 26 in listeauth %}
+                            <button class="bg-blue-700 text-white p-2 rounded" onclick="
                                 {% if elem.photo %}
                                     newdatauser({{ elem.id }}, '{{ elem.photo.url|escapejs }}', '{{ elem.username|escapejs }}', '{{ elem.email|escapejs }}', '{{ elem.first_name|escapejs }}',
                                     '{{ elem.last_name|escapejs }}', '{{ elem.telephone|escapejs }}', '{{ elem.responsable|escapejs }}', '{{ elem.type|escapejs }}', '{{ elem.region|escapejs }}', '{{ elem.permission_ids|escapejs }}',
@@ -440,14 +599,37 @@
                                     '{{ elem.is_active }}');
                                 {% endif %}
                                 ">
-                            <i id="editButton" class="editButton fas fa-pencil-alt"></i>
-                        </button>
-                        <button class="bg-red-500 text-white p-2 rounded"><i class="fas fa-trash"></i></button>
+                                <i id="editButton" class="editButton fas fa-pencil-alt"></i>
+                            </button>
+                        {% else %}
+                            <button class="cursor-not-allowed bg-gray-500 text-white p-2 rounded">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                        {% endif %}
+
+                        {% if 26 in listeauth %}
+                            <button class="bg-red-500 text-white p-2 rounded delete-btn" data-identifiant="{{ elem.id }}"><i class="fas fa-trash"></i></button>
+                        {% else %}
+                            <button class="cursor-not-allowed bg-gray-500 text-white p-2 rounded"><i class="fas fa-trash"></i></button>
+                        {% endif %}
+
                     </div>
                 </div>
             {% endfor %}
         </div>
     </div>
+
+    <div id="deleteModal" class="fixed inset-0 flex items-center justify-center hidden bg-gray-800 bg-opacity-50">
+        <div class="bg-white p-4 rounded-lg w-96">
+            <h2 class="text-lg font-semibold text-gray-700 mb-4">Confirmer la suppression</h2>
+            <p>Etes vous sure de vouloir supprimer cet element?</p>
+            <div class="mt-6 flex justify-end space-x-4">
+                <button id="cancelDelete" class="px-4 py-2 bg-gray-300 rounded">Annuler</button>
+                <button id="confirmDelete" class="px-4 py-2 bg-red-500 text-white rounded">Supprimer</button>
+            </div>
+        </div>
+    </div>
+
 
 
 
@@ -459,6 +641,11 @@
         });
 
         // Toggle the sidebar edit
+        $('.ViewButton').on('click', function () {
+            $('#viewSidebar').toggleClass('translate-x-full');
+        });
+
+        // Toggle the sidebar edit
         $('.editButton').on('click', function () {
             $('#editSidebar').toggleClass('translate-x-full');
         });
@@ -466,6 +653,11 @@
         // Close the sidebar
         $('#closeSidebar').on('click', function () {
             $('#addSidebar').addClass('translate-x-full');
+        });
+
+        // Close the sidebar
+        $('#closeSidebarview').on('click', function () {
+            $('#viewSidebar').addClass('translate-x-full');
         });
 
         // Close the sidebar
@@ -611,13 +803,55 @@
 
         }
 
+        function newdatauserview(id, url, username, email, first_name, last_name, telephone, responsable, type, region, user_permissions, isactive) {
+            edit_elem = id;
+            $("#usernameview").html(username);
+            $("#emailview").html(email);
+            $("#first_nameview").html(first_name);
+            $("#last_nameview").html(last_name);
+            $("#telephoneview").html(telephone);
+            $("#typeview").html(type);
+            $("#regionview").html(region);
+
+            if (isactive === "True") {
+                $('#is_activeview').prop('checked', true);
+            }
+
+            if (responsable === "None") {
+                $("#responsableview").html('');
+            } else {
+                $("#responsableview").html(responsable);
+            }
+
+            if (url === "") {
+                //$('#edit_photo').val("")
+                $('#previewImageview').attr('src', "")
+            } else {
+                //$('#edit_photo').val(url)
+                $('#previewImageview').attr('src', url)
+            }
+
+            $('.put_checked_add').each(function () {
+                $(this).prop('checked', false); // Uncheck the checkbox
+            });
+
+            liste_auth = JSON.parse('[' + user_permissions + ']');
+            for (i = 0; i < liste_auth.length; i++) {
+                //$("#put_right_"+liste_auth[i]).click()
+                $("#viewput_" + liste_auth[i]).prop('checked', true);
+            }
+
+
+        }
+
         $('#userForm').on('submit', function (e) {
             e.preventDefault(); // Prevent the default form submission
 
-            var checkedBoxes = $('.checked_add:checked');
+            var checkedBoxes = $('.listaddcheck .checked_add:checked');
             var idList = [];
 
             checkedBoxes.each(function () {
+                console.log($(this).attr('name'))
                 var name = $(this).attr('name');
                 var idNumber = parseInt(name.match(/\d+/)); // Extracts the integer from the ID
                 if (!isNaN(idNumber)) {
@@ -774,6 +1008,48 @@
                     }
 
                 });
+        });
+
+
+
+
+        // Open modal when delete button is clicked
+        $('.delete-btn').on('click', function () {
+            currentDeleteId =  $(this).data('identifiant');
+
+            console.log(currentDeleteId);
+            $('#deleteModal').removeClass('hidden');
+        });
+
+        // Close modal when cancel is clicked
+        $('#cancelDelete').on('click', function () {
+            $('#deleteModal').addClass('hidden');
+            currentDeleteId = null;
+        });
+
+        // Confirm delete action
+        $('#confirmDelete').on('click', function () {
+            if (currentDeleteId) {
+                // Perform the delete action, e.g., make an AJAX call or redirect
+                console.log('Deleting item with ID:', currentDeleteId);
+
+                var settings = {
+                    "url": "/api/user/" + currentDeleteId + "/",
+                    "method": "DELETE",
+                    "timeout": 0,
+                    "headers": {
+                        "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
+                    },
+                };
+
+                $.ajax(settings).done(function (response) {
+                    console.log(response);
+                    $('#deleteModal').addClass('hidden');
+                    window.location.href = "/users/";
+                });
+
+
+            }
         });
 
 

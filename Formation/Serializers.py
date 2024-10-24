@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from rest_framework import serializers
 from .models import *
 
@@ -7,6 +9,13 @@ class FormationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Formation
         fields = '__all__'
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+
+        representation["datefin"] = instance.datedebut + timedelta(days=instance.duree)
+
+        return representation
 
 
 class EquipeSerializer(serializers.ModelSerializer):
