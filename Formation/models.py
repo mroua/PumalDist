@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Sum
 
 # Create your models here.
 from Distributeur.models import Distributeur
@@ -26,6 +27,11 @@ class Formation(models.Model):
     dateajout = models.DateField(auto_now_add=True)
 
 
+    def place_restante(self):
+        total_nbrelem = FormationSingup.objects.filter(formation=self).aggregate(total=Sum('nbrelem'))['total'] or 0
+        return max(self.nbrplace - total_nbrelem, 0)
+
+
 class FormationSingup(models.Model):
     id = models.AutoField(primary_key=True)
     formation = models.ForeignKey(Formation, on_delete=models.CASCADE)
@@ -47,9 +53,8 @@ class Problematique(models.Model):
     id = models.AutoField(primary_key=True)
     type = models.CharField(max_length=30, choices=TypePRO, default='Reclamation')
     profile = models.ForeignKey(Distributeur, on_delete=models.CASCADE)#distributeur
-    intitule = models.CharField(max_length=100)
-    message = models.TextField(max_length=500)
-    erreur = models.CharField(max_length=500)
-    date_ajout = models.DateField()
+    intitule = models.CharField(max_length=300)
+    message = models.TextField()
+    date_ajout = models.DateField(auto_now_add=True)
     etat = models.CharField(max_length=30, default='Reception', choices=EtapePRO)
 

@@ -61,6 +61,9 @@ class ProfileViewSet(viewsets.ModelViewSet):
 
 @login_required
 def Utilisateurs(request):
+    listmodules  = list(
+        set(request.user.user_permissions.values_list('content_type_id', flat=True))
+    )
     listeauth = list(
         set(
             Permission.objects.filter(user=request.user, content_type = 7).values_list('id', flat=True)
@@ -84,7 +87,8 @@ def Utilisateurs(request):
     return render(request, "Pumal/Utilisateur.html", {
         'liste_users': liste_users,
         'users_select': users_select,
-        'listeauth': listeauth
+        'listeauth': listeauth,
+        "listmodules": listmodules,
     })
 
 

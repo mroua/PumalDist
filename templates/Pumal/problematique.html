@@ -1,7 +1,7 @@
 {% extends "baseNew.html" %}
 {% load mes_tags %}
 {% load static %}
-{% block title %}Produits{% endblock %}
+{% block title %}Problématique{% endblock %}
 
 {% block content %}
     <div class="w-full h-full backprimer px-4 pb-4 flex flex-col">
@@ -9,80 +9,33 @@
         <div id="addSidebar"
              class="fixed right-0 top-0 bottom-0 w-2/5 backprimer shadow-lg transform translate-x-full transition-transform duration-300 z-50 textslate">
             <div class="flex justify-between items-center p-4 border-b">
-                <h3 class="text-lg font-semibold textslate">Ajouter un produit</h3>
+                <h3 class="text-lg font-semibold textslate">Signaler un probleme</h3>
                 <button id="closeSidebar" class="text-xl">&times;</button>
             </div>
             <!-- Add Produit Form -->
             <div class="p-4">
-                <form id="ProduitForm" class="">
-                    <div class="overflow-y-auto containerdef2">
-                        <div class="flex justify-center">
-                            <div class="relative p-4">
-                                <input type="file" id="photo" name="photo"
-                                       class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                       accept="image/*"
-                                       style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
-                                <div id="photoPreview"
-                                     class="w-24 h-24 bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden border border-gray-300">
-                                    <img id="previewImage" src="{% static 'images/product.png' %}" alt="Preview"
-                                         class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4 mb-4">
+                <form id="ProbForm" class="">
+                    <div class="overflow-y-auto containerdef2 px-4">
+                        <div class="mb-4">
                             <div>
-                                <input type="text" id="reference" name="reference" placeholder="Référence"
-                                       class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                            </div>
-                            <div>
-                                <input type="text" id="designation" name="designation" placeholder="Designation"
-                                       class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                            </div>
-                            <div>
-                                <select id="type" name="type"
-                                        class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                    {% for type in liste_type %}
-                                        <option value="{{ type.id }}">{{ type.designation }}</option>
-                                    {% endfor %}
+                                <select id="type" name="type" class="mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                    <option value="Reclamation">Reclamation</option>
+                                    <option value="Intervention">Intervention</option>
                                 </select>
                             </div>
                             <div>
-                                <select id="couleur" name="couleur"
-                                        class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                    {% for couleur in liste_couleur %}
-                                        <option value="{{ couleur.id }}">{{ couleur.designation }}</option>
-                                    {% endfor %}
-                                </select>
+                                <input type="text" id="intitule" name="intitule" placeholder="Intitule"
+                                       class="mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                             </div>
                             <div>
-                                <select id="typemesure" name="typemesure"
-                                        class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                    <option value="Sac">Sac</option>
-                                    <option value="Unité">Unité</option>
-                                </select>
+                                <textarea id="message" rows="8" class="mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                placeholder="Votre message d'erreur"></textarea>
                             </div>
-                            <div>
-                                <select id="mesure" name="mesure"
-                                        class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                    {% for mesure in liste_mesure %}
-                                        <option class="{% if mesure.type  == 'Unité' %}hidden{% endif %}"
-                                                data-type="{{ mesure.type }}"
-                                                value="{{ mesure.id }}">{{ mesure.designation }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            <div>
-                                <input type="text" id="prix_publique" name="prix_publique" placeholder="Prix Publique"
-                                       class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                            </div>
-                            <div>
-                                <input type="text" id="Prix_Gros" name="Prix_Gros" placeholder="Prix Gros"
-                                       class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                            </div>
+
                         </div>
                     </div>
                     <div class="flex justify-end pb-3">
-                        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400">
+                        <button id="subprob" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400">
                             Ajouter
                         </button>
                     </div>
@@ -101,76 +54,23 @@
             <!-- Edit Produit Form -->
             <div class="p-4 overflow-y-auto">
                 <form id="editProduitForm">
-                    <div class="overflow-y-auto containerdef2">
-                        <div class="flex justify-center">
-                            <div class="relative p-4">
-                                <input type="file" id="edit_photo" name="photo"
-                                       class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                       accept="image/*"
-                                       style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
-                                <div id="edit_photoPreview"
-                                     class="w-24 h-24 bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden border border-gray-300">
-                                    <img id="edit_previewImage" src="{% static 'images/product.png' %}" alt="Preview"
-                                         class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div class="overflow-y-auto containerdef2 px-4">
+                        <div class="mb-4">
                             <div>
-                                <input type="text" id="edit_reference" name="reference" placeholder="Référence"
-                                       class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                            </div>
-                            <div>
-                                <input type="text" id="edit_designation" name="designation" placeholder="Designation"
-                                       class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                            </div>
-                            <div>
-                                <select id="edit_type" name="type"
-                                        class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                    {% for type in liste_type %}
-                                        <option value="{{ type.id }}">{{ type.designation }}</option>
-                                    {% endfor %}
+                                <select id="edittype" name="edittype" class="mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                    <option value="Reclamation">Reclamation</option>
+                                    <option value="Intervention">Intervention</option>
                                 </select>
                             </div>
                             <div>
-                                <select id="edit_couleur" name="couleur"
-                                        class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                    {% for couleur in liste_couleur %}
-                                        <option value="{{ couleur.id }}">{{ couleur.designation }}</option>
-                                    {% endfor %}
-                                </select>
+                                <input type="text" id="editintitule" name="editintitule" placeholder="Intitule"
+                                       class="mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                             </div>
                             <div>
-                                <select id="edit_typemesure" name="typemesure"
-                                        class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                    <option value="Sac">Sac</option>
-                                    <option value="Unité">Unité</option>
-                                </select>
-                            </div>
-                            <div>
-                                <select id="edit_mesure" name="mesure"
-                                        class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                    {% for mesure in liste_mesure %}
-                                        <option class="{% if mesure.type  == 'Unité' %}hidden{% endif %}"
-                                                data-type="{{ mesure.type }}"
-                                                value="{{ mesure.id }}">{{ mesure.designation }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            <div>
-                                <input type="text" id="edit_prix_publique" name="prix_publique"
-                                       placeholder="Prix Publique"
-                                       class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                            </div>
-                            <div>
-                                <input type="text" id="edit_Prix_Gros" name="Prix_Gros" placeholder="Prix Gros"
-                                       class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                <textarea id="editmessage" rows="8" class="mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                placeholder="Votre message d'erreur"></textarea>
                             </div>
 
-                            <div class="checkbox-wrapper-6">
-                                <input class="tgl tgl-light" id="edit_active" type="checkbox"/>
-                                <label class="tgl-btn" for="edit_active"></label>
-                            </div>
                         </div>
                     </div>
 
@@ -195,58 +95,24 @@
             <!-- Edit Produit Form -->
             <div class="p-4 overflow-y-auto">
                 <div class="overflow-y-auto containerdef2">
-                    <div class="flex justify-center">
-                        <div class="relative p-4">
-                            <div id="view_photoPreview"
-                                 class="w-24 h-24 bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden border border-gray-300">
-                                <img id="view_previewImage" src="{% static 'images/product.png' %}" alt="Preview"
-                                     class="w-full h-full object-cover">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <div id="view_reference"
-                                 class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
-                        </div>
-                        <div>
-                            <div id="view_designation"
-                                 class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
-                        </div>
-                        <div>
-                            <div id="view_type"
-                                 class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
-                        </div>
-                        <div>
-                            <div id="view_couleur"
-                                 class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
-                        </div>
-                        <div>
-                            <div id="view_typemesure"
-                                 class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
-                        </div>
-                        <div>
-                            <div id="view_mesure"
-                                 class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
-                        </div>
-                        <div>
-                            <div id="view_prix_publique"
-                                 class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
-                        </div>
-                        <div>
-                            <div id="view_Prix_Gros"
-                                 class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
-                        </div>
+                    <div class="mb-4">
+                            <div id="viewtype" name="viewtype" class="backslate mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
 
-                        <div class="checkbox-wrapper-6">
-                            <input class="tgl tgl-light" id="view_active" disabled type="checkbox"/>
-                            <label class="tgl-btn" for="edit_active"></label>
+                            </div>
+                            <div type="text" id="viewintitule"
+                                     class="backslate mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+
+                                </div>
+                            <div id="viewmessage" rows="8" class="backslate mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                placeholder="Votre message d'erreur">
+                            </div>
+
                         </div>
-                    </div>
                 </div>
 
 
-                <div class="flex justify-end">
+                <div class="flex justify-between">
+                    <div id="editdiv"></div>
                     <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400">
                         Modifier
                     </button>
@@ -283,7 +149,7 @@
                     hover:bg-blue-900 hover:border-slate-400 rounded-md">Filtrer
                 </button>
 
-                {% if 53 in listeauth %}
+                {% if 97 in listeauth %}
                     <button id="addButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
                         hover:bg-blue-900 hover:border-slate-400 rounded-md">Ajouter
                     </button>
@@ -301,44 +167,32 @@
         <!-- Produit List Headers -->
         <div class="pt-4">
             <div class="flex items-center justify-between text-gray-600 font-semibold px-4 defaultboldval">
-                <div class="w-1/4 capitalize">Produit</div>
+                <div class="w-1/4 capitalize">Distributeur</div>
+                <div class="w-1/8 capitalize">Intitulé</div>
                 <div class="w-1/8 capitalize">Type</div>
-                <div class="w-1/8 capitalize">Mesure</div>
-                <div class="w-1/8 capitalize">Couleur</div>
-                <div class="w-1/8 capitalize mr-6">Prix Publique</div>
-                <div class="w-1/8 capitalize mr-6">Prix Gros</div>
+                <div class="w-1/8 capitalize">État</div>
+                <div class="w-1/8 capitalize mr-6">Date Ajout</div>
                 <div class="w-1/8 capitalize text-center">Actions</div>
             </div>
         </div>
 
         <!-- Produit List -->
         <div class="flex-grow shadow-md rounded-b-lg backslateprime p-2 overflow-y-auto textslate">
-            {% for elem in produit %}
+            {% for elem in problematique %}
 
                 <div class="flex items-center justify-between p-2 backslateslite flex-none mb-2">
-                    <div class="flex items-center w-1/4">
-                        <img src="{% if elem.image %} {{ elem.image.url }} {% else %} {% static 'images/product.png' %} {% endif %}"
-                             alt="Avatar" class="h-10 w-10 rounded-lg mr-4">
-                        <div>
-                            <h3 class="font-bold text-blue-600">{{ elem.designation }}</h3>
-                            <p class="text-sm textslate">{{ elem.reference }}</p>
-                        </div>
+                    <div class="w-1/4">
+                        <h3 class="font-bold text-blue-600">{{ elem.profile.designation }}</h3>
+                        <p class="text-sm textslate">{{ elem.profile.user.first_name }} {{ elem.profile.user.last_name }}</p>
                     </div>
+                    <div class="w-1/8">{{ elem.intitule }}</div>
                     <div class="w-1/8">{{ elem.type }}</div>
-                    <div class="w-1/8">{{ elem.mesure }}</div>
-                    <div class="w-1/8">{{ elem.couleur }}</div>
+                    <div class="w-1/8">{{ elem.etat }}</div>
                     <div class="w-1/8">
-                        {{ elem.prix_publique|floate_redefined }} DA
-                    </div>
-                    <div class="w-1/8">
-                        {{ elem.prix_gros|floate_redefined }} DA
+                        {{ elem.date_ajout|date:'Y-m-d' }}
                     </div>
                     <div class="flex space-x-2 w-1/8 justify-end">
-                        <!-- <button class="bg-blue-500 text-white p-2 rounded"><i class="fas fa-search"></i></button> -->
-
-
-
-                        {% if 56 in listeauth %}
+                        {% if 100 in listeauth %}
                             <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded"
                                     data-identifiant="{{ elem.id }}">
                                 <i class="fas fa-search"></i>
@@ -350,7 +204,7 @@
                             </button>
                         {% endif %}
 
-                        {% if 54 in listeauth %}
+                        {% if 98 in listeauth and elem.etat == "Reception" %}
                             <button id="editButton" class="editButton bg-blue-500 text-white p-2 rounded"
                                     data-identifiant="{{ elem.id }}">
                                 <i class="fas fa-pencil-alt"></i>
@@ -362,7 +216,7 @@
                             </button>
                         {% endif %}
 
-                        {% if 55 in listeauth %}
+                        {% if 99 in listeauth %}
                             <button class="bg-red-500 text-white p-2 rounded delete-btn"
                                     data-identifiant="{{ elem.id }}"><i class="fas fa-trash"></i></button>
                         {% else %}
@@ -410,9 +264,8 @@
             // Toggle the sidebar edit
             $('.editButton').on('click', function () {
                 identifiant = $(this).data('identifiant');
-
                 let settings = {
-                    url: `/api/produit/${identifiant}`,
+                    url: `/api/problematique/${identifiant}`,
                     method: "GET",
                     timeout: 0,
                     headers: {
@@ -421,31 +274,29 @@
                 };
 
                 $.ajax(settings).done(function (response) {
-                    let responsedata = response;
-                    $('#edit_photoPreview').attr('src', responsedata["image"]);
-                    $('#edit_previewImage').attr('src', responsedata["image"]);
-                    $('#edit_reference').val(responsedata["reference"]);
-                    $('#edit_designation').val(responsedata["designation"]);
-                    $('#edit_type').val(responsedata["type"]);
-                    $('#edit_couleur').val(responsedata["couleur"]);
-                    $('#edit_typemesure').val(responsedata["typemesure"]);
-                    $('#edit_mesure').val(responsedata["mesure"]);
-                    $('#edit_prix_publique').val(responsedata["prix_publique"]);
-                    $('#edit_Prix_Gros').val(responsedata["prix_gros"]);
-                    if (responsedata["active"]) $('#edit_active').prop('checked', true);
-                    else $('#edit_active').prop('checked', false);
 
+                    let responsedata = response;
+
+                    $('#edittype').val(responsedata['type'])
+                    $('#editintitule').val(responsedata['intitule'])
+                    $('#editmessage').val(responsedata['message'])
+
+                    
                     $('#editSidebar').toggleClass('translate-x-full');
+
+
+
+
                 });
 
             });
 
             // Toggle the sidebar view
             $('.viewButton').on('click', function () {
-                identifiant = $(this).data('identifiant');
+                identifiantview = $(this).data('identifiant');
 
                 let settings = {
-                    url: `/api/produit/${identifiant}`,
+                    url: `/api/problematique/${identifiantview}`,
                     method: "GET",
                     timeout: 0,
                     headers: {
@@ -455,18 +306,24 @@
 
                 $.ajax(settings).done(function (response) {
                     let responsedata = response;
-                    $('#view_photoPreview').attr('src', responsedata["image"]);
-                    $('#view_previewImage').attr('src', responsedata["image"]);
-                    $('#view_reference').html(responsedata["reference"]);
-                    $('#view_designation').html(responsedata["designation"]);
-                    $('#view_type').html(responsedata["type"]);
-                    $('#view_couleur').html(responsedata["couleur"]);
-                    $('#view_typemesure').html(responsedata["typemesure"]);
-                    $('#view_mesure').html(responsedata["mesure"]);
-                    $('#view_prix_publique').html(responsedata["prix_publique"]);
-                    $('#view_Prix_Gros').html(responsedata["prix_gros"]);
-                    if (responsedata["active"]) $('#view_active').prop('checked', true);
-                    else $('#view_active').prop('checked', false);
+
+
+                    $('#viewtype').html(responsedata['type'])
+                    $('#viewintitule').html(responsedata['intitule'])
+                    $('#viewmessage').html(responsedata['message'])
+                    $('#editdiv').html('')
+                    if(responsedata['etat'] === "Reception"){
+                        $('#editdiv').append(`<button onclick="callstate(${identifiantview}, 'En cours')" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
+                            hover:bg-blue-900 hover:border-slate-400 rounded-md">Lancer le traitement
+                        </button>`)
+                    }else if(responsedata['etat'] === "En cours"){
+                        $('#editdiv').append(`<button onclick="callstate(${identifiantview}, 'Validation')" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
+                            hover:bg-blue-900 hover:border-slate-400 rounded-md">Valider
+                        </button>`)
+                    }
+                    else{
+                        $('#editdiv').html(html)
+                    }
 
                     $('#viewSidebar').toggleClass('translate-x-full');
                 });
@@ -519,101 +376,98 @@
                     $('#filterModal').addClass('hidden');
                 }
             });
-
-            // Update photo preview
-            document.getElementById('photo').addEventListener('change', function (event) {
-                const file = event.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        const previewImage = document.getElementById('previewImage');
-                        previewImage.src = e.target.result;
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-
-            // Update edit_photo preview
-            document.getElementById('edit_photo').addEventListener('change', function (event) {
-                const file = event.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        const previewImage = document.getElementById('edit_previewImage');
-                        previewImage.src = e.target.result;
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-
-            $(document).ready(function () {
-                $typemesure.on('change', function () {
-                    var selectedType = $(this).val();  // Get the selected type from the typemesure dropdown
-
-                    $('#mesure option').each(function () {
-                        var optionType = $(this).data('type');  // Get the type associated with each mesure option
-
-                        // Show or hide options based on the selected type
-                        if (optionType === selectedType) {
-                            $(this).removeClass('hidden');  // Show the option
-                        } else {
-                            $(this).addClass('hidden');  // Hide the option
-                        }
-                    });
-
-                    // Reset the mesure dropdown to show the first available option
-                    $('#mesure').val($('#mesure option:not(.hidden):first').val());
+            
+            function callstate(id, etat){
+                alert("je suis la")
+                dataview = JSON.stringify({
+                      "type": $('#viewtype').html(),
+                      "profile": 1,
+                      "intitule": $('#viewintitule').html(),
+                      "message": $('#viewmessage').html(),
+                      "etat": etat
                 });
 
-                // Trigger the change event on page load to ensure the correct options are displayed
-                $typemesure.trigger('change');
-            });
+                var settings = {
+                    "url": "/api/problematique/"+id+"/",
+                    "method": "PUT",
+                    "timeout": 0,
+                    "headers": {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),  
+                    },
+                    "data": JSON.stringify({
+                      "type": $('#viewtype').html,
+                      "intitule": $('#viewintitule').html,
+                      "message": $('#viewmessage').html,
+                      "etat": JSON.stringify({
+                      "type": $('#viewtype').html(),
+                      "profile": 1,
+                      "intitule": $('#viewintitule').html(),
+                      "message": $('#viewmessage').html(),
+                      "etat": etat
+                })
+                    })
+                };
 
 
-            $('#ProduitForm').on('submit', function (e) {
+                $.ajax(settings)
+                    .done(function (response) {
+                        console.log(response);
+                        window.location.href = "/formation/problematique";
+                    })
+                    .fail(function (jqXHR, textStatus, errorThrown) {
+                        // Log the entire jqXHR object to see all details
+                        console.log('jqXHR:', jqXHR);
+
+                        // Log the status text
+                        console.log('Status:', textStatus);
+
+                        // Log the error thrown
+                        console.log('Error Thrown:', errorThrown);
+
+                        // Log the response text, which might contain detailed error messages
+                        console.log('Response Text:', jqXHR.responseText);
+
+                        // Optionally, parse the responseText as JSON if it's in JSON format
+                        try {
+                            var responseJSON = JSON.parse(jqXHR.responseText);
+                            console.log('Response JSON:', responseJSON);
+                        } catch (e) {
+                            console.error('Failed to parse response as JSON:', e);
+                        }
+
+                    });
+                
+            }
+
+
+
+            $('#subprob').on('click', function (e) {
                 e.preventDefault(); // Prevent the default form submission
+                data = JSON.stringify({
+                      "type": $('#type').val(),
+                      "profile": 1,
+                      "intitule": $('#intitule').val(),
+                      "message": $('#message').val(),
+                      "etat": "En cours"
+                });
 
-                var form = new FormData();
-
-                // Add basic form data
-                form.append("reference", $reference.val());
-                form.append("designation", $designation.val());
-                form.append("type", $type.val());
-                form.append("couleur", $couleur.val());
-                form.append("typemesure", $typemesure.val());
-                form.append("mesure", $mesure.val());
-                form.append("prix_publique", $prix_publique.val());
-                form.append("prix_gros", $Prix_Gros.val());
-                form.append("active", true);
-
-                // Add the photo
-                var photoFile = $('#photo')[0].files[0];
-                if (photoFile) {
-                    form.append("image", photoFile);
-                }
-
-
-                for (var pair of form.entries()) {
-                    console.log(pair[0] + ": " + pair[1]);
-                }
 
                 var settings = {
-                    "url": "/api/produit/",
+                    "url": "/api/problematique/",
                     "method": "POST",
                     "timeout": 0,
                     "headers": {
+                        "Content-Type": "application/json",
                         "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),  // Assuming you have CSRF token in your template context
                     },
-                    "processData": false,
-                    "contentType": false,
-                    "data": form
+                    "data": data
                 };
 
                 $.ajax(settings)
                     .done(function (response) {
                         console.log(response);
-
-                        window.location.href = "/produit/";
+                        window.location.href = "/formation/problematique/";
                     })
                     .fail(function (jqXHR, textStatus, errorThrown) {
                         // Log the entire jqXHR object to see all details
@@ -640,44 +494,36 @@
             });
 
             $('#editProduitForm').on('submit', function (e) {
-                e.preventDefault(); // Prevent the default form submission
+                e.preventDefault();
+                alert("ici")
 
 
-                var form = new FormData();
-
-                form.append("reference", $('#edit_reference').val());
-                form.append("designation", $('#edit_designation').val());
-                form.append("type", $('#edit_type').val());
-                form.append("couleur", $('#edit_couleur').val());
-                form.append("typemesure", $('#edit_typemesure').val());
-                form.append("mesure", $('#edit_mesure').val());
-                form.append("prix_publique", $('#edit_prix_publique').val());
-                form.append("prix_gros", $('#edit_Prix_Gros').val());
-                form.append("active", $('#edit_active').prop('checked'));
-
-                // Add the photo
-                var photoFile = $(' #edit_photo')[0].files[0];
-                if (photoFile) {
-                    form.append("image", photoFile);
-                }
+                data = JSON.stringify({
+                      "type": $('#edittype').val(),
+                      "profile": 1,
+                      "intitule": $('#editintitule').val(),
+                      "message": $('#editmessage').val(),
+                      "etat": "En cours"
+                });
 
 
                 var settings = {
-                    "url": "/api/produit/" + identifiant + '/',
+                    "url": "/api/problematique/"+identifiant+"/",
                     "method": "PUT",
                     "timeout": 0,
                     "headers": {
-                        "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),  // Assuming you have CSRF token in your template context
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),  
                     },
-                    "processData": false,
-                    "contentType": false,
-                    "data": form
+                    "data": data
                 };
+
 
                 $.ajax(settings)
                     .done(function (response) {
+                alert("ici2")
                         console.log(response);
-                        window.location.href = "/produit/";
+                        window.location.href = "/formation/problematique";
                     })
                     .fail(function (jqXHR, textStatus, errorThrown) {
                         // Log the entire jqXHR object to see all details
@@ -725,7 +571,7 @@
                     console.log('Deleting item with ID:', currentDeleteId);
 
                     var settings = {
-                        "url": "/api/produit/" + currentDeleteId + "/",
+                        "url": "/api/formation/problematique" + currentDeleteId + "/",
                         "method": "DELETE",
                         "timeout": 0,
                         "headers": {
@@ -736,7 +582,7 @@
                     $.ajax(settings).done(function (response) {
                         console.log(response);
                         $('#deleteModal').addClass('hidden');
-                        window.location.href = "/produit/";
+                        window.location.href = "/formation/problematique";
                     });
 
 

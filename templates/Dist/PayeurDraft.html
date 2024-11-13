@@ -1,6 +1,6 @@
 {% extends "baseNew.html" %}
 {% load static %}
-{% block title %}Payeur{% endblock %}
+{% block title %}Nouveau Payeur{% endblock %}
 {% block content %}
     <div class="w-full h-full backprimer px-4 pb-4 flex flex-col">
         <!-- Add User Sidebar -->
@@ -17,14 +17,7 @@
                 <form id="userForm">
                     <div class="p-4" style="height: calc(100% - 10rem); overflow-y: auto;">
                         <div class="grid grid-cols-2 gap-4 mb-4">
-                            <div>
-                                <select id="distributeur" name="distributeur"
-                                        class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                    {% for worker in users_select %}
-                                        <option value="{{ worker.id }}">{{ worker.designation }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
+                            
                             <div>
                                 <input type="text" id="code" name="code" placeholder="Code"
                                        class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
@@ -92,14 +85,6 @@
 
                         <div class="grid grid-cols-2 gap-4 mb-4">
                             <div>
-                                <select id="edit_distributeur" name="edit_distributeur"
-                                        class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                    {% for worker in users_select %}
-                                        <option value="{{ worker.id }}">{{ worker.designation }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            <div>
                                 <input type="text" id="edit_code" name="edit_code" placeholder="Code"
                                        class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                             </div>
@@ -148,6 +133,14 @@
                                 </div>
                             </div>
 
+                            <div class="flex items-center gap-4">
+                                <label>Valide</label>
+                                <div class="checkbox-wrapper-6">
+                                    <input class="tgl tgl-light" id="edit_draft" type="checkbox"/>
+                                    <label class="tgl-btn" for="edit_draft"></label>
+                                </div>
+                            </div>
+
 
                         </div>
                     </div>
@@ -174,9 +167,6 @@
                     <div class="p-4" style="height: calc(100% - 10rem); overflow-y: auto;">
 
                         <div class="grid grid-cols-2 gap-4 mb-4">
-                            <div>
-                                <div id="view_distributeur" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
-                            </div>
                             <div>
                                 <div id="view_code" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
                             </div>
@@ -237,21 +227,14 @@
 
         <div class="flex justify-between items-center pt-4 mb-4" style="margin-top: -8px">
             <div class="flex gap-2">
-                <div>
-                    <a href="{% url 'distributeur' %}"
-                       class="block px-4 py-2 hoverprimer rounded">Distributeur</a>
-                </div>
                 <div><!-- accomptes -->
-                    <a href="{% url 'payeur' %}" class="block px-4 py-2 actualprimer rounded">Payeur</a>
-                </div>
-                <div><!-- accomptes -->
-                    <a href="{% url 'payeurdraft' %}" class="block px-4 py-2 hoverprimer rounded">Nouveau Payeur</a>
+                    <a href="{% url 'payeurdraft' %}" class="block px-4 py-2 actualprimer rounded">Nouveau Payeur</a>
                 </div>
             </div>
             <div>
-                <button id="filterButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
-                    hover:bg-blue-900 hover:border-slate-400 rounded-md">Filtrer
+                <button id="filterButton" class="bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-700">Filtrer
                 </button>
+
 
                 {% if 37 in listeauth %}
                     <button id="addButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
@@ -261,6 +244,7 @@
                     <button class="btn capitalize bg-gray-500 text-white px-4 py-2 border rounded-md cursor-not-allowed">Ajouter
                     </button>
                 {% endif %}
+
             </div>
         </div>
         <hr/>
@@ -310,7 +294,6 @@
                             </button>
                         {% endif %}
 
-
                         {% if 38 in listeauth %}
                             <button id="editButton" class="editButton bg-blue-500 text-white p-2 rounded">
                                 <i class="fas fa-pencil-alt"
@@ -331,13 +314,12 @@
                         {% else %}
                             <button class="cursor-not-allowed bg-gray-500 text-white p-2 rounded"><i class="fas fa-trash"></i></button>
                         {% endif %}
-
-
                     </div>
                 </div>
             {% endfor %}
         </div>
     </div>
+
 
     <div id="deleteModal" class="fixed inset-0 flex items-center justify-center hidden bg-gray-800 bg-opacity-50">
         <div class="bg-white p-4 rounded-lg w-96">
@@ -349,7 +331,6 @@
             </div>
         </div>
     </div>
-
 
     <script>
         edit_elem = 0;
@@ -376,15 +357,16 @@
             $('#editSidebar').toggleClass('translate-x-full');
         });
 
+        // Close the sidebar
+        $('#closeSidebar').on('click', function () {
+            $('#addSidebar').addClass('translate-x-full');
+        });
+
         // Toggle the sidebar edit
         $('.viewButton').on('click', function () {
             $('#viewSidebar').toggleClass('translate-x-full');
         });
 
-        // Close the sidebar
-        $('#closeSidebar').on('click', function () {
-            $('#addSidebar').addClass('translate-x-full');
-        });
 
         // Close the sidebar
         $('#closeEditSidebar').on('click', function () {
@@ -400,8 +382,6 @@
         $('#closeFilterModal').on('click', function () {
             $('#filterModal').addClass('hidden');
         });
-
-        // Close the filter modal
         $('#closeViewSidebar').on('click', function () {
             $('#viewSidebar').addClass('hidden');
         });
@@ -433,28 +413,6 @@
             return Math.floor(Math.random() * max);
         }
 
-        function newdatauser(id, distributeur, code, designation, ville, telephone, adresse, nif, nis, art, rc, active) {
-
-            edit_elem = id;
-            $("#edit_code").val(code);
-            $("#edit_designation").val(designation);
-            $("#edit_adresse").val(adresse);
-            $("#edit_telephone").val(telephone);
-            $("#edit_ville").val(ville);
-            $("#edit_nif").val(nif);
-            $("#edit_nis").val(nis);
-            $("#edit_art").val(art);
-            $("#edit_rc").val(rc);
-
-            if (active === "True") {
-                $('#edit_is_active').prop('checked', true);
-            }else{
-                $('#edit_is_active').prop('checked', false);
-            }
-
-
-
-        }
 
 
         function newdatauserview(id, distributeur, code, designation, ville, telephone, adresse, nif, nis, art, rc, active) {
@@ -480,6 +438,30 @@
 
         }
 
+
+        function newdatauser(id, distributeur, code, designation, ville, telephone, adresse, nif, nis, art, rc, active) {
+
+            edit_elem = id;
+            $("#edit_code").val(code);
+            $("#edit_designation").val(designation);
+            $("#edit_adresse").val(adresse);
+            $("#edit_telephone").val(telephone);
+            $("#edit_ville").val(ville);
+            $("#edit_nif").val(nif);
+            $("#edit_nis").val(nis);
+            $("#edit_art").val(art);
+            $("#edit_rc").val(rc);
+
+            if (active === "True") {
+                $('#edit_is_active').prop('checked', true);
+            }else{
+                $('#edit_is_active').prop('checked', false);
+            }
+
+
+
+        }
+
         $('#userForm').on('submit', function (e) {
             e.preventDefault(); // Prevent the default form submission
 
@@ -490,11 +472,12 @@
             form.append("ville", $ville.val());
             form.append("adresse", $adresse.val());
             form.append("telephone", $telephone.val());
-            form.append("distributeur", $distributeur.val());
+            form.append("distributeur", {{ request.user.id }});
             form.append("nif", $nif.val());
             form.append("nis", $nis.val());
             form.append("art", $art.val());
             form.append("rc", $rc.val());
+            form.append("draft", true);
 
 
             for (var pair of form.entries()) {
@@ -516,8 +499,7 @@
             $.ajax(settings)
                 .done(function (response) {
                     console.log(response);
-
-                    window.location.href = "/distributeur/payeur";
+                    window.location.href = "/distributeur/payeurdraft";
                 })
                 .fail(function (jqXHR, textStatus, errorThrown) {
                     // Log the entire jqXHR object to see all details
@@ -553,12 +535,13 @@
         "ville": $('#edit_ville').val(),
         "adresse": $('#edit_adresse').val(),
         "telephone": $('#edit_telephone').val(),
-        "distributeur": $('#edit_distributeur').val(),
+        "distributeur": {{ request.user.id }} ,
         "nif": $('#edit_nif').val(),
         "nis": $('#edit_nis').val(),
         "art": $('#edit_art').val(),
         "rc": $('#edit_rc').val(),
-        "active": $('#edit_is_active').prop('checked')
+        "active": $('#edit_is_active').prop('checked'),
+        "draft": !$('#edit_draft').prop('checked')
     };
 
     // Log the formData object to see the data
@@ -579,7 +562,7 @@
     $.ajax(settings)
         .done(function (response) {
             console.log(response);
-            window.location.href = "/distributeur/payeur";
+            window.location.href = "/distributeur/payeurdraft";
         })
         .fail(function (jqXHR, textStatus, errorThrown) {
             // Log the entire jqXHR object to see all details
@@ -637,7 +620,7 @@
                 $.ajax(settings).done(function (response) {
                     console.log(response);
                     $('#deleteModal').addClass('hidden');
-                    window.location.href = "/distributeur/payeur";
+                    window.location.href = "/distributeur/payeurdraft";
                 });
 
 

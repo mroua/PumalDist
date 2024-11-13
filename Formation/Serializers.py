@@ -1,5 +1,6 @@
 from datetime import timedelta
 
+from django.db.models import Sum
 from rest_framework import serializers
 from .models import *
 
@@ -14,6 +15,25 @@ class FormationSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
 
         representation["datefin"] = instance.datedebut + timedelta(days=instance.duree)
+        representation['placerestante'] = instance.nbrplace - FormationSingup.objects.filter(formation=instance).aggregate(total=Sum('nbrelem'))['total'] or 0
+
+        formation_signups = FormationSingup.objects.filter(formation=instance)
+        representation['groups'] = []
+
+        for signup in formation_signups:
+            equipes = Equipe.objects.filter(
+                formation=signup)  # Adjust this filter to match the correct relationship
+            equipes_data = EquipeSerializer(equipes, many=True).data
+
+            representation['groups'].append({
+                'id': signup.id,
+                'distributeur': signup.distributeur.id,
+                'distributeurname': signup.distributeur.designation,
+                'nbrelem': signup.nbrelem,
+                'prixtotal': signup.prixtotal,
+                'dateajout': signup.dateajout,
+                'Equipeline': equipes_data  # Add related Equipe data here
+            })
 
         return representation
 

@@ -25,6 +25,9 @@ class ProduitViewSet(viewsets.ModelViewSet):
 
 @login_required
 def ProduitView(request):
+    listmodules  = list(
+        set(request.user.user_permissions.values_list('content_type_id', flat=True))
+    )
     listeauth = list(
         set(
             Permission.objects.filter(user=request.user, content_type = 14).values_list('id', flat=True)
@@ -42,7 +45,8 @@ def ProduitView(request):
         'liste_couleur': liste_couleur,
         'liste_mesure': liste_mesure,
         'produit': produit,
-        'listeauth': listeauth
+        'listeauth': listeauth,
+        "listmodules": listmodules,
     })
 
 

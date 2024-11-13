@@ -20,21 +20,27 @@
             <i class="uil uil-apps text-4xl"></i>
             <span class="text-xl">dashboard</span>
         </a>
-        {% if 7 in listeauth %}
+        {% if 7 in listeauth and request.user.type != 'Distributeur' %}
             <a href="/users/"
                class="btn btn-square hover:bg-[#151e66] hover:text-white backprimer w-64 h-16 border-none flex gap-2 justify-between px-4 text-slate-300 ">
                 <i class="uil uil-users-alt text-4xl"></i>
                 <span class="text-xl">Utilisateur</span>
             </a>
          {% endif %}
-        {% if 9 in listeauth %}
+        {% if 9 in listeauth and request.user.type != 'Distributeur' %}
             <a href="/distributeur/"
                class="btn btn-square backprimer w-64 h-16 hover:bg-[#151e66] border-none flex gap-2 justify-between px-4 text-slate-300 hover:text-white">
                 <i class="uil uil-truck-loading text-4xl"></i>
                 <span class="text-xl">Distributeur</span>
             </a>
+        {% elif request.user.type == 'Distributeur' %}
+            <a href="/distributeur/payeurdraft"
+               class="btn btn-square backprimer w-64 h-16 hover:bg-[#151e66] border-none flex gap-2 justify-between px-4 text-slate-300 hover:text-white">
+                <i class="uil uil-truck-loading text-4xl"></i>
+                <span class="text-xl">Payeur</span>
+            </a>
          {% endif %}
-        {% if 14 in listeauth %}
+        {% if 14 in listeauth and request.user.type != 'Distributeur' %}
             <a href="/produit/"
                class="btn btn-square backprimer w-64 h-16 hover:bg-[#151e66] border-none flex gap-2 justify-between px-4 text-slate-300 hover:text-white">
                 <i class="uil uil-box text-4xl"></i>
@@ -92,7 +98,7 @@
 
 
         {% if 26 in listeauth %}
-            <a href=""
+            <a href="/formation/"
                class="btn btn-square backprimer w-64 h-16 hover:bg-[#151e66] border-none flex gap-2 justify-between px-4 text-slate-300 hover:text-white">
                 <i class="uil uil-setting text-4xl"></i>
                 <span class="text-xl">Formation</span>

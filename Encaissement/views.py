@@ -16,7 +16,9 @@ from datetime import date
 # Create your views here.
 @login_required
 def EncaissementView(request):
-    print(request.user)
+    listmodules  = list(
+        set(request.user.user_permissions.values_list('content_type_id', flat=True))
+    )
     if (request.user.type == "Distributeur"):
         distrib = Distributeur.objects.get(user =request.user)
 
@@ -235,12 +237,16 @@ def EncaissementView(request):
             "somme_circu": somme_circu,
             "somme_depot": somme_depot,
             "somme_echue": somme_echue,
-            "listeauth": listeauth
+            "listeauth": listeauth,
+            "listmodules": listmodules
         })
 
 
 @login_required
 def EncaissementDetailView(request):
+    listmodules  = list(
+        set(request.user.user_permissions.values_list('content_type_id', flat=True))
+    )
     listeauth = list(
         set(
             Permission.objects.filter(user=request.user, content_type = 21).values_list('id', flat=True)
@@ -279,7 +285,8 @@ def EncaissementDetailView(request):
 
     return render(request, "Pumal/EncaissementDetail.html", {
         "encaissement": list_elems,
-        "listeauth": listeauth
+        "listeauth": listeauth,
+        "listmodules": listmodules
     })
 
 
@@ -287,7 +294,12 @@ def FactureView(request):
 
     return render(request, "Facture.html")
 
+
+@login_required
 def AccompteView(request):
+    listmodules  = list(
+        set(request.user.user_permissions.values_list('content_type_id', flat=True))
+    )
 
     if(request.user.type == "Distributeur"):
         listeaccompte = Account.objects.filter(montant__gt=0, payeur__distributeur__user=request.user)
@@ -312,7 +324,8 @@ def AccompteView(request):
             "listebanque": listebanque,
             "listepayeur": listepayeur,
             "listeaccompte": listeaccompte,
-            "listeauth": listeauth
+            "listeauth": listeauth,
+            "listmodules": listmodules
         })
 
 

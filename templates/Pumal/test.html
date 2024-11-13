@@ -1,0 +1,25 @@
+{% extends "baseNew.html" %}
+{% load mes_tags %}
+{% load static %}
+{% block title %}Formation{% endblock %}
+
+{% block content %}
+    <div class="flex">
+        <div class="w-1/4 bg-yellow-500">
+            <label>Distributeur:</label>
+            <label>nom & prenom</label>
+            
+            <label>Nbr place:</label>
+            <label>26</label>
+            
+            <label>>Total:</label>
+            <label>160000</label>
+        </div>
+        <div class="flex w-3/4 bg-blue-500">
+            <div class="w-2/5">nom</div>
+            <div class="w-1/5">prenom</div>
+            <div class="w-1/5">poste</div>
+            <div class="w-1/5">dateajout</div>
+        </div>
+    </div>
+{% endblock %}

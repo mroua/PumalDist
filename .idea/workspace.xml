@@ -12,7 +12,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="28a87dc8-7290-44f7-bb19-0d3d219967d1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/templates/Pumal/test.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/PumaDist.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PumaDist.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Commande/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Commande/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dashboard/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dashboard/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Distributeur/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Distributeur/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Encaissement/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Encaissement/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Formation/Serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/Formation/Serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Formation/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/Formation/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Formation/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Formation/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Produits/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Produits/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PumaDist/static/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/PumaDist/static/css/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PumaDist/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/PumaDist/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Session/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Session/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/Dist/Dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Dist/Dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/Dist/Formations.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Dist/Formations.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/Dist/Payeur.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Dist/PayeurDraft.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/Pumal/Dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pumal/Dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/Pumal/Distributeur.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pumal/Distributeur.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/Pumal/Formations.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pumal/Formations.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/Pumal/problematique.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pumal/problematique.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/baseNew.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/baseNew.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/formation.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/formation.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/homelanding.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/homelanding.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -136,8 +161,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="CSS File" />
-        <option value="HTML File" />
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -250,9 +275,9 @@
       </list>
     </option>
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 6
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="3832" />
     <option name="y" value="-8" />
@@ -305,20 +330,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Users/Salah Eddine/PycharmProjects/LawCRM",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RunOnceActivity.OpenDjangoStructureViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;django.template.preview.state&quot;: &quot;SHOW_EDITOR&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Salah Eddine/Desktop/DjangoFiles/PumaDist/templates/Dist&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;terminal&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Salah Eddine\Desktop\DjangoFiles\PumaDist\templates\Dist" />
@@ -424,6 +452,11 @@
       <workItem from="1730638272707" duration="1469000" />
       <workItem from="1730795067694" duration="21000" />
       <workItem from="1730898057089" duration="1963000" />
+      <workItem from="1731331108181" duration="2656000" />
+      <workItem from="1731339615122" duration="1377000" />
+      <workItem from="1731342424494" duration="7929000" />
+      <workItem from="1731401704200" duration="23626000" />
+      <workItem from="1731503303416" duration="1031000" />
     </task>
     <servers />
   </component>

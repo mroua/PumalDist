@@ -8,37 +8,35 @@
 {% endblock %}
 
 {% block content %}
-    <div class="w-full h-full flex flex-col overflow-y-auto text-bold">
+    <div class="w-full h-full flex flex-col overflow-y-auto text-bold backprimer px-4 py-2">
 
         <div class="flex justify-between items-center mb-2">
-            <h2 class="text-xl font-bold text-gray-700">Dashboard Distributeur</h2>
+            <h2 class="text-2xl font-bold textslate">Dashboard Distributeur</h2>
             <div>
                 {% if request.user.type != "Distributeur" %}
-                    <button id="filterButton" class="popupButton backprimer text-white py-2 px-4 rounded-lg hover:bg-blue-900">
-                        Filtrer
+                    <button id="filterButton" class="popupButton btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
+                    hover:bg-blue-900 hover:border-slate-400 rounded-md">Filtrer
                     </button>
                 {% endif %}
             </div>
         </div>
 
 
-        <div class="flex-grow flex overflow-y-auto text-xs gap-4">
+        <div class="flex-grow flex  text-xs gap-4">
             <div class="w-1/3 h-full backprimer">
                 <div class="w-full h-full flex flex-col gap-2">
-                    <span class="text-sm font-semibold text-2xl text-white px-6 capitalize">achats</span>
+                    <span class="text-sm font-semibold text-xl text-white px-6 capitalize">achats</span>
                     <div class="w-full h-full backprimer text-white flex flex-col gap-8 2xl:gap-14 p-4 2xl:p-6">
                         <div class="w-full h-fit grid grid-cols-5 gap-4">
                             <div class="w-full h-full flex flex-col gap-2  col-span-2">
                                 <span class="text-xs font-medium flex-none capitalize">objectif annuel</span>
-                                <span class="text-2xl text-green-400 font-bold">{{ obj_annuel_p }}%</span>
+                                <span class="text-xl text-green-400 font-bold">{{ obj_annuel_p }}%</span>
                             </div>
 
                             <div class="w-full h-full flex flex-col gap-2 col-span-3 justify-between">
                                 <div class="w-full flex justify-between gap-5 items-center">
                                     <span class="text-xs font-medium capitalize">achats annuelle</span>
-                                    <a href="#" class="w-5 h-5 bg-blue-900 flex items-center justify-center">
-                                        <i class="uil uil-arrow-up-right text-sm"></i>
-                                    </a>
+                                    
                                 </div>
 
                                 <span class="text-lg 2xl:text-xl text-slate-200 font-bold">{{ achat_annuelle|floate_redefined }} <span
@@ -50,15 +48,12 @@
                         <div class="w-full h-fit grid grid-cols-5 gap-4">
                             <div class="w-full h-full flex flex-col gap-2  col-span-2">
                                 <span class="text-xs font-medium flex-none capitalize">objectif mensuel</span>
-                                <span class="text-2xl text-red-400 font-bold">{{ obj_menssuel_p }}</span>
+                                <span class="text-xl text-red-400 font-bold">{{ obj_menssuel_p }}</span>
                             </div>
 
                             <div class="w-full h-full flex flex-col gap-2 col-span-3 justify-between">
                                 <div class="w-full flex justify-between gap-5 items-center">
                                     <span class="text-xs font-medium capitalize">achats mensuelles</span>
-                                    <a href="#" class="w-5 h-5 bg-blue-900 flex items-center justify-center">
-                                        <i class="uil uil-arrow-up-right text-sm"></i>
-                                    </a>
                                 </div>
 
                                 <span class="text-lg 2xl:text-xl text-slate-200 font-bold">{{ achat_menssuelle }} <span
@@ -93,7 +88,7 @@
             </div>
             <div class="w-1/3 h-full backprimer">
                 <div class="w-full h-full flex flex-col gap-2">
-                    <span class="text-sm font-semibold text-2xl text-white capitalize px-6">créances</span>
+                    <span class="text-sm font-semibold text-xl text-white capitalize px-6">créances</span>
                     <div class="w-full h-full backprimer text-white  flex flex-col gap-8 2xl:gap-14 p-4 2xl:p-6">
                         <div class="w-full h-fit grid grid-cols-5 gap-4">
                             <div class="w-full h-full flex flex-col gap-2  col-span-2">
@@ -105,9 +100,6 @@
                             <div class="w-full h-full flex flex-col gap-2 col-span-3 justify-between">
                                 <div class="w-full flex justify-between gap-5 items-center">
                                     <span class="text-xs font-medium capitalize">plafonnement</span>
-                                    <a href="#" class="w-5 h-5 bg-blue-900 flex items-center justify-center">
-                                        <i class="uil uil-arrow-up-right text-sm"></i>
-                                    </a>
                                 </div>
 
                                 <span class="text-lg 2xl:text-xl text-slate-200 font-bold">{{ plafonnement|floate_redefined }}<span
@@ -118,15 +110,12 @@
                         <div class="w-full h-fit grid grid-cols-5 gap-4">
                             <div class="w-full h-full flex flex-col gap-2  col-span-2">
                                 <span class="text-xs font-medium flex-none capitalize">taux des en cours</span>
-                                <span class="text-2xl text-green-400 font-bold">{{ en_cour_p |floate_redefined }}</span>
+                                <span class="text-xl text-green-400 font-bold">{{ en_cour_p |floate_redefined }}</span>
                             </div>
 
                             <div class="w-full h-full flex flex-col gap-2 col-span-3 justify-between">
                                 <div class="w-full flex justify-between gap-5 items-center">
                                     <span class="text-xs font-medium capitalize">en cours</span>
-                                    <a href="#" class="w-5 h-5 bg-blue-900 flex items-center justify-center">
-                                        <i class="uil uil-arrow-up-right text-sm"></i>
-                                    </a>
                                 </div>
 
                                 <span class="text-lg 2xl:text-xl text-slate-200 font-bold">{{ en_cour |floate_redefined }} <span
@@ -137,9 +126,6 @@
                             <div class="w-full h-full flex flex-col gap-2 col-span-2 justify-between">
                                 <div class="w-full flex justify-between gap-5 items-center">
                                     <span class="text-xs font-medium  capitalize">créances totale</span>
-                                    <a href="#" class="w-5 h-5 bg-blue-900 flex items-center justify-center">
-                                        <i class="uil uil-arrow-up-right text-sm"></i>
-                                    </a>
                                 </div>
 
                                 <span class="text-lg 2xl:text-xl text-slate-200 font-bold">{{ TotalCre|floate_redefined }} <span
@@ -149,9 +135,6 @@
                             <div class="w-full h-full flex flex-col gap-2 col-span-2 justify-between">
                                 <div class="w-full flex justify-between gap-5 items-center">
                                     <span class="text-xs font-medium  capitalize">créances échues</span>
-                                    <a href="#" class="w-5 h-5 bg-blue-900 flex items-center justify-center">
-                                        <i class="uil uil-arrow-up-right text-sm"></i>
-                                    </a>
                                 </div>
 
                                 <span class="text-lg 2xl:text-xl text-slate-200 font-bold">{{ TotalCreE|floate_redefined }} <span
@@ -170,7 +153,7 @@
                 <div class="w-full h-full flex flex-col gap-2">
 
                     <div class="w-full flex flex-col gap-2">
-                        <span class="text-sm font-semibold text-2xl text-white capitalize px-6 capitalize">top commandes</span>
+                        <span class="text-sm font-semibold text-xl text-white capitalize px-6 capitalize">top commandes</span>
                         <div class="w-full h-full p-6 ">
                             <canvas id="pie-chart"  height="60" width="100"></canvas>
                         </div>
@@ -178,7 +161,7 @@
 
 
                     <div class="w-full flex flex-col gap-2">
-                        <span class="text-sm font-semibold text-2xl text-white capitalize px-6 capitalize">commandes</span>
+                        <span class="text-sm font-semibold text-xl text-white capitalize px-6 capitalize">commandes</span>
                         <div class="w-full h-full p-4 2xl:p-6 bg-white flex flex-col gap-4 text-white text-lg" style="background: transparent;">
 
                             <div class="w-full h-full flex flex-col gap-2 justify-between">
@@ -282,6 +265,14 @@
                                         <option class="p-2.5" value="{{ elem.id }}" {% if elem == first_dist %}selected{% endif %}>{{ elem.designation }}</option>
                                     {% endfor %}
                                 </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="datedebut" class="block mb-1 pl-1 text-sm font-medium textslate">Date début</label>
+                                <input type="date" id="datedepot" class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                            </div>
+                            <div class="mb-3">
+                                <label for="datefin" class="block mb-1 pl-1 text-sm font-medium textslate">Date fin</label>
+                                <input type="date" id="datefin" class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                             </div>
                             <!--
                             <div class="grid grid-cols-2 mb-3 gap-2">
@@ -427,7 +418,7 @@
 
         $("#SearchApply").on('click', function (e) {
             e.preventDefault();
-            link = "/dashboard/?distributeur=" + $('#distributeur').val();
+            link = "/dashboard/?distributeur=" + $('#distributeur').val() +"&date_debut=" + $('#datedepot').val() +"&date_fin=" + $('#datefin').val();
             //alert(link)
             window.location.href = link;
         })

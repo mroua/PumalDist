@@ -63,6 +63,10 @@ class Dist_BonLivraisonNormalViewset(viewsets.ModelViewSet):
 
 @login_required
 def CommandeView(request):
+    listmodules  = list(
+        set(request.user.user_permissions.values_list('content_type_id', flat=True))
+    )
+
     listeauth = list(
         set(
             Permission.objects.filter(Q(user=request.user, content_type = 15)|
@@ -81,6 +85,7 @@ def CommandeView(request):
 
     if(request.user.type == "Disributeur"):
         dist = Distributeur.objects.get(user=request.user)
+        liste_distributeur = [Distributeur.objects.get(user=request.user)]
         query = """SELECT id, code, distributeur, ville, date_ajout, total, etat, total_blivraison, taxedtotal, taxedtotal_blivraison FROM cmdlist WHERE distributeur_id = """+ str(dist.id)
         params = []  # This will hold the parameters for the SQL query
 
@@ -132,7 +137,7 @@ def CommandeView(request):
 
 
         #return render(request, "Commande.html", {
-        return render(request, "Pumal/Commande.html", {
+        return render(request, "Dist/Commande.html", {
             'liste_type': liste_type,
             'liste_couleur': liste_couleur,
             'liste_mesure': liste_mesure,
@@ -197,11 +202,15 @@ def CommandeView(request):
             'liste_mesure': liste_mesure,
             'liste_distributeur': liste_distributeur,
             'liste_cmd': lise_prod,
-            'listeauth': listeauth
+            'listeauth': listeauth,
+            'listmodules': listmodules
         })
 
 @login_required
 def BlivraisonView(request):
+    listmodules  = list(
+        set(request.user.user_permissions.values_list('content_type_id', flat=True))
+    )
     listeauth = list(
         set(
             Permission.objects.filter(Q(user=request.user, content_type = 15)|
@@ -229,6 +238,7 @@ def BlivraisonView(request):
         "blist": blist,
         "cmd":commandes,
         "listeauth": listeauth,
+        "listmodules": listmodules
     })
 
 @login_required

@@ -26,8 +26,8 @@ from Produits.views import ProductList
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include("Session.urls")),
     path('dashboard/', include("Dashboard.urls")),
+    path('', include("Session.urls")),
     path('distributeur/', include("Distributeur.urls")),
     path('produit/', include("Produits.urls")),
     path('commande/', include("Commande.urls")),

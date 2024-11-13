@@ -9,8 +9,16 @@ import datetime
 
 @login_required
 def DashView(request):
-    print(request)
     listedist = Distributeur.objects.all()
+
+    date_debut = request.GET.get('date_debut', None)
+    date_fin = request.GET.get('date_fin', None)
+
+    if date_debut is None and date_fin is None:
+        todaydate = datetime.date.today()
+        date_debut = str(todaydate.year)+"-01-01"
+        date_fin = str(todaydate)
+
     if(request.user.type != "Distributeur"):
         dist_id = request.GET.get('distributeur', None)
         if(dist_id):
@@ -25,9 +33,13 @@ def DashView(request):
     objectif_m = first_dist.objectif_m
     plafonnement = first_dist.plafonnement
     echeance_j = first_dist.echeance_jour
+    date_debut
+    date_fin
+    sqlcmd = ("""SELECT "month", "year", total FROM Total_BL_Dash tbd WHERE distributeur_id="""+
+              str(first_dist.id)+""" AND tbd.date_ajout BETWEEN date('"""+date_debut+"""') AND date('"""+date_fin+"""')
+              group by tbd.month, tbd.year
+              """)
 
-    sqlcmd = """SELECT "month", "year", total FROM Total_BL WHERE distributeur_id="""+str(first_dist.id)
-    #params = []
 
     this_month = float(datetime.datetime.today().month)
     this_year = float(datetime.datetime.today().year)
@@ -36,7 +48,7 @@ def DashView(request):
     achat_menssuelle_m = []
     mois = []
     val = []
-
+    print(sqlcmd)
     with connection.cursor() as cursor:
         # Execute the SQL query with parameters
         cursor.execute(sqlcmd)#, params
@@ -59,8 +71,8 @@ def DashView(request):
 
     listecmd = Dist_Commande.objects.filter(
         distributeur=first_dist,
-        date_ajout__year=this_year,
-        date_ajout__month=this_month
+        date_ajout__gte=date_debut,
+        date_ajout__lte=date_fin,
     )
 
     nbr_cmd_reception = listecmd.filter(etat="Reception")
@@ -70,7 +82,8 @@ def DashView(request):
 
     sqlcmd = """SELECT sum(total), code_payeur, payeur, payeur_id, distributeur, sum(CreanceG), 
     sum(CreanceE), sum(nbrfacture), sum(nbrfactureEc), sum(EM), 
-    sum(EA) FROM creancedash where distributeur = """+str(first_dist.id) + """ group by payeur_id """
+    sum(EA) FROM creance_dash cd where distributeur = """+str(first_dist.id) + """ AND cd.date_ajout BETWEEN date('"""+date_debut+"""') 
+    AND date('"""+date_fin+"""') group by payeur_id, cd.month, cd.year """
 
     with connection.cursor() as cursor:
         # Execute the SQL query with parameters
@@ -117,7 +130,7 @@ def DashView(request):
         from Commande_dist_commandelines cdc 
         join Commande_dist_commande cdc2 
         join products p on p.produit_id = cdc.produit_id
-        where cdc2.etat <> 'Annule' and strftime('%Y', cdc2.date_ajout) = strftime('%Y', 'now') 
+        where cdc2.etat <> 'Annule' and cdc2.date_ajout BETWEEN date('"""+date_debut+"""') AND date('"""+date_fin+"""')
         and cdc2.distributeur_id="""+str(first_dist.id)+"""
         group by cdc.produit_id, p.typeproduit_designation, cdc2.distributeur_id 
         order by sum(quantite) desc limit 5
@@ -156,7 +169,7 @@ def DashView(request):
 ),
 all_years AS (
     SELECT DISTINCT strftime('%Y', date_ajout) AS year
-    FROM creance
+    FROM creance where date_ajout BETWEEN date('"""+date_debut+"""') AND date('"""+date_fin+"""')
 ),
 distributeur_ids AS (
     SELECT DISTINCT distributeur_id

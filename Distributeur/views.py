@@ -72,6 +72,9 @@ class PayeurViewSet(viewsets.ModelViewSet):
 
 @login_required
 def DistribView(request):
+    listmodules  = list(
+        set(request.user.user_permissions.values_list('content_type_id', flat=True))
+    )
     listeauth = list(
         set(
             Permission.objects.filter(user=request.user, content_type = 9).values_list('id', flat=True)
@@ -92,51 +95,89 @@ def DistribView(request):
                       'dist_list': dist_list,
                       'ville_list': ville_list,
                       'users_select': users_select,
-                      'listeauth': listeauth
+                      'listeauth': listeauth,
+                      "listmodules": listmodules
                   })
 
 @login_required
 def PayView(request):
-    listeauth = list(
-        set(
-            Permission.objects.filter(user=request.user, content_type = 10).values_list('id', flat=True)
+    if(request.user.type == "Distributeur"):
+        pass
+    else:
+        listmodules  = list(
+            set(request.user.user_permissions.values_list('content_type_id', flat=True))
         )
-    )
+        listeauth = list(
+            set(
+                Permission.objects.filter(user=request.user, content_type = 10).values_list('id', flat=True)
+            )
+        )
 
-    dist_list = Payeur.objects.filter(draft = False)
-    ville_list = Ville.objects.all()
+        dist_list = Payeur.objects.filter(draft = False)
+        ville_list = Ville.objects.all()
 
-    users_select = Distributeur.objects.all().order_by('id')
+        users_select = Distributeur.objects.all().order_by('id')
 
-    print(users_select)
+        print(users_select)
 
-    return render(request, "Pumal/Payeur.html",
-                  {
-                      'dist_list': dist_list,
-                      'ville_list': ville_list,
-                      'users_select': users_select,
-                      'listeauth': listeauth
-                  })
+        return render(request, "Pumal/Payeur.html",
+                      {
+                          'dist_list': dist_list,
+                          'ville_list': ville_list,
+                          'users_select': users_select,
+                          'listeauth': listeauth,
+                          "listmodules": listmodules
+                      })
 
 @login_required
 def PayDiftView(request):
-    listeauth = list(
-        set(
-            Permission.objects.filter(user=request.user, content_type = 10).values_list('id', flat=True)
+    if (request.user.type == "Distributeur"):
+        listmodules = list(
+            set(request.user.user_permissions.values_list('content_type_id', flat=True))
         )
-    )
+        listeauth = list(
+            set(
+                Permission.objects.filter(user=request.user, content_type=10).values_list('id', flat=True)
+            )
+        )
 
-    dist_list = Payeur.objects.filter(draft = True)
-    ville_list = Ville.objects.all()
+        dist_list = Payeur.objects.filter(distributeur__user = request.user)
+        ville_list = Ville.objects.all()
 
-    users_select = Distributeur.objects.all().order_by('id')
+        users_select = Distributeur.objects.all().order_by('id')
 
-    print(users_select)
+        print(users_select)
 
-    return render(request, "Pumal/PayeurDraft.html",
-                  {
-                      'dist_list': dist_list,
-                      'ville_list': ville_list,
-                      'users_select': users_select,
-                      'listeauth': listeauth
-                  })
+        return render(request, "Dist/PayeurDraft.html",
+                      {
+                          'dist_list': dist_list,
+                          'ville_list': ville_list,
+                          'users_select': users_select,
+                          'listeauth': listeauth,
+                          "listmodules": listmodules
+                      })
+    else:
+        listmodules  = list(
+            set(request.user.user_permissions.values_list('content_type_id', flat=True))
+        )
+        listeauth = list(
+            set(
+                Permission.objects.filter(user=request.user, content_type = 10).values_list('id', flat=True)
+            )
+        )
+
+        dist_list = Payeur.objects.filter(draft = True)
+        ville_list = Ville.objects.all()
+
+        users_select = Distributeur.objects.all().order_by('id')
+
+        print(users_select)
+
+        return render(request, "Pumal/PayeurDraft.html",
+                      {
+                          'dist_list': dist_list,
+                          'ville_list': ville_list,
+                          'users_select': users_select,
+                          'listeauth': listeauth,
+                          "listmodules": listmodules
+                      })

@@ -156,7 +156,8 @@
         <div class="pt-4">
             <div class="flex items-center justify-between text-gray-600 font-semibold px-4 defaultboldval">
                 <div class="w-1/4 capitalize">titre</div>
-                <div class="w-1/6 capitalize">nbrplace</div>
+                <div class="w-1/6 capitalize">places</div>
+                <div class="w-1/6 capitalize">place libre</div>
                 <div class="w-1/6 capitalize">duree</div>
                 <div class="w-1/6 capitalize">tarif/personne</div>
                 <div class="w-1/6 capitalize px-4">datedebut</div>
@@ -169,6 +170,7 @@
                 <div class="flex items-center justify-between p-2 backslateslite flex-none mb-2">
                     <div class="w-1/4 capitalize">{{ elem.titre }}</div>
                     <div class="w-1/6 capitalize">{{ elem.nbrplace }}</div>
+                    <div class="w-1/6 capitalize">{{ elem.placerestante }}</div>
                     <div class="w-1/6 capitalize">{{ elem.duree }} Jours</div>
                     <div class="w-1/6 capitalize text-right">{{ elem.tarif|floate_redefined }} DA</div>
                     <div class="w-1/6 capitalize px-4">{{ elem.datedebut|date:"d-m-Y" }}</div>

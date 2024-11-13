@@ -36,6 +36,7 @@
                    data-tip="dashboard">
                     <i class="uil uil-apps text-slate-300 text-xl"></i>
                 </a>
+            {% if request.user.type != "Distributeur" %}
                 <a href="{% url 'users' %}"
                    class="btn btn-square hover:bg-blue-900 {% if request.path == '/users/' %}bg-blue-900{% endif %} border-none flex items-center justify-center p-1 tooltip tooltip-right capitalize"
                    data-tip="Utilisateurs">
@@ -54,6 +55,15 @@
                    data-tip="Utilisateurs">
                     <i class="uil uil-house-user text-slate-300 text-xl"></i>
                 </a>
+                {% else %}
+                    <a href="{% url 'payeurdraft' %}"
+                       class="btn btn-square hover:bg-blue-900 {% if request.path == '/distributeur/payeurdraft' %}bg-blue-900
+                        {% endif %} border-none flex items-center justify-center p-1 tooltip tooltip-right capitalize"
+                       data-tip="Utilisateurs">
+                        <i class="uil uil-house-user text-slate-300 text-xl"></i>
+                    </a>
+                {% endif %}
+
 
                 <a href="{% url 'commande' %}"
                    class="btn btn-square hover:bg-blue-900 {% if request.path == '/commande/' %}bg-blue-900
@@ -63,12 +73,6 @@
                     <i class="uil uil-package text-primary text-xl"></i>
                 </a>
 
-
-                <!--<a href=""
-                   class="btn btn-square  backprimer hover:bg-blue-900 border-none flex items-center justify-center p-1 hover:text-primary tooltip tooltip-right capitalize"
-                   data-tip="factures">
-                    <i class="uil uil-bill text-slate-300 text-xl"></i>
-                </a>-->
                 <a href="{% url 'encaissement' %}"
                    class="btn btn-square  backprimer hover:bg-blue-900 {% if request.path == '/encaissement/' %}bg-blue-900
                     {% elif request.path == '/encaissement/encaissementvalidate' %}bg-blue-900
