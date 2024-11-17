@@ -1,0 +1,38 @@
+{% extends "baseNew.html" %}
+{% load mes_tags %}
+{% load static %}
+{% block title %}Problématique{% endblock %}
+
+{% block content %}
+    <div class="w-full h-full backprimer px-4 pb-4 flex justify-center items-center">
+        <h1>Vous n'avez pas d'accès a cette interface</h1>
+    </div>
+
+    <script>
+    
+        {% if 7 not in listmodules %}
+            $("#userslistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 14 not in listmodules %}
+            $("#prodlistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 9 not in listmodules %}
+            $("#distlistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 17 not in listmodules %}
+            $("#cmdlistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 21 not in listmodules %}
+            $("#enclistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 26 not in listmodules %}
+            $("#formslistlink").addClass('hidden');
+        {% endif %}
+    </script>
+
+{% endblock %}

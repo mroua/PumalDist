@@ -78,38 +78,37 @@
                     <div class="flex space-x-2 w-1/6 justify-end">
                         {% if 60 in listeauth %}
                             <button id="popupButton2" class="popupButton2 bg-blue-500 text-white p-2 rounded"
-                                data-identifiant="{{ elem.id }}"><i
-                                class="fas fa-search"></i>
+                                    data-identifiant="{{ elem.id }}"><i
+                                    class="fas fa-search"></i>
                             </button>
                         {% else %}
                             <div class="bg-gray-300 text-white p-2 rounded cursor-not-allowed"
-                                     data-identifiant="{{ elem.id }}"><i
-                                        class="fas fa-search"></i>
+                                 data-identifiant="{{ elem.id }}"><i
+                                    class="fas fa-search"></i>
                             </div>
                         {% endif %}
                         {% if 58 in listeauth %}
                             <button id="popupButton" class="popupButton bg-blue-500 text-white p-2 rounded"
-                                data-identifiant="{{ elem.id }}"><i
-                                class="fas fa-pencil-alt"></i>
+                                    data-identifiant="{{ elem.id }}"><i
+                                    class="fas fa-pencil-alt"></i>
                             </button>
                         {% else %}
                             <div class="bg-gray-300 text-white p-2 rounded cursor-not-allowed"
-                                     data-identifiant="{{ elem.id }}"><i
-                                        class="fas fa-pencil-alt"></i>
+                                 data-identifiant="{{ elem.id }}"><i
+                                    class="fas fa-pencil-alt"></i>
                             </div>
                         {% endif %}
                         {% if 59 in listeauth %}
                             <button class="bg-red-500 text-white p-2 rounded delete-btn"
-                                data-code="{{ elem.commandes__distributeur__code }}"
-                                data-identifiant="{{ elem.id }}" data-cmd="{{ cmd }}"><i class="fas fa-trash"></i>
+                                    data-code="{{ elem.commandes__distributeur__code }}"
+                                    data-identifiant="{{ elem.id }}" data-cmd="{{ cmd }}"><i class="fas fa-trash"></i>
                             </button>
                         {% else %}
                             <div class="bg-gray-300 text-white p-2 rounded cursor-not-allowed"
-                                     data-identifiant="{{ elem.id }}"><i
-                                        class="fas fa-trash"></i>
+                                 data-identifiant="{{ elem.id }}"><i
+                                    class="fas fa-trash"></i>
                             </div>
                         {% endif %}
-
 
 
                     </div>
@@ -232,6 +231,29 @@
 
 
     <script>
+        {% if 7 not in listmodules %}
+            $("#userslistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 14 not in listmodules %}
+            $("#prodlistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 9 not in listmodules %}
+            $("#distlistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 17 not in listmodules %}
+            $("#cmdlistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 21 not in listmodules %}
+            $("#enclistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 26 not in listmodules %}
+            $("#formslistlink").addClass('hidden');
+        {% endif %}
 
         var fileuploaddata = null;
         var fileupload2data = null;
@@ -342,7 +364,6 @@
         });
 
 
-
         $(document).ready(function () {
             // Show the popup
             $('.popupButton2').click(function () {
@@ -395,7 +416,6 @@
                     // Update tax
                     const totalTaxe = totalprice + totalprice * 0.19;
                     $('#totaltaxebl2').text(formatNumber(totalTaxe) + ' DA');
-
 
 
                     $('#addbl2').fadeIn();

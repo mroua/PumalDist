@@ -708,6 +708,30 @@
 
         <script>
 
+            {% if 7 not in listmodules %}
+                $("#userslistlink").addClass('hidden');
+            {% endif %}
+
+            {% if 14 not in listmodules %}
+                $("#prodlistlink").addClass('hidden');
+            {% endif %}
+
+            {% if 9 not in listmodules %}
+                $("#distlistlink").addClass('hidden');
+            {% endif %}
+
+            {% if 17 not in listmodules %}
+                $("#cmdlistlink").addClass('hidden');
+            {% endif %}
+
+            {% if 21 not in listmodules %}
+                $("#enclistlink").addClass('hidden');
+            {% endif %}
+
+            {% if 26 not in listmodules %}
+                $("#formslistlink").addClass('hidden');
+            {% endif %}
+
             // Toggle the sidebar edit
             $('.editButton').on('click', function (e) {
                 identifiant = $(this).data('identifiant');

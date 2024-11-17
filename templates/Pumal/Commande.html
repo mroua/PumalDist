@@ -386,7 +386,8 @@
                         hover:bg-blue-900 hover:border-slate-400 rounded-md">Ajouter
                     </button>
                 {% else %}
-                    <button class="btn capitalize bg-gray-500 text-white px-4 py-2 border rounded-md cursor-not-allowed">Ajouter
+                    <button class="btn capitalize bg-gray-500 text-white px-4 py-2 border rounded-md cursor-not-allowed">
+                        Ajouter
                     </button>
                 {% endif %}
 
@@ -483,8 +484,8 @@
 
                             {% if 68 in listeauth %}
                                 <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded"
-                                    data-identifiant="{{ elem.id }}" data-etat="{{ elem.etat }}"><i
-                                    class="fas fa-search"></i></button>
+                                        data-identifiant="{{ elem.id }}" data-etat="{{ elem.etat }}"><i
+                                        class="fas fa-search"></i></button>
                             {% else %}
                                 <div class="bg-gray-300 text-white p-2 rounded cursor-not-allowed"
                                      data-identifiant="{{ elem.id }}"><i
@@ -494,7 +495,7 @@
 
                             {% if 66 in listeauth %}
                                 <button id="editButton" class="editButton bg-blue-500 text-white p-2 rounded"
-                                    data-identifiant="{{ elem.id }}">
+                                        data-identifiant="{{ elem.id }}">
                                     <i class="fas fa-pencil-alt" onclick=""></i>
                                 </button>
                             {% else %}
@@ -506,7 +507,7 @@
 
                             {% if 67 in listeauth %}
                                 <button class="bg-red-500 text-white p-2 rounded delete-btn"
-                                    data-identifiant="{{ elem.id }}">
+                                        data-identifiant="{{ elem.id }}">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             {% else %}
@@ -528,8 +529,8 @@
 
                             {% if 68 in listeauth %}
                                 <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded"
-                                    data-identifiant="{{ elem.id }}" data-etat="{{ elem.etat }}"><i
-                                    class="fas fa-search"></i></button>
+                                        data-identifiant="{{ elem.id }}" data-etat="{{ elem.etat }}"><i
+                                        class="fas fa-search"></i></button>
                             {% else %}
                                 <div class="bg-gray-300 text-white p-2 rounded cursor-not-allowed"
                                      data-identifiant="{{ elem.id }}"><i
@@ -549,7 +550,7 @@
                         {% elif elem.etat == 'En cours' %}
                             {% if 57 in listeauth %}
                                 <button id="popupButton" class="popupButton bg-blue-500 text-white p-2 rounded"
-                                    data-identifiant="{{ elem.id }}">
+                                        data-identifiant="{{ elem.id }}">
                                     <i class="fa-solid fa-truck"></i>
                                 </button>
                             {% else %}
@@ -561,8 +562,8 @@
 
                             {% if 68 in listeauth %}
                                 <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded"
-                                    data-identifiant="{{ elem.id }}" data-etat="{{ elem.etat }}"><i
-                                    class="fas fa-search"></i></button>
+                                        data-identifiant="{{ elem.id }}" data-etat="{{ elem.etat }}"><i
+                                        class="fas fa-search"></i></button>
                             {% else %}
                                 <div class="bg-gray-300 text-white p-2 rounded cursor-not-allowed"
                                      data-identifiant="{{ elem.id }}"><i
@@ -589,8 +590,8 @@
 
                             {% if 68 in listeauth %}
                                 <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded"
-                                    data-identifiant="{{ elem.id }}" data-etat="{{ elem.etat }}"><i
-                                    class="fas fa-search"></i></button>
+                                        data-identifiant="{{ elem.id }}" data-etat="{{ elem.etat }}"><i
+                                        class="fas fa-search"></i></button>
                             {% else %}
                                 <div class="bg-gray-300 text-white p-2 rounded cursor-not-allowed"
                                      data-identifiant="{{ elem.id }}"><i
@@ -737,6 +738,31 @@
 
     <!-- add elems -->
     <script>
+
+
+        {% if 7 not in listmodules %}
+            $("#userslistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 14 not in listmodules %}
+            $("#prodlistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 9 not in listmodules %}
+            $("#distlistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 17 not in listmodules %}
+            $("#cmdlistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 21 not in listmodules %}
+            $("#enclistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 26 not in listmodules %}
+            $("#formslistlink").addClass('hidden');
+        {% endif %}
         var selectedProducts = [];
         var editselectedProducts = [];
         var $containerdatacmd = $('#containerdatacmd');
@@ -1605,7 +1631,7 @@
             annulelink = "";
 
             if (etatview === "Reception") {
-                if(listeauth.includes(66)){
+                if (listeauth.includes(66)) {
                     buttonslist = `
                         <button data-href="/commande/etatview?commande=${identifiantview}&etat=Traitement" class="callstate h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Valider CMD</button>
                         <button data-href="/commande/etatview?commande=${identifiantview}&etat=Annule" class="callstate h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Annuler CMD</button>
@@ -1613,7 +1639,7 @@
                 }
             } else if (etatview === "Traitement") {
                 //<a data-href="/commande/bl?commandes=${identifiantview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2.5 rounded-lg">Voir BL</a>
-                if(listeauth.includes(66)){
+                if (listeauth.includes(66)) {
                     buttonslist = `
                         <button data-href="/commande/etatview?commande=${identifiantview}&etat=Preparation" class="callstate h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Preparation CMD</button>
                     `;
@@ -1621,7 +1647,7 @@
 
             } else if (etatview === "Preparation") {
                 //<a data-href="/commande/bl?commandes=${identifiantview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2.5 rounded-lg">Voir BL</a>
-                if(listeauth.includes(66)){
+                if (listeauth.includes(66)) {
                     buttonslist = `
                         <button data-href="/commande/etatview?commande=${identifiantview}&etat=En cours" class="callstate h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Lancer Livraison</button>
                     `;
@@ -1629,13 +1655,13 @@
             } else if (etatview === "En cours") {
                 //<a data-href="/commande/bl?commandes=${identifiantview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2.5 rounded-lg">Voir BL</a>
                 buttonslist = ``;
-                if(listeauth.includes(60)){
+                if (listeauth.includes(60)) {
                     buttonslist = buttonslist + `<a href="/commande/bl?commandes=${identifiantview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2.5 rounded-lg">Voir BL</a>
                     `;
                 }
 
-                if(listeauth.includes(66)){
-                    buttonslist =  buttonslist + `<button data-href="/commande/etatview?commande=${identifiantview}&etat=Complete" class="callstate h-10 mt-4 bg-blue-500
+                if (listeauth.includes(66)) {
+                    buttonslist = buttonslist + `<button data-href="/commande/etatview?commande=${identifiantview}&etat=Complete" class="callstate h-10 mt-4 bg-blue-500
                         text-white px-4 py-2 rounded-lg">Completer CMD</button>
                     `;
                 }
@@ -1643,7 +1669,7 @@
 
             } else {
 
-                if(listeauth.includes(60)){
+                if (listeauth.includes(60)) {
                     buttonslist = `<a href="/commande/bl?commandes=${identifiantview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2.5 rounded-lg">Voir BL</a>
                     `;
                 }

@@ -1,0 +1,121 @@
+{% load static %}
+<!doctype html>
+<html  data-theme="corporate">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@2.41.0/dist/full.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href='{% static "css/style.css"%}'>
+</head>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&display=swap');
+    body{
+        font-family: 'Work Sans', sans-serif;
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+    }
+
+    ::-webkit-scrollbar {
+        display: none;
+      }
+</style>
+
+<body class="w-full h-screen relative">
+    <div class="w-96 h-full absolute z-10 left-10  bg-[#141b54] flex flex-col gap-4 items-center justify-center px-8">
+      <img src='{% static "images/puma logo.svg" %}' class="w-52" alt="">
+         <form id="loginForm">
+                   {% csrf_token %}
+            <input type="text"  name="username" placeholder="nom d'utilisateur" class="input h-10  input-primary w-full max-w-xs bg-blue-900 text-white text-xs" />
+            <input type="password" name="password" placeholder="mot de passe" class="input h-10  input-primary w-full max-w-xs bg-blue-900 text-white text-xs" />
+
+        <button  type="submit" class="btn btn-ghost text-white hover:bg-blue-900 w-full">Connexion</button>
+         </form>
+    </div>
+    <img src='{% static "images/pumaalgeria1.png"%}' class="w-full h-full" alt="">
+
+<script>
+    /*$(document).ready(function () {
+        $("#loginForm").on("submit", function (e) {
+            e.preventDefault();
+
+            const username = $("#username").val();
+            const password = $("#password").val();
+
+
+            var settings = {
+                "url": "/login/",
+                "method": "POST",
+                "timeout": 0,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "data": JSON.stringify({
+                    "username": "mroua",
+                    "password": "123456"
+                }),
+            };
+
+            $.ajax(settings).done(function (response) {
+                console.log(response);
+            });
+
+
+            $.ajax({
+                url: "/login/", // Replace with your API endpoint
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({username: username, password: password}),
+                success: function (response) {
+                    if (response.success) {
+                        window.location.href = "/dashboard"; // Replace with the page you want to redirect to
+                    } else {
+                        $("#errorMessage").text(response.message || "Mot de passe ou username incorrecte.");
+                        $("#errorMessage").removeClass("hidden");
+                    }
+                },
+                error: function () {
+                    $("#errorMessage").text("Une erreur s'est produite, veuillez réessayer plus tard.");
+                    $("#errorMessage").removeClass("hidden");
+                }
+            });
+        });
+    });*/
+
+    $(document).ready(function () {
+    $("#loginForm").on("submit", function (e) {
+        e.preventDefault();
+
+        const username = $("#username").val();
+        const password = $("#password").val();
+
+        var settings = {
+            "url": "/login",
+            "method": "POST",
+            "timeout": 0,
+            "headers": {
+                //"X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),
+                "Content-Type": "application/json",
+            },
+            "data": JSON.stringify({
+                "username": username,
+                "password": password
+            }),
+        };
+
+        $.ajax(settings).done(function (response) {
+                window.location.href = "/landing";
+            if (response.success) {
+            console.log("ici")
+            }
+        }).fail(function () {
+            $("#errorMessage").text("Une erreur s'est produite, veuillez réessayer plus tard.");
+            $("#errorMessage").removeClass("hidden");
+        });
+    });
+});
+</script>
+</body>
+</html>

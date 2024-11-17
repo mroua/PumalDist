@@ -11,6 +11,7 @@
     </style>
 
     <div class="w-full h-full backprimer px-4 pb-4 flex flex-col">
+
         <!-- Add Produit Sidebar -->
         <div id="addSidebar" style="margin-top: -10px"
              class="fixed right-0 top-0 bottom-0 w-2/5 backprimer shadow-lg transform translate-x-full transition-transform duration-300 z-50">
@@ -364,6 +365,30 @@
 
     <!-- add elems -->
     <script>
+
+        {% if 7 not in listmodules %}
+            $("#userslistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 14 not in listmodules %}
+            $("#prodlistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 9 not in listmodules %}
+            $("#distlistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 17 not in listmodules %}
+            $("#cmdlistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 21 not in listmodules %}
+            $("#enclistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 26 not in listmodules %}
+            $("#formslistlink").addClass('hidden');
+        {% endif %}
         var selectedProducts = [];
         var editselectedProducts = [];
         var $containerdatacmd = $('#containerdatacmd');
@@ -506,17 +531,17 @@
                     data1 = responsedata['groups'][ind]
                     data2list = data1['Equipeline']
                     console.log(data2list)
-                    idelem = "listdist_"+data1['distributeur']
+                    idelem = "listdist_" + data1['distributeur']
                     listeinfo = ""
 
-                    for(ind2=0; ind2<data2list.length; ind2++){
+                    for (ind2 = 0; ind2 < data2list.length; ind2++) {
                         data2 = data2list[ind2]
                         listeinfo = listeinfo + `
                                 <div class="w-full flex mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md col-span-3 h-10">
-                                    <div class="w-2/5">`+data2['nom']+`</div>
-                                    <div class="w-1/5">`+data2['prenom']+`</div>
-                                    <div class="w-1/5">`+data2['poste']+`</div>
-                                    <div class="w-1/5">`+data2['dateajout']+`</div>
+                                    <div class="w-2/5">` + data2['nom'] + `</div>
+                                    <div class="w-1/5">` + data2['prenom'] + `</div>
+                                    <div class="w-1/5">` + data2['poste'] + `</div>
+                                    <div class="w-1/5">` + data2['dateajout'] + `</div>
                                 </div>
                             `
 
@@ -525,12 +550,12 @@
                     $('#listesingup').append(`
                                 <div class="flex items-center justify-between p-2 backslateslite flex-none mb-2">
                                     <div class="w-1/4 flex flex-col">
-                                        <label>Distributeur: `+data1['distributeurname']+`</label>
-                                        <label>Place subsc: `+data1['nbrelem']+`</label>
-                                        <label>Prix par per: `+data1['prixtotal']+`</label>
+                                        <label>Distributeur: ` + data1['distributeurname'] + `</label>
+                                        <label>Place subsc: ` + data1['nbrelem'] + `</label>
+                                        <label>Prix par per: ` + data1['prixtotal'] + `</label>
                                     </div>
                                     <div class="flex w-3/4 flex flex-col">
-                                        `+listeinfo+ `
+                                        ` + listeinfo + `
                                     </div>
                                 </div>
                             `)

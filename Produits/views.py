@@ -21,36 +21,35 @@ class ProduitViewSet(viewsets.ModelViewSet):
 
     filterset_fields = ['type', 'mesure', 'couleur', 'active']
 
-
-
 @login_required
 def ProduitView(request):
     listmodules  = list(
         set(request.user.user_permissions.values_list('content_type_id', flat=True))
     )
-    listeauth = list(
-        set(
-            Permission.objects.filter(user=request.user, content_type = 14).values_list('id', flat=True)
+
+    if (14 in listmodules):
+        listeauth = list(
+            set(
+                Permission.objects.filter(user=request.user, content_type = 14).values_list('id', flat=True)
+            )
         )
-    )
 
-    liste_type = TypeProduit.objects.all()
-    liste_couleur = Couleur.objects.all()
-    liste_mesure = Mesure.objects.all()
+        liste_type = TypeProduit.objects.all()
+        liste_couleur = Couleur.objects.all()
+        liste_mesure = Mesure.objects.all()
 
-    produit = Produit.objects.filter(active = True)
+        produit = Produit.objects.filter(active = True)
 
-    return render(request, "Pumal/Produit.html", {
-        'liste_type': liste_type,
-        'liste_couleur': liste_couleur,
-        'liste_mesure': liste_mesure,
-        'produit': produit,
-        'listeauth': listeauth,
-        "listmodules": listmodules,
-    })
-
-
-
+        return render(request, "Pumal/Produit.html", {
+            'liste_type': liste_type,
+            'liste_couleur': liste_couleur,
+            'liste_mesure': liste_mesure,
+            'produit': produit,
+            'listeauth': listeauth,
+            "listmodules": listmodules,
+        })
+    else:
+        return render(request,"access.html", {"listmodules": listmodules})
 
 class ProductList(APIView):
     #permission_classes = [IsAuthenticated]

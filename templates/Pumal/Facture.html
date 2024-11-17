@@ -406,7 +406,8 @@
                         <div class="capitalize px-4 col-span-2">
                             <div class="flex w-full justify-between pl-2">
                                 <div class="text-sm text-gray-500">HT:</div>
-                                <div class="text-sm text-gray-500 text-right">{{ elem.total_validation_depot_false|floate_redefined }} DA
+                                <div class="text-sm text-gray-500 text-right">{{ elem.total_validation_depot_false|floate_redefined }}
+                                    DA
                                 </div>
                             </div>
                             <div class="flex w-full justify-between pl-2">
@@ -419,7 +420,8 @@
                         <div class="capitalize px-4 col-span-2">
                             <div class="flex w-full justify-between pl-2">
                                 <div class="text-sm text-gray-500">HT:</div>
-                                <div class="text-sm text-gray-500 text-right">{{ elem.total_validation_depot_true|floate_redefined }} DA
+                                <div class="text-sm text-gray-500 text-right">{{ elem.total_validation_depot_true|floate_redefined }}
+                                    DA
                                 </div>
                             </div>
                             <div class="flex w-full justify-between pl-2">
@@ -432,7 +434,8 @@
                         <div class="capitalize text-center col-span-2 pr-2">
                             <div class="flex w-full justify-between pl-2">
                                 <div class="text-sm text-gray-500">HT:</div>
-                                <div class="text-sm text-gray-500 text-right">{{ elem.total_encaissement|floate_redefined }} DA
+                                <div class="text-sm text-gray-500 text-right">{{ elem.total_encaissement|floate_redefined }}
+                                    DA
                                 </div>
                             </div>
                             <div class="flex w-full justify-between pl-2">
@@ -524,8 +527,10 @@
                                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                         </div>
                         <div class="mb-3">
-                            <label for="date_facture" class="block mb-1 pl-1 text-sm font-medium text-gray-900">Date échéance</label>
-                            <input type="date" id="date_facture" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                            <label for="date_facture" class="block mb-1 pl-1 text-sm font-medium text-gray-900">Date
+                                échéance</label>
+                            <input type="date" id="date_facture"
+                                   class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                         </div>
                         <div class="mb-3">
                             <label for="facture_montant"
@@ -564,6 +569,30 @@
     </div>
 
     <script>
+
+        {% if 7 not in listmodules %}
+            $("#userslistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 14 not in listmodules %}
+            $("#prodlistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 9 not in listmodules %}
+            $("#distlistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 17 not in listmodules %}
+            $("#cmdlistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 21 not in listmodules %}
+            $("#enclistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 26 not in listmodules %}
+            $("#formslistlink").addClass('hidden');
+        {% endif %}
 
         $distributeur = $("#distributeur");
         $payeur = $("#payeur");
@@ -687,7 +716,7 @@
                 var distributeurId = $(this).val();
 
                 $.ajax({
-                    url: '/api/payeur?distributeur='+distributeurId, // Update this with your actual API endpoint
+                    url: '/api/payeur?distributeur=' + distributeurId, // Update this with your actual API endpoint
                     method: 'GET',
                     data: {
                         distributeur: distributeurId

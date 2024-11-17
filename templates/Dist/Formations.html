@@ -11,142 +11,78 @@
     </style>
 
     <div class="w-full h-full backprimer px-4 pb-4 flex flex-col">
-        <!-- Add Produit Sidebar -->
-        <div id="addSidebar" style="margin-top: -10px"
-             class="fixed right-0 top-0 bottom-0 w-2/5 backprimer shadow-lg transform translate-x-full transition-transform duration-300 z-50">
-            <div class="flex justify-between items-center p-4 border-b">
-                <h3 class="text-lg font-semibold textslate">Ajouter une formation</h3>
-                <button id="closeSidebar" class="text-xl textslate text-md">&times;</button>
-            </div>
-            <!-- Step 1: Select Products -->
-            <div id="step1" class="p-4 containerdef flex flex-col">
-
-                <div class="p-4 h-28 flex-grow rounded-lg mb-4 gap-4 overflow-y-auto">
-
-                    <div class="grid grid-cols-1 gap-4 mb-4">
-                        <div class="">
-                            <label for="titre"
-                               class="block text-sm font-medium text-gray-700 mb-2 textslate">Titre</label>
-
-                            <input type="text" id="titre" name="titre" placeholder="Titre"
-                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                        </div>
-                        <div>
-                            <label for="nbrplace"
-                               class="block text-sm font-medium text-gray-700 mb-2 textslate">Nombre de place</label>
-                            <input type="number" id="nbrplace" name="nbrplace" placeholder="Nombre de place"
-                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                        </div>
-                        <div>
-                            <label for="duree"
-                               class="block text-sm font-medium text-gray-700 mb-2 textslate">Durée</label>
-                            <input type="number" id="duree" name="duree" placeholder="Durée"
-                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                        </div>
-
-                        <div>
-                            <label for="tarif"
-                               class="block text-sm font-medium text-gray-700 mb-2 textslate">Tarif par personne</label>
-                            <input type="number" id="tarif" name="tarif" placeholder="Tarif"
-                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                        </div>
-                        <div>
-                            <label for="datedebut"
-                               class="block text-sm font-medium text-gray-700 mb-2 textslate">Date débutt</label>
-                            <input type="date" id="datedebut" name="datedebut" placeholder="Date débutt"
-                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="h-12 flex justify-end pt-2">
-                    <button id="goToStep2" class="goToStep2 h-10 bg-blue-500 text-white px-4 py-2 rounded-lg">Ajouter
-                    </button>
-                </div>
-
-            </div>
-
-
-        </div>
-
 
 
         <!-- edit Produit Sidebar -->
         <div id="editSidebar" style="margin-top: -10px"
-             class="fixed right-0 top-0 bottom-0 w-2/5 backprimer shadow-lg transform translate-x-full transition-transform duration-300 z-50">
+             class="fixed right-0 top-0 bottom-0 w-4/5 backprimer shadow-lg transform translate-x-full transition-transform duration-300
+             z-50 flex flex-col">
             <div class="flex justify-between items-center p-4 border-b">
                 <h3 class="text-lg font-semibold textslate">Editer une formation</h3>
                 <button id="closeEditSidebar" class="text-xl textslate text-md">&times;</button>
             </div>
             <!-- Step 1: Select Products -->
-            <div id="step1" class="p-4 containerdef flex flex-col">
 
-                <div class="p-4 h-28 flex-grow rounded-lg mb-4 gap-4 overflow-y-auto">
+            <div class="p-4 h-28 flex-grow rounded-lg mb-4 gap-4 overflow-y-auto">
+                <div class="grid grid-cols-5 gap-4">
+                    <label class="col-span-3">Titre</label>
+                    <label>Nombre de place</label>
+                    <label>Durée</label>
+                    <div id="titre"
+                         class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md col-span-3 h-10"></div>
+                    <div id="duree"
+                         class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md h-10"></div>
+                    <div id="nbrplace"
+                         class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md h-10"></div>
 
-                    <div class="grid grid-cols-1 gap-4 mb-4">
-                        <div class="">
-                            <label for="edit_titre"
-                               class="block text-sm font-medium text-gray-700 mb-2 textslate">Titre</label>
 
-                            <input type="text" id="edit_titre" name="edit_titre" placeholder="Titre"
-                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                        </div>
-                        <div>
-                            <label for="edit_nbrplace"
-                               class="block text-sm font-medium text-gray-700 mb-2 textslate">Nombre de place</label>
-                            <input type="number" id="edit_nbrplace" name="edit_nbrplace" placeholder="Nombre de place"
-                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                        </div>
-                        <div>
-                            <label for="edit_duree"
-                               class="block text-sm font-medium text-gray-700 mb-2 textslate">Durée</label>
-                            <input type="number" id="edit_duree" name="edit_duree" placeholder="Durée"
-                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                        </div>
-
-                        <div>
-                            <label for="edit_tarif"
-                               class="block text-sm font-medium text-gray-700 mb-2 textslate">Tarif par personne</label>
-                            <input type="number" id="edit_tarif" name="edit_tarif" placeholder="Tarif"
-                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                        </div>
-                        <div>
-                            <label for="edit_datedebut"
-                               class="block text-sm font-medium text-gray-700 mb-2 textslate">Date débutt</label>
-                            <input type="date" id="edit_datedebut" name="edit_datedebut" placeholder="Date débutt"
-                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                        </div>
-                    </div>
-
+                    <label class="col-span-3">Tarif par personne</label>
+                    <label>Date début</label>
+                    <label>date fin</label>
+                    <div id="tarif"
+                         class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md col-span-3 h-10 text-right"></div>
+                    <div id="datedebut"
+                         class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md h-10"></div>
+                    <div id="datefin"
+                         class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md h-10"></div>
                 </div>
-
-                <div class="h-12 flex justify-end pt-2">
-                    <button id="EditForm" class="goToStep2 h-10 bg-blue-500 text-white px-4 py-2 rounded-lg">Editer
+                <div class="flex p-2">
+                    <div class="w-2/5">nom</div>
+                    <div class="w-1/5">prenom</div>
+                    <div class="w-1/5">poste</div>
+                    <div class="w-1/5">dateajout</div>
+                    <button class="addnewsingup bg-blue-500 text-white p-2 rounded">
+                        <i class="fas fa-add" onclick=""></i>
                     </button>
                 </div>
+                <div id="listesingupadd" class="flex-grow overflow-y-auto">
+                </div>
 
+            </div>
+
+            <div class="h-16 flex justify-end pt-2 pb-4 pr-4">
+                <button id="EditForm" class="goToStep2 h-10 bg-blue-500 text-white px-4 py-2 rounded-lg">Editer
+                </button>
             </div>
 
 
         </div>
 
         <div class="flex justify-between items-center pt-4 mb-4" style="margin-top: -8px">
-            <h2 class="text-2xl font-bold textslate">Liste des Formations</h2>
+            <div class="flex gap-2">
+                <div>
+                    <a href="{% url 'formation' %}"
+                       class="block px-4 py-2 actualprimer rounded">Formation</a>
+                </div>
+                <div><!-- accomptes -->
+                    <a href="{% url 'problematique' %}" class="block px-4 py-2 hoverprimer rounded">Problematique</a>
+                </div>
+            </div>
             <div>
                 <button id="filterButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
                     hover:bg-blue-900 hover:border-slate-400 rounded-md">Filtrer
                 </button>
 
-                {% if 65 in listeauth %}
-                    <button id="addButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
-                        hover:bg-blue-900 hover:border-slate-400 rounded-md">Ajouter
-                    </button>
-                {% else %}
-                    <button class="btn capitalize bg-gray-500 text-white px-4 py-2 border rounded-md cursor-not-allowed">
-                        Ajouter
-                    </button>
-                {% endif %}
 
             </div>
         </div>
@@ -156,11 +92,11 @@
         <div class="pt-4">
             <div class="flex items-center justify-between text-gray-600 font-semibold px-4 defaultboldval">
                 <div class="w-1/4 capitalize">titre</div>
-                <div class="w-1/6 capitalize">places</div>
-                <div class="w-1/6 capitalize">place libre</div>
-                <div class="w-1/6 capitalize">duree</div>
-                <div class="w-1/6 capitalize">tarif/personne</div>
-                <div class="w-1/6 capitalize px-4">datedebut</div>
+                <div class="w-16 capitalize">places</div>
+                <div class="capitalize">place libre</div>
+                <div class="capitalize">duree</div>
+                <div class="capitalize">tarif/personne</div>
+                <div class="capitalize px-4">datedebut</div>
                 <div class="w-36 capitalize px-4 text-center">Actions</div>
             </div>
         </div>
@@ -169,11 +105,11 @@
             {% for elem in formations %}
                 <div class="flex items-center justify-between p-2 backslateslite flex-none mb-2">
                     <div class="w-1/4 capitalize">{{ elem.titre }}</div>
-                    <div class="w-1/6 capitalize">{{ elem.nbrplace }}</div>
-                    <div class="w-1/6 capitalize">{{ elem.placerestante }}</div>
-                    <div class="w-1/6 capitalize">{{ elem.duree }} Jours</div>
-                    <div class="w-1/6 capitalize text-right">{{ elem.tarif|floate_redefined }} DA</div>
-                    <div class="w-1/6 capitalize px-4">{{ elem.datedebut|date:"d-m-Y" }}</div>
+                    <div class="w-16 capitalize">{{ elem.nbrplace }}</div>
+                    <div class="capitalize">{{ elem.place_restante }}</div>
+                    <div class="capitalize">{{ elem.duree }} Jours</div>
+                    <div class="capitalize text-right">{{ elem.tarif|floate_redefined }} DA</div>
+                    <div class="capitalize px-4">{{ elem.datedebut|date:"d-m-Y" }}</div>
                     <div class="w-36 capitalize px-4">
                         <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded"
                                 data-identifiant="{{ elem.id }}" data-etat="{{ elem.etat }}">
@@ -182,7 +118,7 @@
 
                         <button id="editButton" class="editButton bg-blue-500 text-white p-2 rounded"
                                 data-identifiant="{{ elem.id }}">
-                            <i class="fas fa-pencil-alt" onclick=""></i>
+                            <i class="fas fa-add" onclick=""></i>
                         </button>
 
                         <button class="bg-red-500 text-white p-2 rounded delete-btn"
@@ -218,21 +154,40 @@
             <div id="containerdatacmd" class="flex-grow flex flex-col p-8">
                 <div class="grid grid-cols-5 gap-4">
                     <label class="col-span-3">Titre</label>
-                    <label>Durée</label>
                     <label>Nombre de place</label>
-                    <div id="view_titre" class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md col-span-3 h-10"></div>
-                    <div id="view_duree" class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md h-10"></div>
-                    <div id="view_nbrplace" class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md h-10"></div>
-
+                    <label>Durée</label>
+                    <div id="view_titre"
+                         class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md col-span-3 h-10"></div>
+                    <div id="view_duree"
+                         class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md h-10"></div>
+                    <div id="view_nbrplace"
+                         class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md h-10"></div>
 
 
                     <label class="col-span-3">Tarif par personne</label>
                     <label>Date début</label>
                     <label>date fin</label>
-                    <div id="view_tarif" class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md col-span-3 h-10 text-right"></div>
-                    <div id="view_datedebut" class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md h-10"></div>
-                    <div id="view_datefin" class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md h-10"></div>
+                    <div id="view_tarif"
+                         class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md col-span-3 h-10 text-right"></div>
+                    <div id="view_datedebut"
+                         class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md h-10"></div>
+                    <div id="view_datefin"
+                         class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md h-10"></div>
                 </div>
+                <div class="flex p-2">
+                    <div class="w-1/4">
+                        <label>Distributeurs</label>
+                    </div>
+                    <div class="flex w-3/4">
+                        <div class="w-2/5">nom</div>
+                        <div class="w-1/5">prenom</div>
+                        <div class="w-1/5">poste</div>
+                        <div class="w-1/5">dateajout</div>
+                    </div>
+                </div>
+                <div id="listesingup" class="flex-grow overflow-y-auto">
+                </div>
+
 
             </div>
 
@@ -334,6 +289,31 @@
 
     <!-- add elems -->
     <script>
+        cpt = 0
+        {% if 7 not in listmodules %}
+            $("#userslistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 14 not in listmodules %}
+            $("#prodlistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 9 not in listmodules %}
+            $("#distlistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 17 not in listmodules %}
+            $("#cmdlistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 21 not in listmodules %}
+            $("#enclistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 26 not in listmodules %}
+            $("#formslistlink").addClass('hidden');
+        {% endif %}
+
         var selectedProducts = [];
         var editselectedProducts = [];
         var $containerdatacmd = $('#containerdatacmd');
@@ -357,7 +337,28 @@
                 $('#editSidebar').addClass('translate-x-full');
             }
         });
-
+        const todaydate = new Date().toJSON().slice(0, 10);
+        $(".addnewsingup").on('click', function () {
+            cpt++
+            $('#listesingupadd').append(`
+                 <div id="new_${cpt}" class="w-full flex items-center mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md col-span-3">
+                                    <div class="w-2/5 pr-2"><input id="nom_${cpt}" class="w-full border border-gray-300
+                                    text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block
+                                    p-2.5" placeholder="Nom"/></div>
+                                    <div class="w-1/5"><input id="prenom_${cpt}" class="w-full border border-gray-300
+                                    text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block
+                                    p-2.5" placeholder="Prenom"/></div>
+                                    <div class="w-1/5 pr-2 pl-2"><input id="poste_${cpt}" class="w-full border border-gray-300
+                                    text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block
+                                    p-2.5" placeholder="Poste"/></div>
+                                    <div class="w-1/5 defaultboldvaldark">${todaydate}</div>
+                                    <button class="bg-red-500 text-white p-2 rounded delete-elem"
+                                            data-identifiant="{{ elem.id }}">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                 `)
+        })
 
 
         $('#closeSidebar').click(function () {
@@ -386,10 +387,10 @@
         //listeauth = { { listeauth }};
 
 
-
         $(document).ready(function () {
 
             $('.editButton').on('click', function () {
+
                 identifiant = $(this).data('identifiant');
                 editselectedProducts = [];
                 $('#editselectedProducts').html("");
@@ -406,15 +407,47 @@
                 $.ajax(settings).done(function (response) {
                     let responsedata = response;
 
-                        $('#edit_titre').val(responsedata['titre']);
-                        $('#edit_nbrplace').val(responsedata['nbrplace']);
-                        $('#edit_duree').val(responsedata['duree']);
-                        $('#edit_tarif').val(responsedata['tarif']);
-                        $('#edit_datedebut').val(responsedata['datedebut']);
+                    $('#titre').html(responsedata['titre']);
+                    $('#duree').html(responsedata['nbrplace']);
+                    $('#nbrplace').html(responsedata['duree']);
+                    $('#tarif').html(formatNumber(responsedata['tarif']) + " DA Par personne");
+                    $('#datedebut').html(responsedata['datedebut']);
+                    $('#datefin').html(responsedata['datefin']);
+
+                    console.log(responsedata)
+                    $('#listesingupadd').html('');
+
+                    for (ind = 0; ind < responsedata['groups'].length; ind++) {
+                        data1 = responsedata['groups'][ind]
+                        data2list = data1['Equipeline']
+                        console.log(data2list)
+                        idelem = "listdist_" + data1['distributeur']
+                        listeinfo = ""
+
+                        for (ind2 = 0; ind2 < data2list.length; ind2++) {
+                            data2 = data2list[ind2]
+                            listeinfo = listeinfo + `
+                                <div id="signupelem_"${data2['id']} class="w-full flex items-center mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm
+                                    border-gray-300 rounded-md col-span-3">
+                                    <div class="w-2/5">` + data2['nom'] + `</div>
+                                    <div class="w-1/5">` + data2['prenom'] + `</div>
+                                    <div class="w-1/5">` + data2['poste'] + `</div>
+                                    <div class="w-1/5">` + data2['dateajout'] + `</div>
+                                    <button class="bg-red-500 text-white p-2 rounded delete-elem"
+                                            data-identifiant="{{ elem.id }}">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            `
+
+                        }
+
+                        $('#listesingupadd').append(listeinfo)
+
+                    }
 
 
-
-                        $('#editSidebar').toggleClass('translate-x-full');
+                    $('#editSidebar').toggleClass('translate-x-full');
                 });
 
 
@@ -426,126 +459,73 @@
         $('.viewButton').on('click', function () {
 
             identifiant = $(this).data('identifiant');
-                editselectedProducts = [];
-                $('#editselectedProducts').html("");
+            editselectedProducts = [];
+            $('#editselectedProducts').html("");
 
-                let settings = {
-                    url: `/api/formation/${identifiant}`,
-                    method: "GET",
-                    timeout: 0,
-                    headers: {
-                        "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
-                    },
-                };
-
-                $.ajax(settings).done(function (response) {
-                    let responsedata = response;
-
-                        $('#view_titre').html(responsedata['titre']);
-                        $('#view_duree').html(responsedata['nbrplace']);
-                        $('#view_nbrplace').html(responsedata['duree']);
-                        $('#view_tarif').html(formatNumber(responsedata['tarif']) + " DA Par personne");
-                        $('#view_datedebut').html(responsedata['datedebut']);
-                        $('#view_datefin').html(responsedata['datefin']);
-
-
-
-
-
-
-                        $('#viewSidebar').toggleClass('translate-x-full');
-                });
-
-
-
-        });
-
-
-        $('.popupButton').click(function () {
-            identifiant = $(this).data('identifiant');
-
-            $listeblprod = $('#listeblprod');
-            $listeblprod.html('');
             let settings = {
-                url: `/api/commandedetail/${identifiant}`,
+                url: `/api/formation/${identifiant}`,
                 method: "GET",
                 timeout: 0,
                 headers: {
                     "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
                 },
             };
-            cpt = 0;
+
             $.ajax(settings).done(function (response) {
                 let responsedata = response;
-                for (i = 0; i < responsedata['commandesLines'].length; i++) {
-                    itemprod = responsedata['commandesLines'][i];
-                    nbrrestant = itemprod['quantite'] - itemprod['total_quantite'];
-                    $listeblprod.append(`
-                            <div class="grid grid-cols-8 bg-gray-50 p-2 rounded-lg mb-2 product-line backslateslite"
-                                data-unitprice="${itemprod['prixunitaire']}" data-idprodelem="${itemprod['produit']['id']}">
-                                <div class="flex items-center col-span-2">
-                                    <img src="${itemprod['produit']['image']}" alt="product" class="h-12 w-12 rounded-lg mr-4">
-                                    <div>
-                                        <h3 class="font-bold text-blue-600 productName">${itemprod['produit']['designation']}</h3>
-                                        <p class="text-sm productRef">${itemprod['produit']['reference']}</p>
+
+                $('#view_titre').html(responsedata['titre']);
+                $('#view_duree').html(responsedata['nbrplace']);
+                $('#view_nbrplace').html(responsedata['duree']);
+                $('#view_tarif').html(formatNumber(responsedata['tarif']) + " DA Par personne");
+                $('#view_datedebut').html(responsedata['datedebut']);
+                $('#view_datefin').html(responsedata['datefin']);
+
+                console.log(responsedata)
+                $('#listesingup').html('');
+
+                for (ind = 0; ind < responsedata['groups'].length; ind++) {
+                    data1 = responsedata['groups'][ind]
+                    data2list = data1['Equipeline']
+                    console.log(data2list)
+                    idelem = "listdist_" + data1['distributeur']
+                    listeinfo = ""
+
+                    for (ind2 = 0; ind2 < data2list.length; ind2++) {
+                        data2 = data2list[ind2]
+                        listeinfo = listeinfo + `
+                                <div class="w-full flex mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md col-span-3 h-10">
+                                    <div class="w-2/5">` + data2['nom'] + `</div>
+                                    <div class="w-1/5">` + data2['prenom'] + `</div>
+                                    <div class="w-1/5">` + data2['poste'] + `</div>
+                                    <div class="w-1/5">` + data2['dateajout'] + `</div>
+                                </div>
+                            `
+
+                    }
+
+                    $('#listesingup').append(`
+                                <div class="flex items-center justify-between p-2 backslateslite flex-none mb-2">
+                                    <div class="w-1/4 flex flex-col">
+                                        <label>Distributeur: ` + data1['distributeurname'] + `</label>
+                                        <label>Place subsc: ` + data1['nbrelem'] + `</label>
+                                        <label>Prix par per: ` + data1['prixtotal'] + `</label>
+                                    </div>
+                                    <div class="flex w-3/4 flex flex-col">
+                                        ` + listeinfo + `
                                     </div>
                                 </div>
-                                <div class="col-span-1">
-                                    <h3 class="font-bold productName">${itemprod['produit']['type']['designation']}</h3>
-                                    <p class="text-sm productRef">${itemprod['produit']['mesure']['designation']}</p>
-                                </div>
-                                <div class="col-span-1">${itemprod['produit']['couleur']['designation']}</div>
-                                <div class="col-span-1 prixunitaire">${formatNumber(itemprod['prixunitaire'])} DA</div>
-                                <div class="col-span-1 pr-4 nbrrestant">${nbrrestant}</div>
-                                <div class="col-span-1 text-right pr-4">
-                                    <input type="number" data-idelem="${cpt}" class="inputblquantity review-quantity bg-gray-50 border border-gray-300
-                                        text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block
-                                        w-full p-2.5" value="0" min="0" max="${nbrrestant}" />
-                                </div>
-                                <div class="col-span-1 text-right pr-4 totalbl" id="totalbl_${cpt}">0 DA</div>
-                            </div>
-                        `);
-                    cpt++;
+                            `)
+
                 }
 
-                // Function to calculate the totals
-                function calculateTotals() {
-                    let totalHT = 0;
 
-                    // Iterate through each product line
-                    $('.product-line').each(function () {
-                        const quantity = $(this).find('.review-quantity').val();
-                        const unitPrice = parseFloat($(this).data('unitprice'));
-
-                        // Calculate the total for the line
-                        const totalLine = quantity * unitPrice;
-
-                        // Update the total for the line
-                        $(this).find('.totalbl').text(formatNumber(totalLine) + ' DA');
-
-                        // Add to the total HT
-                        totalHT += totalLine;
-                    });
-
-                    // Update total HT
-                    $('#totalhtbl').text(formatNumber(totalHT) + ' DA');
-
-                    // Calculate and update total with tax
-                    const totalTaxe = totalHT + totalHT * 0.19;
-                    $('#totaltaxebl').text(formatNumber(totalTaxe) + ' DA');
-                }
-
-                // Add event listener for quantity input change
-                $('.inputblquantity').on('input', function () {
-                    calculateTotals();
-                });
-
-                // Initial calculation on popup load
-                calculateTotals();
-
-                $('#addbl').fadeIn();
+                $('#viewSidebar').toggleClass('translate-x-full');
             });
+
+
         });
+
 
         // Close the popup
         $('#closePopup').click(function () {
@@ -559,201 +539,6 @@
             }
         });
 
-
-        $('#confirmOrder').on('click', function () {
-            listteproducts = [];
-            for (i = 0; i < selectedProducts.length; i++) {
-                listteproducts.push({
-                    "produit": selectedProducts[i]['id'],
-                    "quantite": parseInt(selectedProducts[i]['quantity'])
-                })
-            }
-
-            var settings = {
-                "url": "/api/commande/",
-                "method": "POST",
-                "timeout": 0,
-                "headers": {
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),  // Assuming you have CSRF token in your template context
-                },
-                "data": JSON.stringify({
-                    "distributeur": $('#distfield').val(),
-                    "etat": "Reception",
-                    "total": 0,
-                    "commandesLines": listteproducts
-                }),
-            };
-
-            $.ajax(settings)
-                .done(function (response) {
-                    console.log(response);
-                })
-                .fail(function (jqXHR, textStatus, errorThrown) {
-                    // Log the entire jqXHR object to see all details
-                    console.log('jqXHR:', jqXHR);
-
-                    // Log the status text
-                    console.log('Status:', textStatus);
-
-                    // Log the error thrown
-                    console.log('Error Thrown:', errorThrown);
-
-                    // Log the response text, which might contain detailed error messages
-                    console.log('Response Text:', jqXHR.responseText);
-
-                    // Optionally, parse the responseText as JSON if it's in JSON format
-                    try {
-                        var responseJSON = JSON.parse(jqXHR.responseText);
-                        console.log('Response JSON:', responseJSON);
-                    } catch (e) {
-                        console.error('Failed to parse response as JSON:', e);
-                    }
-
-                });
-
-        });
-
-
-        $('#EditForm').on('click', function () {
-
-            var settings = {
-                "url": "/api/formation/" + identifiant + '/',
-                "method": "put",
-                "timeout": 0,
-                "headers": {
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),  // Assuming you have CSRF token in your template context
-                },
-                "data": JSON.stringify({
-                    "titre": $('#edit_titre').val(),
-                    "nbrplace": $('#edit_nbrplace').val(),
-                    "duree": $('#edit_duree').val(),
-                    "tarif": $('#edit_tarif').val(),
-                    "datedebut": $('#edit_datedebut').val(),
-                }),
-            };
-
-            $.ajax(settings)
-                .done(function (response) {
-                    console.log(response);
-
-
-                    window.location.href = "/formation/";
-                })
-                .fail(function (jqXHR, textStatus, errorThrown) {
-                    // Log the entire jqXHR object to see all details
-                    console.log('jqXHR:', jqXHR);
-
-                    // Log the status text
-                    console.log('Status:', textStatus);
-
-                    // Log the error thrown
-                    console.log('Error Thrown:', errorThrown);
-
-                    // Log the response text, which might contain detailed error messages
-                    console.log('Response Text:', jqXHR.responseText);
-
-                    // Optionally, parse the responseText as JSON if it's in JSON format
-                    try {
-                        var responseJSON = JSON.parse(jqXHR.responseText);
-                        console.log('Response JSON:', responseJSON);
-                    } catch (e) {
-                        console.error('Failed to parse response as JSON:', e);
-                    }
-
-                });
-
-        });
-
-
-        $('#validatebl').on('click', function (e) {
-            e.preventDefault();
-            liste_prodbl = [];
-            $('#listeblprod .product-line').each(function (index) {
-                var product_idbl = parseInt($(this).data('idprodelem'));
-                var quantity = parseInt($(this).find('.inputblquantity').val());
-                var nbrrestant = parseInt($(this).find('.nbrrestant').html());
-
-                if (quantity > nbrrestant) {
-                    alert("Vous ne pouvez pas depasser la quantité réstante.")
-                } else {
-                    liste_prodbl.push({
-                        "produit": product_idbl,
-                        "quantite": quantity
-                    })
-                }
-            });
-            if (!quantity > nbrrestant) {
-                let liste_prodbl_json = JSON.stringify(liste_prodbl);
-
-                var form = new FormData();
-
-                var fcFile = $("#file-upload")[0].files[0];
-                var blFile = $("#file-upload2")[0].files[0];
-
-                if (fcFile) {
-                    form.append("fc_file", fcFile);
-                }
-                if (blFile) {
-                    form.append("bl_file", blFile);
-                }
-
-                $facture_id = $('#facture_id');
-
-                if ($facture_id.val() === "") facture = null;
-                else facture = $facture_id.val();
-
-                // Additional data
-                form.append("facture", facture);
-                form.append("BonLivraison", liste_prodbl_json);
-                form.append("commandes", identifiant);
-
-
-                var settings = {
-                    "url": "/api/blivraison/",
-                    "method": "POST",
-                    "timeout": 0,
-                    "headers": {
-                        "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),
-                    },
-                    "processData": false,
-                    "contentType": false,
-                    "data": form,
-                };
-
-                $.ajax(settings)
-                    .done(function (response) {
-
-                        window.location.href = "/commande/";
-                        console.log(response);
-                    })
-                    .fail(function (jqXHR, textStatus, errorThrown) {
-                        // Log the entire jqXHR object to see all details
-                        console.log('jqXHR:', jqXHR);
-
-                        // Log the status text
-                        console.log('Status:', textStatus);
-
-                        // Log the error thrown
-                        console.log('Error Thrown:', errorThrown);
-
-                        // Log the response text, which might contain detailed error messages
-                        console.log('Response Text:', jqXHR.responseText);
-
-                        // Optionally, parse the responseText as JSON if it's in JSON format
-                        try {
-                            var responseJSON = JSON.parse(jqXHR.responseText);
-                            console.log('Response JSON:', responseJSON);
-                        } catch (e) {
-                            console.error('Failed to parse response as JSON:', e);
-                        }
-
-                    });
-            }
-
-
-        });
 
         let currentDeleteId = null;
 
@@ -793,8 +578,6 @@
 
             }
         });
-
-
 
 
     </script>

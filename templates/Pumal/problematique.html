@@ -18,7 +18,8 @@
                     <div class="overflow-y-auto containerdef2 px-4">
                         <div class="mb-4">
                             <div>
-                                <select id="type" name="type" class="mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                <select id="type" name="type"
+                                        class="mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                     <option value="Reclamation">Reclamation</option>
                                     <option value="Intervention">Intervention</option>
                                 </select>
@@ -28,8 +29,9 @@
                                        class="mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                             </div>
                             <div>
-                                <textarea id="message" rows="8" class="mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                placeholder="Votre message d'erreur"></textarea>
+                                <textarea id="message" rows="8"
+                                          class="mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                          placeholder="Votre message d'erreur"></textarea>
                             </div>
 
                         </div>
@@ -57,7 +59,8 @@
                     <div class="overflow-y-auto containerdef2 px-4">
                         <div class="mb-4">
                             <div>
-                                <select id="edittype" name="edittype" class="mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                <select id="edittype" name="edittype"
+                                        class="mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                     <option value="Reclamation">Reclamation</option>
                                     <option value="Intervention">Intervention</option>
                                 </select>
@@ -67,8 +70,9 @@
                                        class="mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                             </div>
                             <div>
-                                <textarea id="editmessage" rows="8" class="mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                placeholder="Votre message d'erreur"></textarea>
+                                <textarea id="editmessage" rows="8"
+                                          class="mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                          placeholder="Votre message d'erreur"></textarea>
                             </div>
 
                         </div>
@@ -96,18 +100,20 @@
             <div class="p-4 overflow-y-auto">
                 <div class="overflow-y-auto containerdef2">
                     <div class="mb-4">
-                            <div id="viewtype" name="viewtype" class="backslate mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-
-                            </div>
-                            <div type="text" id="viewintitule"
-                                     class="backslate mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-
-                                </div>
-                            <div id="viewmessage" rows="8" class="backslate mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                placeholder="Votre message d'erreur">
-                            </div>
+                        <div id="viewtype" name="viewtype"
+                             class="backslate mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
 
                         </div>
+                        <div type="text" id="viewintitule"
+                             class="backslate mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+
+                        </div>
+                        <div id="viewmessage" rows="8"
+                             class="backslate mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                             placeholder="Votre message d'erreur">
+                        </div>
+
+                    </div>
                 </div>
 
 
@@ -243,6 +249,30 @@
 
 
         <script>
+
+            {% if 7 not in listmodules %}
+                $("#userslistlink").addClass('hidden');
+            {% endif %}
+
+            {% if 14 not in listmodules %}
+                $("#prodlistlink").addClass('hidden');
+            {% endif %}
+
+            {% if 9 not in listmodules %}
+                $("#distlistlink").addClass('hidden');
+            {% endif %}
+
+            {% if 17 not in listmodules %}
+                $("#cmdlistlink").addClass('hidden');
+            {% endif %}
+
+            {% if 21 not in listmodules %}
+                $("#enclistlink").addClass('hidden');
+            {% endif %}
+
+            {% if 26 not in listmodules %}
+                $("#formslistlink").addClass('hidden');
+            {% endif %}
             edit_elem = 0;
 
             $reference = $('#reference');
@@ -281,10 +311,8 @@
                     $('#editintitule').val(responsedata['intitule'])
                     $('#editmessage').val(responsedata['message'])
 
-                    
+
                     $('#editSidebar').toggleClass('translate-x-full');
-
-
 
 
                 });
@@ -312,16 +340,15 @@
                     $('#viewintitule').html(responsedata['intitule'])
                     $('#viewmessage').html(responsedata['message'])
                     $('#editdiv').html('')
-                    if(responsedata['etat'] === "Reception"){
+                    if (responsedata['etat'] === "Reception") {
                         $('#editdiv').append(`<button onclick="callstate(${identifiantview}, 'En cours')" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
                             hover:bg-blue-900 hover:border-slate-400 rounded-md">Lancer le traitement
                         </button>`)
-                    }else if(responsedata['etat'] === "En cours"){
+                    } else if (responsedata['etat'] === "En cours") {
                         $('#editdiv').append(`<button onclick="callstate(${identifiantview}, 'Validation')" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
                             hover:bg-blue-900 hover:border-slate-400 rounded-md">Valider
                         </button>`)
-                    }
-                    else{
+                    } else {
                         $('#editdiv').html(html)
                     }
 
@@ -376,36 +403,36 @@
                     $('#filterModal').addClass('hidden');
                 }
             });
-            
-            function callstate(id, etat){
+
+            function callstate(id, etat) {
                 alert("je suis la")
                 dataview = JSON.stringify({
-                      "type": $('#viewtype').html(),
-                      "profile": 1,
-                      "intitule": $('#viewintitule').html(),
-                      "message": $('#viewmessage').html(),
-                      "etat": etat
+                    "type": $('#viewtype').html(),
+                    "profile": 1,
+                    "intitule": $('#viewintitule').html(),
+                    "message": $('#viewmessage').html(),
+                    "etat": etat
                 });
 
                 var settings = {
-                    "url": "/api/problematique/"+id+"/",
+                    "url": "/api/problematique/" + id + "/",
                     "method": "PUT",
                     "timeout": 0,
                     "headers": {
                         "Content-Type": "application/json",
-                        "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),  
+                        "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),
                     },
                     "data": JSON.stringify({
-                      "type": $('#viewtype').html,
-                      "intitule": $('#viewintitule').html,
-                      "message": $('#viewmessage').html,
-                      "etat": JSON.stringify({
-                      "type": $('#viewtype').html(),
-                      "profile": 1,
-                      "intitule": $('#viewintitule').html(),
-                      "message": $('#viewmessage').html(),
-                      "etat": etat
-                })
+                        "type": $('#viewtype').html,
+                        "intitule": $('#viewintitule').html,
+                        "message": $('#viewmessage').html,
+                        "etat": JSON.stringify({
+                            "type": $('#viewtype').html(),
+                            "profile": 1,
+                            "intitule": $('#viewintitule').html(),
+                            "message": $('#viewmessage').html(),
+                            "etat": etat
+                        })
                     })
                 };
 
@@ -437,19 +464,18 @@
                         }
 
                     });
-                
-            }
 
+            }
 
 
             $('#subprob').on('click', function (e) {
                 e.preventDefault(); // Prevent the default form submission
                 data = JSON.stringify({
-                      "type": $('#type').val(),
-                      "profile": 1,
-                      "intitule": $('#intitule').val(),
-                      "message": $('#message').val(),
-                      "etat": "En cours"
+                    "type": $('#type').val(),
+                    "profile": 1,
+                    "intitule": $('#intitule').val(),
+                    "message": $('#message').val(),
+                    "etat": "En cours"
                 });
 
 
@@ -499,21 +525,21 @@
 
 
                 data = JSON.stringify({
-                      "type": $('#edittype').val(),
-                      "profile": 1,
-                      "intitule": $('#editintitule').val(),
-                      "message": $('#editmessage').val(),
-                      "etat": "En cours"
+                    "type": $('#edittype').val(),
+                    "profile": 1,
+                    "intitule": $('#editintitule').val(),
+                    "message": $('#editmessage').val(),
+                    "etat": "En cours"
                 });
 
 
                 var settings = {
-                    "url": "/api/problematique/"+identifiant+"/",
+                    "url": "/api/problematique/" + identifiant + "/",
                     "method": "PUT",
                     "timeout": 0,
                     "headers": {
                         "Content-Type": "application/json",
-                        "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),  
+                        "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),
                     },
                     "data": data
                 };
@@ -521,7 +547,7 @@
 
                 $.ajax(settings)
                     .done(function (response) {
-                alert("ici2")
+                        alert("ici2")
                         console.log(response);
                         window.location.href = "/formation/problematique";
                     })

@@ -200,7 +200,7 @@
 
         <div class="w-full h-full flex flex-col py-2 overflow-y-auto text-bold">
 
-            <div class="flex justify-between items-center pt-4 mb-4" style="margin-top: -8px" >
+            <div class="flex justify-between items-center pt-4 mb-4" style="margin-top: -8px">
                 <div class="flex gap-2">
                     <div>
                         <a href="{% url 'encaissement' %}"
@@ -222,7 +222,6 @@
                 </div>
             </div>
             <hr/>
-
 
 
             <div class="pt-4">
@@ -423,6 +422,31 @@
         </div>
 
         <script>
+
+
+            {% if 7 not in listmodules %}
+                $("#userslistlink").addClass('hidden');
+            {% endif %}
+
+            {% if 14 not in listmodules %}
+                $("#prodlistlink").addClass('hidden');
+            {% endif %}
+
+            {% if 9 not in listmodules %}
+                $("#distlistlink").addClass('hidden');
+            {% endif %}
+
+            {% if 17 not in listmodules %}
+                $("#cmdlistlink").addClass('hidden');
+            {% endif %}
+
+            {% if 21 not in listmodules %}
+                $("#enclistlink").addClass('hidden');
+            {% endif %}
+
+            {% if 26 not in listmodules %}
+                $("#formslistlink").addClass('hidden');
+            {% endif %}
 
             let payeurdetailid = 0;
 

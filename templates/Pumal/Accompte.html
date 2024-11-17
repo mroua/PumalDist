@@ -148,7 +148,7 @@
                     </button>
                 </div>
             </div>
-        <hr/>
+            <hr/>
 
             <div class="pt-4">
                 <div class="grid grid-cols-9 text-gray-600 font-semibold px-4">
@@ -166,7 +166,8 @@
                 {% for elem in listeaccompte %}
                     <div class="grid grid-cols-9 p-2 backslateslite flex-none mb-2">
                         <div class="col-span-2">
-                            <p class="truncate">{{ elem.payeur.distributeur.designation }} ({{ elem.payeur.designation }})</p>
+                            <p class="truncate">{{ elem.payeur.distributeur.designation }}
+                                ({{ elem.payeur.designation }})</p>
                         </div>
                         <div class="text-right">
                             <p>{{ elem.montant_init|floate_redefined }} DA</p>
@@ -197,14 +198,16 @@
                         <div class="flex justify-end gap-2">
                             {% if elem.validation %}
                                 <button id="editButton" data-identifiant="{{ elem.id }}"
-                                        class="editButton bg-blue-500 text-white p-2 rounded"><i class="fas fa-search"></i>
+                                        class="editButton bg-blue-500 text-white p-2 rounded"><i
+                                        class="fas fa-search"></i>
                                 </button>
                             {% else %}
                                 <button id="editButton" data-identifiant="{{ elem.id }}"
                                         class="editButton bg-blue-500 text-white p-2 rounded"><i
                                         class="fas fa-pencil-alt"></i></button>
                             {% endif %}
-                            <button class="bg-red-500 text-white p-2 rounded delete-btn" data-identifiant="{{ elem.id }}"><i
+                            <button class="bg-red-500 text-white p-2 rounded delete-btn"
+                                    data-identifiant="{{ elem.id }}"><i
                                     class="fas fa-trash"></i></button>
                         </div>
                     </div>
@@ -213,7 +216,6 @@
 
 
         </div>
-
 
 
         <!-- Filter Modal -->
@@ -233,7 +235,8 @@
                         <div class="flex-grow overflow-y-auto mb-4">
                             <div class="grid grid-cols-2 gap-3">
                                 <div class="mb-3">
-                                    <label for="distributeur" class="block mb-1 pl-1 text-sm font-medium ">Distribupteur</label>
+                                    <label for="distributeur"
+                                           class="block mb-1 pl-1 text-sm font-medium ">Distribupteur</label>
                                     <select id="distributeur" class="border border-gray-300  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
                                         block w-full p-2.5">
                                         {% for elem in listedist %}
@@ -278,21 +281,24 @@
                                            class="flex justify-between p-3 w-full bg-white border border-gray-200 rounded-lg text-sm focus:border-blue-500
                                            focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
                                         <span class="text-sm text-gray-500 dark:text-neutral-400">Cheque</span>
-                                        <input type="radio" name="options" value="Cheque" checked id="hs-radio-on-right">
+                                        <input type="radio" name="options" value="Cheque" checked
+                                               id="hs-radio-on-right">
                                     </label>
 
                                     <label for="hs-radio-on-right-checked1"
                                            class="flex justify-between p-3 w-full bg-white border border-gray-200 rounded-lg text-sm
                                            focus:border-blue-500 focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
                                         <span class="text-sm text-gray-500 dark:text-neutral-400 p">Virement</span>
-                                        <input type="radio" name="options" value="Virement" id="hs-radio-on-right-checked1">
+                                        <input type="radio" name="options" value="Virement"
+                                               id="hs-radio-on-right-checked1">
                                     </label>
 
                                     <label for="hs-radio-on-right-checked2"
                                            class="flex justify-between p-3 w-full bg-white border border-gray-200 rounded-lg text-sm focus:border-blue-500
                                            focus:ring-blue-500 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400">
                                         <span class="text-sm text-gray-500 dark:text-neutral-400">Espece</span>
-                                        <input type="radio" name="options" value="Espece" id="hs-radio-on-right-checked2">
+                                        <input type="radio" name="options" value="Espece"
+                                               id="hs-radio-on-right-checked2">
                                     </label>
                                 </div>
                                 <div>
@@ -347,6 +353,32 @@
         <script>
 
             let payeurdetailid = 0;
+
+            {% if 7 not in listmodules %}
+                $("#userslistlink").addClass('hidden');
+            {% endif %}
+
+            {% if 14 not in listmodules %}
+                $("#prodlistlink").addClass('hidden');
+            {% endif %}
+
+            {% if 9 not in listmodules %}
+                $("#distlistlink").addClass('hidden');
+            {% endif %}
+
+            {% if 17 not in listmodules %}
+                $("#cmdlistlink").addClass('hidden');
+            {% endif %}
+
+            {% if 21 not in listmodules %}
+                $("#enclistlink").addClass('hidden');
+            {% endif %}
+
+            {% if 26 not in listmodules %}
+                $("#formslistlink").addClass('hidden');
+            {% endif %}
+
+
 
             function formatNumber(num) {
                 return new Intl.NumberFormat('fr-FR', {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(num);

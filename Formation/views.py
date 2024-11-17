@@ -29,19 +29,32 @@ def FormView(request):
     listmodules  = list(
         set(request.user.user_permissions.values_list('content_type_id', flat=True))
     )
-    listeauth = list(
-        set(
-            Permission.objects.filter(user=request.user, content_type = 24).values_list('id', flat=True)
+
+    if(26 in listmodules):
+        listeauth = list(
+            set(
+                Permission.objects.filter(user=request.user, content_type = 24).values_list('id', flat=True)
+            )
         )
-    )
 
-    formations = Formation.objects.all()
+        formations = Formation.objects.all()
 
-    return render(request, "Pumal/Formations.html", {
-        "formations": formations,
-        "listeauth": listeauth,
-        "listmodules": listmodules,
-    })
+        if(request.user.type == "Distributeur"):
+            return render(request, "Dist/Formations.html", {
+                "formations": formations,
+                "listeauth": listeauth,
+                "listmodules": listmodules,
+            })
+        else:
+            return render(request, "Pumal/Formations.html", {
+                "formations": formations,
+                "listeauth": listeauth,
+                "listmodules": listmodules,
+            })
+
+    else:
+        return render(request,"access.html", {"listmodules": listmodules})
+
 
 
 @login_required
@@ -49,16 +62,21 @@ def ProbView(request):
     listmodules  = list(
         set(request.user.user_permissions.values_list('content_type_id', flat=True))
     )
-    listeauth = list(
-        set(
-            Permission.objects.filter(user=request.user, content_type = 25).values_list('id', flat=True)
+
+    if (26 in listmodules):
+        listeauth = list(
+            set(
+                Permission.objects.filter(user=request.user, content_type = 25).values_list('id', flat=True)
+            )
         )
-    )
 
-    problematique = Problematique.objects.filter(etat__in=['Reception', 'En cours', 'Validation'])
+        problematique = Problematique.objects.filter(etat__in=['Reception', 'En cours', 'Validation'])
 
-    return render(request, "Pumal/problematique.html", {
-        "problematique": problematique,
-        "listeauth": listeauth,
-        "listmodules": listmodules,
-    })
+        return render(request, "Pumal/problematique.html", {
+            "problematique": problematique,
+            "listeauth": listeauth,
+            "listmodules": listmodules,
+        })
+    else:
+        return render(request,"access.html", {"listmodules": listmodules})
+

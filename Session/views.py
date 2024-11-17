@@ -64,32 +64,35 @@ def Utilisateurs(request):
     listmodules  = list(
         set(request.user.user_permissions.values_list('content_type_id', flat=True))
     )
-    listeauth = list(
-        set(
-            Permission.objects.filter(user=request.user, content_type = 7).values_list('id', flat=True)
+    if(7 in listmodules):
+        listeauth = list(
+            set(
+                Permission.objects.filter(user=request.user, content_type = 7).values_list('id', flat=True)
+            )
         )
-    )
 
-    liste_users = CustomUser.objects.filter(
-        Q(type="Agent")|
-        Q(type='Admin')
-    ).order_by('id').prefetch_related('user_permissions__content_type')
+        liste_users = CustomUser.objects.filter(
+            Q(type="Agent")|
+            Q(type='Admin')
+        ).order_by('id').prefetch_related('user_permissions__content_type')
 
-    for user in liste_users:
-        user.permission_ids = ",".join(map(str, user.user_permissions.values_list('id', flat=True)))
+        for user in liste_users:
+            user.permission_ids = ",".join(map(str, user.user_permissions.values_list('id', flat=True)))
 
 
-    users_select = CustomUser.objects.filter(
-        Q(type="Agent", is_active=True)|
-        Q(type='Admin', is_active=True)
-    ).order_by('id')
-    #return render(request, "Utilisateur.html", {'liste_users': liste_users,'users_select': users_select})
-    return render(request, "Pumal/Utilisateur.html", {
-        'liste_users': liste_users,
-        'users_select': users_select,
-        'listeauth': listeauth,
-        "listmodules": listmodules,
-    })
+        users_select = CustomUser.objects.filter(
+            Q(type="Agent", is_active=True)|
+            Q(type='Admin', is_active=True)
+        ).order_by('id')
+        #return render(request, "Utilisateur.html", {'liste_users': liste_users,'users_select': users_select})
+        return render(request, "Pumal/Utilisateur.html", {
+            'liste_users': liste_users,
+            'users_select': users_select,
+            'listeauth': listeauth,
+            "listmodules": listmodules,
+        })
+    else:
+        return render(request,"access.html", {"listmodules": listmodules})
 
 
 @login_required

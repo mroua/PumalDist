@@ -42,6 +42,13 @@ class Payeur(models.Model):
     nis = models.CharField(max_length=20, null=True, blank=True)
     art = models.CharField(max_length=20, null=True, blank=True)
     rc = models.CharField(max_length=20, null=True, blank=True)
+
+
+    nif_file = models.FileField(upload_to="PayeurData", blank=True, null=True)
+    nis_file = models.FileField(upload_to="PayeurData", blank=True, null=True)
+    art_file = models.FileField(upload_to="PayeurData", blank=True, null=True)
+    rc_file = models.FileField(upload_to="PayeurData", blank=True, null=True)
+
     date_ajout = models.DateTimeField(auto_now=True)
     draft = models.BooleanField(default=False)
 

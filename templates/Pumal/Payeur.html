@@ -37,7 +37,8 @@
                                 <select id="ville" name="ville"
                                         class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                     {% for ville in ville_list %}
-                                        <option data-region="{{ ville.region }}" value="{{ ville.id }}">{{ ville.designation }}</option>
+                                        <option data-region="{{ ville.region }}"
+                                                value="{{ ville.id }}">{{ ville.designation }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -49,21 +50,78 @@
                                 <input type="text" id="telephone" name="telephone" placeholder="Téléphone"
                                        class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                             </div>
-                            <div>
+
+
+                            <div class="relative">
+                                <!-- Text Input -->
                                 <input type="text" id="nif" name="nif" placeholder="NIF"
-                                       class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                       class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md pr-10">
+
+                                <!-- File Input Icon -->
+                                <input type="file" id="niffile" class="hidden" onchange="toggleFileIconColoradd()">
+
+                                <!-- File Icon -->
+                                <label for="niffile" id="nif_icon" class="mt-1 absolute inset-y-0 right-0 flex items-center
+                                    px-3 cursor-pointer text-gray-400 bg-gray-300 rounded-r-md">
+
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M4 3a2 2 0 012-2h6l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2V3z"/>
+                                    </svg>
+                                </label>
                             </div>
-                            <div>
+
+                            <div class="relative">
+                                <!-- Text Input -->
                                 <input type="text" id="nis" name="nis" placeholder="NIS"
-                                       class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                       class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md pr-10">
+
+                                <!-- File Input Icon -->
+                                <input type="file" id="nisfile" class="hidden" onchange="toggleFileIconColoradd2()">
+
+                                <!-- File Icon -->
+                                <label for="nisfile" id="nis_icon" class="mt-1 absolute inset-y-0 right-0 flex items-center
+                                    px-3 cursor-pointer text-gray-400 bg-gray-300 rounded-r-md">
+
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M4 3a2 2 0 012-2h6l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2V3z"/>
+                                    </svg>
+                                </label>
                             </div>
-                            <div>
+
+                            <div class="relative">
+                                <!-- Text Input -->
                                 <input type="text" id="art" name="art" placeholder="ART"
-                                       class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                       class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md pr-10">
+
+                                <!-- File Input Icon -->
+                                <input type="file" id="artfile" class="hidden" onchange="toggleFileIconColoradd3()">
+
+                                <!-- File Icon -->
+                                <label for="artfile" id="art_icon" class="mt-1 absolute inset-y-0 right-0 flex items-center
+                                    px-3 cursor-pointer text-gray-400 bg-gray-300 rounded-r-md">
+
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M4 3a2 2 0 012-2h6l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2V3z"/>
+                                    </svg>
+                                </label>
                             </div>
-                            <div>
+
+                            <div class="relative">
+                                <!-- Text Input -->
                                 <input type="text" id="rc" name="rc" placeholder="RC"
-                                       class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                       class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md pr-10">
+
+                                <!-- File Input Icon -->
+                                <input type="file" id="rcfile" class="hidden" onchange="toggleFileIconColoradd4()">
+
+                                <!-- File Icon -->
+                                <label for="rcfile" id="rc_icon" class="mt-1 absolute inset-y-0 right-0 flex items-center
+                                    px-3 cursor-pointer text-gray-400 bg-gray-300 rounded-r-md">
+
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M4 3a2 2 0 012-2h6l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2V3z"/>
+                                    </svg>
+                                </label>
                             </div>
                         </div>
                     </div>
@@ -104,7 +162,8 @@
                                        class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                             </div>
                             <div>
-                                <input type="text" id="edit_designation" name="edit_designation" placeholder="edit_Désignation"
+                                <input type="text" id="edit_designation" name="edit_designation"
+                                       placeholder="edit_Désignation"
                                        class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                             </div>
                             <div>
@@ -115,7 +174,8 @@
                                 <select id="edit_ville" name="edit_ville"
                                         class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                     {% for ville in ville_list %}
-                                        <option data-region="{{ ville.region }}" value="{{ ville.id }}">{{ ville.designation }}</option>
+                                        <option data-region="{{ ville.region }}"
+                                                value="{{ ville.id }}">{{ ville.designation }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -123,22 +183,77 @@
                                 <input type="text" id="edit_adresse" name="edit_adresse" placeholder="Adresse"
                                        class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                             </div>
-                            <div>
+
+
+                            <div class="relative">
+                                <!-- Text Input -->
                                 <input type="text" id="edit_nif" name="edit_nif" placeholder="NIF"
-                                       class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                       class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md pr-10">
+
+                                <!-- File Input Icon -->
+                                <input type="file" id="edit_niffile" class="hidden" onchange="toggleFileIconColor()">
+
+                                <!-- File Icon -->
+                                <label for="edit_niffile" id="editnif_icon" class="mt-1 absolute inset-y-0 right-0 flex items-center
+                                    px-3 cursor-pointer text-gray-400 bg-gray-300 rounded-r-md">
+
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M4 3a2 2 0 012-2h6l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2V3z"/>
+                                    </svg>
+                                </label>
                             </div>
-                            <div>
+                            <div class="relative">
+                                <!-- Text Input -->
                                 <input type="text" id="edit_nis" name="edit_nis" placeholder="NIS"
                                        class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+
+                                <!-- File Input Icon -->
+                                <input type="file" id="edit_nisfile" class="hidden" onchange="toggleFileIconColor2()">
+
+                                <!-- File Icon -->
+                                <label for="edit_nisfile" id="editnis_icon" class="mt-1 absolute inset-y-0 right-0 flex items-center
+                                    px-3 cursor-pointer text-gray-400 bg-gray-300 rounded-r-md">
+
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M4 3a2 2 0 012-2h6l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2V3z"/>
+                                    </svg>
+                                </label>
                             </div>
-                            <div>
+                            <div class="relative">
+                                <!-- Text Input -->
                                 <input type="text" id="edit_art" name="edit_art" placeholder="ART"
                                        class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+
+                                <!-- File Input Icon -->
+                                <input type="file" id="edit_artfile" class="hidden" onchange="toggleFileIconColor3()">
+
+                                <!-- File Icon -->
+                                <label for="edit_artfile" id="editart_icon" class="mt-1 absolute inset-y-0 right-0 flex items-center
+                                    px-3 cursor-pointer text-gray-400 bg-gray-300 rounded-r-md">
+
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M4 3a2 2 0 012-2h6l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2V3z"/>
+                                    </svg>
+                                </label>
                             </div>
-                            <div>
+                            <div class="relative">
+                                <!-- Text Input -->
                                 <input type="text" id="edit_rc" name="edit_rc" placeholder="RC"
                                        class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+
+                                <!-- File Input Icon -->
+                                <input type="file" id="edit_rcfile" class="hidden" onchange="toggleFileIconColor4()">
+
+                                <!-- File Icon -->
+                                <label for="edit_rcfile" id="editrc_icon" class="mt-1 absolute inset-y-0 right-0 flex items-center
+                                    px-3 cursor-pointer text-gray-400 bg-gray-300 rounded-r-md">
+
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M4 3a2 2 0 012-2h6l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2V3z"/>
+                                    </svg>
+                                </label>
                             </div>
+
 
                             <div class="flex items-center gap-4">
                                 <label>Active</label>
@@ -171,53 +286,80 @@
             <!-- Edit User Form -->
 
             <div class="p-4">
-                    <div class="p-4" style="height: calc(100% - 10rem); overflow-y: auto;">
+                <div class="p-4" style="height: calc(100% - 10rem); overflow-y: auto;">
 
-                        <div class="grid grid-cols-2 gap-4 mb-4">
-                            <div>
-                                <div id="view_distributeur" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
-                            </div>
-                            <div>
-                                <div id="view_code" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
-                            </div>
-                            <div>
-                                <div id="view_designation" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
-                            </div>
-                            <div>
-                                <div id="view_telephone" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
-                            </div>
-                            <div>
-                                <div id="view_ville" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
-                            </div>
-                            <div>
-                                <div id="view_adresse" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
-                            </div>
-                            <div>
-                                <div id="view_nif" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
-                            </div>
-                            <div>
-                                <div id="view_nis" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
-                            </div>
-                            <div>
-                                <div id="view_art" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
-                            </div>
-                            <div>
-                                <div id="view_rc" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
-                            </div>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <div id="view_distributeur"
+                                 class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                        </div>
+                        <div>
+                            <div id="view_code"
+                                 class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                        </div>
+                        <div>
+                            <div id="view_designation"
+                                 class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                        </div>
+                        <div>
+                            <div id="view_telephone"
+                                 class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                        </div>
+                        <div>
+                            <div id="view_ville"
+                                 class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                        </div>
+                        <div>
+                            <div id="view_adresse"
+                                 class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                        </div>
 
-                            <div class="flex items-center gap-4">
-                                <label>Active</label>
-                                <div class="checkbox-wrapper-6">
-                                    <input class="tgl tgl-light" id="view_is_active" type="checkbox"/>
-                                    <label class="tgl-btn" for="view_is_active"></label>
-                                </div>
-                            </div>
+
+                        <div class="relative">
+                            <!-- Text Input -->
+                            <div id="view_nif"
+                                 class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+
+                            <div id="nifview"></div>
 
 
                         </div>
+                        <div class="relative">
+                            <!-- Text Input -->
+                            <div id="view_nis"
+                                 class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+
+                            <div id="nisview"></div>
+
+                        </div>
+                        <div class="relative">
+                            <!-- Text Input -->
+                            <div id="view_art"
+                                 class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+
+                            <div id="artview"></div>
+                        </div>
+                        <div class="relative">
+                            <!-- Text Input -->
+                            <div id="view_rc"
+                                 class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                            <div id="rcview"></div>
+
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <label>Active</label>
+                            <div class="checkbox-wrapper-6">
+                                <input class="tgl tgl-light" id="view_is_active" disabled type="checkbox"/>
+                                <label class="tgl-btn" for="view_is_active"></label>
+                            </div>
+                        </div>
+
+
                     </div>
-                    <div class="flex justify-end py-8">
-                    </div>
+                </div>
+                <div class="flex justify-end py-8">
+                </div>
             </div>
         </div>
 
@@ -258,7 +400,8 @@
                         hover:bg-blue-900 hover:border-slate-400 rounded-md">Ajouter
                     </button>
                 {% else %}
-                    <button class="btn capitalize bg-gray-500 text-white px-4 py-2 border rounded-md cursor-not-allowed">Ajouter
+                    <button class="btn capitalize bg-gray-500 text-white px-4 py-2 border rounded-md cursor-not-allowed">
+                        Ajouter
                     </button>
                 {% endif %}
             </div>
@@ -298,10 +441,10 @@
                         {% if 40 in listeauth %}
                             <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded">
                                 <i class="fas fa-search"
-                                   onclick="newdatauserview({{ elem.id }}, {{ elem.distributeur.id }}, '{{ elem.code }}', '{{ elem.designation }}', {{ elem.ville.id }}
-                                           , '{{ elem.telephone }}', '{{ elem.adresse }}', '{{ elem.nif }}', '{{ elem.nis }}', '{{ elem.art }}',
-                                            '{{ elem.rc }}', '{{ elem.active }}'
-                                           )">
+                                   onclick="newdatauserview({{ elem.id }}, {{ elem.distributeur.id }}, '{{ elem.code|escapejs }}', '{{ elem.designation|escapejs }}', {{ elem.ville.id }},
+                                           '{{ elem.telephone|escapejs }}', '{{ elem.adresse|escapejs }}', '{{ elem.nif|escapejs }}', '{{ elem.nis|escapejs }}', '{{ elem.art|escapejs }}',
+                                           '{{ elem.rc|escapejs }}', '{{ elem.active|escapejs }}', '{{ elem.nif_file|escapejs }}', '{{ elem.nis_file|escapejs }}', '{{ elem.art_file|escapejs }}',
+                                           '{{ elem.rc_file|escapejs }}')">
                                 </i>
                             </button>
                         {% else %}
@@ -314,10 +457,10 @@
                         {% if 38 in listeauth %}
                             <button id="editButton" class="editButton bg-blue-500 text-white p-2 rounded">
                                 <i class="fas fa-pencil-alt"
-                                   onclick="newdatauser({{ elem.id }}, {{ elem.distributeur.id }}, '{{ elem.code }}', '{{ elem.designation }}', {{ elem.ville.id }}
-                                           , '{{ elem.telephone }}', '{{ elem.adresse }}', '{{ elem.nif }}', '{{ elem.nis }}', '{{ elem.art }}',
-                                            '{{ elem.rc }}', '{{ elem.active }}'
-                                           )">
+                                   onclick="newdatauser({{ elem.id }}, {{ elem.distributeur.id }}, '{{ elem.code|escapejs }}', '{{ elem.designation|escapejs }}', {{ elem.ville.id }},
+                                           '{{ elem.telephone|escapejs }}', '{{ elem.adresse|escapejs }}', '{{ elem.nif|escapejs }}', '{{ elem.nis|escapejs }}', '{{ elem.art|escapejs }}',
+                                           '{{ elem.rc|escapejs }}', '{{ elem.active|escapejs }}', '{{ elem.nif_file|escapejs }}', '{{ elem.nis_file|escapejs }}', '{{ elem.art_file|escapejs }}',
+                                           '{{ elem.rc_file|escapejs }}')">
                                 </i>
                             </button>
                         {% else %}
@@ -327,9 +470,11 @@
                         {% endif %}
 
                         {% if 39 in listeauth %}
-                            <button class="bg-red-500 text-white p-2 rounded delete-btn" data-identifiant="{{ elem.id }}"><i class="fas fa-trash"></i></button>
+                            <button class="bg-red-500 text-white p-2 rounded delete-btn"
+                                    data-identifiant="{{ elem.id }}"><i class="fas fa-trash"></i></button>
                         {% else %}
-                            <button class="cursor-not-allowed bg-gray-500 text-white p-2 rounded"><i class="fas fa-trash"></i></button>
+                            <button class="cursor-not-allowed bg-gray-500 text-white p-2 rounded"><i
+                                    class="fas fa-trash"></i></button>
                         {% endif %}
 
 
@@ -352,7 +497,32 @@
 
 
     <script>
-        edit_elem = 0;
+
+        {% if 7 not in listmodules %}
+            $("#userslistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 14 not in listmodules %}
+            $("#prodlistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 9 not in listmodules %}
+            $("#distlistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 17 not in listmodules %}
+            $("#cmdlistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 21 not in listmodules %}
+            $("#enclistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 26 not in listmodules %}
+            $("#formslistlink").addClass('hidden');
+        {% endif %}
+        edit_payeur_id = 0;
+        edit_distri_id = 0;
 
         $telephone = $('#telephone');
         $distributeur = $('#distributeur');
@@ -364,6 +534,124 @@
         $nis = $('#nis');
         $art = $('#art');
         $rc = $('#rc');
+
+
+        function toggleFileIconColor() {
+            const fileInput = document.getElementById('edit_niffile');
+            const fileIcon = document.getElementById('editnif_icon');
+
+            // Toggle the icon color based on whether a file is selected
+            if (fileInput.files.length > 0) {
+                fileIcon.classList.remove('text-gray-400');
+                fileIcon.classList.add('text-blue-500');
+            } else {
+                fileIcon.classList.remove('text-blue-500');
+                fileIcon.classList.add('text-gray-400');
+            }
+        }
+
+
+        function toggleFileIconColor2() {
+            const fileInput = document.getElementById('edit_nisfile');
+            const fileIcon = document.getElementById('editnis_icon');
+
+            // Toggle the icon color based on whether a file is selected
+            if (fileInput.files.length > 0) {
+                fileIcon.classList.remove('text-gray-400');
+                fileIcon.classList.add('text-blue-500');
+            } else {
+                fileIcon.classList.remove('text-blue-500');
+                fileIcon.classList.add('text-gray-400');
+            }
+        }
+
+        function toggleFileIconColor3() {
+            const fileInput = document.getElementById('edit_artfile');
+            const fileIcon = document.getElementById('editart_icon');
+
+            // Toggle the icon color based on whether a file is selected
+            if (fileInput.files.length > 0) {
+                fileIcon.classList.remove('text-gray-400');
+                fileIcon.classList.add('text-blue-500');
+            } else {
+                fileIcon.classList.remove('text-blue-500');
+                fileIcon.classList.add('text-gray-400');
+            }
+        }
+
+
+        function toggleFileIconColor4() {
+            const fileInput = document.getElementById('edit_rcfile');
+            const fileIcon = document.getElementById('editrc_icon');
+
+            // Toggle the icon color based on whether a file is selected
+            if (fileInput.files.length > 0) {
+                fileIcon.classList.remove('text-gray-400');
+                fileIcon.classList.add('text-blue-500');
+            } else {
+                fileIcon.classList.remove('text-blue-500');
+                fileIcon.classList.add('text-gray-400');
+            }
+        }
+
+
+        function toggleFileIconColoradd() {
+            const fileInput = document.getElementById('niffile');
+            const fileIcon = document.getElementById('nif_icon');
+
+            // Toggle the icon color based on whether a file is selected
+            if (fileInput.files.length > 0) {
+                fileIcon.classList.remove('text-gray-400');
+                fileIcon.classList.add('text-blue-500');
+            } else {
+                fileIcon.classList.remove('text-blue-500');
+                fileIcon.classList.add('text-gray-400');
+            }
+        }
+
+
+        function toggleFileIconColoradd2() {
+            const fileInput = document.getElementById('nisfile');
+            const fileIcon = document.getElementById('nis_icon');
+
+            // Toggle the icon color based on whether a file is selected
+            if (fileInput.files.length > 0) {
+                fileIcon.classList.remove('text-gray-400');
+                fileIcon.classList.add('text-blue-500');
+            } else {
+                fileIcon.classList.remove('text-blue-500');
+                fileIcon.classList.add('text-gray-400');
+            }
+        }
+
+        function toggleFileIconColoradd3() {
+            const fileInput = document.getElementById('artfile');
+            const fileIcon = document.getElementById('art_icon');
+
+            // Toggle the icon color based on whether a file is selected
+            if (fileInput.files.length > 0) {
+                fileIcon.classList.remove('text-gray-400');
+                fileIcon.classList.add('text-blue-500');
+            } else {
+                fileIcon.classList.remove('text-blue-500');
+                fileIcon.classList.add('text-gray-400');
+            }
+        }
+
+
+        function toggleFileIconColoradd4() {
+            const fileInput = document.getElementById('rcfile');
+            const fileIcon = document.getElementById('rc_icon');
+
+            // Toggle the icon color based on whether a file is selected
+            if (fileInput.files.length > 0) {
+                fileIcon.classList.remove('text-gray-400');
+                fileIcon.classList.add('text-blue-500');
+            } else {
+                fileIcon.classList.remove('text-blue-500');
+                fileIcon.classList.add('text-gray-400');
+            }
+        }
 
 
         // Toggle the sidebar
@@ -428,12 +716,12 @@
         });
 
 
-
         function getRandomInt(max) {
             return Math.floor(Math.random() * max);
         }
 
-        function newdatauser(id, distributeur, code, designation, ville, telephone, adresse, nif, nis, art, rc, active) {
+        function newdatauser(id, distributeur, code, designation, ville, telephone, adresse, nif, nis, art, rc, active,
+                             niffile, nisfile, artfile, rcfile) {
 
             edit_elem = id;
             $("#edit_code").val(code);
@@ -446,18 +734,98 @@
             $("#edit_art").val(art);
             $("#edit_rc").val(rc);
 
-            if (active === "True") {
-                $('#edit_is_active').prop('checked', true);
-            }else{
-                $('#edit_is_active').prop('checked', false);
+            $("#nifview").html("");
+            if (niffile !== "") {
+                $("#nifview").append(`<a href="/media/${niffile}" class="mt-1 absolute inset-y-0 right-0 flex items-center
+                                    px-3 cursor-pointer text-blue-500 bg-gray-300 rounded-r-md">
+
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M4 3a2 2 0 012-2h6l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2V3z"/>
+                                </svg>
+                            </a>`)
+
+            } else {
+                $("#nifview").append(`<a href="#" class="mt-1 absolute inset-y-0 right-0 flex items-center
+                                    px-3 text-gray-400 bg-gray-300 rounded-r-md">
+
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M4 3a2 2 0 012-2h6l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2V3z"/>
+                                </svg>
+                            </a>`)
             }
 
+            $("#nisview").html("");
+            if (nisfile !== "") {
+                $("#nisview").append(`<a href="/media/${nisfile}" class="mt-1 absolute inset-y-0 right-0 flex items-center
+                                    px-3 cursor-pointer text-blue-500 bg-gray-300 rounded-r-md">
+
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M4 3a2 2 0 012-2h6l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2V3z"/>
+                                </svg>
+                            </a>`)
+
+            } else {
+                $("#nisview").append(`<a href="#" class="mt-1 absolute inset-y-0 right-0 flex items-center
+                                    px-3 text-gray-400 bg-gray-300 rounded-r-md">
+
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M4 3a2 2 0 012-2h6l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2V3z"/>
+                                </svg>
+                            </a>`)
+            }
+
+            $("#artview").html("");
+            if (artfile !== "") {
+                $("#artview").append(`<a href="/media/${artfile}" class="mt-1 absolute inset-y-0 right-0 flex items-center
+                                    px-3 cursor-pointer text-blue-500 bg-gray-300 rounded-r-md">
+
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M4 3a2 2 0 012-2h6l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2V3z"/>
+                                </svg>
+                            </a>`)
+
+            } else {
+                $("#artview").append(`<a href="#" class="mt-1 absolute inset-y-0 right-0 flex items-center
+                                    px-3 text-gray-400 bg-gray-300 rounded-r-md">
+
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M4 3a2 2 0 012-2h6l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2V3z"/>
+                                </svg>
+                            </a>`)
+            }
+
+            $("#rcview").html("");
+            if (rcfile !== "") {
+                $("#rcview").append(`<a href="/media/${rcfile}" class="mt-1 absolute inset-y-0 right-0 flex items-center
+                                    px-3 cursor-pointer text-blue-500 bg-gray-300 rounded-r-md">
+
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M4 3a2 2 0 012-2h6l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2V3z"/>
+                                </svg>
+                            </a>`)
+
+            } else {
+                $("#rcview").append(`<a href="#" class="mt-1 absolute inset-y-0 right-0 flex items-center
+                                    px-3 text-gray-400 bg-gray-300 rounded-r-md">
+
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M4 3a2 2 0 012-2h6l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2V3z"/>
+                                </svg>
+                            </a>`)
+            }
+
+            if (active === "True") {
+                $('#edit_is_active').prop('checked', true);
+            } else {
+                $('#edit_is_active').prop('checked', false);
+            }
 
 
         }
 
 
-        function newdatauserview(id, distributeur, code, designation, ville, telephone, adresse, nif, nis, art, rc, active) {
+        function newdatauserview(id, distributeur, code, designation, ville, telephone, adresse, nif, nis, art, rc, active,
+                                 niffile, nisfile, artfile, rcfile) {
 
             edit_elem = id;
             $("#view_code").html(code);
@@ -470,12 +838,91 @@
             $("#view_art").html(art);
             $("#view_rc").html(rc);
 
-            if (active === "True") {
-                $('#view_is_active').prop('checked', true);
-            }else{
-                $('#view_is_active').prop('checked', false);
+            $("#nifview").html("");
+            if (niffile !== "") {
+                $("#nifview").append(`<a href="/media/${niffile}" class="mt-1 absolute inset-y-0 right-0 flex items-center
+                                    px-3 cursor-pointer text-blue-500 bg-gray-300 rounded-r-md">
+
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M4 3a2 2 0 012-2h6l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2V3z"/>
+                                </svg>
+                            </a>`)
+
+            } else {
+                $("#nifview").append(`<a href="#" class="mt-1 absolute inset-y-0 right-0 flex items-center
+                                    px-3 text-gray-400 bg-gray-300 rounded-r-md">
+
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M4 3a2 2 0 012-2h6l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2V3z"/>
+                                </svg>
+                            </a>`)
             }
 
+            $("#nisview").html("");
+            if (nisfile !== "") {
+                $("#nisview").append(`<a href="/media/${nisfile}" class="mt-1 absolute inset-y-0 right-0 flex items-center
+                                    px-3 cursor-pointer text-blue-500 bg-gray-300 rounded-r-md">
+
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M4 3a2 2 0 012-2h6l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2V3z"/>
+                                </svg>
+                            </a>`)
+
+            } else {
+                $("#nisview").append(`<a href="#" class="mt-1 absolute inset-y-0 right-0 flex items-center
+                                    px-3 text-gray-400 bg-gray-300 rounded-r-md">
+
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M4 3a2 2 0 012-2h6l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2V3z"/>
+                                </svg>
+                            </a>`)
+            }
+
+            $("#artview").html("");
+            if (artfile !== "") {
+                $("#artview").append(`<a href="/media/${artfile}" class="mt-1 absolute inset-y-0 right-0 flex items-center
+                                    px-3 cursor-pointer text-blue-500 bg-gray-300 rounded-r-md">
+
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M4 3a2 2 0 012-2h6l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2V3z"/>
+                                </svg>
+                            </a>`)
+
+            } else {
+                $("#artview").append(`<a href="#" class="mt-1 absolute inset-y-0 right-0 flex items-center
+                                    px-3 text-gray-400 bg-gray-300 rounded-r-md">
+
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M4 3a2 2 0 012-2h6l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2V3z"/>
+                                </svg>
+                            </a>`)
+            }
+
+            $("#rcview").html("");
+            if (rcfile !== "") {
+                $("#rcview").append(`<a href="/media/${rcfile}" class="mt-1 absolute inset-y-0 right-0 flex items-center
+                                    px-3 cursor-pointer text-blue-500 bg-gray-300 rounded-r-md">
+
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M4 3a2 2 0 012-2h6l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2V3z"/>
+                                </svg>
+                            </a>`)
+
+            } else {
+                $("#rcview").append(`<a href="#" class="mt-1 absolute inset-y-0 right-0 flex items-center
+                                    px-3 text-gray-400 bg-gray-300 rounded-r-md">
+
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M4 3a2 2 0 012-2h6l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2V3z"/>
+                                </svg>
+                            </a>`)
+            }
+
+            if (active === "True") {
+                $('#view_is_active').prop('checked', true);
+            } else {
+                $('#view_is_active').prop('checked', false);
+            }
 
 
         }
@@ -484,6 +931,26 @@
             e.preventDefault(); // Prevent the default form submission
 
             var form = new FormData();
+
+            niffile = $('#niffile')[0].files[0]
+            if (niffile) {
+                form.append("nif_file", niffile);
+            }
+
+            nisfile = $('#nisfile')[0].files[0]
+            if (nisfile) {
+                form.append("nis_file", nisfile);
+            }
+
+            artfile = $('#artfile')[0].files[0]
+            if (artfile) {
+                form.append("art_file", artfile);
+            }
+
+            rcfile = $('#rcfile')[0].files[0]
+            if (rcfile) {
+                form.append("rc_file", rcfile);
+            }
 
             form.append("code", $code.val());
             form.append("designation", $designation.val());
@@ -544,71 +1011,89 @@
         });
 
         $('#edituserForm').on('submit', function (e) {
-    e.preventDefault(); // Prevent the default form submission
-
-    // Create a JavaScript object to hold the form data
-    var formData = {
-        "code": $('#edit_code').val(),
-        "designation": $('#edit_designation').val(),
-        "ville": $('#edit_ville').val(),
-        "adresse": $('#edit_adresse').val(),
-        "telephone": $('#edit_telephone').val(),
-        "distributeur": $('#edit_distributeur').val(),
-        "nif": $('#edit_nif').val(),
-        "nis": $('#edit_nis').val(),
-        "art": $('#edit_art').val(),
-        "rc": $('#edit_rc').val(),
-        "active": $('#edit_is_active').prop('checked')
-    };
-
-    // Log the formData object to see the data
-    console.log('FormData:', formData);
-
-    var settings = {
-        "url": "/api/payeur/" + edit_elem + '/',  // Update the URL as per your requirement
-        "method": "PUT",
-        "timeout": 0,
-        "headers": {
-            "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),  // Assuming you have CSRF token in your template context
-            "Content-Type": "application/json"  // Set content type to application/json
-        },
-        "processData": false,
-        "data": JSON.stringify(formData)  // Convert JavaScript object to JSON string
-    };
-
-    $.ajax(settings)
-        .done(function (response) {
-            console.log(response);
-            window.location.href = "/distributeur/payeur";
-        })
-        .fail(function (jqXHR, textStatus, errorThrown) {
-            // Log the entire jqXHR object to see all details
-            console.log('jqXHR:', jqXHR);
-
-            // Log the status text
-            console.log('Status:', textStatus);
-
-            // Log the error thrown
-            console.log('Error Thrown:', errorThrown);
-
-            // Log the response text, which might contain detailed error messages
-            console.log('Response Text:', jqXHR.responseText);
-
-            // Optionally, parse the responseText as JSON if it's in JSON format
-            try {
-                var responseJSON = JSON.parse(jqXHR.responseText);
-                console.log('Response JSON:', responseJSON);
-            } catch (e) {
-                console.error('Failed to parse response as JSON:', e);
+            e.preventDefault(); // Prevent the default form submission
+            var formedit = new FormData();
+            niffile = $('#edit_niffile')[0].files[0]
+            if (niffile) {
+                formedit.append("nif_file", niffile);
             }
-        });
-});
 
+            nisfile = $('#edit_nisfile')[0].files[0]
+            if (nisfile) {
+                formedit.append("nis_file", nisfile);
+            }
+
+            artfile = $('#edit_artfile')[0].files[0]
+            if (artfile) {
+                formedit.append("art_file", artfile);
+            }
+
+            rcfile = $('#edit_rcfile')[0].files[0]
+            if (rcfile) {
+                formedit.append("rc_file", rcfile);
+            }
+            formedit.append("code", $('#edit_code').val())
+            formedit.append("designation", $('#edit_designation').val())
+            formedit.append("ville", $('#edit_ville').val())
+            formedit.append("adresse", $('#edit_adresse').val())
+            formedit.append("telephone", $('#edit_telephone').val())
+            formedit.append("distributeur", edit_distri_id)
+            formedit.append("nif", $('#edit_nif').val())
+            formedit.append("nis", $('#edit_nis').val())
+            formedit.append("art", $('#edit_art').val())
+            formedit.append("rc", $('#edit_rc').val())
+            formedit.append("active", $('#edit_is_active').prop('checked'))
+
+
+            // Log the formData object to see the data
+            console.log('FormData:', formedit);
+
+            var settings = {
+                "url": "/api/payeur/" + edit_payeur_id + '/',  // Update the URL as per your requirement
+                "method": "PUT",
+                "timeout": 0,
+                "headers": {
+                    "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),  // Assuming you have CSRF token in your template context
+
+                },
+                "processData": false,
+                "mimeType": "multipart/form-data",
+                "contentType": false,
+                "data": formedit
+            };
+
+            $.ajax(settings)
+                .done(function (response) {
+                    console.log(response);
+                    window.location.href = "/distributeur/payeurdraft";
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    // Log the entire jqXHR object to see all details
+                    console.log('jqXHR:', jqXHR);
+
+                    // Log the status text
+                    console.log('Status:', textStatus);
+
+                    // Log the error thrown
+                    console.log('Error Thrown:', errorThrown);
+
+                    // Log the response text, which might contain detailed error messages
+                    console.log('Response Text:', jqXHR.responseText);
+
+                    // Optionally, parse the responseText as JSON if it's in JSON format
+                    try {
+                        var responseJSON = JSON.parse(jqXHR.responseText);
+                        console.log('Response JSON:', responseJSON);
+                    } catch (e) {
+                        console.error('Failed to parse response as JSON:', e);
+                    }
+                });
+        });
 
 
         // Open modal when delete button is clicked
         $('.delete-btn').on('click', function () {
-            currentDeleteId =  $(this).data('identifiant');
+            currentDeleteId = $(this).data('identifiant');
             console.log(currentDeleteId);
             $('#deleteModal').removeClass('hidden');
         });
@@ -643,8 +1128,6 @@
 
             }
         });
-
-
 
 
     </script>
