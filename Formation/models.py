@@ -36,8 +36,8 @@ class FormationSingup(models.Model):
     id = models.AutoField(primary_key=True)
     formation = models.ForeignKey(Formation, on_delete=models.CASCADE)
     distributeur = models.ForeignKey(Distributeur, on_delete=models.CASCADE)
-    nbrelem = models.IntegerField()
-    prixtotal = models.FloatField()
+    nbrelem = models.IntegerField(default=0)
+    prixtotal = models.FloatField(default=0)
     dateajout = models.DateField(auto_now_add=True)
 
 class Equipe(models.Model):

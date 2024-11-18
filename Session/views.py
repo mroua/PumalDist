@@ -189,3 +189,8 @@ def custom_logout(request):
 
     logout(request)
     return redirect('login')
+
+@login_required
+def ProfilePage(request):
+
+    return render(request, 'Profile.html')

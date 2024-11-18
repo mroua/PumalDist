@@ -96,8 +96,8 @@
             <div class="w-full hidden lg:flex flex-col gap-4">
 
                 <!--user setting-->
-                <a href=""
-                   class="btn btn-square  backprimer border-none flex items-center justify-center p-1 capitalize ">
+                <a href="/profile/"
+                   class="btn btn-square hover:bg-blue-900 backprimer border-none {% if request.path == '/produit/' %}bg-blue-900{% endif %} flex items-center justify-center p-1 capitalize ">
                     <i class="uil uil-setting text-primary text-xl"></i>
                 </a>
 

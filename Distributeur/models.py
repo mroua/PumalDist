@@ -6,7 +6,7 @@ from Session.models import Ville, CustomUser
 
 class Distributeur(models.Model):
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, unique=True)
     code = models.CharField(max_length=100, default='0000000', blank=True, null=True)
     designation = models.CharField(max_length=100, blank=True, null=True)
     ville = models.ForeignKey(Ville, on_delete=models.CASCADE, blank=True, null=True)

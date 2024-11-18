@@ -289,6 +289,7 @@
 
     <!-- add elems -->
     <script>
+        formationsignup = 0
         cpt = 0
         {% if 7 not in listmodules %}
             $("#userslistlink").addClass('hidden');
@@ -352,8 +353,7 @@
                                     text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block
                                     p-2.5" placeholder="Poste"/></div>
                                     <div class="w-1/5 defaultboldvaldark">${todaydate}</div>
-                                    <button class="bg-red-500 text-white p-2 rounded delete-elem"
-                                            data-identifiant="{{ elem.id }}">
+                                    <button class="bg-red-500 text-white p-2 rounded" onclick="deleteelem('new_${cpt}')">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </div>
@@ -378,6 +378,136 @@
             $('#viewSidebar').addClass('translate-x-full');
         });
 
+        $('#EditForm').on('click', function (){
+            let collectedData = [];
+
+            $('#listesingupadd > div[id^="signupelem_"]').each(function () {
+                newdata = false
+                let name = $(this).find('div:nth-child(1)').text().trim();
+                let firstName = $(this).find('div:nth-child(2)').text().trim();
+                let position = $(this).find('div:nth-child(3)').text().trim();
+
+                let entry = {
+                    id: parseInt($(this).attr('id').match(/\d+/)[0], 10), // Extract the ID of the parent div
+                    "nom": name,
+                    "prenom": firstName,
+                    "poste": position,
+                };
+
+                collectedData.push(entry);
+            });
+
+            $('#listesingupadd > div[id^="new_"]').each(function () {
+                let num = parseInt($(this).attr('id').match(/\d+/)[0], 10);
+
+                let name = $("#nom_"+num).val();
+                let firstName = $("#prenom_"+num).val();
+                let position = $("#poste_"+num).val();
+
+                let entry = {
+                    "nom": name,
+                    "prenom": firstName,
+                    "poste": position,
+                };
+
+                collectedData.push(entry);
+            });
+
+
+            if(newdata){
+                var settings = {
+                    "url": "/api/formationsingup/",
+                    "method": "POST",
+                    "timeout": 0,
+                    "headers": {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),  // Assuming you have CSRF token in your template context
+                    },
+                    "data": JSON.stringify({
+                        "formation": identifiant,
+                        "distributeur": {{ request.user.distributeur_set.first.id }},
+                        "Equipeline": collectedData
+                    }),
+                };
+
+                console.log({
+                        "formation": identifiant,
+                        "distributeur": {{ request.user.distributeur_set.first.id }},
+                        "Equipeline": collectedData
+                    })
+
+                $.ajax(settings)
+                    .done(function (response) {
+                        console.log(response);
+                    })
+                    .fail(function (jqXHR, textStatus, errorThrown) {
+                        // Log the entire jqXHR object to see all details
+                        console.log('jqXHR:', jqXHR);
+
+                        // Log the status text
+                        console.log('Status:', textStatus);
+
+                        // Log the error thrown
+                        console.log('Error Thrown:', errorThrown);
+
+                        // Log the response text, which might contain detailed error messages
+                        console.log('Response Text:', jqXHR.responseText);
+
+                        // Optionally, parse the responseText as JSON if it's in JSON format
+                        try {
+                            var responseJSON = JSON.parse(jqXHR.responseText);
+                            console.log('Response JSON:', responseJSON);
+                        } catch (e) {
+                            console.error('Failed to parse response as JSON:', e);
+                    }
+
+                });
+            }else{
+                var settings = {
+                    "url": "/api/formationsingup/"+signupid+"/",
+                    "method": "PUT",
+                    "timeout": 0,
+                    "headers": {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),  // Assuming you have CSRF token in your template context
+                    },
+                    "data": JSON.stringify({
+                        "formation": identifiant,
+                        "distributeur": {{ request.user.distributeur_set.first.id }},
+                        "Equipeline": collectedData
+                    }),
+                };
+
+                $.ajax(settings)
+                    .done(function (response) {
+                        console.log(response);
+                    })
+                    .fail(function (jqXHR, textStatus, errorThrown) {
+                        // Log the entire jqXHR object to see all details
+                        console.log('jqXHR:', jqXHR);
+
+                        // Log the status text
+                        console.log('Status:', textStatus);
+
+                        // Log the error thrown
+                        console.log('Error Thrown:', errorThrown);
+
+                        // Log the response text, which might contain detailed error messages
+                        console.log('Response Text:', jqXHR.responseText);
+
+                        // Optionally, parse the responseText as JSON if it's in JSON format
+                        try {
+                            var responseJSON = JSON.parse(jqXHR.responseText);
+                            console.log('Response JSON:', responseJSON);
+                        } catch (e) {
+                            console.error('Failed to parse response as JSON:', e);
+                    }
+
+                });
+            }
+        })
+
+
     </script>
 
 
@@ -388,72 +518,80 @@
 
 
         $(document).ready(function () {
+    // Handle the edit button click to open and populate the sidebar
+    $('.editButton').on('click', function () {
+        identifiant = $(this).data('identifiant');
 
-            $('.editButton').on('click', function () {
+        
+        editselectedProducts = [];
+        $('#editselectedProducts').html("");
 
-                identifiant = $(this).data('identifiant');
-                editselectedProducts = [];
-                $('#editselectedProducts').html("");
+        let settings = {
+            url: `/api/formation/${identifiant}`,
+            method: "GET",
+            timeout: 0,
+            headers: {
+                "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
+            },
+        };
 
-                let settings = {
-                    url: `/api/formation/${identifiant}`,
-                    method: "GET",
-                    timeout: 0,
-                    headers: {
-                        "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
-                    },
-                };
+        $.ajax(settings).done(function (response) {
+            let responsedata = response;
 
-                $.ajax(settings).done(function (response) {
-                    let responsedata = response;
+            newdata = true
 
-                    $('#titre').html(responsedata['titre']);
-                    $('#duree').html(responsedata['nbrplace']);
-                    $('#nbrplace').html(responsedata['duree']);
-                    $('#tarif').html(formatNumber(responsedata['tarif']) + " DA Par personne");
-                    $('#datedebut').html(responsedata['datedebut']);
-                    $('#datefin').html(responsedata['datefin']);
+            // Populate sidebar with fetched data
+            $('#titre').html(responsedata['titre']);
+            $('#duree').html(responsedata['nbrplace']);
+            $('#nbrplace').html(responsedata['duree']);
+            $('#tarif').html(formatNumber(responsedata['tarif']) + " DA Par personne");
+            $('#datedebut').html(responsedata['datedebut']);
+            $('#datefin').html(responsedata['datefin']);
 
-                    console.log(responsedata)
-                    $('#listesingupadd').html('');
+            $('#listesingupadd').html('');
 
-                    for (ind = 0; ind < responsedata['groups'].length; ind++) {
-                        data1 = responsedata['groups'][ind]
-                        data2list = data1['Equipeline']
-                        console.log(data2list)
-                        idelem = "listdist_" + data1['distributeur']
-                        listeinfo = ""
+            // Render groups and their Equipeline elements
+            for (let ind = 0; ind < responsedata['groups'].length; ind++) {
+                newdata = false
+                let data1 = responsedata['groups'][ind];
+                 signupid = responsedata['groups'][0]['id'];
+                let data2list = data1['Equipeline'];
+                let listeinfo = "";
 
-                        for (ind2 = 0; ind2 < data2list.length; ind2++) {
-                            data2 = data2list[ind2]
-                            listeinfo = listeinfo + `
-                                <div id="signupelem_"${data2['id']} class="w-full flex items-center mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm
-                                    border-gray-300 rounded-md col-span-3">
-                                    <div class="w-2/5">` + data2['nom'] + `</div>
-                                    <div class="w-1/5">` + data2['prenom'] + `</div>
-                                    <div class="w-1/5">` + data2['poste'] + `</div>
-                                    <div class="w-1/5">` + data2['dateajout'] + `</div>
-                                    <button class="bg-red-500 text-white p-2 rounded delete-elem"
-                                            data-identifiant="{{ elem.id }}">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            `
+                for (let ind2 = 0; ind2 < data2list.length; ind2++) {
+                    let data2 = data2list[ind2];
+                    listeinfo += `
+                        <div id="signupelem_${data2['id']}" class="w-full flex items-center mt-1 p-2 bg-white shadow-sm sm:text-sm border-gray-300 rounded-md">
+                            <div class="w-2/5">${data2['nom']}</div>
+                            <div class="w-1/5">${data2['prenom']}</div>
+                            <div class="w-1/5">${data2['poste']}</div>
+                            <div class="w-1/5">${data2['dateajout']}</div>
+                            <button class="bg-red-500 text-white p-2 rounded" onclick="deleteelem('signupelem_${data2['id']}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                }
 
-                        }
+                $('#listesingupadd').append(listeinfo);
+            }
 
-                        $('#listesingupadd').append(listeinfo)
-
-                    }
-
-
-                    $('#editSidebar').toggleClass('translate-x-full');
-                });
-
-
-            });
-
+            // Open the sidebar
+            $('#editSidebar').removeClass('translate-x-full').addClass('translate-x-0');
         });
+
+        $('#editSidebar').on('click', function (e) {
+            e.stopPropagation(); // Stop clicks inside the sidebar from affecting the body or parent
+        });
+    });
+});
+
+// Define the deleteelem function
+function deleteelem(elementId) {
+    $(`#${elementId}`).remove(); // Remove the element with the specified ID
+}
+
+
 
 
         $('.viewButton').on('click', function () {

@@ -1,3 +1,4 @@
+from dateutil.utils import today
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Permission
 from django.db.models import Q
@@ -9,6 +10,14 @@ from .Serializers import *
 class FormationViewSet(viewsets.ModelViewSet):
     queryset = Formation.objects.all()
     serializer_class = FormationSerializer
+
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['user'] = self.request.user
+
+        return context
+
 
 class FormationSingupViewSet(viewsets.ModelViewSet):
     queryset = FormationSingup.objects.all()

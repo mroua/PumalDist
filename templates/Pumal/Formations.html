@@ -667,62 +667,7 @@
                 $('#addbl').fadeOut();
             }
         });
-
-
-        $('#confirmOrder').on('click', function () {
-            listteproducts = [];
-            for (i = 0; i < selectedProducts.length; i++) {
-                listteproducts.push({
-                    "produit": selectedProducts[i]['id'],
-                    "quantite": parseInt(selectedProducts[i]['quantity'])
-                })
-            }
-
-            var settings = {
-                "url": "/api/commande/",
-                "method": "POST",
-                "timeout": 0,
-                "headers": {
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),  // Assuming you have CSRF token in your template context
-                },
-                "data": JSON.stringify({
-                    "distributeur": $('#distfield').val(),
-                    "etat": "Reception",
-                    "total": 0,
-                    "commandesLines": listteproducts
-                }),
-            };
-
-            $.ajax(settings)
-                .done(function (response) {
-                    console.log(response);
-                })
-                .fail(function (jqXHR, textStatus, errorThrown) {
-                    // Log the entire jqXHR object to see all details
-                    console.log('jqXHR:', jqXHR);
-
-                    // Log the status text
-                    console.log('Status:', textStatus);
-
-                    // Log the error thrown
-                    console.log('Error Thrown:', errorThrown);
-
-                    // Log the response text, which might contain detailed error messages
-                    console.log('Response Text:', jqXHR.responseText);
-
-                    // Optionally, parse the responseText as JSON if it's in JSON format
-                    try {
-                        var responseJSON = JSON.parse(jqXHR.responseText);
-                        console.log('Response JSON:', responseJSON);
-                    } catch (e) {
-                        console.error('Failed to parse response as JSON:', e);
-                    }
-
-                });
-
-        });
-
+        
 
         $('#EditForm').on('click', function () {
 
