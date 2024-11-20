@@ -788,13 +788,13 @@
                     console.log('jqXHR:', jqXHR);
 
                     // Log the status text
-                    console.log('Status:', textStatus); alert(textStatus)
+                    console.log('Status:', textStatus);
 
                     // Log the error thrown
                     console.log('Error Thrown:', errorThrown);
 
                     // Log the response text, which might contain detailed error messages
-                    console.log('Response Text:', jqXHR.responseText);
+                    console.log('Response Text:', jqXHR.responseText); alert(jqXHR.responseText)
 
                     // Optionally, parse the responseText as JSON if it's in JSON format
                     try {
@@ -1126,11 +1126,11 @@
                 .fail(function (jqXHR, textStatus, errorThrown) {
                     console.log('jqXHR:', jqXHR);
 
-                    console.log('Status:', textStatus); alert(textStatus)
+                    console.log('Status:', textStatus);
 
                     console.log('Error Thrown:', errorThrown);
 
-                    console.log('Response Text:', jqXHR.responseText);
+                    console.log('Response Text:', jqXHR.responseText); alert(jqXHR.responseText)
 
                     try {
                         var responseJSON = JSON.parse(jqXHR.responseText);
