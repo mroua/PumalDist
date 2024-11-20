@@ -1,8 +1,10 @@
 from django.contrib.auth import authenticate, login as dj_login, logout
 from django.contrib.auth.models import Permission
 from django.db.models import Q
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from rest_framework import viewsets, status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.db import connection
@@ -10,7 +12,7 @@ from django.db import connection
 from Distributeur.models import Distributeur
 from Produits.models import TypeProduit, Couleur, Mesure
 from .models import *
-from .Serializers import VilleSerializer, CustomUserSerializer
+from .Serializers import VilleSerializer, CustomUserSerializer, ChangePasswordSerializer
 from django.contrib.auth.decorators import login_required
 
 
@@ -53,10 +55,30 @@ class LocaliteViewSet(viewsets.ModelViewSet):
     queryset = Ville.objects.all()
     serializer_class = VilleSerializer
 
+
+class ChangePasswordView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        serializer = ChangePasswordSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            user = request.user
+            user.set_password(serializer.validated_data['new_password'])
+            user.save()
+            return Response({"message": "Votre mot de passe a été modifié avec succée."}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
 
+    def update(self, request, *args, **kwargs):
+        partial = True  # Allow partial updates
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @login_required
@@ -94,6 +116,14 @@ def Utilisateurs(request):
     else:
         return render(request,"access.html", {"listmodules": listmodules})
 
+
+def test2(request):
+    print("here")
+    user = CustomUser.objects.get(id=1)
+    user.set_password("123456")
+    user.save()
+    print("done")
+    return HttpResponse("Done")
 
 @login_required
 def test(request):
@@ -192,5 +222,17 @@ def custom_logout(request):
 
 @login_required
 def ProfilePage(request):
+    if(request.user.type == "Distributeur"):
+        listeville = Ville.objects.all()
+        return render(request, 'Dist/Profile.html', {
+            'listeville': listeville
+        })
+    else:
+        listmodules  = list(
+            set(request.user.user_permissions.values_list('content_type_id', flat=True))
+        )
+        print(listmodules)
 
-    return render(request, 'Profile.html')
+        return render(request, 'Pumal/Profile.html', {
+            'listmodules': listmodules
+        })

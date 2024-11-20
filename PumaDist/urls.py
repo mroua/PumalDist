@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-
+from Session.views import test2
 from .router import router1
 from django.conf.urls.static import static
 

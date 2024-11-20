@@ -161,6 +161,12 @@ input::placeholder, select::placeholder, textarea::placeholder {
     color: #5b80b2;
 }
 
+.textprimer {
+    color: #141b54;
+    background: lightslategray;
+}
+
+
 .defaultval {
     font-weight: 400;
     font-size: 12px;

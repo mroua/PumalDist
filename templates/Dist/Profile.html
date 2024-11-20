@@ -1,0 +1,376 @@
+{% extends "baseNew.html" %}
+{% load static %}
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+    <div class="w-full h-full backprimer px-4 pb-4 flex flex-col">
+
+        <div id="filterModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40 flex items-center justify-center"
+             style="margin-top: -16px">
+            <div class="backprimer w-1/3 rounded-lg shadow-lg">
+                <div class="flex justify-between items-center p-4 border-b">
+                    <h3 class="text-lg font-semibold">Changer mot de passe</h3>
+                    <button id="closeFilterModal" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+                </div>
+                <div class="p-4">
+                    <div class="mb-3">
+                        <label for="old_pass" class="block mb-1 pl-1 text-sm font-medium textslate">Votre ancient mot de
+                            passe:</label>
+                        <input type="text" id="old_pass"
+                               class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    </div>
+                    <div class="mb-3">
+                        <label for="old_pass" class="block mb-1 pl-1 text-sm font-medium textslate">Nouveau mot de
+                            passe:</label>
+                        <input type="text" id="new_pass"
+                               class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    </div>
+                    <div class="mb-3">
+                        <label for="old_pass" class="block mb-1 pl-1 text-sm font-medium textslate">Retaper votre
+                            nouveau mot de passe:</label>
+                        <input type="text" id="rep_pass"
+                               class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    </div>
+
+                    <div class="flex justify-between">
+                        <button class="closePopup text-white p-2 rounded btn capitalize bg-[#141b54] hover:bg-blue-900">
+                            Annuler
+                        </button>
+                        <button id="modifier"
+                                class="btn capitalize bg-[#141b54] px-4 rounded py-2 border border-slate-300 text-gray-400 text-sm hover:bg-blue-900 hover:border-slate-400">
+                            Modifier
+                        </button>
+                    </div>
+
+
+                    <!-- Filter Form -->
+                </div>
+            </div>
+        </div>
+
+        <div class="flex justify-between items-center pt-4 mb-4" style="margin-top: -8px">
+            <h2 class="text-2xl font-bold textslate">Profile</h2>
+            <div>
+                <button id="filterButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
+                    hover:bg-blue-900 hover:border-slate-400 rounded-md">Changer mot de passe
+                </button>
+            </div>
+        </div>
+        <hr/>
+
+
+        <div class="flex-grow pt-4 overflow-y-auto">
+            <!-- Full-Width Profile Page -->
+            <div class="h-full w-full backslateprime shadow-t-lg rounded-lg p-6 md:p-10">
+                <!-- Header Section -->
+                <div class="flex flex-col md:flex-row items-center md:items-start md:space-x-8">
+                    <!-- Profile Photo -->
+                    <div class="flex-shrink-0 relative">
+
+                        <input type="file" id="photo" name="photo"
+                               class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md"
+                               accept="image/*"
+                               style="opacity: 0; position: absolute; top: 0; left: 0; width: 160px; height: 160px">
+                        <div id="photoPreview"
+                             class="w-40 h-40 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden border-4 border-blue-500">
+                            <img id="previewImage" src="{% if request.user.photo %}
+                                        {{ request.user.photo.url }}
+                                    {% else %}
+                                        {% static 'images/blank-profile.webp' %}
+                                    {% endif %}" alt="Preview" class="w-full h-full object-cover">
+                        </div>
+
+                    </div>
+                    <!-- User Info -->
+                    <div class="flex-grow">
+                        <div class="grid grid-cols-2 gap-4 text-center md:text-left">
+                            <div>
+                                <input type="text" id="first_name" name="first_name" placeholder="Prénom"
+                                       value="{{ request.user.first_name }}"
+                                       class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                            </div>
+                            <div>
+                                <input type="text" id="last_name" name="last_name" placeholder="Nom"
+                                       value="{{ request.user.last_name }}"
+                                       class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                            </div>
+                            <div>
+                                <input type="email" id="email" name="email" placeholder="Email"
+                                       value="{{ request.user.email }}"
+                                       class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                            </div>
+                            <div>
+                                <input type="text" id="telephone" name="telephone" placeholder="Téléphone"
+                                       value="{{ request.user.telephone }}"
+                                       class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                            </div>
+                            <div>
+                                <input type="text" id="designation" name="designation" placeholder="Désignation"
+                                       value="{{ request.user.distributeur_set.first.designation }}"
+                                       class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                            </div>
+                            <div>
+                                <select id="ville" name="ville"
+                                        class="mt-1 p-3 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                    {% for ville in listeville %}
+                                        <option data-region="{{ ville.region }}"
+                                                value="{{ ville.id }}">{{ ville.designation }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-span-2">
+                                <input type="text" id="adresse" name="adresse" placeholder="Adresse"
+                                       value="{{ request.user.distributeur_set.first.adresse }}"
+                                       class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                            </div>
+                            <div>
+                                <input type="text" id="nif" name="nif" placeholder="NIF"
+                                       value="{{ request.user.distributeur_set.first.nif }}"
+                                       class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                            </div>
+                            <div>
+                                <input type="text" id="nis" name="nis" placeholder="NIS"
+                                       value="{{ request.user.distributeur_set.first.nis }}"
+                                       class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                            </div>
+                            <div>
+                                <input type="text" id="art" name="art" placeholder="ART"
+                                       value="{{ request.user.distributeur_set.first.art }}"
+                                       class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                            </div>
+                            <div>
+                                <input type="text" id="rc" name="rc" placeholder="RC"
+                                       value="{{ request.user.distributeur_set.first.rc }}"
+                                       class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                            </div>
+
+                        </div>
+                        <div class="flex-grow grid grid-cols-3 gap-4 text-center mt-3 md:text-left">
+
+                            <div class="mt-1 p-2 block textprimer w-full shadow-sm sm:border-gray-300 bg-white rounded-md">
+                                Plafonnement: {{ request.user.distributeur_set.first.plafonnement }}
+                            </div>
+                            <div class="mt-1 p-2 block textprimer w-full shadow-sm sm:border-gray-300 bg-white rounded-md">
+                                Échéance: {{ request.user.distributeur_set.first.echeance_j }}
+                            </div>
+                            <div class="mt-1 p-2 block textprimer w-full shadow-sm sm:border-gray-300 bg-white rounded-md">
+                                Ristourn_a: {{ request.user.distributeur_set.first.ristourn_a }}
+                            </div>
+                            <div class="mt-1 p-2 block textprimer w-full shadow-sm sm:border-gray-300 bg-white rounded-md">
+                                Ristourn_na: {{ request.user.distributeur_set.first.ristourn_na }}
+                            </div>
+                            <div class="mt-1 p-2 block textprimer w-full shadow-sm sm:border-gray-300 bg-white rounded-md">
+                                Objective_a: {{ request.user.distributeur_set.first.objective_a }}
+                            </div>
+                            <div class="mt-1 p-2 block textprimer w-full shadow-sm sm:border-gray-300 bg-white rounded-md">
+                                Objective_m: {{ request.user.distributeur_set.first.objective_m }}
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <!-- Details Section -->
+            </div>
+        </div>
+        <div class="w-full backslateprime flex justify-end p-4">
+            <button id="editerprof"
+                    class="bg-blue-500 h-10 text-white py-1.5 px-4 rounded-lg hover:bg-blue-400 disabled:opacity-50"
+                    disabled>
+                Éditer profile
+            </button>
+        </div>
+    </div>
+
+    <script>
+
+        $(document).ready(function () {
+
+            $("#ville").val({{ request.user.distributeur_set.first.ville.id }})
+
+            $('#modifier').on('click', function () {
+                const oldPassword = $('#old_pass').val();
+                const newPassword = $('#new_pass').val();
+                const repeatPassword = $('#rep_pass').val();
+
+                // Validate the input fields
+                if (!oldPassword || !newPassword || !repeatPassword) {
+                    alert('Veuillez remplir tous les champs.');
+                    return;
+                }
+
+                if (newPassword !== repeatPassword) {
+                    alert('Les nouveaux mots de passe ne correspondent pas.');
+                    return;
+                }
+
+                var settings = {
+                    "url": "/password/",
+                    "method": "POST",
+                    "timeout": 0,
+                    "headers": {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val()
+                    },
+                    "data": JSON.stringify({
+                        old_password: oldPassword,
+                        new_password: newPassword,
+                    }),
+                    "processData": false,
+                    "contentType": "application/json"
+                };
+
+                $.ajax(settings)
+                    .done(function (response) {
+                        alert(response.message || 'Mot de passe mis à jour avec succès.');
+                    })
+                    .fail(function (jqXHR, textStatus, errorThrown) {
+                        // Log the entire jqXHR object to see all details
+                        console.log('jqXHR:', jqXHR);
+
+                        // Log the status text
+                        console.log('Status:', textStatus);
+
+                        // Log the error thrown
+                        console.log('Error Thrown:', errorThrown);
+
+                        // Log the response text, which might contain detailed error messages
+                        console.log('Response Text:', jqXHR.responseText);
+                        alert(jqXHR.responseText)
+
+                        // Optionally, parse the responseText as JSON if it's in JSON format
+                        try {
+                            var responseJSON = JSON.parse(jqXHR.responseText);
+                            console.log('Response JSON:', responseJSON);
+                        } catch (e) {
+                            console.error('Failed to parse response as JSON:', e);
+                        }
+
+                    });
+            });
+
+
+            // Get all input fields
+            const $inputs = $("input");
+            const $editButton = $("#editerprof");
+
+            // Store initial values of the inputs
+            const initialValues = {};
+            $inputs.each(function () {
+                initialValues[$(this).attr("id")] = $(this).val();
+            });
+
+            // Function to check for changes
+            const hasChanges = () => {
+                let changed = false;
+                $inputs.each(function () {
+                    const id = $(this).attr("id");
+                    if ($(this).val() !== initialValues[id]) {
+                        changed = true;
+                        return false; // Break out of the loop
+                    }
+                });
+                return changed;
+            };
+
+            // Listen for input changes
+            $inputs.on("input", function () {
+                if (hasChanges()) {
+                    $editButton.prop("disabled", false); // Enable button
+                } else {
+                    $editButton.prop("disabled", true); // Disable button
+                }
+            });
+        });
+
+        // Show the filter modal
+        $('#filterButton').on('click', function () {
+            $('#filterModal').removeClass('hidden');
+        });
+
+        // Close the filter modal
+        $('#closeFilterModal').on('click', function () {
+            $('#filterModal').addClass('hidden');
+        });
+
+        // Close filter modal when clicking outside
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('#filterButton, #filterModal').length) {
+                $('#filterModal').addClass('hidden');
+            }
+        });
+
+        document.getElementById('photo').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const previewImage = document.getElementById('previewImage');
+                    previewImage.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+
+        $('#editerprof').on("click", function (e) {
+            e.preventDefault()
+            var form = new FormData();
+
+            // Add basic form data
+            form.append("first_name", $('#first_name').val());
+            form.append("last_name", $('#last_name').val());
+            form.append("email", $('#email').val());
+            form.append("telephone", $('#telephone').val());
+
+            // Add the photo
+            var photoFile = $('#photo')[0].files[0];
+            if (photoFile) {
+                form.append("photo", photoFile);
+            }
+
+            var settings = {
+                "url": "/api/user/{{ request.user.id }}/",
+                "method": "PUT",
+                "timeout": 0,
+                "headers": {
+                    "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),  // Assuming you have CSRF token in your template context
+                },
+                "processData": false,
+                "contentType": false,
+                "data": form
+            };
+
+            $.ajax(settings)
+                .done(function (response) {
+                    console.log(response);
+
+                    window.location.href = /profile/;
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    // Log the entire jqXHR object to see all details
+                    console.log('jqXHR:', jqXHR);
+
+                    // Log the status text
+                    console.log('Status:', textStatus);
+
+                    // Log the error thrown
+                    console.log('Error Thrown:', errorThrown);
+
+                    // Log the response text, which might contain detailed error messages
+                    console.log('Response Text:', jqXHR.responseText);
+                    alert(jqXHR.responseText)
+
+                    // Optionally, parse the responseText as JSON if it's in JSON format
+                    try {
+                        var responseJSON = JSON.parse(jqXHR.responseText);
+                        console.log('Response JSON:', responseJSON);
+                    } catch (e) {
+                        console.error('Failed to parse response as JSON:', e);
+                    }
+
+                });
+        })
+    </script>
+
+{% endblock %}
