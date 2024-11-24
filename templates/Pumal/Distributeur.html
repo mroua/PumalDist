@@ -85,7 +85,8 @@
                                        class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                             </div>
                             <div>
-                                <input type="text" id="echeance_jour" name="echeance_jour" placeholder="echeance_jour"
+                                <input type="text" id="echeance_jour" name="echeance_jour"
+                                       placeholder="echeance_jour"
                                        class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                             </div>
                             <div>
@@ -427,7 +428,7 @@
                     hover:bg-blue-900 hover:border-slate-400 rounded-md">Filtrer
                 </button>
 
-                {% if 33 in listeauth %}
+                {% if 37 in listeauth %}
                     <button id="addButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
                         hover:bg-blue-900 hover:border-slate-400 rounded-md">Ajouter
                     </button>
@@ -462,7 +463,7 @@
                 <div class="flex items-center justify-between p-2 backslateslite flex-none mb-2 defaultval">
                     <div class="w-1/6 textslate">{{ elem.code }}</div>
                     <div class="w-1/4 textslate">{{ elem.designation }}</div>
-                    <div class="w-1/6">{{ elem.ville }}</div>
+                    <div class="w-1/6">{{ elem.user.ville }}</div>
                     <div class="w-1/6">{{ elem.user.telephone }}</div>
                     <div class="w-1/6">{{ elem.user.date_joined|date:'d-m-Y' }}</div>
                     <div class="w-1/6 text-right">{{ elem.plafonnement|floate_redefined }} DA</div>
@@ -472,15 +473,9 @@
                     </div>
                     <div class="flex space-x-2 w-1/6 justify-end">
 
-                        {% if 36 in listeauth %}
+                        {% if 40 in listeauth %}
                             <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded"
-                                    onclick="newdatauserview({{ elem.id }}, '{{ elem.user.first_name|escapejs }}', '{{ elem.user.last_name|escapejs }}',
-                                            '{{ elem.user.email|escapejs }}', '{{ elem.user.telephone|escapejs }}', '{{ elem.user.responsable|escapejs }}',
-                                            '{{ elem.code|escapejs }}',  '{{ elem.bloquer }}', '{{ elem.designation|escapejs }}', {{ elem.ville.id }},
-                                            '{{ elem.adresse|escapejs }}', '{{ elem.nif|escapejs }}', '{{ elem.nis|escapejs }}', '{{ elem.art|escapejs }}',
-                                            '{{ elem.rc|escapejs }}', {{ elem.plafonnement }}, {{ elem.echeance_jour }}, {{ elem.ristourn_a }}
-                                            ,{{ elem.ristourn_na }}, {{ elem.objectif_a }}, {{ elem.objectif_m }}, '{{ elem.user.is_active }}',
-                                            '{{ elem.user.username }}', {{ elem.user.id }})">
+                                    onclick="newdatauserview({{ elem.id }})">
                                 <i class="fas fa-search"></i>
                             </button>
                         {% else %}
@@ -489,11 +484,11 @@
                             </button>
                         {% endif %}
 
-                        {% if 34 in listeauth %}
+                        {% if 38 in listeauth %}
                             <button id="editButton" class="editButton bg-blue-500 text-white p-2 rounded"
                                     onclick="newdatauser({{ elem.id }}, '{{ elem.user.first_name|escapejs }}', '{{ elem.user.last_name|escapejs }}',
                                             '{{ elem.user.email|escapejs }}', '{{ elem.user.telephone|escapejs }}', '{{ elem.user.responsable|escapejs }}',
-                                            '{{ elem.code|escapejs }}',  '{{ elem.bloquer }}', '{{ elem.designation|escapejs }}', {{ elem.ville.id }},
+                                            '{{ elem.code|escapejs }}',  '{{ elem.bloquer }}', '{{ elem.designation|escapejs }}', {{ elem.user.ville.id }},
                                             '{{ elem.adresse|escapejs }}', '{{ elem.nif|escapejs }}', '{{ elem.nis|escapejs }}', '{{ elem.art|escapejs }}',
                                             '{{ elem.rc|escapejs }}', {{ elem.plafonnement }}, {{ elem.echeance_jour }}, {{ elem.ristourn_a }}
                                             ,{{ elem.ristourn_na }}, {{ elem.objectif_a }}, {{ elem.objectif_m }}, '{{ elem.user.is_active }}',
@@ -506,7 +501,7 @@
                             </button>
                         {% endif %}
 
-                        {% if 35 in listeauth %}
+                        {% if 39 in listeauth %}
                             <button class="bg-red-500 text-white p-2 rounded delete-btn"
                                     data-identifiant="{{ elem.id }}"><i class="fas fa-trash"></i></button>
                         {% else %}
@@ -534,27 +529,27 @@
 
 
     <script>
-        {% if 7 not in listmodules %}
+        {% if 8 not in listmodules %}
             $("#userslistlink").addClass('hidden');
         {% endif %}
 
-        {% if 14 not in listmodules %}
+        {% if 15 not in listmodules %}
             $("#prodlistlink").addClass('hidden');
         {% endif %}
 
-        {% if 9 not in listmodules %}
+        {% if 10 not in listmodules %}
             $("#distlistlink").addClass('hidden');
         {% endif %}
 
-        {% if 17 not in listmodules %}
+        {% if 18 not in listmodules %}
             $("#cmdlistlink").addClass('hidden');
         {% endif %}
 
-        {% if 21 not in listmodules %}
+        {% if 22 not in listmodules %}
             $("#enclistlink").addClass('hidden');
         {% endif %}
 
-        {% if 26 not in listmodules %}
+        {% if 25 not in listmodules %}
             $("#formslistlink").addClass('hidden');
         {% endif %}
         edit_elem = 0;
@@ -695,51 +690,66 @@
         }
 
 
-        function newdatauserview(id, first_name, last_name, email, telephone, responsable, code, bloque, designation, ville,
-                                 adresse, nif, nis, art, rc, plafonnement, echeance, ristourne_a, ristourne_na, objectif_a, objectif_m,
-                                 isactive, username, user_id) {
+        function newdatauserview(id) {
+
             edit_elem = id;
-            edit_user = user_id;
-            edit_username_old = username;
-            $("#view_username").html(username);
-            $("#view_email").html(email);
-            $("#view_first_name").html(first_name);
-            $("#view_last_name").html(last_name);
-            $("#view_telephone").html(telephone);
 
-            $("#view_code").html(code);
-            $("#view_bloque").html(bloque);
-            $("#view_designation").html(designation);
-            $("#view_ville").html(ville);
-            $("#view_nif").html(nif);
-            $("#view_nis").html(nis);
-            $("#view_art").html(art);
-            $("#view_rc").html(rc);
-            $("#view_plafonnement").html(plafonnement);
-            $("#view_echeance_jour").html(echeance);
-            $("#view_ristourne_a").html(ristourne_a);
-            $("#view_ristourne_na").html(ristourne_na);
-            $("#view_objectif_a").html(objectif_a);
-            $("#view_objectif_m").html(objectif_m);
+            let settings = {
+                url: `/api/distributeur/${edit_elem}`,
+                method: "GET",
+                timeout: 0,
+                headers: {
+                    "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
+                },
+            };
+            $.ajax(settings).done(function (response) {
+                edit_user = response['user']['id'];
+                edit_username_old = response['user']['username'];
+
+                $("#view_username").html("Username: "+ response['user']['username']);
+                $("#view_email").html("Émail: "+ response['user']['email']);
+                $("#view_first_name").html("Prénom: "+ response['user']['first_name']);
+                $("#view_last_name").html("Nom: "+ response['user']['last_name']);
+                $("#view_telephone").html("Téléphone: "+ response['user']['telephone']);
+                $("#view_ville").html("Ville: "+ response['user']['ville_des']);
+
+                if (response['user']['responsable'] === null) {
+                    $("#view_responsable").html('Aucun résponsable');
+                } else {
+                    $("#view_responsable").html("Résponsable:: "+ response['user']['responsable']);
+                }
+
+                if (response['user']['is_active'] === true) {
+                    $('#view_is_active').prop('checked', true);
+                }else{
+                    $('#view_is_active').prop('checked', false);
+                }
+
+                if (response['bloque'] === true) {
+                    $('#view_bloquer').prop('checked', true);
+                }else{
+                    $('#view_bloquer').prop('checked', false);
+                }
 
 
-            if (isactive === "True") {
-                $('#view_is_active').prop('checked', true);
-            }
-
-            if (responsable === "None") {
-                $("#view_responsable").html('');
-            } else {
-                $("#view_responsable").html(responsable);
-            }
-
+                $("#view_code").html("Code:: "+ response['code']);
+                $("#view_designation").html("Désignation: "+ response['designation']);
+                $("#view_nif").html("NIF: "+ response['nif']);
+                $("#view_nis").html("NIS: "+ response['nis']);
+                $("#view_art").html("ART: "+ response['art']);
+                $("#view_rc").html("RC: "+ response['rc']);
+                $("#view_plafonnement").html("Plafonnement: "+ response['plafonnement']);
+                $("#view_echeance_jour").html("Écheance: "+ response['echeance']);
+                $("#view_ristourne_a").html("Ristourne_a: "+ response['ristourne_a']);
+                $("#view_ristourne_na").html("Ristourne_na: "+ response['ristourne_na']);
+                $("#view_objectif_a").html("Objectif_a: "+ response['objectif_a']);
+                $("#view_objectif_m").html("Objectif_m: "+ response['objectif_m']);
+            });
 
         }
 
         $('#userForm').on('submit', function (e) {
-            e.preventDefault(); // Prevent the default form submission
-
-            //var form = new FormData();
+            e.preventDefault();
 
             usernamedefault = 'default_' + getRandomInt(600000);
 
@@ -756,12 +766,13 @@
                     telephone: $telephone.val(),
                     responsable: $responsable.val(),
                     region: $ville.find('option:selected').data('region'),
-                    user_permissions: "84, 92, 88, 37, 40, 60, 68, 67, 66, 65, 76, 96, 100,99,98,97, 101, 102,103, 104, 105, 106, 107, 108", // Assuming this is a string
+                    user_permissions: "88, 96, 92, 41, 44, 64, 72, 71, 70, 69, 80, 100, 104,103,102,101, 105, " +
+                        "102,103, 104, 105, 106, 107, 108", 
                     is_active: $('#is_active').prop('checked'),
+                    ville: parseInt($ville.val()),
                 },
                 code: $code.val(),
                 designation: $designation.val(),
-                ville: $ville.val(),
                 numero: $numero.val(),
                 adresse: $adresse.val(),
                 nif: $nif.val(),
@@ -838,7 +849,8 @@
                     console.log('Error Thrown:', errorThrown);
 
                     // Log the response text, which might contain detailed error messages
-                    console.log('Response Text:', jqXHR.responseText); alert(jqXHR.responseText)
+                    console.log('Response Text:', jqXHR.responseText);
+                    alert(jqXHR.responseText)
 
                     // Optionally, parse the responseText as JSON if it's in JSON format
                     try {
@@ -852,11 +864,25 @@
         });
 
         $('#edituserForm').on('submit', function (e) {
-            e.preventDefault(); // Prevent the default form submission
+            e.preventDefault();
 
-            // Create a plain object to hold the form data
-            var data = {
-                user: {
+            if(edit_username_old === $('#edit_username').val()){
+                userdict = {
+                    id: edit_user,
+                    email: $('#edit_email').val(),
+                    type: 'Distributeur',
+                    first_name: $('#edit_first_name').val(),
+                    last_name: $('#edit_last_name').val(),
+                    telephone: $('#edit_telephone').val(),
+                    responsable: $('#edit_responsable').val(),
+                    region: $('#edit_region').find('option:selected').data('region'),
+                    user_permissions: "88, 96, 92, 41, 44, 64, 72, 71, 70, 69, 80, 100, 104,103,102,101, 105, " +
+                        "102,103, 104, 105, 106, 107, 108",
+                    is_active: $('#edit_is_active').prop('checked'),
+                    ville: parseInt($('#edit_ville').val()),
+                }
+            }else{
+                userdict = {
                     id: edit_user,
                     username: $('#edit_username').val(),
                     email: $('#edit_email').val(),
@@ -866,12 +892,17 @@
                     telephone: $('#edit_telephone').val(),
                     responsable: $('#edit_responsable').val(),
                     region: $('#edit_region').find('option:selected').data('region'),
-                    user_permissions: "84, 92, 88, 37, 40, 60, 68, 67, 66, 65, 76, 96, 100,99,98,97, 101, 102,103, 104, 105, 106, 107, 108",
+                    user_permissions: "88, 96, 92, 41, 44, 64, 72, 71, 70, 69, 80, 100, 104,103,102,101, 105, " +
+                        "102,103, 104, 105, 106, 107, 108",
                     is_active: $('#edit_is_active').prop('checked'),
-                },
+                    ville: parseInt($('#edit_ville').val()),
+                }
+            }
+
+            var data = {
+                user: userdict,
                 code: $('#edit_code').val(),
                 designation: $('#edit_designation').val(),
-                ville: $('#edit_ville').val(),
                 numero: $('#edit_numero').val(),
                 adresse: $('#edit_adresse').val(),
                 nif: $('#edit_nif').val(),
@@ -913,7 +944,8 @@
                     console.log('jqXHR:', jqXHR);
                     console.log('Status:', textStatus);
                     console.log('Error Thrown:', errorThrown);
-                    console.log('Response Text:', jqXHR.responseText); alert(jqXHR.responseText)
+                    console.log('Response Text:', jqXHR.responseText);
+                    alert(jqXHR.responseText)
 
                     // Try to parse the response if it's in JSON format
                     try {

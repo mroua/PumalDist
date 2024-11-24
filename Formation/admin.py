@@ -1,3 +1,7 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Formation, FormationSingup, Problematique
+
+admin.site.register(Formation)
+admin.site.register(FormationSingup)
+admin.site.register(Problematique)

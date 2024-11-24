@@ -367,13 +367,24 @@
         </div>
 
         <div class="flex justify-between items-center pt-4 mb-4" style="margin-top: -8px">
-            <h2 class="text-2xl font-bold textslate">Liste des payeurs</h2>
+            <div class="flex gap-2">
+                <div>
+                    <a href="{% url 'distributeur' %}"
+                       class="block px-4 py-2 hoverprimer rounded">Distributeur</a>
+                </div>
+                <div><!-- accomptes -->
+                    <a href="{% url 'payeur' %}" class="block px-4 py-2 hoverprimer rounded">Payeur</a>
+                </div>
+                <div><!-- accomptes -->
+                    <a href="{% url 'payeurdraft' %}" class="block px-4 py-2 actualprimer rounded">Nouveau Payeur</a>
+                </div>
+            </div>
             <div>
                 <button id="filterButton" class="bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-700">Filtrer
                 </button>
 
 
-                {% if 37 in listeauth %}
+                {% if 41 in listeauth %}
                     <button id="addButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
                         hover:bg-blue-900 hover:border-slate-400 rounded-md">Ajouter
                     </button>
@@ -417,7 +428,7 @@
                         Bloqué {% else %} Actif {% endif %}</span>
                     </div>
                     <div class="flex space-x-2 w-1/6 justify-end">
-                        {% if 40 in listeauth %}
+                        {% if 44 in listeauth %}
                             <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded">
                                 <i class="fas fa-search"
                                    onclick="newdatauserview({{ elem.id }}, {{ elem.distributeur.id }}, '{{ elem.code }}', '{{ elem.designation }}', {{ elem.ville.id }}
@@ -432,7 +443,7 @@
                             </button>
                         {% endif %}
 
-                        {% if 38 in listeauth %}
+                        {% if 42 in listeauth %}
                             <button id="editButton" class="editButton bg-blue-500 text-white p-2 rounded">
                                 <i class="fas fa-pencil-alt"
                                    onclick="newdatauser({{ elem.id }}, {{ elem.distributeur.id }}, '{{ elem.code }}', '{{ elem.designation }}', {{ elem.ville.id }}
@@ -447,7 +458,7 @@
                             </button>
                         {% endif %}
 
-                        {% if 39 in listeauth %}
+                        {% if 43 in listeauth %}
                             <button class="bg-red-500 text-white p-2 rounded delete-btn"
                                     data-identifiant="{{ elem.id }}"><i class="fas fa-trash"></i></button>
                         {% else %}
@@ -474,27 +485,27 @@
 
     <script>
 
-        {% if 7 not in listmodules %}
+        {% if 8 not in listmodules %}
             $("#userslistlink").addClass('hidden');
         {% endif %}
 
-        {% if 14 not in listmodules %}
+        {% if 15 not in listmodules %}
             $("#prodlistlink").addClass('hidden');
         {% endif %}
 
-        {% if 9 not in listmodules %}
+        {% if 10 not in listmodules %}
             $("#distlistlink").addClass('hidden');
         {% endif %}
 
-        {% if 17 not in listmodules %}
+        {% if 18 not in listmodules %}
             $("#cmdlistlink").addClass('hidden');
         {% endif %}
 
-        {% if 21 not in listmodules %}
+        {% if 22 not in listmodules %}
             $("#enclistlink").addClass('hidden');
         {% endif %}
 
-        {% if 26 not in listmodules %}
+        {% if 25 not in listmodules %}
             $("#formslistlink").addClass('hidden');
         {% endif %}
         edit_payeur_id = 0;

@@ -51,12 +51,14 @@
         <div class="flex justify-between items-center pt-4 mb-4" style="margin-top: -8px">
             <div class="flex gap-2">
                 <div>
-                    <a href="{% url 'distributeur' %}"
+                    <a href="/profile/"
                        class="block px-4 py-2 actualprimer rounded">Profile</a>
                 </div>
-                <div>
-                    <a href="{% url 'payeur' %}" class="block px-4 py-2 hoverprimer rounded">Historique</a>
-                </div>
+                {% if request.user.type == "Admin" %}
+                    <div>
+                        <a href="{% url 'hisdisp' %}" class="block px-4 py-2 hoverprimer rounded">Historique</a>
+                    </div>
+                {% endif %}
             </div>
             <div>
                 <button id="filterButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
@@ -141,7 +143,7 @@
                                     <i class="uil uil-multiply text-4xl"></i>
                                 {% endif %}
 
-                                {% if 9 in listmodules %}
+                                {% if 10 in listmodules %}
                                     <i class="uil uil-check text-4xl"></i>
                                 {% else %}
                                     <i class="uil uil-multiply text-4xl"></i>

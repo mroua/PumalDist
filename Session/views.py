@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login as dj_login, logout
 from django.contrib.auth.models import Permission
 from django.db.models import Q
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
@@ -20,7 +20,6 @@ class LoginView(APIView):
     http_method_names = ['post', 'get']
 
     def post(self, request):
-        print("post")
         username = request.data.get('username')
         password = request.data.get('password')
 
@@ -38,7 +37,6 @@ class LoginView(APIView):
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
     def get(self, request):
-        print("get")
         if request.user.is_authenticated:
             return redirect('/users/')  # Redirect to the dashboard or another page
         return render(request, "Login.html")
@@ -72,6 +70,12 @@ class ProfileViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['user'] = self.request.user
+
+        return context
+
     def update(self, request, *args, **kwargs):
         partial = True  # Allow partial updates
         instance = self.get_object()
@@ -86,10 +90,12 @@ def Utilisateurs(request):
     listmodules  = list(
         set(request.user.user_permissions.values_list('content_type_id', flat=True))
     )
-    if(7 in listmodules):
+    listville= Ville.objects.all()
+
+    if(8 in listmodules):
         listeauth = list(
             set(
-                Permission.objects.filter(user=request.user, content_type = 7).values_list('id', flat=True)
+                Permission.objects.filter(user=request.user, content_type = 8).values_list('id', flat=True)
             )
         )
 
@@ -112,17 +118,16 @@ def Utilisateurs(request):
             'users_select': users_select,
             'listeauth': listeauth,
             "listmodules": listmodules,
+            "listville": listville
         })
     else:
         return render(request,"access.html", {"listmodules": listmodules})
 
 
 def test2(request):
-    print("here")
     user = CustomUser.objects.get(id=1)
     user.set_password("123456")
     user.save()
-    print("done")
     return HttpResponse("Done")
 
 @login_required
@@ -231,8 +236,52 @@ def ProfilePage(request):
         listmodules  = list(
             set(request.user.user_permissions.values_list('content_type_id', flat=True))
         )
-        print(listmodules)
 
         return render(request, 'Pumal/Profile.html', {
             'listmodules': listmodules
         })
+
+
+
+class Historynotif(APIView):
+    #permission_classes = [IsAuthenticated]
+    http_method_names = ['get']
+
+    def get(self, request):
+        listcmd = []
+
+        query = """SELECT id, elem_id, user_representative, action_flag, old_msg, new_msg, content_type, "user", vue, viewer_id, 
+        creation_date, url, msg, urllink FROM historyview where vue=false and viewer_id="""+str(request.user.id) + """ limit 10"""
+
+        with connection.cursor() as cursor:
+            # Execute the SQL query with parameters
+            cursor.execute(query)
+
+            rows = cursor.fetchall()
+
+            for row in rows:
+
+                listcmd.append({
+                    "id": row[0],
+                    "url": row[13],
+                    "msg": row[12]
+                })
+
+
+        return JsonResponse(listcmd, safe=False)
+
+@login_required
+def HistoryDatadisp(request):
+    listmodules  = list(
+        set(request.user.user_permissions.values_list('content_type_id', flat=True))
+    )
+    if(request.user.type == "Admin"):
+        listhistory = History.objects.filter(user=request.user.id)
+
+
+        return render(request, "Pumal/Historique.html", {
+            "listmodules": listmodules,
+            "listhistory": listhistory,
+        })
+    else:
+        return render(request,"access.html", {"listmodules": listmodules})

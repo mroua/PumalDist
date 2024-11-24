@@ -8,7 +8,7 @@ from django.http import HttpResponseForbidden
 
 class APILogMiddleware(MiddlewareMixin):
     def process_view(self, request, view_func, view_args, view_kwargs):
-        if request.user.is_authenticated:
+        """if request.user.is_authenticated:
             action_flag = None
             if request.method == 'POST':
                 action_flag = ADDITION
@@ -29,5 +29,5 @@ class APILogMiddleware(MiddlewareMixin):
                     object_repr=force_str(request.user),
                     action_flag=action_flag,
                     change_message=f"{request.method} request on API endpoint {request.path}"
-                )
+                )"""
         return None

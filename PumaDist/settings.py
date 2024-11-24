@@ -61,6 +61,8 @@ MIDDLEWARE = [
     'Session.middleware_api_log.APILogMiddleware',
 
     'corsheaders.middleware.CorsMiddleware',
+
+    'Session.middleware.UserURLHistoryMiddleware',
 ]
 
 ROOT_URLCONF = 'PumaDist.urls'

@@ -1,5 +1,7 @@
 from django.db.models import Sum
 from rest_framework import serializers
+
+from PumaDist.addhistory import addhistory
 from .models import Factures, Encaissement, Account, EncaissementFacture, Banque
 from datetime import datetime, timedelta
 from datetime import date
@@ -41,7 +43,7 @@ class AccountSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         # Modify the representation to include the extra fields only on GET requests
         representation = super().to_representation(instance)
-        if self.context['request'].method == 'GET':
+        try:
             # Add extra fields to the representation
             representation['payeur_designation'] = instance.payeur.designation
             representation['distributeur_designation'] = instance.payeur.distributeur.designation
@@ -49,16 +51,22 @@ class AccountSerializer(serializers.ModelSerializer):
                 representation['banque_designation'] = instance.banque.designation + " (" + instance.banque.code + ")"
             else:
                 representation['banque_designation'] = 'Aucune'
-
+        except Exception:
+            pass
         return representation
 
     def update(self, instance, validated_data):
         for attr, value in validated_data.items():
-            print(value)
+
             setattr(instance, attr, value)
             if (attr == "validation_depot"): instance.date_depot = date.today()
             if (attr == "validation"): instance.date_validation = date.today()
         instance.save()
+
+
+        serializer = FacturesSerializer(instance)
+
+        addhistory({}, serializer.data, 20, 2, user=self.context.get('user'))
         return instance
 
 
@@ -70,11 +78,12 @@ class FacturesSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         # Modify the representation to include the extra fields only on GET requests
         representation = super().to_representation(instance)
-        if self.context['request'].method == 'GET':
+        #if self.context['request'].method == 'GET':
             # Add extra fields to the representation
+        try:
             representation['payeur_designation'] = instance.payeur.designation
             representation[
-                'distributeur_nom'] = instance.payeur.distributeur.user.first_name + ' ' + instance.payeur.distributeur.user.last_name
+                    'distributeur_nom'] = instance.payeur.distributeur.user.first_name + ' ' + instance.payeur.distributeur.user.last_name
             representation['distributeur_designation'] = instance.payeur.distributeur.designation
             representation['montant_ttc'] = instance.montant_ttc
             listeencaissement = EncaissementFacture.objects.filter(facture=instance)
@@ -82,6 +91,8 @@ class FacturesSerializer(serializers.ModelSerializer):
             serialized_data = serializer.data
 
             representation['listeencaissement'] = serialized_data
+        except Exception:
+            pass
 
         return representation
 
@@ -101,6 +112,11 @@ class FacturesSerializer(serializers.ModelSerializer):
         # Calculate and update montant_ttc
         facture.montant_ttc = facture.montant * 0.19 + facture.montant
         facture.save()  # Save the updated instance to the database
+
+
+        serializer = FacturesSerializer(facture)
+
+        addhistory({}, serializer.data, 23, 1, user=self.context.get('user'))
 
         return facture
 
@@ -135,23 +151,24 @@ class EncaissementSerializer(serializers.ModelSerializer):
         # Modify the representation to include the extra fields only on GET requests
         representation = super().to_representation(instance)
 
-        print(representation)
 
-        if self.context['request'].method == 'GET':
+        #if self.context['request'].method == 'GET':
             # Add extra fields to the representation
+        try:
             representation['payeur_designation'] = instance.payeur.designation
             representation['distributeur_designation'] = instance.payeur.distributeur.designation
-            # representation['distributeur_designation'] = instance.payeur.distributeur.user.first_name+' '+instance.payeur.distributeur.user.last_name
+                # representation['distributeur_designation'] = instance.payeur.distributeur.user.first_name+' '+instance.payeur.distributeur.user.last_name
             if (instance.type in ["Cheque", "Virement"]):
                 representation['banque_designation'] = instance.banque.designation + " (" + instance.banque.code + ")"
             else:
                 representation['banque_designation'] = 'Aucune'
+        except Exception:
+            pass
 
         return representation
 
     def create(self, validated_data):
         factures_ids = validated_data.pop('factures')
-
 
         # Check if the type is "Espece"
         if validated_data.get('type') == "Espece":
@@ -208,7 +225,7 @@ class EncaissementSerializer(serializers.ModelSerializer):
         else:
             remaining_montant = 0
             payeur = validated_data['payeur']
-            print(payeur)
+
 
             # If there's remaining montant, use account funds
         if remaining_montant >= 0:
@@ -246,8 +263,7 @@ class EncaissementSerializer(serializers.ModelSerializer):
                         break
 
         # If there's still remaining montant, create a new account
-        print("************************")
-        print(remaining_montant)
+
 
 
         # Update the `complet` field based on whether the total montant_ttc is fully covered
@@ -258,6 +274,10 @@ class EncaissementSerializer(serializers.ModelSerializer):
             facture.complete = total_encaissement >= facture.montant_ttc
             facture.save()
 
+
+        serializer = EncaissementSerializer(encaissement)
+
+        addhistory({}, serializer.data, 22, 1, user=self.context.get('user'))
 
         return "done"
 

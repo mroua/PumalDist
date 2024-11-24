@@ -21,16 +21,24 @@ class ProduitViewSet(viewsets.ModelViewSet):
 
     filterset_fields = ['type', 'mesure', 'couleur', 'active']
 
+
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['user'] = self.request.user
+
+        return context
+
 @login_required
 def ProduitView(request):
     listmodules  = list(
         set(request.user.user_permissions.values_list('content_type_id', flat=True))
     )
 
-    if (14 in listmodules):
+    if (15 in listmodules):
         listeauth = list(
             set(
-                Permission.objects.filter(user=request.user, content_type = 14).values_list('id', flat=True)
+                Permission.objects.filter(user=request.user, content_type = 15).values_list('id', flat=True)
             )
         )
 
@@ -56,7 +64,6 @@ class ProductList(APIView):
     http_method_names = ['get']
 
     def get(self, request):
-        print('coucou')
         lise_prod = []
 
         # Retrieve filter parameters from the request
@@ -104,8 +111,6 @@ class ProductList(APIView):
         # If there are any filters, append them to the query
         if filters:
             query += " AND " + " AND ".join(filters)
-        print(query)
-        print(params)
 
         formatted_query = query.replace('%s', '{}').format(*params)
 
@@ -114,9 +119,9 @@ class ProductList(APIView):
             cursor.execute(formatted_query)
 
             rows = cursor.fetchall()
-            print(rows)
+
             for row in rows:
-                print(row)
+
                 lise_prod.append({
                     "produit_id": row[0],
                     "designation": row[1],

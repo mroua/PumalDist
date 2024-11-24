@@ -65,7 +65,7 @@
                 <!-- Header Section -->
                 <div class="flex flex-col md:flex-row items-center md:items-start md:space-x-8">
                     <!-- Profile Photo -->
-                    <div class="flex-shrink-0 relative">
+                    <!--<div class="flex-shrink-0 relative">
 
                         <input type="file" id="photo" name="photo"
                                class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md"
@@ -73,14 +73,14 @@
                                style="opacity: 0; position: absolute; top: 0; left: 0; width: 160px; height: 160px">
                         <div id="photoPreview"
                              class="w-40 h-40 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden border-4 border-blue-500">
-                            <img id="previewImage" src="{% if request.user.photo %}
-                                        {{ request.user.photo.url }}
-                                    {% else %}
-                                        {% static 'images/blank-profile.webp' %}
-                                    {% endif %}" alt="Preview" class="w-full h-full object-cover">
+                            <img id="previewImage" src="{ % if request.user.photo %}
+                                        { { request.user.photo.url }}
+                                    { % else %}
+                                        { % static 'images/blank-profile.webp' %}
+                                    { % endif %}" alt="Preview" class="w-full h-full object-cover">
                         </div>
 
-                    </div>
+                    </div>-->
                     <!-- User Info -->
                     <div class="flex-grow">
                         <div class="grid grid-cols-2 gap-4 text-center md:text-left">
@@ -93,6 +93,11 @@
                                 <input type="text" id="last_name" name="last_name" placeholder="Nom"
                                        value="{{ request.user.last_name }}"
                                        class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                            </div>
+                            <div>
+                                <input type="text" id="username" name="username" placeholder="Username"
+                                       value="{{ request.user.username }}"
+                                       class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
                             </div>
                             <div>
                                 <input type="email" id="email" name="email" placeholder="Email"
@@ -118,7 +123,7 @@
                                     {% endfor %}
                                 </select>
                             </div>
-                            <div class="col-span-2">
+                            <div>
                                 <input type="text" id="adresse" name="adresse" placeholder="Adresse"
                                        value="{{ request.user.distributeur_set.first.adresse }}"
                                        class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
@@ -146,25 +151,6 @@
 
                         </div>
                         <div class="flex-grow grid grid-cols-3 gap-4 text-center mt-3 md:text-left">
-
-                            <div class="mt-1 p-2 block textprimer w-full shadow-sm sm:border-gray-300 bg-white rounded-md">
-                                Plafonnement: {{ request.user.distributeur_set.first.plafonnement }}
-                            </div>
-                            <div class="mt-1 p-2 block textprimer w-full shadow-sm sm:border-gray-300 bg-white rounded-md">
-                                Échéance: {{ request.user.distributeur_set.first.echeance_j }}
-                            </div>
-                            <div class="mt-1 p-2 block textprimer w-full shadow-sm sm:border-gray-300 bg-white rounded-md">
-                                Ristourn_a: {{ request.user.distributeur_set.first.ristourn_a }}
-                            </div>
-                            <div class="mt-1 p-2 block textprimer w-full shadow-sm sm:border-gray-300 bg-white rounded-md">
-                                Ristourn_na: {{ request.user.distributeur_set.first.ristourn_na }}
-                            </div>
-                            <div class="mt-1 p-2 block textprimer w-full shadow-sm sm:border-gray-300 bg-white rounded-md">
-                                Objective_a: {{ request.user.distributeur_set.first.objective_a }}
-                            </div>
-                            <div class="mt-1 p-2 block textprimer w-full shadow-sm sm:border-gray-300 bg-white rounded-md">
-                                Objective_m: {{ request.user.distributeur_set.first.objective_m }}
-                            </div>
 
                         </div>
 
@@ -300,7 +286,7 @@
             }
         });
 
-        document.getElementById('photo').addEventListener('change', function (event) {
+        /*document.getElementById('photo').addEventListener('change', function (event) {
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
@@ -310,41 +296,49 @@
                 };
                 reader.readAsDataURL(file);
             }
-        });
+        });*/
 
 
         $('#editerprof').on("click", function (e) {
             e.preventDefault()
-            var form = new FormData();
 
-            // Add basic form data
-            form.append("first_name", $('#first_name').val());
-            form.append("last_name", $('#last_name').val());
-            form.append("email", $('#email').val());
-            form.append("telephone", $('#telephone').val());
-
-            // Add the photo
-            var photoFile = $('#photo')[0].files[0];
-            if (photoFile) {
-                form.append("photo", photoFile);
-            }
-
-            var settings = {
-                "url": "/api/user/{{ request.user.id }}/",
-                "method": "PUT",
-                "timeout": 0,
-                "headers": {
-                    "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),  // Assuming you have CSRF token in your template context
+            var data = {
+                "user": {
+                    "id": {{ request.user.id }},
+                    "email": $('#email').val() ,
+                    "username": $('#username').val() ,
+                    "first_name": $('#first_name').val(),
+                    "last_name": $('#last_name').val(),
+                    "telephone": $('#telephone').val()
                 },
-                "processData": false,
-                "contentType": false,
-                "data": form
-            };
+                "designation": $('#designation').val(),
+                "ville": $('#ville').val(),
+                "adresse": $('#adresse').val(),
+                "nif": $('#nif').val(),
+                "nis": $('#nis').val(),
+                "art": $('#art').val(),
+                "rc": $('#rc').val(),
+            }
+             
+            
+            
+            
+            console.log(data)
+            
+            var settings = {
+                    "url": '/api/distributeur/{{ request.user.distributeur_set.first.id }}/', // Replace with your actual API endpoint
+                    "method": "PUT",
+                    "timeout": 0,
+                    "headers": {
+                        "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),  
+                    },
+                    "contentType": "application/json",
+                    "data": JSON.stringify(data)
+                };
+
 
             $.ajax(settings)
                 .done(function (response) {
-                    console.log(response);
-
                     window.location.href = /profile/;
                 })
                 .fail(function (jqXHR, textStatus, errorThrown) {

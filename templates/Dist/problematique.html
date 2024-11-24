@@ -1,0 +1,616 @@
+{% extends "baseNew.html" %}
+{% load mes_tags %}
+{% load static %}
+{% block title %}Problématique{% endblock %}
+
+{% block content %}
+    <div class="w-full h-full backprimer px-4 pb-4 flex flex-col">
+        <!-- Add Produit Sidebar -->
+        <div id="addSidebar"
+             class="fixed right-0 top-0 bottom-0 w-2/5 backprimer shadow-lg transform translate-x-full transition-transform duration-300 z-50 textslate">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 class="text-lg font-semibold textslate">Signaler un probleme</h3>
+                <button id="closeSidebar" class="text-xl">&times;</button>
+            </div>
+            <!-- Add Produit Form -->
+            <div class="p-4">
+                <form id="ProbForm" class="">
+                    <div class="overflow-y-auto containerdef2 px-4">
+                        <div class="mb-4">
+                            <div>
+                                <select id="type" name="type"
+                                        class="mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                    <option value="Reclamation">Reclamation</option>
+                                    <option value="Intervention">Intervention</option>
+                                </select>
+                            </div>
+                            <div>
+                                <input type="text" id="intitule" name="intitule" placeholder="Intitule"
+                                       class="mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                            </div>
+                            <div>
+                                <textarea id="message" rows="8"
+                                          class="mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                          placeholder="Votre message d'erreur"></textarea>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="flex justify-end pb-3">
+                        <button id="subprob" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400">
+                            Ajouter
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Edit Produit Sidebar -->
+        <div id="editSidebar"
+             class="fixed right-0 top-0 bottom-0 w-2/5 backprimer shadow-lg transform translate-x-full transition-transform duration-300 z-50"
+             style="margin-top: -8px">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 class="text-lg font-semibold textslate">Editer produit: </h3>
+                <button id="closeEditSidebar" class="text-xl">&times;</button>
+            </div>
+            <!-- Edit Produit Form -->
+            <div class="p-4 overflow-y-auto">
+                <form id="editProduitForm">
+                    <div class="overflow-y-auto containerdef2 px-4">
+                        <div class="mb-4">
+                            <div>
+                                <select id="edittype" name="edittype"
+                                        class="mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                    <option value="Reclamation">Reclamation</option>
+                                    <option value="Intervention">Intervention</option>
+                                </select>
+                            </div>
+                            <div>
+                                <input type="text" id="editintitule" name="editintitule" placeholder="Intitule"
+                                       class="mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                            </div>
+                            <div>
+                                <textarea id="editmessage" rows="8"
+                                          class="mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                          placeholder="Votre message d'erreur"></textarea>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div class="flex justify-end">
+                        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400">
+                            Modifier
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- View Produit Sidebar -->
+        <div id="viewSidebar"
+             class="fixed right-0 top-0 bottom-0 w-2/5 backprimer shadow-lg transform translate-x-full transition-transform duration-300 z-50"
+             style="margin-top: -8px">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 class="text-lg font-semibold textslate">Page produit: </h3>
+                <button id="closeViewSidebar" class="text-xl">&times;</button>
+            </div>
+            <!-- Edit Produit Form -->
+            <div class="p-4 overflow-y-auto">
+                <div class="overflow-y-auto containerdef2">
+                    <div class="mb-4">
+                        <div id="viewtype" name="viewtype"
+                             class="backslate mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+
+                        </div>
+                        <div type="text" id="viewintitule"
+                             class="backslate mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+
+                        </div>
+                        <div id="viewmessage" rows="8"
+                             class="backslate mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                             placeholder="Votre message d'erreur">
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="flex justify-between">
+                    <div id="editdiv"></div>
+                    <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400">
+                        Modifier
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Modal -->
+        <div id="filterModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40 flex items-center justify-center"
+             style="margin-top: -16px">
+            <div class="bg-white w-1/3 rounded-lg shadow-lg">
+                <div class="flex justify-between items-center p-4 border-b">
+                    <h3 class="text-lg font-semibold">Filtres</h3>
+                    <button id="closeFilterModal" class="text-gray-500 hover:text-gray-700">&times;</button>
+                </div>
+                <div class="p-4">
+                    <!-- Filter Form -->
+                </div>
+            </div>
+        </div>
+
+        <div class="flex justify-between items-center pt-4 mb-4" style="margin-top: -8px">
+            <div class="flex gap-2">
+                <div>
+                    <a href="{% url 'formation' %}"
+                       class="block px-4 py-2 hoverprimer rounded">Formation</a>
+                </div>
+                <div><!-- accomptes -->
+                    <a href="{% url 'problematique' %}" class="block px-4 py-2 actualprimer rounded">Problematique</a>
+                </div>
+            </div>
+            <div>
+                <button id="filterButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
+                    hover:bg-blue-900 hover:border-slate-400 rounded-md">Filtrer
+                </button>
+
+                    <button id="addButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
+                        hover:bg-blue-900 hover:border-slate-400 rounded-md">Ajouter
+                    </button>
+
+
+            </div>
+        </div>
+        <hr/>
+
+        <!-- Produit List Headers -->
+        <div class="pt-4">
+            <div class="flex items-center justify-between text-gray-600 font-semibold px-4 defaultboldval">
+                <div class="w-1/4 capitalize">Distributeur</div>
+                <div class="w-1/8 capitalize">Intitulé</div>
+                <div class="w-1/8 capitalize">Type</div>
+                <div class="w-1/8 capitalize">État</div>
+                <div class="w-1/8 capitalize mr-6">Date Ajout</div>
+                <div class="w-1/8 capitalize text-center">Actions</div>
+            </div>
+        </div>
+
+        <!-- Produit List -->
+        <div class="flex-grow shadow-md rounded-b-lg backslateprime p-2 overflow-y-auto textslate">
+            {% for elem in problematique %}
+
+                <div class="flex items-center justify-between p-2 backslateslite flex-none mb-2">
+                    <div class="w-1/4">
+                        <h3 class="font-bold text-blue-600">{{ elem.profile.designation }}</h3>
+                        <p class="text-sm textslate">{{ elem.profile.user.first_name }} {{ elem.profile.user.last_name }}</p>
+                    </div>
+                    <div class="w-1/8">{{ elem.intitule }}</div>
+                    <div class="w-1/8">{{ elem.type }}</div>
+                    <div class="w-1/8">{{ elem.etat }}</div>
+                    <div class="w-1/8">
+                        {{ elem.date_ajout|date:'Y-m-d' }}
+                    </div>
+                    <div class="flex space-x-2 w-1/8 justify-end">
+                        {% if 104 in listeauth %}
+                            <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded"
+                                    data-identifiant="{{ elem.id }}">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        {% else %}
+                            <button class="cursor-not-allowed bg-gray-500 text-white p-2 rounded"
+                                    data-identifiant="{{ elem.id }}">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        {% endif %}
+
+                        {% if 102 in listeauth and elem.etat == "Reception" %}
+                            <button id="editButton" class="editButton bg-blue-500 text-white p-2 rounded"
+                                    data-identifiant="{{ elem.id }}">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                        {% else %}
+                            <button class="cursor-not-allowed bg-gray-500 text-white p-2 rounded"
+                                    data-identifiant="{{ elem.id }}">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                        {% endif %}
+
+                        {% if 103 in listeauth %}
+                            <button class="bg-red-500 text-white p-2 rounded delete-btn"
+                                    data-identifiant="{{ elem.id }}"><i class="fas fa-trash"></i></button>
+                        {% else %}
+                            <button class="cursor-not-allowed bg-gray-500 text-white p-2 rounded"><i
+                                    class="fas fa-trash"></i></button>
+                        {% endif %}
+
+
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div id="deleteModal" class="fixed inset-0 flex items-center justify-center hidden bg-gray-800 bg-opacity-50">
+            <div class="bg-white p-4 rounded-lg w-96">
+                <h2 class="text-lg font-semibold text-gray-700 mb-4">Confirmer la suppression</h2>
+                <p>Etes vous sure de vouloir supprimer cet element?</p>
+                <div class="mt-6 flex justify-end space-x-4">
+                    <button id="cancelDelete" class="px-4 py-2 bg-gray-300 rounded">Annuler</button>
+                    <button id="confirmDelete" class="px-4 py-2 bg-red-500 text-white rounded">Supprimer</button>
+                </div>
+            </div>
+        </div>
+
+
+        <script>
+
+            {% if 8 not in listmodules %}
+                $("#userslistlink").addClass('hidden');
+            {% endif %}
+
+            {% if 15 not in listmodules %}
+                $("#prodlistlink").addClass('hidden');
+            {% endif %}
+
+            {% if 10 not in listmodules %}
+                $("#distlistlink").addClass('hidden');
+            {% endif %}
+
+            {% if 18 not in listmodules %}
+                $("#cmdlistlink").addClass('hidden');
+            {% endif %}
+
+            {% if 22 not in listmodules %}
+                $("#enclistlink").addClass('hidden');
+            {% endif %}
+
+            {% if 25 not in listmodules %}
+                $("#formslistlink").addClass('hidden');
+            {% endif %}
+            edit_elem = 0;
+
+            $reference = $('#reference');
+            $photo = $('#photo');
+            $designation = $('#designation');
+            $type = $('#type');
+            $couleur = $('#couleur');
+            $typemesure = $('#typemesure');
+            $mesure = $('#mesure');
+            $prix_publique = $('#prix_publique');
+            $Prix_Gros = $('#Prix_Gros');
+
+
+            // Toggle the sidebar
+            $('#addButton').on('click', function () {
+                $('#addSidebar').toggleClass('translate-x-full');
+            });
+
+            // Toggle the sidebar edit
+            $('.editButton').on('click', function () {
+                identifiant = $(this).data('identifiant');
+                let settings = {
+                    url: `/api/problematique/${identifiant}`,
+                    method: "GET",
+                    timeout: 0,
+                    headers: {
+                        "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
+                    },
+                };
+
+                $.ajax(settings).done(function (response) {
+
+                    let responsedata = response;
+
+                    $('#edittype').val(responsedata['type'])
+                    $('#editintitule').val(responsedata['intitule'])
+                    $('#editmessage').val(responsedata['message'])
+
+
+                    $('#editSidebar').toggleClass('translate-x-full');
+
+
+                });
+
+            });
+
+            // Toggle the sidebar view
+            $('.viewButton').on('click', function () {
+                identifiantview = $(this).data('identifiant');
+
+                let settings = {
+                    url: `/api/problematique/${identifiantview}`,
+                    method: "GET",
+                    timeout: 0,
+                    headers: {
+                        "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
+                    },
+                };
+
+                $.ajax(settings).done(function (response) {
+                    let responsedata = response;
+
+
+                    $('#viewtype').html(responsedata['type'])
+                    $('#viewintitule').html(responsedata['intitule'])
+                    $('#viewmessage').html(responsedata['message'])
+                    $('#editdiv').html('')
+                    if (responsedata['etat'] === "Reception") {
+                        $('#editdiv').append(`<button onclick="callstate(${identifiantview}, 'En cours')" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
+                            hover:bg-blue-900 hover:border-slate-400 rounded-md">Lancer le traitement
+                        </button>`)
+                    } else if (responsedata['etat'] === "En cours") {
+                        $('#editdiv').append(`<button onclick="callstate(${identifiantview}, 'Validation')" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
+                            hover:bg-blue-900 hover:border-slate-400 rounded-md">Valider
+                        </button>`)
+                    } else {
+                        $('#editdiv').html(html)
+                    }
+
+                    $('#viewSidebar').toggleClass('translate-x-full');
+                });
+
+            });
+
+            // Close the sidebar
+            $('#closeSidebar').on('click', function () {
+                $('#addSidebar').addClass('translate-x-full');
+            });
+
+            // Close the sidebar
+            $('#closeEditSidebar').on('click', function () {
+                $('#editSidebar').addClass('translate-x-full');
+            });
+
+            // Close the sidebar
+            $('#closeViewSidebar').on('click', function () {
+                $('#viewSidebar').addClass('translate-x-full');
+            });
+
+
+            // Show the filter modal
+            $('#filterButton').on('click', function () {
+                $('#filterModal').removeClass('hidden');
+            });
+
+            // Close the filter modal
+            $('#closeFilterModal').on('click', function () {
+                $('#filterModal').addClass('hidden');
+            });
+
+            // Close sidebar when clicking outside
+            $(document).on('click', function (e) {
+                if (!$(e.target).closest('#addButton, #addSidebar').length) {
+                    $('#addSidebar').addClass('translate-x-full');
+                }
+            });
+
+            // Close sidebar when clicking outside
+            $(document).on('click', function (e) {
+                if (!$(e.target).closest('#editButton, #editSidebar').length) {
+                    $('#editSidebar').addClass('translate-x-full');
+                }
+            });
+
+            // Close filter modal when clicking outside
+            $(document).on('click', function (e) {
+                if (!$(e.target).closest('#filterButton, #filterModal').length) {
+                    $('#filterModal').addClass('hidden');
+                }
+            });
+
+            function callstate(id, etat) {
+                alert("je suis la")
+                dataview = JSON.stringify({
+                    "type": $('#viewtype').html(),
+                    "profile": 1,
+                    "intitule": $('#viewintitule').html(),
+                    "message": $('#viewmessage').html(),
+                    "etat": etat
+                });
+
+                var settings = {
+                    "url": "/api/problematique/" + id + "/",
+                    "method": "PUT",
+                    "timeout": 0,
+                    "headers": {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),
+                    },
+                    "data": JSON.stringify({
+                        "type": $('#viewtype').html,
+                        "intitule": $('#viewintitule').html,
+                        "message": $('#viewmessage').html,
+                        "etat": JSON.stringify({
+                            "type": $('#viewtype').html(),
+                            "profile": 1,
+                            "intitule": $('#viewintitule').html(),
+                            "message": $('#viewmessage').html(),
+                            "etat": etat
+                        })
+                    })
+                };
+
+
+                $.ajax(settings)
+                    .done(function (response) {
+                        console.log(response);
+                        window.location.href = "/formation/problematique";
+                    })
+                    .fail(function (jqXHR, textStatus, errorThrown) {
+                        // Log the entire jqXHR object to see all details
+                        console.log('jqXHR:', jqXHR);
+
+                        // Log the status text
+                        console.log('Status:', textStatus);
+
+                        // Log the error thrown
+                        console.log('Error Thrown:', errorThrown);
+
+                        // Log the response text, which might contain detailed error messages
+                        console.log('Response Text:', jqXHR.responseText); alert(jqXHR.responseText)
+
+                        // Optionally, parse the responseText as JSON if it's in JSON format
+                        try {
+                            var responseJSON = JSON.parse(jqXHR.responseText);
+                            console.log('Response JSON:', responseJSON);
+                        } catch (e) {
+                            console.error('Failed to parse response as JSON:', e);
+                        }
+
+                    });
+
+            }
+
+
+            $('#subprob').on('click', function (e) {
+                e.preventDefault(); // Prevent the default form submission
+                data = JSON.stringify({
+                    "type": $('#type').val(),
+                    "profile": 1,
+                    "intitule": $('#intitule').val(),
+                    "message": $('#message').val(),
+                    "etat": "En cours"
+                });
+
+
+                var settings = {
+                    "url": "/api/problematique/",
+                    "method": "POST",
+                    "timeout": 0,
+                    "headers": {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),  // Assuming you have CSRF token in your template context
+                    },
+                    "data": data
+                };
+
+                $.ajax(settings)
+                    .done(function (response) {
+                        console.log(response);
+                        window.location.href = "/formation/problematique/";
+                    })
+                    .fail(function (jqXHR, textStatus, errorThrown) {
+                        // Log the entire jqXHR object to see all details
+                        console.log('jqXHR:', jqXHR);
+
+                        // Log the status text
+                        console.log('Status:', textStatus);
+
+                        // Log the error thrown
+                        console.log('Error Thrown:', errorThrown);
+
+                        // Log the response text, which might contain detailed error messages
+                        console.log('Response Text:', jqXHR.responseText); alert(jqXHR.responseText)
+
+                        // Optionally, parse the responseText as JSON if it's in JSON format
+                        try {
+                            var responseJSON = JSON.parse(jqXHR.responseText);
+                            console.log('Response JSON:', responseJSON);
+                        } catch (e) {
+                            console.error('Failed to parse response as JSON:', e);
+                        }
+
+                    });
+            });
+
+            $('#editProduitForm').on('submit', function (e) {
+                e.preventDefault();
+                alert("ici")
+
+
+                data = JSON.stringify({
+                    "type": $('#edittype').val(),
+                    "profile": 1,
+                    "intitule": $('#editintitule').val(),
+                    "message": $('#editmessage').val(),
+                    "etat": "En cours"
+                });
+
+
+                var settings = {
+                    "url": "/api/problematique/" + identifiant + "/",
+                    "method": "PUT",
+                    "timeout": 0,
+                    "headers": {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),
+                    },
+                    "data": data
+                };
+
+
+                $.ajax(settings)
+                    .done(function (response) {
+                        alert("ici2")
+                        console.log(response);
+                        window.location.href = "/formation/problematique";
+                    })
+                    .fail(function (jqXHR, textStatus, errorThrown) {
+                        // Log the entire jqXHR object to see all details
+                        console.log('jqXHR:', jqXHR);
+
+                        // Log the status text
+                        console.log('Status:', textStatus);
+
+                        // Log the error thrown
+                        console.log('Error Thrown:', errorThrown);
+
+                        // Log the response text, which might contain detailed error messages
+                        console.log('Response Text:', jqXHR.responseText); alert(jqXHR.responseText)
+
+                        // Optionally, parse the responseText as JSON if it's in JSON format
+                        try {
+                            var responseJSON = JSON.parse(jqXHR.responseText);
+                            console.log('Response JSON:', responseJSON);
+                        } catch (e) {
+                            console.error('Failed to parse response as JSON:', e);
+                        }
+
+                    });
+            });
+
+
+            // Open modal when delete button is clicked
+            $('.delete-btn').on('click', function () {
+                currentDeleteId = $(this).data('identifiant');
+
+                console.log(currentDeleteId);
+                $('#deleteModal').removeClass('hidden');
+            });
+
+            // Close modal when cancel is clicked
+            $('#cancelDelete').on('click', function () {
+                $('#deleteModal').addClass('hidden');
+                currentDeleteId = null;
+            });
+
+            // Confirm delete action
+            $('#confirmDelete').on('click', function () {
+                if (currentDeleteId) {
+                    // Perform the delete action, e.g., make an AJAX call or redirect
+                    console.log('Deleting item with ID:', currentDeleteId);
+
+                    var settings = {
+                        "url": "/api/formation/problematique" + currentDeleteId + "/",
+                        "method": "DELETE",
+                        "timeout": 0,
+                        "headers": {
+                            "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
+                        },
+                    };
+
+                    $.ajax(settings).done(function (response) {
+                        console.log(response);
+                        $('#deleteModal').addClass('hidden');
+                        window.location.href = "/formation/problematique";
+                    });
+
+
+                }
+            });
+
+        </script>
+    </div>
+
+
+{% endblock %}

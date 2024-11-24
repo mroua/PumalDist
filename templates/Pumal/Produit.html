@@ -275,7 +275,7 @@
                     hover:bg-blue-900 hover:border-slate-400 rounded-md">Filtrer
                 </button>
 
-                {% if 53 in listeauth %}
+                {% if 57 in listeauth %}
                     <button id="addButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
                         hover:bg-blue-900 hover:border-slate-400 rounded-md">Ajouter
                     </button>
@@ -330,7 +330,7 @@
 
 
 
-                        {% if 56 in listeauth %}
+                        {% if 60 in listeauth %}
                             <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded"
                                     data-identifiant="{{ elem.id }}">
                                 <i class="fas fa-search"></i>
@@ -342,7 +342,7 @@
                             </button>
                         {% endif %}
 
-                        {% if 54 in listeauth %}
+                        {% if 58 in listeauth %}
                             <button id="editButton" class="editButton bg-blue-500 text-white p-2 rounded"
                                     data-identifiant="{{ elem.id }}">
                                 <i class="fas fa-pencil-alt"></i>
@@ -354,7 +354,7 @@
                             </button>
                         {% endif %}
 
-                        {% if 55 in listeauth %}
+                        {% if 59 in listeauth %}
                             <button class="bg-red-500 text-white p-2 rounded delete-btn"
                                     data-identifiant="{{ elem.id }}"><i class="fas fa-trash"></i></button>
                         {% else %}
@@ -382,27 +382,27 @@
 
         <script>
 
-            {% if 7 not in listmodules %}
+            {% if 8 not in listmodules %}
                 $("#userslistlink").addClass('hidden');
             {% endif %}
 
-            {% if 14 not in listmodules %}
+            {% if 15 not in listmodules %}
                 $("#prodlistlink").addClass('hidden');
             {% endif %}
 
-            {% if 9 not in listmodules %}
+            {% if 10 not in listmodules %}
                 $("#distlistlink").addClass('hidden');
             {% endif %}
 
-            {% if 17 not in listmodules %}
+            {% if 18 not in listmodules %}
                 $("#cmdlistlink").addClass('hidden');
             {% endif %}
 
-            {% if 21 not in listmodules %}
+            {% if 22 not in listmodules %}
                 $("#enclistlink").addClass('hidden');
             {% endif %}
 
-            {% if 26 not in listmodules %}
+            {% if 25 not in listmodules %}
                 $("#formslistlink").addClass('hidden');
             {% endif %}
             edit_elem = 0;

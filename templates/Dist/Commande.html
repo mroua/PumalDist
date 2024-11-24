@@ -59,22 +59,6 @@
                         </select>
                     </div>
 
-                    <!-- Field Filter -->
-                    <div class="mb-4 w-64">
-                        <label for="distfield" class="block text-sm font-medium text-gray-700 mb-2 textslate">Selectionner
-                            le
-                            distributeur</label>
-                        <select id="distfield"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                            {% for fil in liste_distributeur %}
-                                <option data-designation="{{ fil.designation }}" data-username="{{ fil.user.nom }}"
-                                        data-email="{{ fil.user.email }}"
-                                        id="{{ fil.id }}" value="{{ fil.id }}">{{ fil.designation }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-
-
                 </div>
                 <div class="overflow-y-auto flex-grow">
                     <div id="productList" class="grid gap-4 w-full"></div>
@@ -239,20 +223,6 @@
                         </select>
                     </div>
 
-                    <!-- Field Filter -->
-                    <div class="mb-4 w-64">
-                        <label for="editdistfield" class="block text-sm font-medium text-gray-700 mb-2 textslate">Selectionner
-                            le
-                            distributeur</label>
-                        <select id="editdistfield"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                            {% for fil in liste_distributeur %}
-                                <option data-designation="{{ fil.designation }}" data-username="{{ fil.user.nom }}"
-                                        data-email="{{ fil.user.email }}"
-                                        id="{{ fil.id }}" value="{{ fil.id }}">{{ fil.designation }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
 
 
                 </div>
@@ -381,7 +351,7 @@
                     hover:bg-blue-900 hover:border-slate-400 rounded-md">Filtrer
                 </button>
 
-                {% if 65 in listeauth %}
+                {% if 69 in listeauth %}
                     <button id="addButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
                         hover:bg-blue-900 hover:border-slate-400 rounded-md">Ajouter
                     </button>
@@ -481,7 +451,7 @@
                                     class="fa-solid fa-truck"></i>
                             </div>
 
-                            {% if 68 in listeauth %}
+                            {% if 72 in listeauth %}
                                 <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded"
                                     data-identifiant="{{ elem.id }}" data-etat="{{ elem.etat }}"><i
                                     class="fas fa-search"></i></button>
@@ -492,7 +462,7 @@
                                 </div>
                             {% endif %}
 
-                            {% if 66 in listeauth %}
+                            {% if 70 in listeauth %}
                                 <button id="editButton" class="editButton bg-blue-500 text-white p-2 rounded"
                                     data-identifiant="{{ elem.id }}">
                                     <i class="fas fa-pencil-alt" onclick=""></i>
@@ -504,7 +474,7 @@
                                 </div>
                             {% endif %}
 
-                            {% if 67 in listeauth %}
+                            {% if 71 in listeauth %}
                                 <button class="bg-red-500 text-white p-2 rounded delete-btn"
                                     data-identifiant="{{ elem.id }}">
                                     <i class="fas fa-trash"></i>
@@ -526,7 +496,7 @@
                                     class="fa-solid fa-truck"></i>
                             </div>
 
-                            {% if 68 in listeauth %}
+                            {% if 72 in listeauth %}
                                 <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded"
                                     data-identifiant="{{ elem.id }}" data-etat="{{ elem.etat }}"><i
                                     class="fas fa-search"></i></button>
@@ -547,7 +517,7 @@
                             </div>
 
                         {% elif elem.etat == 'En cours' %}
-                            {% if 57 in listeauth %}
+                            {% if 61 in listeauth %}
                                 <button id="popupButton" class="popupButton bg-blue-500 text-white p-2 rounded"
                                     data-identifiant="{{ elem.id }}">
                                     <i class="fa-solid fa-truck"></i>
@@ -559,7 +529,7 @@
                                 </div>
                             {% endif %}
 
-                            {% if 68 in listeauth %}
+                            {% if 72 in listeauth %}
                                 <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded"
                                     data-identifiant="{{ elem.id }}" data-etat="{{ elem.etat }}"><i
                                     class="fas fa-search"></i></button>
@@ -587,7 +557,7 @@
                                     class="fa-solid fa-truck"></i>
                             </div>
 
-                            {% if 68 in listeauth %}
+                            {% if 72 in listeauth %}
                                 <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded"
                                     data-identifiant="{{ elem.id }}" data-etat="{{ elem.etat }}"><i
                                     class="fas fa-search"></i></button>
@@ -702,10 +672,9 @@
         });
 
         $('#goToStep3').click(function () {
-            var selectedDistributor = $('#distfield option:selected');
-            var distributorName = selectedDistributor.data('username');
-            var distributorCompany = selectedDistributor.data('designation');
-            var distributorEmail = selectedDistributor.data('email');
+            var distributorName = "{{ request.user.distributeur_set.first.username }}";
+            var distributorCompany = "{{ request.user.distributeur_set.first.designation }}";
+            var distributorEmail = "{{ request.user.distributeur_set.first.email }}";
 
 
             $('#recipientCompany').text(distributorCompany);
@@ -1085,10 +1054,9 @@
         });
 
         $('#editgoToStep3').click(function () {
-            var selectedDistributor = $('#editdistfield option:selected');
-            var distributorName = selectedDistributor.data('username');
-            var distributorCompany = selectedDistributor.data('designation');
-            var distributorEmail = selectedDistributor.data('email');
+            var distributorName = "{{ request.user.distributeur_set.first.username }}";
+            var distributorCompany = "{{ request.user.distributeur_set.first.designation }}";
+            var distributorEmail = "{{ request.user.distributeur_set.first.email }}";
 
 
             $('#editrecipientCompany').text(distributorCompany);
@@ -1162,7 +1130,6 @@
                 $.ajax(settings).done(function (response) {
                     let responsedata = response;
 
-                    $('#editdistfield').val(responsedata['distributeur']['id']);
 
                     responsedata.commandesLines.forEach(function (item) {
                         editselectedProducts.push({
@@ -1180,7 +1147,7 @@
 
                         $('#editselectedProducts').append(
                             `<div class="relative text-xs grid grid-cols-12 items-center justify-between py-2 rounded-lg editproduct-row mb-3
-                                backslate defaultdark px-2 pr-6" data-product-id="${item.id}">
+                                backslate defaultdark px-2 pr-6" data-product-id="${item.produit.id}">
                                 <div class="flex items-center col-span-3">
                                     <img src="${item.produit.image}" alt="Avatar" class="h-12 w-12 rounded-lg mr-4">
                                     <div>
@@ -1515,7 +1482,7 @@
             annulelink = "";
 
             if (etatview === "Reception") {
-                if(listeauth.includes(66)){
+                if(listeauth.includes(70)){
                     buttonslist = `
                         <button data-href="/commande/etatview?commande=${identifiantview}&etat=Traitement" class="callstate h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Valider CMD</button>
                         <button data-href="/commande/etatview?commande=${identifiantview}&etat=Annule" class="callstate h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Annuler CMD</button>
@@ -1523,7 +1490,7 @@
                 }
             } else if (etatview === "Traitement") {
                 //<a data-href="/commande/bl?commandes=${identifiantview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2.5 rounded-lg">Voir BL</a>
-                if(listeauth.includes(66)){
+                if(listeauth.includes(70)){
                     buttonslist = `
                         <button data-href="/commande/etatview?commande=${identifiantview}&etat=Preparation" class="callstate h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Preparation CMD</button>
                     `;
@@ -1531,7 +1498,7 @@
 
             } else if (etatview === "Preparation") {
                 //<a data-href="/commande/bl?commandes=${identifiantview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2.5 rounded-lg">Voir BL</a>
-                if(listeauth.includes(66)){
+                if(listeauth.includes(70)){
                     buttonslist = `
                         <button data-href="/commande/etatview?commande=${identifiantview}&etat=En cours" class="callstate h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Lancer Livraison</button>
                     `;
@@ -1539,12 +1506,12 @@
             } else if (etatview === "En cours") {
                 //<a data-href="/commande/bl?commandes=${identifiantview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2.5 rounded-lg">Voir BL</a>
                 buttonslist = ``;
-                if(listeauth.includes(60)){
+                if(listeauth.includes(64)){
                     buttonslist = buttonslist + `<a href="/commande/bl?commandes=${identifiantview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2.5 rounded-lg">Voir BL</a>
                     `;
                 }
 
-                if(listeauth.includes(66)){
+                if(listeauth.includes(70)){
                     buttonslist =  buttonslist + `<button data-href="/commande/etatview?commande=${identifiantview}&etat=Complete" class="callstate h-10 mt-4 bg-blue-500
                         text-white px-4 py-2 rounded-lg">Completer CMD</button>
                     `;
@@ -1553,7 +1520,7 @@
 
             } else {
 
-                if(listeauth.includes(60)){
+                if(listeauth.includes(64)){
                     buttonslist = `<a href="/commande/bl?commandes=${identifiantview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2.5 rounded-lg">Voir BL</a>
                     `;
                 }
@@ -1815,7 +1782,7 @@
                     "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),  // Assuming you have CSRF token in your template context
                 },
                 "data": JSON.stringify({
-                    "distributeur": $('#distfield').val(),
+                    "distributeur": {{ request.user.distributeur_set.first.id }},
                     "etat": "Reception",
                     "total": 0,
                     "commandesLines": listteproducts
@@ -1824,7 +1791,7 @@
 
             $.ajax(settings)
                 .done(function (response) {
-                    console.log(response);
+                    window.location.href = /commande/;
                 })
                 .fail(function (jqXHR, textStatus, errorThrown) {
                     // Log the entire jqXHR object to see all details
@@ -1852,7 +1819,7 @@
         });
 
 
-        $('#editOrder').on('click', function () {
+        $('#editconfirmOrder').on('click', function () {
             listteproducts = [];
             for (i = 0; i < editselectedProducts.length; i++) {
                 listteproducts.push({
@@ -1871,7 +1838,7 @@
                 },
                 "data": JSON.stringify({
                     "id": identifiant,
-                    "distributeur": $('#distfield').val(),
+                    "distributeur": {{ request.user.distributeur_set.first.id }},
                     "etat": "Reception",
                     "total": 0,
                     "commandesLines": listteproducts
@@ -1880,7 +1847,7 @@
 
             $.ajax(settings)
                 .done(function (response) {
-                    console.log(response);
+                    window.location.href = /commande/;
                 })
                 .fail(function (jqXHR, textStatus, errorThrown) {
                     // Log the entire jqXHR object to see all details

@@ -20,22 +20,21 @@
 </head>
 
 
-
 <body class="w-full h-screen backslate p-4 flex flex-col-reverse lg:flex-row gap-4 relative text-gray-500">
 
-    <!-- Sidebar Navigation -->
-    <nav class="w-full h-20 lg:w-20 lg:h-full sticky bottom-0 flex-none p-4 z-10 overflow-hidden backprimer">
-        <div class="w-full h-full flex flex-col gap-8">
+<!-- Sidebar Navigation -->
+<nav class="w-full h-20 lg:w-20 lg:h-full sticky bottom-0 flex-none p-4 z-10 overflow-hidden backprimer">
+    <div class="w-full h-full flex flex-col gap-8">
 
-            <a href="">
-                <img src="{% static 'images\puma logo.svg' %}" class="w-20 h-20" alt="">
+        <a href="">
+            <img src="{% static 'images\puma logo.svg' %}" class="w-20 h-20" alt="">
+        </a>
+        <div class="w-full h-full flex backprimer flex-col items-center justify-center gap-4">
+            <a href="{% url 'dashboard' %}"
+               class="btn btn-square hover:bg-blue-900 {% if request.path == '/dashboard/' %}bg-blue-900{% endif %} border-none flex items-center justify-center p-1 tooltip tooltip-right capitalize"
+               data-tip="dashboard">
+                <i class="uil uil-apps text-slate-300 text-xl"></i>
             </a>
-            <div class="w-full h-full flex backprimer flex-col items-center justify-center gap-4">
-                <a href="{% url 'dashboard' %}"
-                   class="btn btn-square hover:bg-blue-900 {% if request.path == '/dashboard/' %}bg-blue-900{% endif %} border-none flex items-center justify-center p-1 tooltip tooltip-right capitalize"
-                   data-tip="dashboard">
-                    <i class="uil uil-apps text-slate-300 text-xl"></i>
-                </a>
             {% if request.user.type != "Distributeur" %}
                 <a id="userslistlink" href="{% url 'users' %}"
                    class="btn btn-square hover:bg-blue-900 {% if request.path == '/users/' %}bg-blue-900{% endif %} border-none flex items-center justify-center p-1 tooltip tooltip-right capitalize"
@@ -55,85 +54,138 @@
                    data-tip="Utilisateurs">
                     <i class="uil uil-box text-slate-300 text-xl"></i>
                 </a>
-                {% else %}
-                    <a href="{% url 'payeurdraft' %}"
-                       class="btn btn-square hover:bg-blue-900 {% if request.path == '/distributeur/payeurdraft' %}bg-blue-900
+            {% else %}
+                <a href="{% url 'payeurdraft' %}"
+                   class="btn btn-square hover:bg-blue-900 {% if request.path == '/distributeur/payeurdraft' %}bg-blue-900
                         {% endif %} border-none flex items-center justify-center p-1 tooltip tooltip-right capitalize"
-                       data-tip="Utilisateurs">
-                        <i class="uil uil-house-user text-slate-300 text-xl"></i>
-                    </a>
-                {% endif %}
+                   data-tip="Utilisateurs">
+                    <i class="uil uil-house-user text-slate-300 text-xl"></i>
+                </a>
+            {% endif %}
 
 
-                <a id="cmdlistlink" href="{% url 'commande' %}"
-                   class="btn btn-square hover:bg-blue-900 {% if request.path == '/commande/' %}bg-blue-900
+            <a id="cmdlistlink" href="{% url 'commande' %}"
+               class="btn btn-square hover:bg-blue-900 {% if request.path == '/commande/' %}bg-blue-900
                     {% elif request.path == '/commande/bl' %}bg-blue-900
                     {% endif %} border-none flex items-center justify-center p-1 tooltip tooltip-right capitalize"
-                   data-tip="Utilisateurs">
-                    <i class="uil uil-package text-primary text-xl"></i>
-                </a>
+               data-tip="Utilisateurs">
+                <i class="uil uil-package text-primary text-xl"></i>
+            </a>
 
-                <a id="enclistlink" href="{% url 'encaissement' %}"
-                   class="btn btn-square hover:bg-blue-900 {% if request.path == '/encaissement/' %}bg-blue-900
+            <a id="enclistlink" href="{% url 'encaissement' %}"
+               class="btn btn-square hover:bg-blue-900 {% if request.path == '/encaissement/' %}bg-blue-900
                     {% elif request.path == '/encaissement/encaissementvalidate' %}bg-blue-900
                     {% elif request.path == '/encaissement/accompte' %}bg-blue-900
                     {% endif %} border-none flex items-center justify-center p-1 tooltip tooltip-right capitalize"
-                   data-tip="créances">
-                    <i class="uil uil-usd-circle text-primary text-xl"></i>
-                </a>
+               data-tip="créances">
+                <i class="uil uil-usd-circle text-primary text-xl"></i>
+            </a>
 
 
-
-                <a id="formslistlink" href="{% url 'formation' %}"
-                   class="btn btn-square hover:bg-blue-900 {% if request.path == '/formation/' %}bg-blue-900
+            <a id="formslistlink" href="{% url 'formation' %}"
+               class="btn btn-square hover:bg-blue-900 {% if request.path == '/formation/' %}bg-blue-900
                     {% elif request.path == '/formation/problematique' %}bg-blue-900
                     {% endif %} border-none flex items-center justify-center p-1 tooltip tooltip-right capitalize"
-                   data-tip="formation">
-                    <i class="uil uil-presentation-minus text-primary text-xl"></i>
-                </a>
+               data-tip="formation">
+                <i class="uil uil-presentation-minus text-primary text-xl"></i>
+            </a>
 
-            </div>
-            <div class="w-full hidden lg:flex flex-col gap-4">
-
-                <!--user setting-->
-                <a href="/profile/"
-                   class="btn btn-square hover:bg-blue-900 backprimer border-none {% if request.path == '/produit/' %}bg-blue-900{% endif %} flex items-center justify-center p-1 capitalize ">
-                    <i class="uil uil-setting text-primary text-xl"></i>
-                </a>
-
-                <!--begin notifications-->
-                <div class="dropdown dropdown-right dropdown-end">
-                    <label tabindex="0" class="btn btn-square backprimer hover:bg-blue-900 border-none flex items-center
-                        justify-center p-1 relative">
-                        <div id="notifbell"></div>
-                        <i class="uil uil-bell text-primary text-xl"></i>
-                    </label>
-                    <!--<div tabindex="0"
-                         class="dropdown-content menu p-2 shadow bg-slate-800 rounded-box w-64 h-96 ml-2 overflow-hidden">
-                        <div class="w-full h-full flex flex-col gap-4 overflow-y-auto" id="listeNotifData">
-
-                        </div>
-
-                    </div>-->
-                </div>
-                <!--end notifications-->
-                <!--end setting-->
-
-                <label for="my-modal"
-                       class="btn btn-square  backprimer hover:bg-blue-900 border-none flex items-center justify-center p-1">
-                    <a href="/logout"> <i class="uil uil-signout text-primary text-xl"></i></a>
-                </label>
-            </div>
         </div>
-    </nav>
+        <div class="w-full hidden lg:flex flex-col gap-4">
 
-    <!-- Main Content -->
-    <div class="w-full h-full overflow-hidden flex gap-4">
-        {% block content %}
-        <!-- Page-specific content goes here -->
-        {% endblock %}
+            <!--user setting-->
+            <a href="/profile/"
+               class="btn btn-square hover:bg-blue-900 backprimer border-none {% if request.path == '/produit/' %}bg-blue-900{% endif %} flex items-center justify-center p-1 capitalize ">
+                <i class="uil uil-setting text-primary text-xl"></i>
+            </a>
+
+            <!--begin notifications-->
+            <label tabindex="0" id="notif-bell"
+                   class="btn btn-square backprimer hover:bg-blue-900 border-none flex items-center justify-center p-1 relative cursor-pointer">
+                <div id="notifbell"></div>
+                <i class="uil uil-bell text-primary text-xl"></i>
+                <span id="notif-dot" class="hidden absolute top-1 right-1 w-3 h-3 bg-red-500 rounded-full"></span>
+
+            </label>
+            <!--end notifications-->
+            <!--end setting-->
+
+            <label for="my-modal"
+                   class="btn btn-square  backprimer hover:bg-blue-900 border-none flex items-center justify-center p-1">
+                <a href="/logout"> <i class="uil uil-signout text-primary text-xl"></i></a>
+            </label>
+        </div>
     </div>
+</nav>
 
+<!-- Main Content -->
+<div class="w-full h-full overflow-hidden flex gap-4">
+    {% block content %}
+        <!-- Page-specific content goes here -->
+    {% endblock %}
+</div>
+
+
+<script>
+    $(document).ready(function () {
+    let settings = {
+        url: `/api/historique`,
+        method: "GET",
+        timeout: 0,
+        headers: {
+            "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
+        },
+    };
+    $.ajax(settings).done(function (response) {
+        let responsedata = response;
+        console.log(responsedata);
+
+        // Add a red dot if there are historique elements
+        if (responsedata.length > 0) {
+            $("#notif-bell").append(
+                `<span class="absolute top-1 right-1 w-3 h-3 bg-red-500 rounded-full"></span>`
+            );
+        }
+
+        // Populate historique links
+        for (let i = 0; i < responsedata.length; i++) {
+            $("#historicslinks").append(`<li class="px-4 py-2 hover:bg-gray-100">
+                <a href="${responsedata[i]['url']}">
+                    ${responsedata[i]['msg']}
+                </a>
+            </li>`);
+        }
+    });
+
+    // Show/hide the dropdown (unchanged logic)
+    $("#notif-bell").mouseenter(function () {
+        $("#notif-dropdown").removeClass("hidden"); // Show the dropdown
+    });
+
+    $("#notif-bell, #notif-dropdown").mouseleave(function () {
+        setTimeout(function () {
+            if (!$("#notif-bell:hover").length && !$("#notif-dropdown:hover").length) {
+                $("#notif-dropdown").addClass("hidden");
+            }
+        }, 200);
+    });
+
+    $("#notif-dropdown").mouseenter(function () {
+        $(this).removeClass("hidden");
+    });
+
+    $("#notif-dropdown").mouseleave(function () {
+        $(this).addClass("hidden");
+    });
+});
+
+
+</script>
+<div id="notif-dropdown"
+     class="hidden absolute left-20 bottom-20 w-96 bg-white shadow-lg rounded-md z-50 max-h-64 overflow-y-auto">
+    <ul class="text-sm text-gray-700" id="historicslinks">
+    </ul>
+</div>
 
 </body>
 </html>

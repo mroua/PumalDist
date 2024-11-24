@@ -20,7 +20,23 @@ class DistributeurViewSet(viewsets.ModelViewSet):
     queryset = Distributeur.objects.all()
     serializer_class = DistributeurSerializer
 
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['user'] = self.request.user
+
+        return context
+
     def update(self, request, *args, **kwargs):
+        partial = True
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+    """def update(self, request, *args, **kwargs):
         instance = self.get_object()  # Get the current Distributeur instance
 
         # Extract user data from request
@@ -59,7 +75,7 @@ class DistributeurViewSet(viewsets.ModelViewSet):
 
         # Return the updated data
         serializer = self.get_serializer(instance)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)"""
 
 
 class PayeurViewSet(viewsets.ModelViewSet):
@@ -70,16 +86,24 @@ class PayeurViewSet(viewsets.ModelViewSet):
     filterset_fields = ['distributeur']
 
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['user'] = self.request.user
+
+        return context
+
+
 @login_required
 def DistribView(request):
     listmodules  = list(
         set(request.user.user_permissions.values_list('content_type_id', flat=True))
     )
 
-    if (9 in listmodules):
+    if (10 in listmodules):
+
         listeauth = list(
             set(
-                Permission.objects.filter(user=request.user, content_type=9).values_list('id', flat=True)
+                Permission.objects.filter(user=request.user, content_type=10).values_list('id', flat=True)
             )
         )
 
@@ -113,10 +137,10 @@ def PayView(request):
             set(request.user.user_permissions.values_list('content_type_id', flat=True))
         )
 
-        if (10 in listmodules):
+        if (11 in listmodules):
             listeauth = list(
                 set(
-                    Permission.objects.filter(user=request.user, content_type=10).values_list('id', flat=True)
+                    Permission.objects.filter(user=request.user, content_type=11).values_list('id', flat=True)
                 )
             )
 
@@ -125,7 +149,6 @@ def PayView(request):
 
             users_select = Distributeur.objects.all().order_by('id')
 
-            print(users_select)
 
             return render(request, "Pumal/Payeur.html",
                           {
@@ -147,25 +170,61 @@ def PayDiftView(request):
             set(request.user.user_permissions.values_list('content_type_id', flat=True))
         )
 
-        if (10 in listmodules):
+        if (11 in listmodules):
             listeauth = list(
                 set(
-                    Permission.objects.filter(user=request.user, content_type=10).values_list('id', flat=True)
+                    Permission.objects.filter(user=request.user, content_type=11).values_list('id', flat=True)
                 )
             )
 
+            # Get filter parameters
+            code = request.GET.get('code', '').strip()
+            designation = request.GET.get('designation', '').strip()
+            telephone = request.GET.get('telephone', '').strip()
+            adresse = request.GET.get('adresse', '').strip()
+            nif = request.GET.get('nif', '').strip()
+            nis = request.GET.get('nis', '').strip()
+            art = request.GET.get('art', '').strip()
+            rc = request.GET.get('rc', '').strip()
+            distributeur = request.GET.get('distributeur', '')
+            ville = request.GET.get('ville', '')
+            active = request.GET.get('active', '')
+
+
             dist_list = Payeur.objects.filter(distributeur__user = request.user)
+
+            if code:
+                dist_list = dist_list.filter(code__icontains=code)
+            if designation:
+                dist_list = dist_list.filter(designation__icontains=designation)
+            if telephone:
+                dist_list = dist_list.filter(telephone__icontains=telephone)
+            if adresse:
+                dist_list = dist_list.filter(adresse__icontains=adresse)
+            if nif:
+                dist_list = dist_list.filter(nif__icontains=nif)
+            if nis:
+                dist_list = dist_list.filter(nis__icontains=nis)
+            if art:
+                dist_list = dist_list.filter(art__icontains=art)
+            if rc:
+                dist_list = dist_list.filter(rc__icontains=rc)
+            if distributeur:
+                dist_list = dist_list.filter(distributeur_id=distributeur)
+            if ville:
+                dist_list = dist_list.filter(ville_id=ville)
+            if active:
+                dist_list = dist_list.filter(active=(active == 'true'))
+
+
             ville_list = Ville.objects.all()
 
-            users_select = Distributeur.objects.all().order_by('id')
 
-            print(users_select)
 
             return render(request, "Dist/PayeurDraft.html",
                           {
                               'dist_list': dist_list,
                               'ville_list': ville_list,
-                              'users_select': users_select,
                               'listeauth': listeauth,
                               "listmodules": listmodules
                           })
@@ -177,10 +236,10 @@ def PayDiftView(request):
             set(request.user.user_permissions.values_list('content_type_id', flat=True))
         )
 
-        if (10 in listmodules):
+        if (11 in listmodules):
             listeauth = list(
                 set(
-                    Permission.objects.filter(user=request.user, content_type = 10).values_list('id', flat=True)
+                    Permission.objects.filter(user=request.user, content_type = 11).values_list('id', flat=True)
                 )
             )
 
@@ -189,7 +248,6 @@ def PayDiftView(request):
 
             users_select = Distributeur.objects.all().order_by('id')
 
-            print(users_select)
 
             return render(request, "Pumal/PayeurDraft.html",
                           {

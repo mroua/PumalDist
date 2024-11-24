@@ -305,7 +305,8 @@
 
                         <div class="relative">
                             <!-- Text Input -->
-                            <div id="view_nif" class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
+                            <div id="view_nif"
+                                 class="mt-1 p-2 block w-full bg-white h-10 shadow-sm sm:text-sm border-gray-300 rounded-md"></div>
 
                             <div id="nifview"></div>
 
@@ -354,13 +355,47 @@
         <!-- Filter Modal -->
         <div id="filterModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40 flex items-center justify-center"
              style="margin-top: -16px">
-            <div class="bg-white w-1/3 rounded-lg shadow-lg">
+            <div class="backprimer w-2/5 rounded-lg shadow-lg">
                 <div class="flex justify-between items-center p-4 border-b">
                     <h3 class="text-lg font-semibold">Filtres</h3>
                     <button id="closeFilterModal" class="text-gray-500 hover:text-gray-700">&times;</button>
                 </div>
-                <div class="p-4">
-                    <!-- Filter Form -->
+                <div class="p-4 grid grid-cols-2 gap-x-4">
+                    <div class="mb-2">
+                        <input type="text" name="code" placeholder="Code" value="{{ request.GET.code }}"
+                               class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    </div>
+                    <div class="mb-2">
+                        <input type="text" name="designation" placeholder="Designation" value="{{ request.GET.designation }}"
+                               class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    </div>
+                    <div class="mb-2">
+                        <input type="text" name="telephone" placeholder="Telephone" value="{{ request.GET.telephone }}"
+                               class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    </div>
+                    <div class="mb-2">
+                        <input type="text" name="adresse" placeholder="Adresse" value="{{ request.GET.adresse }}"
+                               class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    </div>
+                    <div class="mb-2">
+                        <input type="text" name="nif" placeholder="NIF" value="{{ request.GET.nif }}"
+                               class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    </div>
+                    <div class="mb-2">
+                        <input type="text" name="nis" placeholder="NIS" value="{{ request.GET.nis }}"
+                               class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    </div>
+                    <div class="mb-2">
+                        <input type="text" name="art" placeholder="ART" value="{{ request.GET.art }}"
+                               class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    </div>
+                    <div class="mb-2">
+                        <input type="text" name="rc" placeholder="RC" value="{{ request.GET.rc }}"
+                               class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    </div>
+
+
+
                 </div>
             </div>
         </div>
@@ -372,7 +407,8 @@
                 </button>
 
 
-                {% if 37 in listeauth %}
+
+                {% if 41 in listeauth %}
                     <button id="addButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
                         hover:bg-blue-900 hover:border-slate-400 rounded-md">Ajouter
                     </button>
@@ -419,18 +455,18 @@
                         <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded">
                             <i class="fas fa-search"
                                onclick="newdatauserview({{ elem.id }}, {{ elem.distributeur.id }}, '{{ elem.code|escapejs }}', '{{ elem.designation|escapejs }}', {{ elem.ville.id }},
-                     '{{ elem.telephone|escapejs }}', '{{ elem.adresse|escapejs }}', '{{ elem.nif|escapejs }}', '{{ elem.nis|escapejs }}', '{{ elem.art|escapejs }}',
-                     '{{ elem.rc|escapejs }}', '{{ elem.active|escapejs }}', '{{ elem.nif_file|escapejs }}', '{{ elem.nis_file|escapejs }}', '{{ elem.art_file|escapejs }}',
-                     '{{ elem.rc_file|escapejs }}')">
+                                       '{{ elem.telephone|escapejs }}', '{{ elem.adresse|escapejs }}', '{{ elem.nif|escapejs }}', '{{ elem.nis|escapejs }}', '{{ elem.art|escapejs }}',
+                                       '{{ elem.rc|escapejs }}', '{{ elem.active|escapejs }}', '{{ elem.nif_file|escapejs }}', '{{ elem.nis_file|escapejs }}', '{{ elem.art_file|escapejs }}',
+                                       '{{ elem.rc_file|escapejs }}')">
                             </i>
                         </button>
 
                         <button id="editButton" class="editButton bg-blue-500 text-white p-2 rounded">
                             <i class="fas fa-pencil-alt"
                                onclick="newdatauser({{ elem.id }}, {{ elem.distributeur.id }}, '{{ elem.code|escapejs }}', '{{ elem.designation|escapejs }}', {{ elem.ville.id }},
-                     '{{ elem.telephone|escapejs }}', '{{ elem.adresse|escapejs }}', '{{ elem.nif|escapejs }}', '{{ elem.nis|escapejs }}', '{{ elem.art|escapejs }}',
-                     '{{ elem.rc|escapejs }}', '{{ elem.active|escapejs }}', '{{ elem.nif_file|escapejs }}', '{{ elem.nis_file|escapejs }}', '{{ elem.art_file|escapejs }}',
-                     '{{ elem.rc_file|escapejs }}')">
+                                       '{{ elem.telephone|escapejs }}', '{{ elem.adresse|escapejs }}', '{{ elem.nif|escapejs }}', '{{ elem.nis|escapejs }}', '{{ elem.art|escapejs }}',
+                                       '{{ elem.rc|escapejs }}', '{{ elem.active|escapejs }}', '{{ elem.nif_file|escapejs }}', '{{ elem.nis_file|escapejs }}', '{{ elem.art_file|escapejs }}',
+                                       '{{ elem.rc_file|escapejs }}')">
                             </i>
                         </button>
 
@@ -658,7 +694,7 @@
 
         function newdatauserview(id, distributeur, code, designation, ville, telephone, adresse, nif, nis, art, rc, active,
                                  niffile, nisfile, artfile, rcfile) {
-            
+
 
             $("#view_code").html(code);
             $("#view_designation").html(designation);
@@ -671,8 +707,8 @@
             $("#view_rc").html(rc);
 
             $("#nifview").html("");
-            if(niffile !==""){
-                $("#nifview").append(`<a href="/media/${niffile }" class="mt-1 absolute inset-y-0 right-0 flex items-center
+            if (niffile !== "") {
+                $("#nifview").append(`<a href="/media/${niffile}" class="mt-1 absolute inset-y-0 right-0 flex items-center
                                     px-3 cursor-pointer text-blue-500 bg-gray-300 rounded-r-md">
 
                                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -680,8 +716,7 @@
                                 </svg>
                             </a>`)
 
-            }
-            else{
+            } else {
                 $("#nifview").append(`<a href="#" class="mt-1 absolute inset-y-0 right-0 flex items-center
                                     px-3 text-gray-400 bg-gray-300 rounded-r-md">
 
@@ -692,8 +727,8 @@
             }
 
             $("#nisview").html("");
-            if(nisfile !==""){
-                $("#nisview").append(`<a href="/media/${nisfile }" class="mt-1 absolute inset-y-0 right-0 flex items-center
+            if (nisfile !== "") {
+                $("#nisview").append(`<a href="/media/${nisfile}" class="mt-1 absolute inset-y-0 right-0 flex items-center
                                     px-3 cursor-pointer text-blue-500 bg-gray-300 rounded-r-md">
 
                                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -701,8 +736,7 @@
                                 </svg>
                             </a>`)
 
-            }
-            else{
+            } else {
                 $("#nisview").append(`<a href="#" class="mt-1 absolute inset-y-0 right-0 flex items-center
                                     px-3 text-gray-400 bg-gray-300 rounded-r-md">
 
@@ -713,8 +747,8 @@
             }
 
             $("#artview").html("");
-            if(artfile !==""){
-                $("#artview").append(`<a href="/media/${artfile }" class="mt-1 absolute inset-y-0 right-0 flex items-center
+            if (artfile !== "") {
+                $("#artview").append(`<a href="/media/${artfile}" class="mt-1 absolute inset-y-0 right-0 flex items-center
                                     px-3 cursor-pointer text-blue-500 bg-gray-300 rounded-r-md">
 
                                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -722,8 +756,7 @@
                                 </svg>
                             </a>`)
 
-            }
-            else{
+            } else {
                 $("#artview").append(`<a href="#" class="mt-1 absolute inset-y-0 right-0 flex items-center
                                     px-3 text-gray-400 bg-gray-300 rounded-r-md">
 
@@ -734,8 +767,8 @@
             }
 
             $("#rcview").html("");
-            if(rcfile !==""){
-                $("#rcview").append(`<a href="/media/${rcfile }" class="mt-1 absolute inset-y-0 right-0 flex items-center
+            if (rcfile !== "") {
+                $("#rcview").append(`<a href="/media/${rcfile}" class="mt-1 absolute inset-y-0 right-0 flex items-center
                                     px-3 cursor-pointer text-blue-500 bg-gray-300 rounded-r-md">
 
                                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
@@ -743,8 +776,7 @@
                                 </svg>
                             </a>`)
 
-            }
-            else{
+            } else {
                 $("#rcview").append(`<a href="#" class="mt-1 absolute inset-y-0 right-0 flex items-center
                                     px-3 text-gray-400 bg-gray-300 rounded-r-md">
 
@@ -753,8 +785,6 @@
                                 </svg>
                             </a>`)
             }
-
-
 
 
             if (active === "True") {
@@ -774,7 +804,6 @@
             edit_distri_id = distributeur
 
 
-
             $("#edit_code").val(code);
             $("#edit_designation").val(designation);
             $("#edit_adresse").val(adresse);
@@ -784,7 +813,7 @@
             $("#edit_nis").val(nis);
             $("#edit_art").val(art);
             $("#edit_rc").val(rc);
-            if(niffile !== ""){
+            if (niffile !== "") {
                 $("#edit_niffile").attr("src", niffile);
 
                 fileIcon = document.getElementById('editnif_icon');
@@ -792,7 +821,7 @@
                 fileIcon.classList.remove('text-gray-400');
                 fileIcon.classList.add('text-blue-500');
             }
-            if(nisfile !== ""){
+            if (nisfile !== "") {
                 $("#edit_nisfile").attr("src", nisfile);
 
                 fileIcon = document.getElementById('editnis_icon');
@@ -800,7 +829,7 @@
                 fileIcon.classList.remove('text-gray-400');
                 fileIcon.classList.add('text-blue-500');
             }
-            if(nisfile !== ""){
+            if (nisfile !== "") {
                 $("#edit_artfile").attr("src", artfile);
 
                 fileIcon = document.getElementById('editart_icon');
@@ -808,7 +837,7 @@
                 fileIcon.classList.remove('text-gray-400');
                 fileIcon.classList.add('text-blue-500');
             }
-            if(nisfile !== ""){
+            if (nisfile !== "") {
                 $("#edit_rcfile").attr("src", rcfile);
 
                 fileIcon = document.getElementById('editrc_icon');
@@ -816,8 +845,6 @@
                 fileIcon.classList.remove('text-gray-400');
                 fileIcon.classList.add('text-blue-500');
             }
-
-
 
 
             if (active === "True") {
@@ -899,7 +926,8 @@
                     console.log('Error Thrown:', errorThrown);
 
                     // Log the response text, which might contain detailed error messages
-                    console.log('Response Text:', jqXHR.responseText); alert(jqXHR.responseText)
+                    console.log('Response Text:', jqXHR.responseText);
+                    alert(jqXHR.responseText)
 
                     // Optionally, parse the responseText as JSON if it's in JSON format
                     try {
@@ -980,7 +1008,8 @@
                     console.log('Error Thrown:', errorThrown);
 
                     // Log the response text, which might contain detailed error messages
-                    console.log('Response Text:', jqXHR.responseText); alert(jqXHR.responseText)
+                    console.log('Response Text:', jqXHR.responseText);
+                    alert(jqXHR.responseText)
 
                     // Optionally, parse the responseText as JSON if it's in JSON format
                     try {

@@ -4,6 +4,7 @@ from django.db.models import Sum
 from rest_framework import serializers, status
 from rest_framework.response import Response
 
+from PumaDist.addhistory import addhistory
 from .models import *
 
 
@@ -48,6 +49,26 @@ class FormationSerializer(serializers.ModelSerializer):
 
         return representation
 
+    def create(self, validated_data):
+
+        form = Formation.objects.create(**validated_data)
+
+        serializer = FormationSerializer(form)
+        addhistory({}, serializer.data, 25, 1, user=self.context.get('user'))
+
+        return form
+
+    def update(self, instance, validated_data):
+        oldvalue = FormationSerializer(instance).data
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        serializer = FormationSerializer(instance)
+        addhistory(oldvalue, serializer.data, 25, 2, user=self.context.get('user'))
+
+        return instance
+
 
 class EquipeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -62,6 +83,26 @@ class ProblematiqueSerializer(serializers.ModelSerializer):
     class Meta:
         model = Problematique
         fields = '__all__'
+
+    def create(self, validated_data):
+
+        form = Problematique.objects.create(**validated_data)
+
+        serializer = ProblematiqueSerializer(form)
+        addhistory({}, serializer.data, 26, 1, user=self.context.get('user'))
+
+        return form
+
+    def update(self, instance, validated_data):
+        oldvalue = ProblematiqueSerializer(instance).data
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        serializer = ProblematiqueSerializer(instance)
+        addhistory(oldvalue, serializer.data, 26, 2, user=self.context.get('user'))
+
+        return instance
 
 
 class FormationSingupSerializer(serializers.ModelSerializer):
@@ -104,13 +145,17 @@ class FormationSingupSerializer(serializers.ModelSerializer):
                 newelem = Equipe.objects.create(formation=formation_signup, **equipe_data)
                 newelem.save()
 
-            return formation_signup
-        pass
+        serializer = FormationSingupSerializer(formation_signup)
+        addhistory({}, serializer.data, 27, 1, user=self.context.get('user'))
+        return formation_signup
+
+
 
     def update(self, instance, validated_data):
         equipes_data = validated_data.pop('Equipeline', [])
         formation = validated_data.get('formation', instance.formation)
         nbrtotal = len(equipes_data)
+        oldvalue = FormationSerializer(instance).data
         instance.Equipeline.all().delete()
 
         if(len(equipes_data) == 0):
@@ -132,4 +177,6 @@ class FormationSingupSerializer(serializers.ModelSerializer):
                 for equipe_data in equipes_data:
                     Equipe.objects.create(formation=instance, **equipe_data)
 
+            serializer = FormationSerializer(instance)
+            addhistory(oldvalue, serializer.data, 27, 2, user=self.context.get('user'))
             return instance

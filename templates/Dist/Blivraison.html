@@ -76,7 +76,7 @@
                         </div>
                     </div>
                     <div class="flex space-x-2 w-1/6 justify-end">
-                        {% if 60 in listeauth %}
+                        {% if 64 in listeauth %}
                             <button id="popupButton2" class="popupButton2 bg-blue-500 text-white p-2 rounded"
                                 data-identifiant="{{ elem.id }}"><i
                                 class="fas fa-search"></i>
@@ -87,7 +87,7 @@
                                         class="fas fa-search"></i>
                             </div>
                         {% endif %}
-                        {% if 58 in listeauth %}
+                        {% if 62 in listeauth %}
                             <button id="popupButton" class="popupButton bg-blue-500 text-white p-2 rounded"
                                 data-identifiant="{{ elem.id }}"><i
                                 class="fas fa-pencil-alt"></i>
@@ -98,7 +98,7 @@
                                         class="fas fa-pencil-alt"></i>
                             </div>
                         {% endif %}
-                        {% if 59 in listeauth %}
+                        {% if 63 in listeauth %}
                             <button class="bg-red-500 text-white p-2 rounded delete-btn"
                                 data-code="{{ elem.commandes__distributeur__code }}"
                                 data-identifiant="{{ elem.id }}" data-cmd="{{ cmd }}"><i class="fas fa-trash"></i>

@@ -23,13 +23,31 @@ class FormationSingupViewSet(viewsets.ModelViewSet):
     queryset = FormationSingup.objects.all()
     serializer_class = FormationSingupSerializer
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['user'] = self.request.user
+
+        return context
+
 class EquipeViewSet(viewsets.ModelViewSet):
     queryset = Equipe.objects.all()
     serializer_class = EquipeSerializer
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['user'] = self.request.user
+
+        return context
+
 class ProblematiqueViewSet(viewsets.ModelViewSet):
     queryset = Problematique.objects.all()
     serializer_class = ProblematiqueSerializer
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['user'] = self.request.user
+
+        return context
 
 
 
@@ -72,20 +90,32 @@ def ProbView(request):
         set(request.user.user_permissions.values_list('content_type_id', flat=True))
     )
 
+
     if (26 in listmodules):
+
+
         listeauth = list(
             set(
                 Permission.objects.filter(user=request.user, content_type = 25).values_list('id', flat=True)
             )
         )
+        if (request.user.type=="Distributeur"):
+            problematique = Problematique.objects.filter(etat__in=['Reception', 'En cours', 'Validation'], profile__user=request.user)
 
-        problematique = Problematique.objects.filter(etat__in=['Reception', 'En cours', 'Validation'])
+            return render(request, "Dist/problematique.html", {
+                "problematique": problematique,
+                "listeauth": listeauth,
+                "listmodules": listmodules,
+            })
+        else:
 
-        return render(request, "Pumal/problematique.html", {
-            "problematique": problematique,
-            "listeauth": listeauth,
-            "listmodules": listmodules,
-        })
+            problematique = Problematique.objects.filter(etat__in=['Reception', 'En cours', 'Validation'])
+
+            return render(request, "Pumal/problematique.html", {
+                "problematique": problematique,
+                "listeauth": listeauth,
+                "listmodules": listmodules,
+            })
     else:
         return render(request,"access.html", {"listmodules": listmodules})
 

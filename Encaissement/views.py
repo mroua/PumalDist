@@ -82,7 +82,6 @@ def EncaissementView(request):
 
         lise_fact = []
         for row in rows:
-            print(row)
             somme_total = somme_total + row[2]
             somme_encai = somme_encai + row[12]
             somme_circu = somme_circu + row[13]
@@ -122,10 +121,10 @@ def EncaissementView(request):
 
     else:
 
-        if (21 in listmodules):
+        if (22 in listmodules):
             listeauth = list(
                 set(
-                    Permission.objects.filter(user=request.user, content_type = 21).values_list('id', flat=True)
+                    Permission.objects.filter(user=request.user, content_type = 22).values_list('id', flat=True)
                 )
             )
             # Get the list of distributeurs and payeurs
@@ -200,7 +199,6 @@ def EncaissementView(request):
 
             lise_fact = []
             for row in rows:
-                print(row)
                 somme_total = somme_total + row[2]
                 somme_encai = somme_encai + row[12]
                 somme_circu = somme_circu + row[13]
@@ -254,10 +252,10 @@ def EncaissementDetailView(request):
         set(request.user.user_permissions.values_list('content_type_id', flat=True))
     )
 
-    if (21 in listmodules):
+    if (22 in listmodules):
         listeauth = list(
             set(
-                Permission.objects.filter(user=request.user, content_type = 21).values_list('id', flat=True)
+                Permission.objects.filter(user=request.user, content_type = 22).values_list('id', flat=True)
             )
         )
 
@@ -289,7 +287,6 @@ def EncaissementDetailView(request):
             })
         encaissement = Encaissement.objects.all()
 
-        print(encaissement)
 
         return render(request, "Pumal/EncaissementDetail.html", {
             "encaissement": list_elems,
@@ -306,7 +303,7 @@ def FactureView(request):
     listmodules  = list(
         set(request.user.user_permissions.values_list('content_type_id', flat=True))
     )
-    if (21 in listmodules):
+    if (22 in listmodules):
         return render(request, "Facture.html")
     else:
         return render(request,"access.html", {"listmodules": listmodules})
@@ -328,10 +325,10 @@ def AccompteView(request):
 
         })
     else:
-        if (21 in listmodules):
+        if (22 in listmodules):
             listeauth = list(
                 set(
-                    Permission.objects.filter(user=request.user, content_type = 21).values_list('id', flat=True)
+                    Permission.objects.filter(user=request.user, content_type = 22).values_list('id', flat=True)
                 )
             )
 
@@ -365,14 +362,27 @@ class BanqueViewSet(viewsets.ModelViewSet):
     queryset = Banque.objects.all()
     serializer_class = BanqueSerializer
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['user'] = self.request.user
+
+        return context
+
+
 class AccountViewSet(viewsets.ModelViewSet):
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['user'] = self.request.user
+
+        return context
+
+
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
 
-        print(request.data)
         date_validation = request.data["date_validation"]
         validation = request.data["validation"]
         date_depot = request.data["date_depot"]
@@ -400,14 +410,27 @@ class FacturesViewSet(viewsets.ModelViewSet):
     queryset = Factures.objects.all()
     serializer_class = FacturesSerializer
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['user'] = self.request.user
+
+        return context
+
+
 class EncaissementViewSet(viewsets.ModelViewSet):
     queryset = Encaissement.objects.all()
     serializer_class = EncaissementSerializer
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['user'] = self.request.user
+
+        return context
+
+
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
 
-        print(request.data)
         date_validation = request.data["date_validation"]
         validation = request.data["validation"]
         date_depot = request.data["date_depot"]
@@ -445,7 +468,7 @@ def AccompteDist(request):
     listmodules  = list(
         set(request.user.user_permissions.values_list('content_type_id', flat=True))
     )
-    if (21 in listmodules):
+    if (22 in listmodules):
         payeur = request.GET.get('payeur_id')
 
         total_amount = Account.objects.filter(
@@ -470,7 +493,7 @@ def get_factures(request, payeur_id):
     listmodules  = list(
         set(request.user.user_permissions.values_list('content_type_id', flat=True))
     )
-    if (21 in listmodules):
+    if (22 in listmodules):
         factures = Factures.objects.filter(payeur_id=payeur_id, complete=False)
         facture_data = [
             {

@@ -4,6 +4,8 @@ from io import BytesIO
 from django.core.files.base import ContentFile
 from django.db.models import Sum
 from rest_framework import serializers
+
+from PumaDist.addhistory import addhistory
 from .models import Dist_Commande, Dist_CommandeLines, Produit, Dist_BonLivraison, Dist_BonLivraisonLine
 
 
@@ -39,36 +41,49 @@ class Dist_CommandeSerializer(serializers.ModelSerializer):
         commande.total = total
         commande.save()
 
+
+        serializer = Dist_CommandeSerializerDetail(commande)
+        addhistory({}, serializer.data, 18, 1, user=self.context.get('user'))
+
         return commande
 
     def update(self, instance, validated_data):
+
+        oldvalue = Dist_CommandeSerializerDetail(instance).data
         commandes_lines_data = validated_data.pop('commandesLines')
         instance.distributeur = validated_data.get('distributeur', instance.distributeur)
         instance.etat = validated_data.get('etat', instance.etat)
         instance.save()
+        print(commandes_lines_data)
+
 
         total = 0
 
         for line_data in commandes_lines_data:
-            line_id = line_data.get('id')
-            if line_id:
-                line = Dist_CommandeLines.objects.get(id=line_id, commande=instance)
+            try:
+                line = Dist_CommandeLines.objects.get(commande=instance, produit=line_data['produit'])
                 line.quantite = line_data.get('quantite', line.quantite)
                 line.complete = line_data.get('complete', line.complete)
                 line.prixunitaire = line.produit.prix_publique
                 line.prixtotal = line.prixunitaire * line.quantite
                 line.save()
-            else:
+                pr_total = line.prixunitaire * line.quantite
+            except Exception:
                 produit = line_data['produit']
                 prixunitaire = produit.prix_publique
                 prixtotal = prixunitaire * line_data['quantite']
                 line_data['prixunitaire'] = prixunitaire
                 line_data['prixtotal'] = prixtotal
                 Dist_CommandeLines.objects.create(commande=instance, **line_data)
-            total += line_data['prixtotal']
+                pr_total = prixtotal
+
+            total += pr_total
 
         instance.total = total
         instance.save()
+
+        serializer = Dist_CommandeSerializerDetail(instance)
+        addhistory(oldvalue, serializer.data, 18, 2, user=self.context.get('user'))
 
         return instance
 
@@ -209,12 +224,16 @@ class Dist_BonLivraisonSerializer(serializers.ModelSerializer):
         bon_livraison.total = total
         bon_livraison.save()
 
+        serializer = Dist_BonLivraisonDetailSerializer(bon_livraison)
+        addhistory({}, serializer.data, 16, 1, user=self.context.get('user'))
+
         return bon_livraison
 
     def update(self, instance, validated_data):
         # Pop BonLivraison data to avoid modifying existing lines
         bon_livraison_lines_data = validated_data.pop('BonLivraison', [])
 
+        oldvalue = Dist_BonLivraisonDetailSerializer(instance).data
         # Update remaining fields
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
@@ -235,7 +254,10 @@ class Dist_BonLivraisonSerializer(serializers.ModelSerializer):
         # Do not update BonLivraisonLine objects
         # You can handle modifications to BonLivraisonLine objects separately if needed
 
+        serializer = Dist_BonLivraisonDetailSerializer(instance)
+        addhistory(oldvalue, serializer.data, 18, 2, user=self.context.get('user'))
         return instance
+
     """def update(self, instance, validated_data):
         fc_file_base64 = validated_data.pop('fc_file', None)
         bl_file_base64 = validated_data.pop('bl_file', None)
@@ -313,10 +335,6 @@ class Dist_BonLivraisonSerializer(serializers.ModelSerializer):
             content_file = ContentFile(data, name=file_name)
 
             # Optional: Log file details
-            print("content_file:", content_file)
-            print("File Name:", content_file.name)
-            print("File Size:", len(data), "bytes")
-            print("File Data (first 100 bytes):", data[:100])
 
             return content_file
 
@@ -406,10 +424,15 @@ class Dist_BonLivraisonNormalSerializer(serializers.ModelSerializer):
         bon_livraison.total = total
         bon_livraison.save()
 
+
+        serializer = Dist_BonLivraisonDetailSerializer(bon_livraison)
+        addhistory({}, serializer.data, 16, 1, user=self.context.get('user'))
         return bon_livraison
 
     def update(self, instance, validated_data):
         bon_livraison_lines_data = validated_data.pop('BonLivraison')
+
+        oldvalue = Dist_BonLivraisonDetailSerializer(instance).data
 
         facture = validated_data.get('facture', None)
         fc_file = validated_data.get('fc_file', None)
@@ -426,6 +449,9 @@ class Dist_BonLivraisonNormalSerializer(serializers.ModelSerializer):
 
         instance.save()
 
+
+        serializer = Dist_BonLivraisonDetailSerializer(instance)
+        addhistory(oldvalue, serializer.data, 18, 2, user=self.context.get('user'))
         return instance
 
 

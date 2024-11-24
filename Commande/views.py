@@ -31,13 +31,34 @@ class Dist_CommandeLinesViewSet(viewsets.ModelViewSet):
     queryset = Dist_CommandeLines.objects.all()
     serializer_class = Dist_CommandeLinesSerializer
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['user'] = self.request.user
+
+        return context
+
+
 class Dist_CommandeViewSet(viewsets.ModelViewSet):
     queryset = Dist_Commande.objects.all()
     serializer_class = Dist_CommandeSerializer
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['user'] = self.request.user
+
+        return context
+
+
 class Dist_CommandeDetailViewSet(viewsets.ModelViewSet):
     queryset = Dist_Commande.objects.all()
     serializer_class = Dist_CommandeSerializerDetail
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['user'] = self.request.user
+
+        return context
+
 
 class Dist_BonLivraisonViewSet(viewsets.ModelViewSet):
     queryset = Dist_BonLivraison.objects.all()
@@ -46,32 +67,59 @@ class Dist_BonLivraisonViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
     filterset_fields = ['commandes']
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['user'] = self.request.user
+
+        return context
+
+
 
 class Dist_BonLivraisonLineViewSet(viewsets.ModelViewSet):
     queryset = Dist_BonLivraisonLine.objects.all()
     serializer_class = Dist_BonLivraisonLineSerializer
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['user'] = self.request.user
+
+        return context
+
+
 class Dist_BonLivraisonDetailViewset(viewsets.ModelViewSet):
     queryset = Dist_BonLivraison.objects.all()
     serializer_class = Dist_BonLivraisonDetailSerializer
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['user'] = self.request.user
+
+        return context
 
 
 class Dist_BonLivraisonNormalViewset(viewsets.ModelViewSet):
     queryset = Dist_BonLivraison.objects.all()
     serializer_class = Dist_BonLivraisonNormalSerializer
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['user'] = self.request.user
+
+        return context
+
 
 @login_required
 def CommandeView(request):
+    print("voilaaaaaaaaaaaaaaaaaaaaaaaaaaa")
     listmodules  = list(
         set(request.user.user_permissions.values_list('content_type_id', flat=True))
     )
 
-    if (17 in listmodules):
+    if (18 in listmodules):
         listeauth = list(
             set(
-                Permission.objects.filter(Q(user=request.user, content_type=15) |
-                                          Q(user=request.user, content_type=17)).values_list('id', flat=True)
+                Permission.objects.filter(Q(user=request.user, content_type=16) |
+                                          Q(user=request.user, content_type=18)).values_list('id', flat=True)
             )
         )
 
@@ -81,12 +129,12 @@ def CommandeView(request):
         liste_distributeur = Distributeur.objects.all()
 
         lise_prod = []
-
-        if (request.user.type == "Disributeur"):
+        print(request.user.type)
+        if (request.user.type == "Distributeur"):
             dist = Distributeur.objects.get(user=request.user)
             liste_distributeur = [Distributeur.objects.get(user=request.user)]
-            query = """SELECT id, code, distributeur, ville, date_ajout, total, etat, total_blivraison, taxedtotal, taxedtotal_blivraison FROM cmdlist WHERE distributeur_id = """ + str(
-                dist.id)
+            query = """SELECT id, code, distributeur, ville, date_ajout, total, etat, total_blivraison, taxedtotal, taxedtotal_blivraison 
+            FROM cmdlist WHERE distributeur_id = """ + str(dist.id)
             params = []  # This will hold the parameters for the SQL query
 
             filters = []  # This will hold the filter conditions
@@ -136,6 +184,7 @@ def CommandeView(request):
                     })
 
             # return render(request, "Commande.html", {
+            print("iciiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
             return render(request, "Dist/Commande.html", {
                 'liste_type': liste_type,
                 'liste_couleur': liste_couleur,
@@ -216,11 +265,11 @@ def BlivraisonView(request):
         set(request.user.user_permissions.values_list('content_type_id', flat=True))
     )
 
-    if (17 in listmodules):
+    if (18 in listmodules):
         listeauth = list(
             set(
-                Permission.objects.filter(Q(user=request.user, content_type=15) |
-                                          Q(user=request.user, content_type=17)).values_list('id', flat=True)
+                Permission.objects.filter(Q(user=request.user, content_type=16) |
+                                          Q(user=request.user, content_type=18)).values_list('id', flat=True)
             )
         )
 
@@ -237,8 +286,7 @@ def BlivraisonView(request):
             'total'
         )
 
-        for elem in blist:
-            print(elem)
+
 
         return render(request, "Pumal/Blivraison.html", {
             "blist": blist,
@@ -272,7 +320,6 @@ class CMDList(APIView):
     http_method_names = ['get']
 
     def get(self, request):
-        print('coucou')
         lise_prod = []
 
         # Initialize the base SQL query

@@ -37,6 +37,7 @@ class Localite(models.Model):
 
 class CustomUser(AbstractUser):
     type = models.CharField(max_length=12, choices=Typeprofile, default='Agent')
+    ville = models.ForeignKey(Ville, on_delete=models.CASCADE, null=True, blank=True)
     region = models.CharField(max_length=6, choices=Typeregion, default='EST', blank=True, null=True)
     telephone = models.CharField(max_length=80, blank=True)
     responsable = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
@@ -47,3 +48,24 @@ class CustomUser(AbstractUser):
 
     def nom(self):
         return self.last_name+' '+self.first_name
+
+class History(models.Model):
+    id = models.AutoField(primary_key=True)
+    elem_id = models.IntegerField()
+    user_representative = models.CharField(max_length=200)
+    action_flag = models.IntegerField(default=0)
+    old_msg = models.TextField(default={})
+    new_msg = models.TextField(default={})
+    content_type = models.IntegerField(default=0)
+    user = models.IntegerField(default=0)
+    vue = models.BooleanField(default=False)
+    viewer_id = models.IntegerField(default=0)
+    creation_date = models.DateTimeField(auto_now_add=True)
+    url = models.CharField(max_length=200)
+
+
+
+class UserURLHistory(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    url = models.URLField(blank=True)
+    date_creation = models.DateTimeField(auto_now_add=True)

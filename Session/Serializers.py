@@ -1,5 +1,7 @@
 from django.contrib.auth.models import Permission
 from rest_framework import serializers
+
+from PumaDist.addhistory import addhistory
 from .models import *
 from django.contrib.auth.hashers import check_password
 
@@ -43,10 +45,19 @@ class CustomUserSerializer(serializers.ModelSerializer):
             'username': {'required': False}
         }
 
+    # =
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+
+        representation['permission_ids'] = ",".join(map(str, instance.user_permissions.values_list('id', flat=True)))
+        representation['ville_des'] = instance.ville.designation
+        print(representation['ville_des'])
+        return representation
+
     def validate_username(self, value):
         user_id = self.instance.id if self.instance else None
         if CustomUser.objects.filter(username=value).exclude(id=user_id).exists():
-            raise serializers.ValidationError("A user with that username already exists.")
+            raise serializers.ValidationError("Un utilsateur avec le meme username existe déja.")
         return value
 
     def create(self, validated_data):
@@ -60,16 +71,22 @@ class CustomUserSerializer(serializers.ModelSerializer):
             permissions = user_permissions_data.split(',') if isinstance(user_permissions_data, str) else user_permissions_data
             permission_objects = Permission.objects.filter(id__in=permissions)
             user.user_permissions.set(permission_objects)
+        # Pass depth via context
+        if(user.type != "Distributeur"):
+            serializer = CustomUserSerializer(user, context={'depth': 1})
+            addhistory({}, serializer.data, 8, 1, user=self.context.get('user'))
+
+
+
 
         return user
 
     def update(self, instance, validated_data):
         user_permissions_data = validated_data.pop('user_permissions', None)
-        print(validated_data)
+        oldvalue = CustomUserSerializer(instance, context={'depth': 1}).data
 
 
         for attr, value in validated_data.items():
-            print(attr)
             if attr == 'password' and value:
                 instance.set_password(value)
             elif attr == 'username':
@@ -84,6 +101,11 @@ class CustomUserSerializer(serializers.ModelSerializer):
             permissions = user_permissions_data.split(',') if isinstance(user_permissions_data, str) else user_permissions_data
             permission_objects = Permission.objects.filter(id__in=permissions)
             instance.user_permissions.set(permission_objects)
+
+
+        if(instance.type != "Distributeur"):
+            serializer = CustomUserSerializer(instance, context={'depth': 1})
+            addhistory(oldvalue, serializer.data, 8, 2, user=self.context.get('user'))
 
         return instance
 

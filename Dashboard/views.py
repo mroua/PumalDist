@@ -48,7 +48,7 @@ def DashView(request):
     achat_menssuelle_m = []
     mois = []
     val = []
-    print(sqlcmd)
+
     with connection.cursor() as cursor:
         # Execute the SQL query with parameters
         cursor.execute(sqlcmd)#, params
@@ -226,7 +226,7 @@ where ym.distributeur_id = """+ str(first_dist.id) +"""
         "creance": creance_list
     }
 
-    print(graph_bar)
+
 
     context = {
         "en_cour": en_cour,

@@ -71,7 +71,7 @@
                             <span>Activer le payeur substitué</span>
                         </label>
                     </div>
-                    <div id="substitutionSection" class="hidden col-span-2 grid grid-cols-2 gap-4 bg-yellow-300">
+                    <div id="substitutionSection" class="hidden col-span-2 grid grid-cols-2 gap-4">
                         <div class="mb-0">
                             <label for="payeurSubstitue" class="block text-sm font-medium mb-2">Payeur
                                 substitué</label>
@@ -333,7 +333,7 @@
                         Filtrer
                     </button>
 
-                    {% if 81 in listeauth %}
+                    {% if 85 in listeauth %}
                         <button id="addButton"
                                 class="addButton btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400 hover:bg-blue-900 hover:border-slate-400 rounded-md">
                             Encaissement
@@ -599,7 +599,7 @@
                                 </div>
                             </div>
                             <div class="capitalize text-center pl-3" style="width: 80px; min-width: 80px">
-                                {% if 84 in listeauth %}
+                                {% if 88 in listeauth %}
                                     <button id="editButton" class="editButton bg-blue-500 text-white p-2 rounded"
                                         data-identifiant="{{ elem.id }}">
                                         <i class="fas fa-search"></i>
@@ -609,7 +609,7 @@
                                 {% endif %}
 
 
-                                {% if 83 in listeauth %}
+                                {% if 87 in listeauth %}
                                     <button class="bg-red-500 text-white p-2 rounded delete-btn" data-identifiant="{{ elem.id }}"><i class="fas fa-trash"></i></button>
                                 {% else %}
                                     <button class="cursor-not-allowed bg-gray-500 text-white p-2 rounded"><i class="fas fa-trash"></i></button>
@@ -708,27 +708,27 @@
 
         <script>
 
-            {% if 7 not in listmodules %}
+            {% if 8 not in listmodules %}
                 $("#userslistlink").addClass('hidden');
             {% endif %}
 
-            {% if 14 not in listmodules %}
+            {% if 15 not in listmodules %}
                 $("#prodlistlink").addClass('hidden');
             {% endif %}
 
-            {% if 9 not in listmodules %}
+            {% if 10 not in listmodules %}
                 $("#distlistlink").addClass('hidden');
             {% endif %}
 
-            {% if 17 not in listmodules %}
+            {% if 18 not in listmodules %}
                 $("#cmdlistlink").addClass('hidden');
             {% endif %}
 
-            {% if 21 not in listmodules %}
+            {% if 22 not in listmodules %}
                 $("#enclistlink").addClass('hidden');
             {% endif %}
 
-            {% if 26 not in listmodules %}
+            {% if 25 not in listmodules %}
                 $("#formslistlink").addClass('hidden');
             {% endif %}
 

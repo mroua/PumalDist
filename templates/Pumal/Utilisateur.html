@@ -18,7 +18,7 @@
             <div class="flex-grow overflow-hidden">
                 <form id="userForm" class="p-4 flex flex-col h-full">
                     <!-- Other form fields -->
-                    <div class="flex justify-center">
+                    <div class="flex items-center">
                         <div class="relative p-4">
                             <input type="file" id="photo" name="photo"
                                    class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md"
@@ -30,26 +30,33 @@
                                      class="w-full h-full object-cover">
                             </div>
                         </div>
+                        <div class="flex-grow">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="col-span-2">
+                                    <input type="email" id="email" name="email" placeholder="Email"
+                                           class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                                </div>
+                                <div>
+                                    <input type="text" id="username" name="username" placeholder="Username"
+                                           class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                                </div>
+                                <div>
+                                    <input type="text" id="telephone" name="telephone" placeholder="Téléphone"
+                                           class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                     <div class="grid grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <input type="text" id="username" name="username" placeholder="Username"
-                                   class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
-                        </div>
-                        <div>
-                            <input type="email" id="email" name="email" placeholder="Email"
-                                   class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
-                        </div>
+
+
                         <div>
                             <input type="text" id="first_name" name="first_name" placeholder="first name"
                                    class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
                         </div>
                         <div>
                             <input type="text" id="last_name" name="last_name" placeholder="last name"
-                                   class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
-                        </div>
-                        <div>
-                            <input type="text" id="telephone" name="telephone" placeholder="Téléphone"
                                    class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
                         </div>
                         <div>
@@ -76,6 +83,14 @@
                                 <option value="Centre">Centre</option>
                             </select>
                         </div>
+                        <div>
+                            <select id="ville" name="ville"
+                                    class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                                {% for ville in listville %}
+                                    <option value="{{ ville.id }}">{{ ville.designation }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                     </div>
                     <div class="grid grid-cols-5">
                         <div>Permission</div>
@@ -91,26 +106,16 @@
                         <div class="grid grid-cols-5 w-full bg-white border border-gray-200 rounded-md listaddcheck">
                             <div class="px-4 py-2 text-blue-900">Utilisateurs</div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          id="read_only_28"
-                                                          name="read_only_28"/></div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="add_25"
-                                                          name="add_25"/></div>
+                                                          id="read_only_32"
+                                                          name="read_only_32"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="add_29"
+                                                          name="add_29"/></div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          id="edit_26" name="edit_26"/></div>
+                                                          id="edit_30" name="edit_30"/></div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          id="delete_27" name="delete_27"/></div>
+                                                          id="delete_31" name="delete_31"/></div>
 
                             <div class="px-4 py-2 text-blue-900">Distributeur</div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="read_only_36"/></div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="add_33"/></div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="edit_34"/></div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="delete_35"/></div>
-
-                            <div class="px-4 py-2 text-blue-900">Payeur</div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
                                                           name="read_only_40"/></div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
@@ -119,53 +124,56 @@
                                                           name="edit_38"/></div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
                                                           name="delete_39"/></div>
+
+                            <div class="px-4 py-2 text-blue-900">Payeur</div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="read_only_44"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="add_41"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="edit_42"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="delete_43"/></div>
                             <div class="px-4 py-2 text-blue-900">Produits</div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="read_only_56"/></div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="add_53"/></div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="edit_54"/></div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="delete_55"/></div>
-
-                            <div class="px-4 py-2 text-blue-900">Commandes</div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="read_only_68"/></div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="add_65"/></div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="edit_66"/></div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="delete_67"/></div>
-                            <div class="px-4 py-2 text-blue-900">Bon livraison</div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
                                                           name="read_only_60"/></div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" name="add_57"/>
-                            </div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="add_57"/></div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
                                                           name="edit_58"/></div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
                                                           name="delete_59"/></div>
+
+                            <div class="px-4 py-2 text-blue-900">Commandes</div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="read_only_72"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="add_69"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="edit_70"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="delete_71"/></div>
+
+                            <div class="px-4 py-2 text-blue-900">Bon livraison</div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="read_only_64"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" name="add_61"/>
+                            </div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="edit_62"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="delete_63"/></div>
+
                             <div class="px-4 py-2 text-blue-900">Encaissement</div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="read_only_84"/></div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" name="add_81"/>
+                                                          name="read_only_88"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" name="add_85"/>
                             </div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="edit_82"/></div>
+                                                          name="edit_86"/></div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="delete_83"/></div>
+                                                          name="delete_87"/></div>
                             <div class="px-4 py-2 text-blue-900">Formation</div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="read_only_96"/></div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" name="add_93"/>
-                            </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="edit_94"/></div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="delete_95"/></div>
-                            <div class="px-4 py-2 text-blue-900">Ticket</div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
                                                           name="read_only_100"/></div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox" name="add_97"/>
@@ -174,6 +182,15 @@
                                                           name="edit_98"/></div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
                                                           name="delete_99"/></div>
+                            <div class="px-4 py-2 text-blue-900">Ticket</div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="read_only_104"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" name="add_101"/>
+                            </div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="edit_102"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox"
+                                                          name="delete_103"/></div>
 
                         </div>
                     </div>
@@ -184,6 +201,7 @@
                             Ajouter
                         </button>
                     </div>
+
                 </form>
             </div>
         </div>
@@ -200,7 +218,7 @@
             <div class="flex-grow overflow-hidden">
                 <form class="p-4 flex flex-col h-full">
                     <!-- Other form fields -->
-                    <div class="flex justify-center">
+                    <div class="flex items-center">
                         <div class="relative p-4">
 
                             <div id="photoPreviewview"
@@ -209,26 +227,34 @@
                                      class="w-full h-full object-cover">
                             </div>
                         </div>
+                        <div class="flex-grow">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="col-span-2">
+                                    <div id="usernameview"
+                                         class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 bg-white rounded-md defaultdarktext"></div>
+                                </div>
+                                <div>
+                                    <div id="emailview"
+                                         class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 bg-white rounded-md defaultdarktext"></div>
+                                </div>
+
+                                <div>
+                                    <div id="telephoneview"
+                                         class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 bg-white rounded-md defaultdarktext"></div>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                     <div class="grid grid-cols-2 gap-4 mb-4 defaultdarktext">
-                        <div>
-                            <div id="usernameview"
-                                 class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 bg-white rounded-md"></div>
-                        </div>
-                        <div>
-                            <div id="emailview"
-                                 class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 bg-white rounded-md"></div>
-                        </div>
+
+
                         <div>
                             <div id="first_nameview"
                                  class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 bg-white rounded-md"></div>
                         </div>
                         <div>
                             <div id="last_nameview"
-                                 class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 bg-white rounded-md"></div>
-                        </div>
-                        <div>
-                            <div id="telephoneview"
                                  class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 bg-white rounded-md"></div>
                         </div>
                         <div>
@@ -241,6 +267,11 @@
                         </div>
                         <div>
                             <div id="regionview"
+                                 class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 bg-white rounded-md"></div>
+                        </div>
+
+                        <div>
+                            <div id="villeview"
                                  class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 bg-white rounded-md"></div>
                         </div>
 
@@ -266,26 +297,16 @@
                         <!-- Content goes here -->
                         <div class="grid grid-cols-5 w-full bg-white border border-gray-200 rounded-md ">
                             <div class="px-4 py-2 text-blue-900">Utilisateurs</div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_28" disabled/>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_32" disabled/>
                             </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_25" disabled/>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_29" disabled/>
                             </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_26" disabled/>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_30" disabled/>
                             </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_27" disabled/>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_31" disabled/>
                             </div>
 
                             <div class="px-4 py-2 text-blue-900">Distributeur</div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_36" disabled/>
-                            </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_33" disabled/>
-                            </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_34" disabled/>
-                            </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_35" disabled/>
-                            </div>
-
-                            <div class="px-4 py-2 text-blue-900">Payeur</div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_40" disabled/>
                             </div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_37" disabled/>
@@ -295,27 +316,17 @@
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_39" disabled/>
                             </div>
 
+                            <div class="px-4 py-2 text-blue-900">Payeur</div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_44" disabled/>
+                            </div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_41" disabled/>
+                            </div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_42" disabled/>
+                            </div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_43" disabled/>
+                            </div>
+
                             <div class="px-4 py-2 text-blue-900">Produits</div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_56" disabled/>
-                            </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_53" disabled/>
-                            </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_54" disabled/>
-                            </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_55" disabled/>
-                            </div>
-
-                            <div class="px-4 py-2 text-blue-900">Commandes</div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_68" disabled/>
-                            </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_65" disabled/>
-                            </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_66" disabled/>
-                            </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_67" disabled/>
-                            </div>
-
-                            <div class="px-4 py-2 text-blue-900">Bon livraison</div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_60" disabled/>
                             </div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_57" disabled/>
@@ -325,34 +336,54 @@
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_59" disabled/>
                             </div>
 
+                            <div class="px-4 py-2 text-blue-900">Commandes</div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_72" disabled/>
+                            </div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_69" disabled/>
+                            </div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_70" disabled/>
+                            </div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_71" disabled/>
+                            </div>
+
+                            <div class="px-4 py-2 text-blue-900">Bon livraison</div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_64" disabled/>
+                            </div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_61" disabled/>
+                            </div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_62" disabled/>
+                            </div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_63" disabled/>
+                            </div>
+
                             <div class="px-4 py-2 text-blue-900">Encaissement</div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_84" disabled/>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_88" disabled/>
                             </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_81" disabled/>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_85" disabled/>
                             </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_82" disabled/>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_86" disabled/>
                             </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_83" disabled/>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_87" disabled/>
                             </div>
 
                             <div class="px-4 py-2 text-blue-900">Formation</div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_96" disabled/>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_100" disabled/>
                             </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_93" disabled/>
-                            </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_94" disabled/>
-                            </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_95" disabled/>
-                            </div>
-
-                            <div class="px-4 py-2 text-blue-900">Ticket</div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_100"
-                                                          disabled/></div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_97" disabled/>
                             </div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_98" disabled/>
                             </div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_99" disabled/>
+                            </div>
+
+                            <div class="px-4 py-2 text-blue-900">Ticket</div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_104"
+                                                          disabled/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_101" disabled/>
+                            </div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_102" disabled/>
+                            </div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_103" disabled/>
                             </div>
 
                         </div>
@@ -376,7 +407,7 @@
             <!-- Edit User Form -->
             <div class="">
                 <form id="edituserForm" class="p-4 flex flex-col overflow-hidden" style="height: calc(100vh - 50px)">
-                    <div class="flex justify-center">
+                    <div class="flex items-center">
                         <div class="relative p-4">
                             <input type="file" id="edit_photo" name="edit_photo"
                                    class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md"
@@ -388,16 +419,25 @@
                                      class="w-full h-full object-cover">
                             </div>
                         </div>
+                        <div class="flex-grow">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="col-span-2">
+                                    <input type="edit_email" id="edit_email" name="email" placeholder="Email"
+                                           class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                                </div>
+                                <div>
+                                    <input type="text" id="edit_username" name="edit_username" placeholder="Username"
+                                           class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                                </div>
+                                <div>
+                                    <input type="text" id="edit_telephone" name="edit_telephone" placeholder="Téléphone"
+                                           class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                     <div class="grid grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <input type="text" id="edit_username" name="edit_username" placeholder="Username"
-                                   class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
-                        </div>
-                        <div>
-                            <input type="edit_email" id="edit_email" name="email" placeholder="Email"
-                                   class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
-                        </div>
                         <div>
                             <input type="text" id="edit_first_name" name="edit_first_name" placeholder="first name"
                                    class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
@@ -406,10 +446,7 @@
                             <input type="text" id="edit_last_name" name="edit_last_name" placeholder="last name"
                                    class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
                         </div>
-                        <div>
-                            <input type="text" id="edit_telephone" name="edit_telephone" placeholder="Téléphone"
-                                   class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
-                        </div>
+
                         <div>
                             <select id="edit_responsable" name="edit_responsable"
                                     class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
@@ -434,6 +471,15 @@
                                 <option value="Centre">Centre</option>
                             </select>
                         </div>
+
+                        <div>
+                            <select id="edit_ville" name="edit_ville"
+                                    class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                                {% for ville in listville %}
+                                    <option value="{{ ville.id }}">{{ ville.designation }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                     </div>
 
 
@@ -455,24 +501,15 @@
                         <div class="grid grid-cols-5 w-full bg-white border border-gray-200 rounded-md ">
                             <div class="px-4 py-2 text-blue-900">Utilisateurs</div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="put_right_28" id="put_right_28"/></div>
+                                                          name="put_right_32" id="put_right_32"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="put_right_25" id="put_right_25"/></div>
+                                                          name="put_right_29" id="put_right_29"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="put_right_26" id="put_right_26"/></div>
+                                                          name="put_right_30" id="put_right_30"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="put_right_27" id="put_right_27"/></div>
+                                                          name="put_right_31" id="put_right_31"/></div>
 
                             <div class="px-4 py-2 text-blue-900">Distributeur</div>
-                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="read_only_36" id="put_right_36"/></div>
-                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="add_33" id="put_right_33"/></div>
-                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="edit_34" id="put_right_34"/></div>
-                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="delete_35" id="put_right_35"/></div>
-                            <div class="px-4 py-2 text-blue-900">Payeur</div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
                                                           name="read_only_40" id="put_right_40"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
@@ -481,25 +518,16 @@
                                                           name="edit_38" id="put_right_38"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
                                                           name="delete_39" id="put_right_39"/></div>
+                            <div class="px-4 py-2 text-blue-900">Payeur</div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="read_only_44" id="put_right_44"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="add_41" id="put_right_41"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="edit_42" id="put_right_42"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="delete_43" id="put_right_43"/></div>
                             <div class="px-4 py-2 text-blue-900">Produits</div>
-                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="read_only_56" id="put_right_56"/></div>
-                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="add_53" id="put_right_53"/></div>
-                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="edit_54" id="put_right_54"/></div>
-                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="delete_55" id="put_right_55"/></div>
-                            <div class="px-4 py-2 text-blue-900">Commandes</div>
-                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="read_only_68" id="put_right_68"/></div>
-                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="add_65" id="put_right_65"/></div>
-                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="edit_66" id="put_right_66"/></div>
-                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="delete_67" id="put_right_67"/></div>
-                            <div class="px-4 py-2 text-blue-900">Bon livraison</div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
                                                           name="read_only_60" id="put_right_60"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
@@ -508,25 +536,34 @@
                                                           name="edit_58" id="put_right_58"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
                                                           name="delete_59" id="put_right_59"/></div>
+                            <div class="px-4 py-2 text-blue-900">Commandes</div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="read_only_72" id="put_right_72"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="add_69" id="put_right_69"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="edit_70" id="put_right_70"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="delete_71" id="put_right_71"/></div>
+                            <div class="px-4 py-2 text-blue-900">Bon livraison</div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="read_only_64" id="put_right_64"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="add_61" id="put_right_61"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="edit_62" id="put_right_62"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="delete_63" id="put_right_63"/></div>
                             <div class="px-4 py-2 text-blue-900">Encaissement</div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="read_only_84" id="put_right_84"/></div>
+                                                          name="read_only_88" id="put_right_88"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="add_81" id="put_right_81"/></div>
+                                                          name="add_85" id="put_right_85"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="edit_82" id="put_right_82"/></div>
+                                                          name="edit_86" id="put_right_86"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="delete_83" id="put_right_83"/></div>
+                                                          name="delete_87" id="put_right_87"/></div>
                             <div class="px-4 py-2 text-blue-900">Formation</div>
-                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="read_only_96" id="put_right_96"/></div>
-                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="add_93" id="put_right_93"/></div>
-                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="edit_94" id="put_right_94"/></div>
-                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="delete_95" id="put_right_95"/></div>
-                            <div class="px-4 py-2 text-blue-900">Ticket</div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
                                                           name="read_only_100" id="put_right_100"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
@@ -535,6 +572,15 @@
                                                           name="edit_98" id="put_right_98"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
                                                           name="delete_99" id="put_right_99"/></div>
+                            <div class="px-4 py-2 text-blue-900">Ticket</div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="read_only_104" id="put_right_104"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="add_101" id="put_right_101"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="edit_102" id="put_right_102"/></div>
+                            <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
+                                                          name="delete_103" id="put_right_103"/></div>
                         </div>
                     </div>
                     <div class="flex justify-end pt-2">
@@ -546,15 +592,14 @@
             </div>
         </div>
 
-        
 
         <div class="flex justify-between items-center pt-4 mb-4" style="margin-top: -8px">
             <h2 class="text-2xl font-bold textslate">Liste des utilisateurs</h2>
             <div>
-                <button id="filterButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400 
+                <button id="filterButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
                     hover:bg-blue-900 hover:border-slate-400 rounded-md">Filtres
                 </button>
-                {% if 25 in listeauth %}
+                {% if 29 in listeauth %}
                     <button id="addButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
                         hover:bg-blue-900 hover:border-slate-400 rounded-md">Ajouter
                     </button>
@@ -600,16 +645,12 @@
                     <div class="defaultval w-1/4">{{ elem.email }}</div>
                     <div class="flex space-x-2 w-1/6 justify-end">
                         <!--<button class="bg-blue-500 text-white p-2 rounded"><i class="fas fa-search"></i></button>-->
-                        {% if 28 in listeauth %}
+                        {% if 32 in listeauth %}
                             <button class="bg-blue-700 text-white p-2 rounded" onclick="
                                     {% if elem.photo %}
-                                        newdatauserview({{ elem.id }}, '{{ elem.photo.url|escapejs }}', '{{ elem.username|escapejs }}', '{{ elem.email|escapejs }}', '{{ elem.first_name|escapejs }}',
-                                        '{{ elem.last_name|escapejs }}', '{{ elem.telephone|escapejs }}', '{{ elem.responsable|escapejs }}', '{{ elem.type|escapejs }}', '{{ elem.region|escapejs }}', '{{ elem.permission_ids|escapejs }}',
-                                        '{{ elem.is_active }}');
+                                        newdatauserview({{ elem.id }});
                                     {% else %}
-                                        newdatauserview({{ elem.id }}, '', '{{ elem.username|escapejs }}', '{{ elem.email|escapejs }}', '{{ elem.first_name|escapejs }}',
-                                        '{{ elem.last_name|escapejs }}', '{{ elem.telephone|escapejs }}', '{{ elem.responsable|escapejs }}', '{{ elem.type|escapejs }}', '{{ elem.region|escapejs }}', '{{ elem.permission_ids|escapejs }}',
-                                        '{{ elem.is_active }}');
+                                        newdatauserview({{ elem.id }});
                                     {% endif %}
                                     ">
                                 <i id="ViewButton" class="ViewButton fas fa-search"></i>
@@ -620,16 +661,16 @@
                             </button>
                         {% endif %}
 
-                        {% if 26 in listeauth %}
+                        {% if 30 in listeauth %}
                             <button class="bg-blue-700 text-white p-2 rounded" onclick="
                                     {% if elem.photo %}
                                         newdatauser({{ elem.id }}, '{{ elem.photo.url|escapejs }}', '{{ elem.username|escapejs }}', '{{ elem.email|escapejs }}', '{{ elem.first_name|escapejs }}',
                                         '{{ elem.last_name|escapejs }}', '{{ elem.telephone|escapejs }}', '{{ elem.responsable|escapejs }}', '{{ elem.type|escapejs }}', '{{ elem.region|escapejs }}', '{{ elem.permission_ids|escapejs }}',
-                                        '{{ elem.is_active }}');
+                                        '{{ elem.is_active }}', '{{ elem.ville.id }}');
                                     {% else %}
                                         newdatauser({{ elem.id }}, '', '{{ elem.username|escapejs }}', '{{ elem.email|escapejs }}', '{{ elem.first_name|escapejs }}',
                                         '{{ elem.last_name|escapejs }}', '{{ elem.telephone|escapejs }}', '{{ elem.responsable|escapejs }}', '{{ elem.type|escapejs }}', '{{ elem.region|escapejs }}', '{{ elem.permission_ids|escapejs }}',
-                                        '{{ elem.is_active }}');
+                                        '{{ elem.is_active }}', '{{ elem.ville.id }}');
                                     {% endif %}
                                     ">
                                 <i id="editButton" class="editButton fas fa-pencil-alt"></i>
@@ -640,7 +681,7 @@
                             </button>
                         {% endif %}
 
-                        {% if 26 in listeauth %}
+                        {% if 31 in listeauth %}
                             <button class="bg-red-500 text-white p-2 rounded delete-btn"
                                     data-identifiant="{{ elem.id }}"><i class="fas fa-trash"></i></button>
                         {% else %}
@@ -670,27 +711,27 @@
 
     <script>
 
-        {% if 7 not in listmodules %}
+        {% if 8 not in listmodules %}
             $("#userslistlink").addClass('hidden');
         {% endif %}
 
-        {% if 14 not in listmodules %}
+        {% if 15 not in listmodules %}
             $("#prodlistlink").addClass('hidden');
         {% endif %}
 
-        {% if 9 not in listmodules %}
+        {% if 10 not in listmodules %}
             $("#distlistlink").addClass('hidden');
         {% endif %}
 
-        {% if 17 not in listmodules %}
+        {% if 18 not in listmodules %}
             $("#cmdlistlink").addClass('hidden');
         {% endif %}
 
-        {% if 21 not in listmodules %}
+        {% if 22 not in listmodules %}
             $("#enclistlink").addClass('hidden');
         {% endif %}
 
-        {% if 26 not in listmodules %}
+        {% if 25 not in listmodules %}
             $("#formslistlink").addClass('hidden');
         {% endif %}
 
@@ -824,7 +865,7 @@
             });
         });
 
-        function newdatauser(id, url, username, email, first_name, last_name, telephone, responsable, type, region, user_permissions, isactive) {
+        function newdatauser(id, url, username, email, first_name, last_name, telephone, responsable, type, region, user_permissions, isactive, ville) {
             edit_elem = id;
             $("#edit_username").val(username);
             $("#edit_email").val(email);
@@ -833,6 +874,7 @@
             $("#edit_telephone").val(telephone);
             $("#edit_type").val(type);
             $("#edit_region").val(region);
+            $("#edit_ville").val(ville);
 
             if (isactive === "True") {
                 $('#edit_is_active').prop('checked', true);
@@ -865,44 +907,57 @@
 
         }
 
-        function newdatauserview(id, url, username, email, first_name, last_name, telephone, responsable, type, region, user_permissions, isactive) {
+        function newdatauserview(id) {
+            /*,, , , , , , responsable, type, region, user_permissions,
+                isactive, ville*/
             edit_elem = id;
-            $("#usernameview").html(username);
-            $("#emailview").html(email);
-            $("#first_nameview").html(first_name);
-            $("#last_nameview").html(last_name);
-            $("#telephoneview").html(telephone);
-            $("#typeview").html(type);
-            $("#regionview").html(region);
 
-            if (isactive === "True") {
-                $('#is_activeview').prop('checked', true);
-            }
+            let settings = {
+                url: `/api/user/${edit_elem}`,
+                method: "GET",
+                timeout: 0,
+                headers: {
+                    "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
+                },
+            };
+            $.ajax(settings).done(function (response) {
+                $("#usernameview").html(response['username']);
+                $("#emailview").html(response['email']);
+                $("#first_nameview").html(response['first_name']);
+                $("#last_nameview").html(response['last_name']);
+                $("#telephoneview").html(response['telephone']);
+                $("#typeview").html(response['type']);
+                $("#regionview").html(response['region']);
+                $("#villeview").html(response['ville_des']);
 
-            if (responsable === "None") {
-                $("#responsableview").html('');
-            } else {
-                $("#responsableview").html(responsable);
-            }
+                if (response['photo'] === "null") {
+                    $('#previewImageview').attr('src', "")
+                } else {
+                    $('#previewImageview').attr('src', response['photo'])
+                }
 
-            if (url === "") {
-                //$('#edit_photo').val("")
-                $('#previewImageview').attr('src', "")
-            } else {
-                //$('#edit_photo').val(url)
-                $('#previewImageview').attr('src', url)
-            }
+                if (response['responsable'] === null) {
+                    $("#responsableview").html('Aucun résponsable');
+                } else {
+                    $("#responsableview").html(response['responsable']);
+                }
 
-            $('.put_checked_add').each(function () {
-                $(this).prop('checked', false); // Uncheck the checkbox
+                if (response['is_active'] === true) {
+                    $('#is_activeview').prop('checked', true);
+                }else{
+                    $('#is_activeview').prop('checked', false);
+                }
+
+                $('.put_checked_add').each(function () {
+                $(this).prop('checked', false);
+                });
+
+                liste_auth = JSON.parse('[' + response['permission_ids'] + ']');
+                for (i = 0; i < liste_auth.length; i++) {
+                    //$("#put_right_"+liste_auth[i]).click()
+                    $("#viewput_" + liste_auth[i]).prop('checked', true);
+                }
             });
-
-            liste_auth = JSON.parse('[' + user_permissions + ']');
-            for (i = 0; i < liste_auth.length; i++) {
-                //$("#put_right_"+liste_auth[i]).click()
-                $("#viewput_" + liste_auth[i]).prop('checked', true);
-            }
-
 
         }
 
@@ -934,6 +989,7 @@
             form.append("responsable", $('#responsable').val());
             form.append("type", $('#type').val());
             form.append("region", $('#region').val());
+            form.append("ville", $('#ville').val());
 
             // Add the photo
             var photoFile = $('#photo')[0].files[0];
@@ -977,7 +1033,8 @@
                     console.log('Error Thrown:', errorThrown);
 
                     // Log the response text, which might contain detailed error messages
-                    console.log('Response Text:', jqXHR.responseText); alert(jqXHR.responseText)
+                    console.log('Response Text:', jqXHR.responseText);
+                    alert(jqXHR.responseText)
 
                     // Optionally, parse the responseText as JSON if it's in JSON format
                     try {
@@ -1015,7 +1072,8 @@
             form.append("telephone", $('#edit_telephone').val());
             form.append("responsable", $('#edit_responsable').val());
             form.append("type", $('#edit_type').val());
-            //form.append("region", $('#edit_region').val());
+            form.append("region", $('#edit_region').val());
+            form.append("ville", $('#edit_ville').val());
             form.append("is_active", $('#edit_is_active').prop('checked'));
             $('#edit_is_active').val()
 
@@ -1060,7 +1118,8 @@
                     console.log('Error Thrown:', errorThrown);
 
                     // Log the response text, which might contain detailed error messages
-                    console.log('Response Text:', jqXHR.responseText); alert(jqXHR.responseText)
+                    console.log('Response Text:', jqXHR.responseText);
+                    alert(jqXHR.responseText)
 
                     // Optionally, parse the responseText as JSON if it's in JSON format
                     try {

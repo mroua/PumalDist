@@ -395,7 +395,7 @@
                     hover:bg-blue-900 hover:border-slate-400 rounded-md">Filtrer
                 </button>
 
-                {% if 37 in listeauth %}
+                {% if 41 in listeauth %}
                     <button id="addButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
                         hover:bg-blue-900 hover:border-slate-400 rounded-md">Ajouter
                     </button>
@@ -438,7 +438,7 @@
                         Bloqué {% else %} Actif {% endif %}</span>
                     </div>
                     <div class="flex space-x-2 w-1/6 justify-end">
-                        {% if 40 in listeauth %}
+                        {% if 44 in listeauth %}
                             <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded">
                                 <i class="fas fa-search"
                                    onclick="newdatauserview({{ elem.id }}, {{ elem.distributeur.id }}, '{{ elem.code|escapejs }}', '{{ elem.designation|escapejs }}', {{ elem.ville.id }},
@@ -454,7 +454,7 @@
                         {% endif %}
 
 
-                        {% if 38 in listeauth %}
+                        {% if 42 in listeauth %}
                             <button id="editButton" class="editButton bg-blue-500 text-white p-2 rounded">
                                 <i class="fas fa-pencil-alt"
                                    onclick="newdatauser({{ elem.id }}, {{ elem.distributeur.id }}, '{{ elem.code|escapejs }}', '{{ elem.designation|escapejs }}', {{ elem.ville.id }},
@@ -469,7 +469,7 @@
                             </button>
                         {% endif %}
 
-                        {% if 39 in listeauth %}
+                        {% if 43 in listeauth %}
                             <button class="bg-red-500 text-white p-2 rounded delete-btn"
                                     data-identifiant="{{ elem.id }}"><i class="fas fa-trash"></i></button>
                         {% else %}
@@ -498,27 +498,27 @@
 
     <script>
 
-        {% if 7 not in listmodules %}
+        {% if 8 not in listmodules %}
             $("#userslistlink").addClass('hidden');
         {% endif %}
 
-        {% if 14 not in listmodules %}
+        {% if 15 not in listmodules %}
             $("#prodlistlink").addClass('hidden');
         {% endif %}
 
-        {% if 9 not in listmodules %}
+        {% if 10 not in listmodules %}
             $("#distlistlink").addClass('hidden');
         {% endif %}
 
-        {% if 17 not in listmodules %}
+        {% if 18 not in listmodules %}
             $("#cmdlistlink").addClass('hidden');
         {% endif %}
 
-        {% if 21 not in listmodules %}
+        {% if 22 not in listmodules %}
             $("#enclistlink").addClass('hidden');
         {% endif %}
 
-        {% if 26 not in listmodules %}
+        {% if 25 not in listmodules %}
             $("#formslistlink").addClass('hidden');
         {% endif %}
         edit_payeur_id = 0;
@@ -734,86 +734,39 @@
             $("#edit_art").val(art);
             $("#edit_rc").val(rc);
 
-            $("#nifview").html("");
             if (niffile !== "") {
-                $("#nifview").append(`<a href="/media/${niffile}" class="mt-1 absolute inset-y-0 right-0 flex items-center
-                                    px-3 cursor-pointer text-blue-500 bg-gray-300 rounded-r-md">
+                $("#edit_niffile").attr("src", niffile);
 
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M4 3a2 2 0 012-2h6l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2V3z"/>
-                                </svg>
-                            </a>`)
+                fileIcon = document.getElementById('editnif_icon');
 
-            } else {
-                $("#nifview").append(`<a href="#" class="mt-1 absolute inset-y-0 right-0 flex items-center
-                                    px-3 text-gray-400 bg-gray-300 rounded-r-md">
-
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M4 3a2 2 0 012-2h6l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2V3z"/>
-                                </svg>
-                            </a>`)
+                fileIcon.classList.remove('text-gray-400');
+                fileIcon.classList.add('text-blue-500');
             }
-
-            $("#nisview").html("");
             if (nisfile !== "") {
-                $("#nisview").append(`<a href="/media/${nisfile}" class="mt-1 absolute inset-y-0 right-0 flex items-center
-                                    px-3 cursor-pointer text-blue-500 bg-gray-300 rounded-r-md">
+                $("#edit_nisfile").attr("src", nisfile);
 
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M4 3a2 2 0 012-2h6l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2V3z"/>
-                                </svg>
-                            </a>`)
+                fileIcon = document.getElementById('editnis_icon');
 
-            } else {
-                $("#nisview").append(`<a href="#" class="mt-1 absolute inset-y-0 right-0 flex items-center
-                                    px-3 text-gray-400 bg-gray-300 rounded-r-md">
-
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M4 3a2 2 0 012-2h6l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2V3z"/>
-                                </svg>
-                            </a>`)
+                fileIcon.classList.remove('text-gray-400');
+                fileIcon.classList.add('text-blue-500');
             }
+            if (nisfile !== "") {
+                $("#edit_artfile").attr("src", artfile);
 
-            $("#artview").html("");
-            if (artfile !== "") {
-                $("#artview").append(`<a href="/media/${artfile}" class="mt-1 absolute inset-y-0 right-0 flex items-center
-                                    px-3 cursor-pointer text-blue-500 bg-gray-300 rounded-r-md">
+                fileIcon = document.getElementById('editart_icon');
 
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M4 3a2 2 0 012-2h6l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2V3z"/>
-                                </svg>
-                            </a>`)
-
-            } else {
-                $("#artview").append(`<a href="#" class="mt-1 absolute inset-y-0 right-0 flex items-center
-                                    px-3 text-gray-400 bg-gray-300 rounded-r-md">
-
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M4 3a2 2 0 012-2h6l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2V3z"/>
-                                </svg>
-                            </a>`)
+                fileIcon.classList.remove('text-gray-400');
+                fileIcon.classList.add('text-blue-500');
             }
+            if (nisfile !== "") {
+                $("#edit_rcfile").attr("src", rcfile);
 
-            $("#rcview").html("");
-            if (rcfile !== "") {
-                $("#rcview").append(`<a href="/media/${rcfile}" class="mt-1 absolute inset-y-0 right-0 flex items-center
-                                    px-3 cursor-pointer text-blue-500 bg-gray-300 rounded-r-md">
+                fileIcon = document.getElementById('editrc_icon');
 
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M4 3a2 2 0 012-2h6l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2V3z"/>
-                                </svg>
-                            </a>`)
-
-            } else {
-                $("#rcview").append(`<a href="#" class="mt-1 absolute inset-y-0 right-0 flex items-center
-                                    px-3 text-gray-400 bg-gray-300 rounded-r-md">
-
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M4 3a2 2 0 012-2h6l6 6v9a2 2 0 01-2 2H6a2 2 0 01-2-2V3z"/>
-                                </svg>
-                            </a>`)
+                fileIcon.classList.remove('text-gray-400');
+                fileIcon.classList.add('text-blue-500');
             }
-
+            
             if (active === "True") {
                 $('#edit_is_active').prop('checked', true);
             } else {
@@ -833,10 +786,32 @@
             $("#view_adresse").html(adresse);
             $("#view_telephone").html(telephone);
             $("#view_ville").html(ville);
-            $("#view_nif").html(nif);
-            $("#view_nis").html(nis);
-            $("#view_art").html(art);
-            $("#view_rc").html(rc);
+            if(nif.length===0){
+                $("#view_nif").html("None")
+            }else{
+                $("#view_nif").html(nif);
+            }
+            
+            if(nis.length===0){
+                $("#view_nis").html("None")
+            }else{
+                $("#view_nis").html(nis);
+            }
+            
+            if(art.length===0){
+                $("#view_art").html("None")
+            }else{
+                $("#view_art").html(art);
+            }
+            
+            if(rc.length===0){
+                $("#view_rc").html("None")
+            }else{
+                $("#view_rc").html(rc);
+            }
+            
+            
+            
 
             $("#nifview").html("");
             if (niffile !== "") {

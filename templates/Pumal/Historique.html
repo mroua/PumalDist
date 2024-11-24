@@ -1,0 +1,136 @@
+{% extends "baseNew.html" %}
+{% load mes_tags %}
+{% load static %}
+{% block title %}Historique{% endblock %}
+
+
+{% block content %}
+    <div class="w-full h-full backprimer px-4 pb-4 flex flex-col">
+
+        <!--<div id="filterModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40 flex items-center justify-center"
+             style="margin-top: -16px">
+            <div class="backprimer w-1/3 rounded-lg shadow-lg">
+                <div class="flex justify-between items-center p-4 border-b">
+                    <h3 class="text-lg font-semibold">Changer mot de passe</h3>
+                    <button id="closeFilterModal" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+                </div>
+                <div class="p-4">
+                    <div class="mb-3">
+                        <label for="old_pass" class="block mb-1 pl-1 text-sm font-medium textslate">Votre ancient mot de
+                            passe:</label>
+                        <input type="text" id="old_pass"
+                               class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    </div>
+                    <div class="mb-3">
+                        <label for="old_pass" class="block mb-1 pl-1 text-sm font-medium textslate">Nouveau mot de
+                            passe:</label>
+                        <input type="text" id="new_pass"
+                               class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    </div>
+                    <div class="mb-3">
+                        <label for="old_pass" class="block mb-1 pl-1 text-sm font-medium textslate">Retaper votre
+                            nouveau mot de passe:</label>
+                        <input type="text" id="rep_pass"
+                               class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    </div>
+
+                    <div class="flex justify-between">
+                        <button class="closePopup text-white p-2 rounded btn capitalize bg-[#141b54] hover:bg-blue-900">
+                            Annuler
+                        </button>
+                        <button id="modifier"
+                                class="btn capitalize bg-[#141b54] px-4 rounded py-2 border border-slate-300 text-gray-400 text-sm hover:bg-blue-900 hover:border-slate-400">
+                            Modifier
+                        </button>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>-->
+
+        <div class="flex justify-between items-center pt-4 mb-4" style="margin-top: -8px">
+            <div class="flex gap-2">
+                <div>
+                    <a href="/profile/"
+                       class="block px-4 py-2 hoverprimer rounded">Profile</a>
+                </div>
+                <div>
+                    <a href="{% url 'hisdisp' %}" class="block px-4 py-2 actualprimer rounded">Historique</a>
+                </div>
+            </div>
+            <!--<div>
+                <button id="filterButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
+                    hover:bg-blue-900 hover:border-slate-400 rounded-md">Changer mot de passe
+                </button>
+            </div>-->
+        </div>
+        <hr/>
+
+
+        <div class="flex-grow p-4 overflow-hidden">
+            <!-- Full-Width Profile Page -->
+            <div class="h-full backslateprime shadow-t-lg p-4 rounded-lg overflow-hidden flex">
+                <div class="flex-grow overflow-y-auto">
+                    {% for elem in listhistory %}
+                        <div class="grid grid-cols-5 p-2 backslateslite flex-none mb-2 items-center relative">
+
+                            <div>history_{{ elem.id }}</div>
+                            <div>{{ elem.user_representative }}</div>
+                            <div>
+                                {% if elem.action_flag == 1 %}
+                                    Ajout
+                                {% elif elem.action_flag == 2 %}
+                                    Modification
+                                {% else %}
+                                    Suppression
+                                {% endif %}
+                            </div>
+                            <div>{{ elem.creation_date|date:'d-m-Y' }}</div>
+                            <div>
+                                <!-- Arrow for toggling -->
+                                <button class="toggle-arrow flex items-center justify-center text-gray-500 hover:text-blue-500">
+                                    <i class="uil uil-angle-down"></i>
+                                </button>
+                            </div>
+
+                            <div class="col-span-5 grid grid-cols-2 hidden detail-description p-4 gap-4">
+                                <div class="olddata bg-gray-100 rounded-lg p-2 break-words whitespace-pre-wrap ">
+                                    {{ elem.old_msg|format_to_beautiful_dict }}
+                                </div>
+                                <div class="newdata bg-gray-100 rounded-lg p-2 break-words whitespace-pre-wrap ">
+                                    {{ elem.new_msg|format_to_beautiful_dict }}
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <!-- Hidden detailed description -->
+
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        $(document).ready(function () {
+    $('.toggle-arrow').on('click', function () {
+        const $detailDescription = $(this).closest('.grid').find('.detail-description');
+        const $icon = $(this).find('i');
+
+        // Toggle visibility of the detail description
+        $detailDescription.toggleClass('hidden');
+
+        // Rotate the arrow icon
+        if ($detailDescription.hasClass('hidden')) {
+            $icon.removeClass('uil-angle-up').addClass('uil-angle-down');
+        } else {
+            $icon.removeClass('uil-angle-down').addClass('uil-angle-up');
+        }
+    });
+});
+    </script>
+
+{% endblock %}
