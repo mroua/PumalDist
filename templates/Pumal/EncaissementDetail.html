@@ -17,95 +17,6 @@
                 background-color: #cbd5e0; /* Keep the background color the same as when disabled */
             }
         </style>
-        <div id="addSidebar"
-             class="fixed right-0 top-0 bottom-0 w-2/5 backprimer shadow-lg transform translate-x-full transition-transform duration-300 z-50"
-             style="margin-top: -8px">
-            <div class="flex justify-between items-center p-4 border-b">
-                <h3 class="text-lg font-semibold textslate">Encaissement Détail: </h3>
-                <button id="closeEditSidebar" class="text-xl textslate">&times;</button>
-            </div>
-            <!-- Edit User Form -->
-
-            <div class="p-4">
-                <form id="viewuserForm">
-                    <div class="p-4" style="height: calc(100% - 10rem); overflow-y: auto;">
-
-                        <div class="grid grid-cols-2 gap-4 mb-4 textslate">
-                            <div class="mb-3">
-                                <label for="viewdistributeurdetail"
-                                       class="block text-sm font-medium mb-2">Distribupteur</label>
-                                <div id="viewdistributeurdetail" class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
-                                        block w-full p-2.5">
-
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="payeurdetail"
-                                       class="block text-sm font-medium mb-2">Payeur</label>
-                                <div id="payeurdetail" class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
-                                        block w-full p-2.5">
-
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="montantdetail"
-                                       class="block text-sm font-medium mb-2">Montant</label>
-                                <div id="montantdetail" class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
-                                        block w-full p-2.5 text-right">
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label class="block text-sm font-medium mb-2">Type d'accompte</label>
-                                <div id="typeaccountt"
-                                     class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500
-                                                focus:border-blue-500 block w-full p-2.5">
-
-                                </div>
-                            </div>
-                            <div>
-                                <label for="banquedetail"
-                                       class="block text-sm font-medium mb-2 mb-1">Banque</label>
-                                <div id="banquedetail"
-                                     class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500
-                                                focus:border-blue-500 block w-full p-2.5">
-
-                                </div>
-                            </div>
-                            <div>
-                                <label for="numerodetail"
-                                       class="block text-sm font-medium mb-2">Numéro</label>
-                                <div id="numerodetail"
-                                     class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-right"></div>
-                            </div>
-                            <div>
-                                <label for="chequedetail"
-                                       class="block text-sm font-medium mb-2">Date Cheque</label>
-                                <div id="chequedetail"
-                                     class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 text-right"></div>
-                            </div>
-                            <div>
-                                <label for="substitutionedit"
-                                       class="block text-sm font-medium mb-2">Substitution</label>
-                                <div id="substitutionedit"
-                                     class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"></div>
-                            </div>
-                        </div>
-                        <div id="elemptdate" class="grid grid-cols-2 gap-3">
-
-                        </div>
-                    </div>
-                    <div class="flex justify-end py-8">
-                        <button type="submit" id="modifdates"
-                                class="modifdates bg-blue-500 text-white py-2 px-4 rounded-lg
-                   hover:bg-blue-400
-                   disabled:bg-gray-400">
-                            Modifier
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
 
 
         <div id="editSidebar"
@@ -497,6 +408,7 @@
                 };
                 $.ajax(settings).done(function (response) {
                     let responsedata = response;
+                    console.log(responsedata)
                     payeurdetailid = responsedata['payeur'];
                     $('#distributeurdetail').html(responsedata["distributeur_designation"]);
                     $('#payeurdetail').html(responsedata["payeur_designation"]);
@@ -828,7 +740,7 @@
 
                 $.ajax(settings)
                     .done(function (response) {
-                        window.location.href = "/encaissement/accompte";
+                        window.location.href = "/encaissement/encaissementvalidate";
                     })
                     .fail(function (jqXHR, textStatus, errorThrown) {
                         // Log the entire jqXHR object to see all details

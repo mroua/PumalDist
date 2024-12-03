@@ -407,13 +407,56 @@
         <!-- Filter Modal -->
         <div id="filterModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40 flex items-center justify-center"
              style="margin-top: -16px">
-            <div class="bg-white w-1/3 rounded-lg shadow-lg">
+            <div class="backprimer w-1/3 rounded-lg shadow-lg">
                 <div class="flex justify-between items-center p-4 border-b">
                     <h3 class="text-lg font-semibold">Filtres</h3>
                     <button id="closeFilterModal" class="text-gray-500 hover:text-gray-700">&times;</button>
                 </div>
                 <div class="p-4">
-                    <!-- Filter Form -->
+                    <div class="mb-3">
+                        <label for="ville_filter" class="block mb-1 pl-1 text-sm font-medium textslate">Ville:</label>
+                        <select id="ville_filter" class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                            {% for ville in ville_list %}
+                                <option value="{{ ville.id }}">{{ ville.designation }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="region_filter" class="block mb-1 pl-1 text-sm font-medium textslate">Région:</label>
+                        <select id="region_filter" class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                            <option value="Est">Est</option>
+                            <option value="Ouest">Ouest</option>
+                            <option value="Centre">Centre</option>
+                        </select>
+                    </div>
+                <div class="grid grid-cols-2">
+                    <div class="mb-3">
+                        <div class="checkbox-wrapper-6 flex items-center gap-6">
+                            <label class="textslate">État</label>
+                            <input class="tgl tgl-light" id="is_activefilter" checked type="checkbox"/>
+                            <label class="tgl-btn" for="is_activefilter"></label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="checkbox-wrapper-6 flex items-center gap-6">
+                            <label class="textslate">Achat</label>
+                            <input class="tgl tgl-light" id="bloquefilter" checked type="checkbox"/>
+                            <label class="tgl-btn" for="bloquefilter"></label>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                    <div class="flex justify-between">
+                        <button class="closePopup text-white p-2 rounded btn capitalize bg-[#141b54] hover:bg-blue-900">
+                            Annuler
+                        </button>
+                        <button id="SearchApply"
+                                class="btn capitalize bg-[#141b54] px-4 rounded py-2 border border-slate-300 text-gray-400 text-sm hover:bg-blue-900 hover:border-slate-400">
+                            Lancer recherce
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -592,8 +635,8 @@
         $ristourn_na = $('#ristourn_na');
         $objectif_a = $('#objectif_a');
         $objectif_m = $('#objectif_m');
-        
-        
+
+
         usernamedefault = 'default_' + getRandomInt(600000)+'_'+new Date().getDate();
         $username.val(usernamedefault);
         $username.val(usernamedefault);

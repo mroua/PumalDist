@@ -60,9 +60,11 @@ def FormView(request):
     if(26 in listmodules):
         listeauth = list(
             set(
-                Permission.objects.filter(user=request.user, content_type = 24).values_list('id', flat=True)
+                Permission.objects.filter(user=request.user, content_type = 26).values_list('id', flat=True)
             )
         )
+
+        print(listeauth)
 
         formations = Formation.objects.all()
 

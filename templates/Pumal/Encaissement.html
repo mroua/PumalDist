@@ -204,7 +204,8 @@
             </div>
             <div class="p-4 flex justify-between">
                 <button id="closeSidebar" class="closeSidebar bg-gray-500 text-white p-2 rounded">Annuler</button>
-                <button id="addenc" class="bg-green-300 text-white p-2 rounded">Ajouter</button>
+                <button id="addenc" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
+                        hover:bg-blue-900 hover:border-slate-400 rounded-md">Ajouter</button>
             </div>
 
 
@@ -305,6 +306,46 @@
             </div>
 
 
+        </div>
+
+        <!-- Filter Modal -->
+        <div id="filterModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40 flex items-center justify-center"
+             style="margin-top: -16px">
+            <div class="backprimer w-1/3 rounded-lg shadow-lg">
+                <div class="flex justify-between items-center p-4 border-b">
+                    <h3 class="text-lg font-semibold">Filtres</h3>
+                    <button id="closeFilterModal" class="text-gray-500 hover:text-gray-700">&times;</button>
+                </div>
+                <div class="p-4">
+                    <div class="mb-3">
+                        <label for="ville_filter" class="block mb-1 pl-1 text-sm font-medium textslate">Distributeur:</label>
+                        <select id="ville_filter" class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                            {% for dist in listedist %}
+                                <option value="{{ dist.id }}">{{ dist.designation }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="ville_filter" class="block mb-1 pl-1 text-sm font-medium textslate">Payeur:</label>
+                        <select id="ville_filter" class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                            {% for payeur in listepayeur %}
+                                <option value="{{ payeur.id }}">{{ payeur.designation }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+
+                    <div class="flex justify-between">
+                        <button class="closePopup text-white p-2 rounded btn capitalize bg-[#141b54] hover:bg-blue-900">
+                            Annuler
+                        </button>
+                        <button id="SearchApply"
+                                class="btn capitalize bg-[#141b54] px-4 rounded py-2 border border-slate-300 text-gray-400 text-sm hover:bg-blue-900 hover:border-slate-400">
+                            Lancer recherce
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="w-full h-full flex flex-col py-2 overflow-y-auto font-bold">
@@ -627,7 +668,7 @@
         <div id="addbl" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
             <form id="formaddfacture">
                 <div class="relative w-screen h-screen flex justify-center items-center">
-                    <div class="bg-white w-96 h-3/4 p-6 backprimer textprimer rounded-lg shadow-lg gap-y-2 flex flex-col">
+                    <div class="w-96 h-3/4 p-6 backprimer  rounded-lg shadow-lg gap-y-2 flex flex-col">
                         <div class="w-full flex justify-between">
                             <div><h3 class="text-lg font-semibold">Ajout Facture</h3></div>
                             <div>
@@ -696,7 +737,8 @@
 
                         <div class="flex justify-between">
                             <button class="closePopup bg-gray-500 text-white p-2 rounded">Annuler</button>
-                            <button type="submit" class="bg-green-300 text-white p-2 rounded">Ajouter</button>
+                            <button type="submit" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
+                        hover:bg-blue-900 hover:border-slate-400 rounded-md">Ajouter</button>
                         </div>
 
                     </div>
@@ -732,6 +774,16 @@
                 $("#formslistlink").addClass('hidden');
             {% endif %}
 
+
+        // Show the filter modal
+        $('#filterButton').on('click', function () {
+            $('#filterModal').removeClass('hidden');
+        });
+
+        // Close the filter modal
+        $('#closeFilterModal').on('click', function () {
+            $('#filterModal').addClass('hidden');
+        });
             // Toggle the sidebar edit
             $('.editButton').on('click', function (e) {
                 identifiant = $(this).data('identifiant');

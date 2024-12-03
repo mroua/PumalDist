@@ -13,33 +13,18 @@
   <component name="ChangeListManager">
     <list default="true" id="28a87dc8-7290-44f7-bb19-0d3d219967d1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PumaDist/addhistory.py" beforeDir="false" afterPath="$PROJECT_DIR$/PumaDist/addhistory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Session/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/Session/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Commande/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Commande/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Formation/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Formation/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Session/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Session/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Dist/Accompte.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Dist/Accompte.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Dist/Blivraison.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Dist/Blivraison.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Dist/Commande.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Dist/Commande.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Dist/Encaissement.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Dist/Encaissement.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Dist/Formations.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Dist/Formations.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Dist/PayeurDraft.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Dist/PayeurDraft.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Dist/problematique.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Dist/problematique.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Pumal/Accompte.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pumal/Accompte.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Pumal/Blivraison.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pumal/Blivraison.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/Pumal/Commande.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pumal/Commande.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/Pumal/Distributeur.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pumal/Distributeur.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/Pumal/Encaissement.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pumal/Encaissement.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/Pumal/EncaissementDetail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pumal/EncaissementDetail.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/Pumal/Formations.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pumal/Formations.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/Pumal/Payeur.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pumal/Payeur.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Pumal/PayeurDraft.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pumal/PayeurDraft.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/Pumal/Produit.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pumal/Produit.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/Pumal/Profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pumal/Profile.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Pumal/Utilisateur.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pumal/Utilisateur.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Pumal/problematique.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pumal/problematique.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/Utilisateur.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Utilisateur.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/baseNew.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/baseNew.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/homelanding.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/homelanding.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -471,7 +456,7 @@
       <workItem from="1732281780871" duration="9122000" />
       <workItem from="1732293122393" duration="61868000" />
       <workItem from="1732846312665" duration="15000" />
-      <workItem from="1733162146595" duration="13508000" />
+      <workItem from="1733162146595" duration="18966000" />
     </task>
     <servers />
   </component>

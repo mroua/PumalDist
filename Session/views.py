@@ -102,6 +102,9 @@ def Utilisateurs(request):
 
         liste_users = CustomUser.objects.filter(
             Q(type="Agent")|
+            Q(type="Admin Régional")|
+            Q(type="Admin Wilaya")|
+            Q(type="Résponsable distributeur")|
             Q(type='Admin')
         ).order_by('id').prefetch_related('user_permissions__content_type')
 
@@ -114,13 +117,13 @@ def Utilisateurs(request):
             is_active = False
 
         if type:
-            liste_users.filter(type=type)
+            liste_users = liste_users.filter(type=type)
         if (ville):
-            liste_users.filter(ville=int(ville))
+            liste_users = liste_users.filter(ville=int(ville))
         if (region):
-            liste_users.filter(region=region)
+            liste_users = liste_users.filter(region=region)
         if (is_active):
-            liste_users.filter(is_active=is_active)
+            liste_users = liste_users.filter(is_active=is_active)
 
 
         for user in liste_users:

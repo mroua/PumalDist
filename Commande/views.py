@@ -10,6 +10,7 @@ from rest_framework import viewsets, status
 # Create your views here.
 from Distributeur.models import Distributeur
 from Produits.models import TypeProduit, Couleur, Mesure
+from Session.models import Ville
 from .Serializers import Dist_CommandeLinesSerializer, Dist_CommandeSerializer, Dist_BonLivraisonSerializer, \
     Dist_BonLivraisonLineSerializer, Dist_CommandeSerializerDetail, Dist_BonLivraisonDetailSerializer, \
     Dist_BonLivraisonNormalSerializer
@@ -242,6 +243,7 @@ def CommandeView(request):
                         "taxedtotal": row[8],
                         "taxedtotal_blivraison": row[9],
                     })
+            liste_ville = Ville.objects.all()
 
             # return render(request, "Commande.html", {
             return render(request, "Pumal/Commande.html", {
@@ -251,7 +253,8 @@ def CommandeView(request):
                 'liste_distributeur': liste_distributeur,
                 'liste_cmd': lise_prod,
                 'listeauth': listeauth,
-                'listmodules': listmodules
+                'listmodules': listmodules,
+                'liste_ville': liste_ville,
             })
     else:
         return render(request,"access.html", {"listmodules": listmodules})
