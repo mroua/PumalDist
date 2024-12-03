@@ -94,33 +94,39 @@
                     <!-- User Info -->
                     <div class="flex-grow grid grid-cols-2 gap-4 text-center md:text-left">
                         <div>
+                            <label for="first_name">Prénom:</label>
                             <input type="text" id="first_name" name="first_name" placeholder="Prénom"
                                    value="{{ request.user.first_name }}"
                                    class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                         </div>
                         <div>
+                            <label for="last_name">Nom:</label>
                             <input type="text" id="last_name" name="last_name" placeholder="Nom"
                                    value="{{ request.user.last_name }}"
                                    class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                         </div>
                         <div>
+                            <label for="email">Émail:</label>
                             <input type="email" id="email" name="email" placeholder="Email"
                                    value="{{ request.user.email }}"
                                    class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
                         </div>
                         <div>
+                            <label for="telephone">Téléphone:</label>
                             <input type="text" id="telephone" name="telephone" placeholder="Téléphone"
                                    value="{{ request.user.telephone }}"
                                    class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
                         </div>
                         <div>
+                            <label>Type:</label>
                             <div class="mt-1 p-2 block textprimer w-full shadow-sm sm:border-gray-300 bg-white rounded-md">
-                                Type: {{ request.user.get_type_display }}
+                                {{ request.user.get_type_display }}
                             </div>
                         </div>
                         <div>
+                            <label>Région:</label>
                             <div class="mt-1 p-2 block textprimer w-full shadow-sm sm:border-gray-300 bg-white rounded-md">
-                                Region: {{ request.user.get_region_display }}
+                                {{ request.user.get_region_display }}
                             </div>
                         </div>
                         <div class="col-span-2">
@@ -368,7 +374,6 @@
 
             $.ajax(settings)
                 .done(function (response) {
-                    console.log(response);
 
                     window.location.href = /profile/;
                 })

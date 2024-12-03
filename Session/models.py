@@ -6,6 +6,9 @@ Typeprofile = [
         ('Admin', 'Admin'),
         ('Distributeur', 'Distributeur'),
         ('Agent', 'Agent'),
+        ('Admin Régional', 'Admin Régional'),
+        ('Admin Wilaya', 'Admin Wilaya'),
+        ('Résponsable distributeur', 'Résponsable distributeur'),
         #('Distributeur', 'Distributeur'),
         #('Corporate', 'Corporate'),
     ]
@@ -36,7 +39,7 @@ class Localite(models.Model):
         return self.ville.designation
 
 class CustomUser(AbstractUser):
-    type = models.CharField(max_length=12, choices=Typeprofile, default='Agent')
+    type = models.CharField(max_length=32, choices=Typeprofile, default='Agent')
     ville = models.ForeignKey(Ville, on_delete=models.CASCADE, null=True, blank=True)
     region = models.CharField(max_length=6, choices=Typeregion, default='EST', blank=True, null=True)
     telephone = models.CharField(max_length=80, blank=True)

@@ -60,11 +60,11 @@ def addhistory(old, new, contenttype, action, user):
             ).distinct()
 
         urlelem = "/api/distributeur/"
-
+        idelem = Distributeur.objects.get(user__id=new['user']['id'])
         for elem in listelem:
             if (elem.id != new['user']['id']):
                     history = History.objects.create(
-                        elem_id=new['user']['id'],
+                        elem_id=idelem,
                         user_representative=username,
                         action_flag=action,
                         old_msg=old,
@@ -72,7 +72,7 @@ def addhistory(old, new, contenttype, action, user):
                         content_type=contenttype,
                         user=id,
                         viewer_id=elem.id,
-                        url=urlelem + str(new['user']['id']) + '/'
+                        url=urlelem + str(idelem) + '/'
                     )
                     history.save()
 

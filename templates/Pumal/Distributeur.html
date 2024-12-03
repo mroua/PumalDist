@@ -23,6 +23,14 @@
 
                         <div class="grid grid-cols-2 gap-4 mb-4">
                             <div>
+                                <input type="text" id="username" name="username" placeholder="Username"
+                                       class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                            </div>
+                            <div>
+                                <input type="text" id="email" name="email" placeholder="Émail"
+                                       class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                            </div>
+                            <div>
                                 <input type="text" id="first_name" name="first_name" placeholder="first name"
                                        class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                             </div>
@@ -474,7 +482,7 @@
                     <div class="flex space-x-2 w-1/6 justify-end">
 
                         {% if 40 in listeauth %}
-                            <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded"
+                            <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded viewelem_{{ elem.id }}"
                                     onclick="newdatauserview({{ elem.id }})">
                                 <i class="fas fa-search"></i>
                             </button>
@@ -529,6 +537,8 @@
 
 
     <script>
+
+
         {% if 8 not in listmodules %}
             $("#userslistlink").addClass('hidden');
         {% endif %}
@@ -557,6 +567,9 @@
         edit_username_old = "";
 
         $first_name = $('#first_name');
+        $username = $('#username');
+        $email = $('#email');
+        $first_name = $('#first_name');
         $last_name = $('#last_name');
         $email = $('#email');
         $telephone = $('#telephone');
@@ -579,6 +592,12 @@
         $ristourn_na = $('#ristourn_na');
         $objectif_a = $('#objectif_a');
         $objectif_m = $('#objectif_m');
+        
+        
+        usernamedefault = 'default_' + getRandomInt(600000)+'_'+new Date().getDate();
+        $username.val(usernamedefault);
+        $username.val(usernamedefault);
+        $email.val(usernamedefault+ '@pumaldefault.co');
 
 
         // Toggle the sidebar
@@ -751,14 +770,13 @@
         $('#userForm').on('submit', function (e) {
             e.preventDefault();
 
-            usernamedefault = 'default_' + getRandomInt(600000);
 
 
             var data = {
                 user: {
                     id: edit_user,
-                    username: usernamedefault,
-                    email: usernamedefault + '@pumaldefault.co',
+                    username: $username.val(),
+                    email: $email.val() ,
                     type: 'Distributeur',
                     first_name: $first_name.val(),
                     last_name: $last_name.val(),

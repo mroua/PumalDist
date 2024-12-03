@@ -439,7 +439,7 @@
                     </div>
                     <div class="flex space-x-2 w-1/6 justify-end">
                         {% if 44 in listeauth %}
-                            <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded">
+                            <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded viewelem_{{ elem.id }}">
                                 <i class="fas fa-search"
                                    onclick="newdatauserview({{ elem.id }}, {{ elem.distributeur.id }}, '{{ elem.code|escapejs }}', '{{ elem.designation|escapejs }}', {{ elem.ville.id }},
                                            '{{ elem.telephone|escapejs }}', '{{ elem.adresse|escapejs }}', '{{ elem.nif|escapejs }}', '{{ elem.nis|escapejs }}', '{{ elem.art|escapejs }}',

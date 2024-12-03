@@ -99,10 +99,29 @@ def Utilisateurs(request):
             )
         )
 
+
         liste_users = CustomUser.objects.filter(
             Q(type="Agent")|
             Q(type='Admin')
         ).order_by('id').prefetch_related('user_permissions__content_type')
+
+        type = request.GET.get('type', None)
+        ville = request.GET.get('ville', None)
+        region = request.GET.get('region', None)
+        if(request.GET.get('is_active') == "true"):
+            is_active = True
+        else:
+            is_active = False
+
+        if type:
+            liste_users.filter(type=type)
+        if (ville):
+            liste_users.filter(ville=int(ville))
+        if (region):
+            liste_users.filter(region=region)
+        if (is_active):
+            liste_users.filter(is_active=is_active)
+
 
         for user in liste_users:
             user.permission_ids = ",".join(map(str, user.user_permissions.values_list('id', flat=True)))
@@ -260,11 +279,12 @@ class Historynotif(APIView):
             rows = cursor.fetchall()
 
             for row in rows:
-
                 listcmd.append({
                     "id": row[0],
                     "url": row[13],
-                    "msg": row[12]
+                    "msg": row[12],
+                    "action": row[3],
+                    "id_elem": row[1]
                 })
 
 

@@ -16,6 +16,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/tom-select@2.1.0/dist/css/tom-select.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/tom-select@2.1.0/dist/js/tom-select.complete.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
     {% block head %}{% endblock %}
 </head>
 
@@ -128,62 +130,83 @@
 
 <script>
     $(document).ready(function () {
-    let settings = {
-        url: `/api/historique`,
-        method: "GET",
-        timeout: 0,
-        headers: {
-            "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
-        },
-    };
-    $.ajax(settings).done(function (response) {
-        let responsedata = response;
-        console.log(responsedata);
+        let settings = {
+            url: `/api/historique`,
+            method: "GET",
+            timeout: 0,
+            headers: {
+                "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
+            },
+        };
+        $.ajax(settings).done(function (response) {
+            let responsedata = response;
+            console.log(responsedata);
 
-        // Add a red dot if there are historique elements
-        if (responsedata.length > 0) {
-            $("#notif-bell").append(
-                `<span class="absolute top-1 right-1 w-3 h-3 bg-red-500 rounded-full"></span>`
-            );
-        }
-
-        // Populate historique links
-        for (let i = 0; i < responsedata.length; i++) {
-            $("#historicslinks").append(`<li class="px-4 py-2 hover:bg-gray-100">
-                <a href="${responsedata[i]['url']}">
-                    ${responsedata[i]['msg']}
-                </a>
-            </li>`);
-        }
-    });
-
-    // Show/hide the dropdown (unchanged logic)
-    $("#notif-bell").mouseenter(function () {
-        $("#notif-dropdown").removeClass("hidden"); // Show the dropdown
-    });
-
-    $("#notif-bell, #notif-dropdown").mouseleave(function () {
-        setTimeout(function () {
-            if (!$("#notif-bell:hover").length && !$("#notif-dropdown:hover").length) {
-                $("#notif-dropdown").addClass("hidden");
+            // Add a red dot if there are historique elements
+            if (responsedata.length > 0) {
+                $("#notif-bell").append(
+                    `<span class="absolute top-1 right-1 w-3 h-3 bg-red-500 rounded-full"></span>`
+                );
             }
-        }, 200);
-    });
 
-    $("#notif-dropdown").mouseenter(function () {
-        $(this).removeClass("hidden");
-    });
+            //
+            for (let i = 0; i < responsedata.length; i++) {
+                if(responsedata[i]['action'] === 3)
+                    actionicon = "<div class='bg-blue-700 text-white p-2 rounded'><i class='fas fa-trash'></i></div>"
+                else if(responsedata[i]['action'] === 2)
+                    actionicon = "<div class='bg-blue-700 text-white p-2 rounded'><i class='fas fa-pencil-alt'></i></div>"
+                else
+                    actionicon = "<div class='bg-blue-700 text-white p-2 rounded'><i class='fas fa-add'></i></div>"
+                $("#historicslinks").append(`<li class="flex items-center px-4 py-2">
+                    ${actionicon}
+                    <a class="px-2" href="${responsedata[i]['url']}"
+                        onclick="$.cookie('savedElemId', ${responsedata[i]['id_elem']}, { expires: 7, path: '/' });" >
+                        ${responsedata[i]['msg']}
+                    </a>
+                </li>`);
+            }
+        });
 
-    $("#notif-dropdown").mouseleave(function () {
-        $(this).addClass("hidden");
+        // Show/hide the dropdown (unchanged logic)
+        $("#notif-bell").mouseenter(function () {
+            $("#notif-dropdown").removeClass("hidden"); // Show the dropdown
+        });
+
+        $("#notif-bell, #notif-dropdown").mouseleave(function () {
+            setTimeout(function () {
+                if (!$("#notif-bell:hover").length && !$("#notif-dropdown:hover").length) {
+                    $("#notif-dropdown").addClass("hidden");
+                }
+            }, 200);
+        });
+
+        $("#notif-dropdown").mouseenter(function () {
+            $(this).removeClass("hidden");
+        });
+
+        $("#notif-dropdown").mouseleave(function () {
+            $(this).addClass("hidden");
+        });
+
+
+
+
+        let savedId = $.cookie('savedElemId');
+            if(savedId){
+                console.log(savedId)
+                console.log($('.viewelem_'+savedId))
+                $('.viewelem_'+savedId).click()
+
+                $.cookie('savedElemId', null, { expires: 7, path: '/' });
+            }
+
     });
-});
 
 
 </script>
 <div id="notif-dropdown"
-     class="hidden absolute left-20 bottom-20 w-96 bg-white shadow-lg rounded-md z-50 max-h-64 overflow-y-auto">
-    <ul class="text-sm text-gray-700" id="historicslinks">
+     class="hidden backslateslite absolute p-4 left-20 bottom-20 w-96 bg-white shadow-lg rounded-md z-50 max-h-64 overflow-y-auto">
+    <ul class="text-sm textslate" id="historicslinks">
     </ul>
 </div>
 

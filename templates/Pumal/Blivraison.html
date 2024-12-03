@@ -77,12 +77,12 @@
                     </div>
                     <div class="flex space-x-2 w-1/6 justify-end">
                         {% if 64 in listeauth %}
-                            <button id="popupButton2" class="popupButton2 bg-blue-500 text-white p-2 rounded"
+                            <button id="popupButton2" class="popupButton2 bg-blue-500 text-white p-2 rounded viewelem_{{ elem.id }}"
                                     data-identifiant="{{ elem.id }}"><i
                                     class="fas fa-search"></i>
                             </button>
                         {% else %}
-                            <div class="bg-gray-300 text-white p-2 rounded cursor-not-allowed"
+                            <div class="bg-gray-300 text-white p-2 rounded cursor-not-allowed viewelem_{{ elem.id }}"
                                  data-identifiant="{{ elem.id }}"><i
                                     class="fas fa-search"></i>
                             </div>
@@ -496,7 +496,16 @@
                     console.log('Error Thrown:', errorThrown);
 
                     // Log the response text, which might contain detailed error messages
-                    console.log('Response Text:', jqXHR.responseText); alert(jqXHR.responseText)
+                    console.log('Response Text:', jqXHR.responseText); errorResponse = jqXHR.responseText
+let formattedErrors = [];
+        for (let key in errorResponse) {
+            if (errorResponse.hasOwnProperty(key)) {
+                formattedErrors.push(`${key}: ${errorResponse[key].join(', ')}`);
+            }
+        }
+
+        // Show the formatted errors in an alert
+        alert(formattedErrors.join('\n'));
 
                     // Optionally, parse the responseText as JSON if it's in JSON format
                     try {

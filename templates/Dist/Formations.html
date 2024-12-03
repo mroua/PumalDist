@@ -111,7 +111,7 @@
                     <div class="capitalize text-right">{{ elem.tarif|floate_redefined }} DA</div>
                     <div class="capitalize px-4">{{ elem.datedebut|date:"d-m-Y" }}</div>
                     <div class="w-36 capitalize px-4">
-                        <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded"
+                        <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded viewelem_{{ elem.id }}"
                                 data-identifiant="{{ elem.id }}" data-etat="{{ elem.etat }}">
                             <i class="fas fa-search"></i>
                         </button>
