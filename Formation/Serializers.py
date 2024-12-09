@@ -24,11 +24,13 @@ class FormationSerializer(serializers.ModelSerializer):
             representation['placerestante'] = instance.nbrplace - FormationSingup.objects.filter(formation=instance).aggregate(total=Sum('nbrelem'))['total'] or 0
         except Exception:
             representation['placerestante'] = 0
-
-        if(user.type=="Distributeur"):
-            formation_signups = FormationSingup.objects.filter(formation=instance, distributeur__user=user)
-        else:
-            formation_signups = FormationSingup.objects.filter(formation=instance)
+        try:
+            if(user.type=="Distributeur"):
+                formation_signups = FormationSingup.objects.filter(formation=instance, distributeur__user=user)
+            else:
+                formation_signups = FormationSingup.objects.filter(formation=instance)
+        except Exception:
+            pass
 
         representation['groups'] = []
 
@@ -54,7 +56,7 @@ class FormationSerializer(serializers.ModelSerializer):
         form = Formation.objects.create(**validated_data)
 
         serializer = FormationSerializer(form)
-        addhistory({}, serializer.data, 25, 1, user=self.context.get('user'))
+        addhistory({}, serializer.data, 'formation', 1, user=self.context.get('user'))
 
         return form
 
@@ -65,7 +67,7 @@ class FormationSerializer(serializers.ModelSerializer):
         instance.save()
 
         serializer = FormationSerializer(instance)
-        addhistory(oldvalue, serializer.data, 25, 2, user=self.context.get('user'))
+        addhistory(oldvalue, serializer.data, 'formation', 2, user=self.context.get('user'))
 
         return instance
 
@@ -89,7 +91,7 @@ class ProblematiqueSerializer(serializers.ModelSerializer):
         form = Problematique.objects.create(**validated_data)
 
         serializer = ProblematiqueSerializer(form)
-        addhistory({}, serializer.data, 26, 1, user=self.context.get('user'))
+        addhistory({}, serializer.data, 'problematique', 1, user=self.context.get('user'))
 
         return form
 
@@ -100,7 +102,7 @@ class ProblematiqueSerializer(serializers.ModelSerializer):
         instance.save()
 
         serializer = ProblematiqueSerializer(instance)
-        addhistory(oldvalue, serializer.data, 26, 2, user=self.context.get('user'))
+        addhistory(oldvalue, serializer.data, 'problematique', 2, user=self.context.get('user'))
 
         return instance
 
@@ -146,7 +148,7 @@ class FormationSingupSerializer(serializers.ModelSerializer):
                 newelem.save()
 
         serializer = FormationSingupSerializer(formation_signup)
-        addhistory({}, serializer.data, 27, 1, user=self.context.get('user'))
+        addhistory({}, serializer.data, 'formationsingup', 1, user=self.context.get('user'))
         return formation_signup
 
 
@@ -178,5 +180,5 @@ class FormationSingupSerializer(serializers.ModelSerializer):
                     Equipe.objects.create(formation=instance, **equipe_data)
 
             serializer = FormationSerializer(instance)
-            addhistory(oldvalue, serializer.data, 27, 2, user=self.context.get('user'))
+            addhistory(oldvalue, serializer.data, 'formationsingup', 2, user=self.context.get('user'))
             return instance

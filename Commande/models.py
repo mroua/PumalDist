@@ -3,6 +3,7 @@ from django.db import models
 # Create your models here.
 from Distributeur.models import Distributeur
 from Produits.models import Produit
+from Session.models import CustomUser
 
 etatCMD=(
     ('Reception', 'Receptions Et Enregistrement'),
@@ -16,7 +17,8 @@ etatCMD=(
 
 class Dist_Commande(models.Model):
     id = models.AutoField(primary_key=True)
-    distributeur = models.ForeignKey(Distributeur, on_delete=models.CASCADE)#distributeur
+    #distributeur = models.ForeignKey(Distributeur, on_delete=models.CASCADE)#distributeur
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)#distributeur
     date_ajout = models.DateField(auto_now_add=True)
     etat = models.CharField(max_length=20, choices=etatCMD, default='Reception')
     total = models.FloatField(default=0)

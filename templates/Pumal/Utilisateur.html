@@ -71,10 +71,11 @@
                         <div>
                             <select id="type" name="type"
                                     class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
-                                <option value="Agent">Agent</option>
                                 <option value="Admin">Admin</option>
                                 <option value="Admin Régional">Admin Régional</option>
                                 <option value="Admin Wilaya">Admin Wilaya</option>
+                                <option value="Résponsable distributeur">Résponsable distributeur</option>
+                                <option value="Agent">Agent</option>
                             </select>
                         </div>
                         <div>
@@ -108,91 +109,94 @@
                         <div class="grid grid-cols-5 w-full bg-white border border-gray-200 rounded-md listaddcheck">
                             <div class="px-4 py-2 text-blue-900">Utilisateurs</div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          id="read_only_32"
-                                                          name="read_only_32"/></div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="add_29"
-                                                          name="add_29"/></div>
+                                                          id="view_customuser"
+                                                          name="view_customuser"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="add_customuser"
+                                                          name="add_customuser"/></div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          id="edit_30" name="edit_30"/></div>
+                                                          id="change_customuser" name="change_customuser"/></div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          id="delete_31" name="delete_31"/></div>
+                                                          id="delete_customuser" name="delete_customuser"/></div>
 
                             <div class="px-4 py-2 text-blue-900">Distributeur</div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="read_only_40"/></div>
+                                                          name="view_distributeur"/></div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="add_37"/></div>
+                                                          name="add_distributeur"/></div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="edit_38"/></div>
+                                                          name="change_distributeur"/></div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="delete_39"/></div>
+                                                          name="delete_distributeur"/></div>
 
                             <div class="px-4 py-2 text-blue-900">Payeur</div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="read_only_44"/></div>
+                                                          name="view_payeur"/></div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="add_41"/></div>
+                                                          name="add_payeur"/></div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="edit_42"/></div>
+                                                          name="change_payeur"/></div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="delete_43"/></div>
+                                                          name="delete_payeur"/></div>
+                            
                             <div class="px-4 py-2 text-blue-900">Produits</div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="read_only_60"/></div>
+                                                          name="view_produit"/></div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="add_57"/></div>
+                                                          name="add_produit"/></div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="edit_58"/></div>
+                                                          name="change_produit"/></div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="delete_59"/></div>
+                                                          name="delete_produit"/></div>
 
                             <div class="px-4 py-2 text-blue-900">Commandes</div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="read_only_72"/></div>
+                                                          name="view_dist_commande"/></div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="add_69"/></div>
+                                                          name="add_dist_commande"/></div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="edit_70"/></div>
+                                                          name="change_dist_commande"/></div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="delete_71"/></div>
+                                                          name="delete_dist_commande"/></div>
 
                             <div class="px-4 py-2 text-blue-900">Bon livraison</div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="read_only_64"/></div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" name="add_61"/>
-                            </div>
+                                                          name="view_dist_bonlivraison"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" 
+                                                          name="add_dist_bonlivraison"/></div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="edit_62"/></div>
+                                                          name="change_dist_bonlivraison"/></div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="delete_63"/></div>
+                                                          name="delete_dist_bonlivraison"/></div>
 
                             <div class="px-4 py-2 text-blue-900">Encaissement</div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="read_only_88"/></div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" name="add_85"/>
+                                                          name="view_encaissement"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" name="add_encaissement"/>
                             </div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="edit_86"/></div>
+                                                          name="change_encaissement"/></div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="delete_87"/></div>
+                                                          name="delete_encaissement"/></div>
+                            
                             <div class="px-4 py-2 text-blue-900">Formation</div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="read_only_100"/></div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" name="add_97"/>
+                                                          name="view_formation"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" name="add_formation"/>
                             </div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="edit_98"/></div>
+                                                          name="change_formation"/></div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="delete_99"/></div>
+                                                          name="delete_formation"/></div>
+                            
                             <div class="px-4 py-2 text-blue-900">Ticket</div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="read_only_104"/></div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" name="add_101"/>
+                                                          name="view_problematique"/></div>
+                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" name="add_problematique"/>
                             </div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="edit_102"/></div>
+                                                          name="change_problematique"/></div>
                             <div class="px-4 py-2"><input class="checked_add" type="checkbox"
-                                                          name="delete_103"/></div>
+                                                          name="delete_problematique"/></div>
 
                         </div>
                     </div>
@@ -299,93 +303,93 @@
                         <!-- Content goes here -->
                         <div class="grid grid-cols-5 w-full bg-white border border-gray-200 rounded-md ">
                             <div class="px-4 py-2 text-blue-900">Utilisateurs</div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_32" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_view_customuser" disabled/>
                             </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_29" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_add_customuser" disabled/>
                             </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_30" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_change_customuser" disabled/>
                             </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_31" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_delete_customuser" disabled/>
                             </div>
 
                             <div class="px-4 py-2 text-blue-900">Distributeur</div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_40" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_view_distributeur" disabled/>
                             </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_37" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_add_distributeur" disabled/>
                             </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_38" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_change_distributeur" disabled/>
                             </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_39" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_delete_distributeur" disabled/>
                             </div>
 
                             <div class="px-4 py-2 text-blue-900">Payeur</div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_44" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_view_payeur" disabled/>
                             </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_41" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_add_payeur" disabled/>
                             </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_42" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_change_payeur" disabled/>
                             </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_43" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_delete_payeur" disabled/>
                             </div>
 
                             <div class="px-4 py-2 text-blue-900">Produits</div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_60" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_view_produit" disabled/>
                             </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_57" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_add_produit" disabled/>
                             </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_58" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_change_produit" disabled/>
                             </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_59" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_delete_produit" disabled/>
                             </div>
 
                             <div class="px-4 py-2 text-blue-900">Commandes</div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_72" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_view_dist_commande" disabled/>
                             </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_69" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_add_dist_commande" disabled/>
                             </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_70" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_change_dist_commande" disabled/>
                             </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_71" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_delete_dist_commande" disabled/>
                             </div>
 
                             <div class="px-4 py-2 text-blue-900">Bon livraison</div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_64" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_view_dist_bonlivraison" disabled/>
                             </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_61" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_add_dist_bonlivraison" disabled/>
                             </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_62" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_change_dist_bonlivraison" disabled/>
                             </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_63" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_delete_dist_bonlivraison" disabled/>
                             </div>
 
                             <div class="px-4 py-2 text-blue-900">Encaissement</div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_88" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_view_encaissement" disabled/>
                             </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_85" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_add_encaissement" disabled/>
                             </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_86" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_change_encaissement" disabled/>
                             </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_87" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_delete_encaissement" disabled/>
                             </div>
 
                             <div class="px-4 py-2 text-blue-900">Formation</div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_100" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_view_formation" disabled/>
                             </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_97" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_add_formation" disabled/>
                             </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_98" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_change_formation" disabled/>
                             </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_99" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_delete_formation" disabled/>
                             </div>
 
                             <div class="px-4 py-2 text-blue-900">Ticket</div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_104"
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_view_problematique"
                                                           disabled/></div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_101" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_add_problematique" disabled/>
                             </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_102" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_change_problematique" disabled/>
                             </div>
-                            <div class="px-4 py-2"><input class="checked_add" type="checkbox" id="viewput_103" disabled/>
+                            <div class="px-4 py-2"><input class="checked_view" type="checkbox" id="viewput_delete_problematique" disabled/>
                             </div>
 
                         </div>
@@ -461,10 +465,11 @@
                         <div>
                             <select id="edit_type" name="edit_type"
                                     class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
-                                <option value="Agent">Agent</option>
                                 <option value="Admin">Admin</option>
                                 <option value="Admin Régional">Admin Régional</option>
                                 <option value="Admin Wilaya">Admin Wilaya</option>
+                                <option value="Résponsable distributeur">Résponsable distributeur</option>
+                                <option value="Agent">Agent</option>
                             </select>
                         </div>
                         <div>
@@ -505,86 +510,86 @@
                         <div class="grid grid-cols-5 w-full bg-white border border-gray-200 rounded-md listeditcheck">
                             <div class="px-4 py-2 text-blue-900">Utilisateurs</div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="put_right_32" id="put_right_32"/></div>
+                                                          name="put_view_customuser" id="put_view_customuser"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="put_right_29" id="put_right_29"/></div>
+                                                          name="put_add_customuser" id="put_add_customuser"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="put_right_30" id="put_right_30"/></div>
+                                                          name="put_change_customuser" id="put_change_customuser"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="put_right_31" id="put_right_31"/></div>
+                                                          name="put_delete_customuser" id="put_delete_customuser"/></div>
 
                             <div class="px-4 py-2 text-blue-900">Distributeur</div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="read_only_40" id="put_right_40"/></div>
+                                                          name="put_view_distributeur" id="put_view_distributeur"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="add_37" id="put_right_37"/></div>
+                                                          name="put_add_distributeur" id="put_add_distributeur"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="edit_38" id="put_right_38"/></div>
+                                                          name="put_change_distributeur" id="put_change_distributeur"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="delete_39" id="put_right_39"/></div>
+                                                          name="put_delete_distributeur" id="put_delete_distributeur"/></div>
                             <div class="px-4 py-2 text-blue-900">Payeur</div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="read_only_44" id="put_right_44"/></div>
+                                                          name="put_view_payeur" id="put_view_payeur"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="add_41" id="put_right_41"/></div>
+                                                          name="put_add_payeur" id="put_add_payeur"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="edit_42" id="put_right_42"/></div>
+                                                          name="put_change_payeur" id="put_change_payeur"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="delete_43" id="put_right_43"/></div>
+                                                          name="put_delete_payeur" id="put_delete_payeur"/></div>
                             <div class="px-4 py-2 text-blue-900">Produits</div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="read_only_60" id="put_right_60"/></div>
+                                                          name="put_view_produit" id="put_view_produit"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="add_57" id="put_right_57"/></div>
+                                                          name="put_add_produit" id="put_add_produit"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="edit_58" id="put_right_58"/></div>
+                                                          name="put_change_produit" id="put_change_produit"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="delete_59" id="put_right_59"/></div>
+                                                          name="put_delete_produit" id="put_delete_produit"/></div>
                             <div class="px-4 py-2 text-blue-900">Commandes</div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="read_only_72" id="put_right_72"/></div>
+                                                          name="put_view_dist_commande" id="put_view_dist_commande"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="add_69" id="put_right_69"/></div>
+                                                          name="put_add_dist_commande" id="put_add_dist_commande"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="edit_70" id="put_right_70"/></div>
+                                                          name="put_change_dist_commande" id="put_change_dist_commande"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="delete_71" id="put_right_71"/></div>
+                                                          name="put_delete_dist_commande" id="put_delete_dist_commande"/></div>
                             <div class="px-4 py-2 text-blue-900">Bon livraison</div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="read_only_64" id="put_right_64"/></div>
+                                                          name="put_view_dist_bonlivraison" id="put_view_dist_bonlivraison"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="add_61" id="put_right_61"/></div>
+                                                          name="put_add_dist_bonlivraison" id="put_add_dist_bonlivraison"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="edit_62" id="put_right_62"/></div>
+                                                          name="put_change_dist_bonlivraison" id="put_change_dist_bonlivraison"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="delete_63" id="put_right_63"/></div>
+                                                          name="put_delete_dist_bonlivraison" id="put_delete_dist_bonlivraison"/></div>
                             <div class="px-4 py-2 text-blue-900">Encaissement</div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="read_only_88" id="put_right_88"/></div>
+                                                          name="put_view_encaissement" id="put_view_encaissement"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="add_85" id="put_right_85"/></div>
+                                                          name="put_add_encaissement" id="put_add_encaissement"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="edit_86" id="put_right_86"/></div>
+                                                          name="put_change_encaissement" id="put_change_encaissement"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="delete_87" id="put_right_87"/></div>
+                                                          name="put_delete_encaissement" id="put_delete_encaissement"/></div>
                             <div class="px-4 py-2 text-blue-900">Formation</div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="read_only_100" id="put_right_100"/></div>
+                                                          name="put_view_formation" id="put_view_formation"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="add_97" id="put_right_97"/></div>
+                                                          name="put_add_formation" id="put_add_formation"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="edit_98" id="put_right_98"/></div>
+                                                          name="put_change_formation" id="put_change_formation"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="delete_99" id="put_right_99"/></div>
+                                                          name="put_delete_formation" id="put_delete_formation"/></div>
                             <div class="px-4 py-2 text-blue-900">Ticket</div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="read_only_104" id="put_right_104"/></div>
+                                                          name="put_view_problematique" id="put_view_problematique"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="add_101" id="put_right_101"/></div>
+                                                          name="put_add_problematique" id="put_add_problematique"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="edit_102" id="put_right_102"/></div>
+                                                          name="put_change_problematique" id="put_change_problematique"/></div>
                             <div class="px-4 py-2"><input class="put_checked_add" type="checkbox"
-                                                          name="delete_103" id="put_right_103"/></div>
+                                                          name="put_delete_problematique" id="put_delete_problematique"/></div>
                         </div>
                     </div>
                     <div class="flex justify-end pt-2">
@@ -603,7 +608,7 @@
                 <button id="filterButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
                     hover:bg-blue-900 hover:border-slate-400 rounded-md">Filtres
                 </button>
-                {% if 29 in listeauth %}
+                {% if 'add_customuser' in listeauth %}
                     <button id="addButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
                         hover:bg-blue-900 hover:border-slate-400 rounded-md">Ajouter
                     </button>
@@ -649,7 +654,7 @@
                     <div class="defaultval w-1/4">{{ elem.email }}</div>
                     <div class="flex space-x-2 w-1/6 justify-end">
                         <!--<button class="bg-blue-500 text-white p-2 rounded"><i class="fas fa-search"></i></button>-->
-                        {% if 32 in listeauth %}
+                        {% if 'view_customuser' in listeauth %}
                             <button class="bg-blue-700 text-white p-2 rounded viewelem_{{ elem.id }}" onclick="
                                     {% if elem.photo %}
                                         newdatauserview({{ elem.id }});
@@ -665,7 +670,7 @@
                             </button>
                         {% endif %}
 
-                        {% if 30 in listeauth %}
+                        {% if 'change_customuser' in listeauth %}
                             <button class="bg-blue-700 text-white p-2 rounded" onclick="
                                     {% if elem.photo %}
                                         newdatauser({{ elem.id }}, '{{ elem.photo.url|escapejs }}', '{{ elem.username|escapejs }}', '{{ elem.email|escapejs }}', '{{ elem.first_name|escapejs }}',
@@ -685,7 +690,7 @@
                             </button>
                         {% endif %}
 
-                        {% if 31 in listeauth %}
+                        {% if 'delete_customuser' in listeauth %}
                             <button class="bg-red-500 text-white p-2 rounded delete-btn"
                                     data-identifiant="{{ elem.id }}"><i class="fas fa-trash"></i></button>
                         {% else %}
@@ -723,38 +728,46 @@
                     <div class="mb-3">
                         <label for="type_filter" class="block mb-1 pl-1 text-sm font-medium textslate">Type:</label>
                         <select id="type_filter" class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
-                            <option value="Admin">Admin</option>
-                            <option value="Agent">Agent</option>
-                            <option value="Admin Régional">Admin Régional</option>
-                            <option value="Admin Wilaya">Admin Wilaya</option>
-                            <option value="Résponsable distributeur">Résponsable distributeur</option>
+                            <option value="" {% if request.GET.type == "" %}selected{% endif %}>Tous</option>
+                            <option value="Admin" {% if request.GET.type == "Admin" %}selected{% endif %}>Admin</option>
+                            <option value="Admin Régional" {% if request.GET.type == "Admin Régional" %}selected{% endif %}>Admin Régional</option>
+                            <option value="Admin Wilaya" {% if request.GET.type == "Admin Wilaya" %}selected{% endif %}>Admin Wilaya</option>
+                            <option value="Résponsable distributeur" {% if request.GET.type == "Résponsable distributeur" %}selected{% endif %}>Résponsable distributeur</option>
+                            <option value="Agent" {% if request.GET.type == "Agent" %}selected{% endif %}>Agent</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="ville_filter" class="block mb-1 pl-1 text-sm font-medium textslate">Type:</label>
+                        <label for="ville_filter" class="block mb-1 pl-1 text-sm font-medium textslate">Ville:</label>
                         <select id="ville_filter" class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                            <option value="" {% if request.GET.ville == "" %}selected{% endif %}>Tous</option>
                             {% for ville in listville %}
-                                <option value="{{ ville.id }}">{{ ville.designation }}</option>
+                                <option value="{{ ville.id }}"
+                                        {% if request.GET.ville == ville.id %}selected{% endif %}>{{ ville.designation }}
+                                </option>
                             {% endfor %}
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="region_filter" class="block mb-1 pl-1 text-sm font-medium textslate">Type:</label>
+                        <label for="region_filter" class="block mb-1 pl-1 text-sm font-medium textslate">Région:</label>
                         <select id="region_filter" class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
-                            <option value="Est">Est</option>
-                            <option value="Ouest">Ouest</option>
-                            <option value="Centre">Centre</option>
+                            <option value="" {% if request.GET.region == "" %}selected{% endif %}>Tous</option>
+                            <option value="Est" {% if request.GET.region == "Est" %}selected{% endif %}>Est</option>
+                            <option value="Ouest" {% if request.GET.region == "Ouest" %}selected{% endif %}>Ouest</option>
+                            <option value="Centre" {% if request.GET.region == "Centre" %}selected{% endif %}>Centre</option>
                         </select>
                     </div>
                     <div class="mb-3">
                         <div class="checkbox-wrapper-6 flex items-center gap-6">
                             <label class="textslate">État</label>
-                            <input class="tgl tgl-light" id="is_activefilter" checked type="checkbox"/>
+                            <input class="tgl tgl-light" id="is_activefilter" 
+                                   {% if request.GET.is_active == "true" or not request.GET.is_active %} 
+                                   checked
+                                   {% endif %} type="checkbox"/>
                             <label class="tgl-btn" for="is_activefilter"></label>
                         </div>
                     </div>
-                
-                
+
+
 
                     <div class="flex justify-between">
                         <button class="closePopup text-white p-2 rounded btn capitalize bg-[#141b54] hover:bg-blue-900">
@@ -775,38 +788,38 @@
 
     <script>
 
-        {% if 8 not in listmodules %}
+        {% if 'customuser' not in listmodules %}
             $("#userslistlink").addClass('hidden');
         {% endif %}
 
-        {% if 15 not in listmodules %}
+        {% if 'produits' not in listmodules %}
             $("#prodlistlink").addClass('hidden');
         {% endif %}
 
-        {% if 10 not in listmodules %}
+        {% if 'distributeur' not in listmodules %}
             $("#distlistlink").addClass('hidden');
         {% endif %}
 
-        {% if 18 not in listmodules %}
+        {% if 'dist_commande' not in listmodules %}
             $("#cmdlistlink").addClass('hidden');
         {% endif %}
 
-        {% if 22 not in listmodules %}
+        {% if 'encaissement' not in listmodules %}
             $("#enclistlink").addClass('hidden');
         {% endif %}
 
-        {% if 25 not in listmodules %}
+        {% if 'formation' not in listmodules %}
             $("#formslistlink").addClass('hidden');
         {% endif %}
 
         edit_elem = 0;
-        
-        
+
+
         $("#SearchApply").on('click', function (e) {
             e.preventDefault();
             if($("#is_activefilter").prop('checked')) filt = true
             else filt = false
-            link = "/users/?type=" + $('#type_filter').val() +"&ville=" + $('#ville_filter').val() +"&region=" + $('#region_filter').val() 
+            link = "/users/?type=" + $('#type_filter').val() +"&ville=" + $('#ville_filter').val() +"&region=" + $('#region_filter').val()
                 +"&is_active=" + filt;
             //alert(link)
             window.location.href = link;
@@ -911,36 +924,41 @@
                         $(this).prop('disabled', true); // Disable the checkbox
                     });
                 }
-                else if (selectedType === 'Admin Régional' || selectedType === 'Admin Régional' || selectedType === 'Résponsable distributeur' ) {
-                    $('.listaddcheck').find("input[name='read_only_40']").prop('checked', true);
-                    $('.listaddcheck').find("input[name='add_37']").prop('checked', true);
-                    $('.listaddcheck').find("input[name='edit_38']").prop('checked', true);
-                    $('.listaddcheck').find("input[name='delete_39']").prop('checked', true);
+                else if (selectedType === 'Admin Régional' || selectedType === 'Admin Wilaya' || selectedType === 'Résponsable distributeur' ) {
+                    $('.checked_add:checked').each(function() {
+                        $(this).prop('checked', false);  // Check the checkbox
+                        $(this).prop('disabled', false);
+                    });
 
-                    $('.listaddcheck').find("input[name='read_only_44']").prop('checked', true);
-                    $('.listaddcheck').find("input[name='add_41']").prop('checked', true);
-                    $('.listaddcheck').find("input[name='edit_42']").prop('checked', true);
-                    $('.listaddcheck').find("input[name='delete_43']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='view_distributeur']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='add_distributeur']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='change_distributeur']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='delete_distributeur']").prop('checked', true);
 
-                    $('.listaddcheck').find("input[name='read_only_60']").prop('checked', true);
-                    $('.listaddcheck').find("input[name='add_57']").prop('checked', true);
-                    $('.listaddcheck').find("input[name='edit_58']").prop('checked', true);
-                    $('.listaddcheck').find("input[name='delete_59']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='view_payeur']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='add_payeur']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='change_payeur']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='delete_payeur']").prop('checked', true);
 
-                    $('.listaddcheck').find("input[name='read_only_72']").prop('checked', true);
-                    $('.listaddcheck').find("input[name='add_69']").prop('checked', true);
-                    $('.listaddcheck').find("input[name='edit_70']").prop('checked', true);
-                    $('.listaddcheck').find("input[name='delete_71']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='view_produit']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='add_produit']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='change_produit']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='delete_produit']").prop('checked', true);
 
-                    $('.listaddcheck').find("input[name='read_only_64']").prop('checked', true);
-                    $('.listaddcheck').find("input[name='add_61']").prop('checked', true);
-                    $('.listaddcheck').find("input[name='edit_62']").prop('checked', true);
-                    $('.listaddcheck').find("input[name='delete_63']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='view_dist_commande']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='add_dist_commande']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='change_dist_commande']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='delete_dist_commande']").prop('checked', true);
 
-                    $('.listaddcheck').find("input[name='read_only_88']").prop('checked', true);
-                    $('.listaddcheck').find("input[name='add_85']").prop('checked', true);
-                    $('.listaddcheck').find("input[name='edit_86']").prop('checked', true);
-                    $('.listaddcheck').find("input[name='delete_87']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='view_dist_bonlivraison']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='add_dist_bonlivraison']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='change_dist_bonlivraison']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='delete_dist_bonlivraison']").prop('checked', true);
+
+                    $('.listaddcheck').find("input[name='view_encaissement']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='add_encaissement']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='change_encaissement']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='delete_encaissement']").prop('checked', true);
                 }
                 else {
                     // Enable all checkboxes if type is not 'Admin'
@@ -963,36 +981,41 @@
                         $(this).prop('disabled', true); // Disable the checkbox
                     });
                 }
-                else if (selectedType === 'Admin Régional' || selectedType === 'Admin Régional' || selectedType === 'Résponsable distributeur' ) {
-                    $(".listeditcheck").find("input[name='read_only_40']").prop('checked', true);
-                    $(".listeditcheck").find("input[name='add_37']").prop('checked', true);
-                    $(".listeditcheck").find("input[name='edit_38']").prop('checked', true);
-                    $(".listeditcheck").find("input[name='delete_39']").prop('checked', true);
+                else if (selectedType === 'Admin Régional' || selectedType === 'Admin Wilaya' || selectedType === 'Résponsable distributeur' ) {
+                    $('.put_checked_add:checked').each(function() {
+                        $(this).prop('checked', false);  // Check the checkbox
+                        $(this).prop('disabled', false);
+                    });
 
-                    $(".listeditcheck").find("input[name='read_only_44']").prop('checked', true);
-                    $(".listeditcheck").find("input[name='add_41']").prop('checked', true);
-                    $(".listeditcheck").find("input[name='edit_42']").prop('checked', true);
-                    $(".listeditcheck").find("input[name='delete_43']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='read_only_view_distributeur']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='add_add_distributeur']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='edit_change_distributeur']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='delete_delete_distributeur']").prop('checked', true);
 
-                    $(".listeditcheck").find("input[name='read_only_60']").prop('checked', true);
-                    $(".listeditcheck").find("input[name='add_57']").prop('checked', true);
-                    $(".listeditcheck").find("input[name='edit_58']").prop('checked', true);
-                    $(".listeditcheck").find("input[name='delete_59']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='read_only_view_payeur']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='add_add_payeur']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='edit_change_payeur']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='delete_delete_payeur']").prop('checked', true);
 
-                    $(".listeditcheck").find("input[name='read_only_72']").prop('checked', true);
-                    $(".listeditcheck").find("input[name='add_69']").prop('checked', true);
-                    $(".listeditcheck").find("input[name='edit_70']").prop('checked', true);
-                    $(".listeditcheck").find("input[name='delete_71']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='read_only_view_produit']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='add_add_produit']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='edit_change_produit']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='delete_delete_produit']").prop('checked', true);
 
-                    $(".listeditcheck").find("input[name='read_only_64']").prop('checked', true);
-                    $(".listeditcheck").find("input[name='add_61']").prop('checked', true);
-                    $(".listeditcheck").find("input[name='edit_62']").prop('checked', true);
-                    $(".listeditcheck").find("input[name='delete_63']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='read_only_view_dist_commande']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='add_add_dist_commande']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='edit_change_dist_commande']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='delete_delete_dist_commande']").prop('checked', true);
 
-                    $(".listeditcheck").find("input[name='read_only_88']").prop('checked', true);
-                    $(".listeditcheck").find("input[name='add_85']").prop('checked', true);
-                    $(".listeditcheck").find("input[name='edit_86']").prop('checked', true);
-                    $(".listeditcheck").find("input[name='delete_87']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='read_only_view_dist_bonlivraison']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='add_add_dist_bonlivraison']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='edit_change_dist_bonlivraison']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='delete_delete_dist_bonlivraison']").prop('checked', true);
+
+                    $(".listeditcheck").find("input[name='read_only_view_encaissement']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='add_add_encaissement']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='edit_change_encaissement']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='delete_delete_encaissement']").prop('checked', true);
                 }
                 else {
                     // Enable all checkboxes if type is not 'Admin'
@@ -1037,10 +1060,11 @@
                 $(this).prop('checked', false); // Uncheck the checkbox
             });
 
-            liste_auth = JSON.parse('[' + user_permissions + ']');
+            console.log(user_permissions)
+            liste_auth = user_permissions.split(',')
             for (i = 0; i < liste_auth.length; i++) {
-                //$("#put_right_"+liste_auth[i]).click()
-                $("#put_right_" + liste_auth[i]).prop('checked', true);
+                //$("#put_"+liste_auth[i]).click()
+                $("#put_" + liste_auth[i]).prop('checked', true);
             }
 
 
@@ -1091,9 +1115,13 @@
                 $(this).prop('checked', false);
                 });
 
-                liste_auth = JSON.parse('[' + response['permission_ids'] + ']');
+                $('.checked_view:checked').each(function() {
+                    $(this).prop('checked', false);
+                });
+
+                liste_auth = response['permission_ids'].split(',');
                 for (i = 0; i < liste_auth.length; i++) {
-                    //$("#put_right_"+liste_auth[i]).click()
+                    //$("#put_"+liste_auth[i]).click()
                     $("#viewput_" + liste_auth[i]).prop('checked', true);
                 }
             });
@@ -1109,10 +1137,7 @@
             checkedBoxes.each(function () {
                 console.log($(this).attr('name'))
                 var name = $(this).attr('name');
-                var idNumber = parseInt(name.match(/\d+/)); // Extracts the integer from the ID
-                if (!isNaN(idNumber)) {
-                    idList.push(idNumber);
-                }
+                    idList.push(name);
             });
 
             var form = new FormData();
@@ -1194,11 +1219,9 @@
 
             checkedBoxes.each(function () {
                 var id = $(this).attr('id');
-                var idNumber = parseInt(id.match(/\d+/)); // Extracts the integer from the ID
-                if (!isNaN(idNumber)) {
-                    idList.push(idNumber);
-                }
+                idList.push(id.replaceAll('put_', ''));
             });
+
 
 
             var form = new FormData();

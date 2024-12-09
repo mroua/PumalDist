@@ -96,14 +96,14 @@ class PayeurViewSet(viewsets.ModelViewSet):
 @login_required
 def DistribView(request):
     listmodules  = list(
-        set(request.user.user_permissions.values_list('content_type_id', flat=True))
+        set(request.user.user_permissions.values_list('content_type_id__model', flat=True))
     )
 
-    if (10 in listmodules):
+    if ('distributeur' in listmodules):
 
         listeauth = list(
             set(
-                Permission.objects.filter(user=request.user, content_type=10).values_list('id', flat=True)
+                Permission.objects.filter(user=request.user, content_type__model='distributeur').values_list('codename', flat=True)
             )
         )
 
@@ -111,8 +111,7 @@ def DistribView(request):
         ville_list = Ville.objects.all()
 
         users_select = CustomUser.objects.filter(
-            Q(type="Agent", is_active=True) |
-            Q(type='Admin', is_active=True)
+            type='Résponsable distributeur', is_active=True
         ).order_by('id')
 
         # return render(request, "Distributeur.html",
@@ -133,14 +132,15 @@ def PayView(request):
     if(request.user.type == "Distributeur"):
         pass
     else:
+        print("coucou ici")
         listmodules  = list(
-            set(request.user.user_permissions.values_list('content_type_id', flat=True))
+            set(request.user.user_permissions.values_list('content_type__model', flat=True))
         )
-
-        if (11 in listmodules):
+        print(listmodules)
+        if ('payeur' in listmodules):
             listeauth = list(
                 set(
-                    Permission.objects.filter(user=request.user, content_type=11).values_list('id', flat=True)
+                    Permission.objects.filter(user=request.user, content_type__model='payeur').values_list('codename', flat=True)
                 )
             )
 
@@ -167,13 +167,13 @@ def PayView(request):
 def PayDiftView(request):
     if (request.user.type == "Distributeur"):
         listmodules = list(
-            set(request.user.user_permissions.values_list('content_type_id', flat=True))
+            set(request.user.user_permissions.values_list('content_type__model', flat=True))
         )
 
-        if (11 in listmodules):
+        if ('payeur' in listmodules):
             listeauth = list(
                 set(
-                    Permission.objects.filter(user=request.user, content_type=11).values_list('id', flat=True)
+                    Permission.objects.filter(user=request.user, content_type__model='payeur').values_list('codename', flat=True)
                 )
             )
 
@@ -233,13 +233,13 @@ def PayDiftView(request):
 
     else:
         listmodules  = list(
-            set(request.user.user_permissions.values_list('content_type_id', flat=True))
+            set(request.user.user_permissions.values_list('content_type__model', flat=True))
         )
 
-        if (11 in listmodules):
+        if ('payeur' in listmodules):
             listeauth = list(
                 set(
-                    Permission.objects.filter(user=request.user, content_type = 11).values_list('id', flat=True)
+                    Permission.objects.filter(user=request.user, content_type__model = 'payeur').values_list('codename', flat=True)
                 )
             )
 

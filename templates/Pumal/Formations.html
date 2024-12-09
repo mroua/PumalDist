@@ -366,27 +366,27 @@
     <!-- add elems -->
     <script>
 
-        {% if 8 not in listmodules %}
+        {% if 'customuser' not in listmodules %}
             $("#userslistlink").addClass('hidden');
         {% endif %}
 
-        {% if 15 not in listmodules %}
+        {% if 'produits' not in listmodules %}
             $("#prodlistlink").addClass('hidden');
         {% endif %}
 
-        {% if 10 not in listmodules %}
+        {% if 'distributeur' not in listmodules %}
             $("#distlistlink").addClass('hidden');
         {% endif %}
 
-        {% if 18 not in listmodules %}
+        {% if 'dist_commande' not in listmodules %}
             $("#cmdlistlink").addClass('hidden');
         {% endif %}
 
-        {% if 22 not in listmodules %}
+        {% if 'encaissement' not in listmodules %}
             $("#enclistlink").addClass('hidden');
         {% endif %}
 
-        {% if 25 not in listmodules %}
+        {% if 'formation' not in listmodules %}
             $("#formslistlink").addClass('hidden');
         {% endif %}
         var selectedProducts = [];
@@ -721,6 +721,58 @@
         });
 
 
+        $('#goToStep2').on('click', function () {
+
+            var settings = {
+                "url": "/api/formation/",
+                "method": "POST",
+                "timeout": 0,
+                "headers": {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),  // Assuming you have CSRF token in your template context
+                },
+                "data": JSON.stringify({
+                    "titre": $('#titre').val(),
+                    "nbrplace": $('#nbrplace').val(),
+                    "duree": $('#duree').val(),
+                    "tarif": $('#tarif').val(),
+                    "datedebut": $('#datedebut').val(),
+                }),
+            };
+
+            $.ajax(settings)
+                .done(function (response) {
+                    console.log(response);
+
+
+                    window.location.href = "/formation/";
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    // Log the entire jqXHR object to see all details
+                    console.log('jqXHR:', jqXHR);
+
+                    // Log the status text
+                    console.log('Status:', textStatus);
+
+                    // Log the error thrown
+                    console.log('Error Thrown:', errorThrown);
+
+                    // Log the response text, which might contain detailed error messages
+                    console.log('Response Text:', jqXHR.responseText); alert(jqXHR.responseText)
+
+                    // Optionally, parse the responseText as JSON if it's in JSON format
+                    try {
+                        var responseJSON = JSON.parse(jqXHR.responseText);
+                        console.log('Response JSON:', responseJSON);
+                    } catch (e) {
+                        console.error('Failed to parse response as JSON:', e);
+                    }
+
+                });
+
+        });
+
+
         $('#validatebl').on('click', function (e) {
             e.preventDefault();
             liste_prodbl = [];
@@ -779,7 +831,7 @@
                 $.ajax(settings)
                     .done(function (response) {
 
-                        window.location.href = "/commande/";
+                        window.location.href = "/formation/";
                         console.log(response);
                     })
                     .fail(function (jqXHR, textStatus, errorThrown) {

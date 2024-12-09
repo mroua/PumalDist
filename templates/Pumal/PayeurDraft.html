@@ -384,7 +384,7 @@
                 </button>
 
 
-                {% if 41 in listeauth %}
+                {% if 'add_payeur' in listeauth %}
                     <button id="addButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
                         hover:bg-blue-900 hover:border-slate-400 rounded-md">Ajouter
                     </button>
@@ -428,7 +428,7 @@
                         Bloqué {% else %} Actif {% endif %}</span>
                     </div>
                     <div class="flex space-x-2 w-1/6 justify-end">
-                        {% if 44 in listeauth %}
+                        {% if "view_payeur" in listeauth %}
                             <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded viewelem_{{ elem.id }}">
                                 <i class="fas fa-search"
                                    onclick="newdatauserview({{ elem.id }}, {{ elem.distributeur.id }}, '{{ elem.code }}', '{{ elem.designation }}', {{ elem.ville.id }}
@@ -443,7 +443,7 @@
                             </button>
                         {% endif %}
 
-                        {% if 42 in listeauth %}
+                        {% if 'change_payeur' in listeauth %}
                             <button id="editButton" class="editButton bg-blue-500 text-white p-2 rounded">
                                 <i class="fas fa-pencil-alt"
                                    onclick="newdatauser({{ elem.id }}, {{ elem.distributeur.id }}, '{{ elem.code }}', '{{ elem.designation }}', {{ elem.ville.id }}
@@ -458,7 +458,7 @@
                             </button>
                         {% endif %}
 
-                        {% if 43 in listeauth %}
+                        {% if 'delete_payeur' in listeauth %}
                             <button class="bg-red-500 text-white p-2 rounded delete-btn"
                                     data-identifiant="{{ elem.id }}"><i class="fas fa-trash"></i></button>
                         {% else %}
@@ -485,27 +485,27 @@
 
     <script>
 
-        {% if 8 not in listmodules %}
+        {% if 'customuser' not in listmodules %}
             $("#userslistlink").addClass('hidden');
         {% endif %}
 
-        {% if 15 not in listmodules %}
+        {% if 'produits' not in listmodules %}
             $("#prodlistlink").addClass('hidden');
         {% endif %}
 
-        {% if 10 not in listmodules %}
+        {% if 'distributeur' not in listmodules %}
             $("#distlistlink").addClass('hidden');
         {% endif %}
 
-        {% if 18 not in listmodules %}
+        {% if 'dist_commande' not in listmodules %}
             $("#cmdlistlink").addClass('hidden');
         {% endif %}
 
-        {% if 22 not in listmodules %}
+        {% if 'encaissement' not in listmodules %}
             $("#enclistlink").addClass('hidden');
         {% endif %}
 
-        {% if 25 not in listmodules %}
+        {% if 'formation' not in listmodules %}
             $("#formslistlink").addClass('hidden');
         {% endif %}
         edit_payeur_id = 0;

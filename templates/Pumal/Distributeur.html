@@ -16,12 +16,8 @@
                 <button id="closeSidebar" class="text-2xl textslate">&times;</button>
             </div>
             <!-- Add User Form -->
-            <div class="p-4">
-
-                <form id="userForm">
-                    <div class="p-4" style="height: calc(100% - 10rem); overflow-y: auto;">
-
-                        <div class="grid grid-cols-2 gap-4 mb-4">
+                <form id="userForm" class="p-4 flex-grow flex flex-col">
+                    <div class="flex-grow grid grid-cols-2 gap-4 mb-4">
                             <div>
                                 <input type="text" id="username" name="username" placeholder="Username"
                                        class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
@@ -132,19 +128,19 @@
 
 
                         </div>
-                    </div>
-                    <div class="flex justify-end py-8">
+                    <div class="flex justify-end">
                         <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400">
                             Ajouter
                         </button>
                     </div>
                 </form>
-            </div>
+
         </div>
 
         <!-- Edit User Sidebar -->
         <div id="editSidebar"
-             class="fixed right-0 top-0 bottom-0 w-2/5 backprimer shadow-lg transform translate-x-full transition-transform duration-300 z-50"
+             class="fixed right-0 top-0 bottom-0 w-2/5 backprimer shadow-lg transform translate-x-full transition-transform
+             duration-300 z-50 flex flex-col"
              style="margin-top: -8px">
             <div class="flex justify-between items-center p-4 border-b">
                 <h3 class="text-lg font-semibold">Editer distributeur: </h3>
@@ -152,9 +148,8 @@
             </div>
             <!-- Edit User Form -->
 
-            <div class="p-4">
-                <form id="edituserForm">
-                    <div class="p-4" style="height: calc(100% - 10rem); overflow-y: auto;">
+            <form id="edituserForm" class="flex-grow flex flex-col">
+                    <div class="flex-grow p-4" style="overflow-y: auto;">
 
                         <div class="grid grid-cols-2 gap-4 mb-4">
                             <div>
@@ -273,19 +268,19 @@
 
                         </div>
                     </div>
-                    <div class="flex justify-end py-8">
+                    <div class="flex justify-end px-4">
                         <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400">
                             Modifier
                         </button>
                     </div>
                 </form>
-            </div>
         </div>
 
 
         <!-- View User Sidebar -->
         <div id="viewSidebar"
-             class="fixed right-0 top-0 bottom-0 w-2/5 backprimer shadow-lg transform translate-x-full transition-transform duration-300 z-50"
+             class="fixed right-0 top-0 bottom-0 w-2/5 backprimer shadow-lg transform translate-x-full transition-transform 
+             duration-300 z-50 flex flex-col"
              style="margin-top: -8px">
             <div class="flex justify-between items-center p-4 border-b">
                 <h3 class="text-lg font-semibold">Page distributeur: </h3>
@@ -293,9 +288,8 @@
             </div>
             <!-- Edit User Form -->
 
-            <div class="p-4">
-                <form id="edituserForm">
-                    <div class="p-4" style="height: calc(100% - 10rem); overflow-y: auto;">
+            <form id="edituserForm" class="flex-grow">
+                    <div class="p-4" style="overflow-y: auto;">
 
                         <div class="grid grid-cols-2 gap-4 mb-4">
                             <div>
@@ -398,10 +392,7 @@
 
                         </div>
                     </div>
-                    <div class="flex justify-end py-8">
-                    </div>
                 </form>
-            </div>
         </div>
 
         <!-- Filter Modal -->
@@ -479,7 +470,7 @@
                     hover:bg-blue-900 hover:border-slate-400 rounded-md">Filtrer
                 </button>
 
-                {% if 37 in listeauth %}
+                {% if 'add_distributeur' in listeauth %}
                     <button id="addButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
                         hover:bg-blue-900 hover:border-slate-400 rounded-md">Ajouter
                     </button>
@@ -524,7 +515,7 @@
                     </div>
                     <div class="flex space-x-2 w-1/6 justify-end">
 
-                        {% if 40 in listeauth %}
+                        {% if 'view_distributeur' in listeauth %}
                             <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded viewelem_{{ elem.id }}"
                                     onclick="newdatauserview({{ elem.id }})">
                                 <i class="fas fa-search"></i>
@@ -535,15 +526,15 @@
                             </button>
                         {% endif %}
 
-                        {% if 38 in listeauth %}
+                        {% if 'change_distributeur' in listeauth %}
                             <button id="editButton" class="editButton bg-blue-500 text-white p-2 rounded"
-                                    onclick="newdatauser({{ elem.id }}, '{{ elem.user.first_name|escapejs }}', '{{ elem.user.last_name|escapejs }}',
-                                            '{{ elem.user.email|escapejs }}', '{{ elem.user.telephone|escapejs }}', '{{ elem.user.responsable|escapejs }}',
-                                            '{{ elem.code|escapejs }}',  '{{ elem.bloquer }}', '{{ elem.designation|escapejs }}', {{ elem.user.ville.id }},
-                                            '{{ elem.adresse|escapejs }}', '{{ elem.nif|escapejs }}', '{{ elem.nis|escapejs }}', '{{ elem.art|escapejs }}',
-                                            '{{ elem.rc|escapejs }}', {{ elem.plafonnement }}, {{ elem.echeance_jour }}, {{ elem.ristourn_a }}
-                                            ,{{ elem.ristourn_na }}, {{ elem.objectif_a }}, {{ elem.objectif_m }}, '{{ elem.user.is_active }}',
-                                            '{{ elem.user.username }}', {{ elem.user.id }})">
+                                    onclick="newdatauser({{ elem.id|escapejs }}, '{{ elem.user.first_name|escapejs }}', '{{ elem.user.last_name|escapejs }}',
+                                            '{{ elem.user.email|escapejs }}', '{{ elem.user.telephone|escapejs }}', '{{ elem.user.responsable.id|escapejs }}',
+                                            '{{ elem.code|escapejs }}',  '{{ elem.bloquer|escapejs }}', '{{ elem.designation|escapejs }}', {{ elem.user.ville.id|escapejs }},
+                                            '{{ elem.adresse|escapejs }}', '{{ elem.nif|escapejs }}', '{{ elem.nis|escapejs }}', '{{ elem.art|escapejs }}', 
+                                            '{{ elem.rc|escapejs }}', {{ elem.plafonnement|escapejs }}, {{ elem.echeance_jour|escapejs }}, {{ elem.ristourn_a|escapejs }}
+                                            ,{{ elem.ristourn_na|escapejs }}, {{ elem.objectif_a|escapejs }}, {{ elem.objectif_m|escapejs }}, '{{ elem.user.is_active|escapejs }}',
+                                            '{{ elem.user.username|escapejs }}', {{ elem.user.id|escapejs }})">
                                 <i class="fas fa-pencil-alt"></i>
                             </button>
                         {% else %}
@@ -552,7 +543,7 @@
                             </button>
                         {% endif %}
 
-                        {% if 39 in listeauth %}
+                        {% if 'delete_distributeur' in listeauth %}
                             <button class="bg-red-500 text-white p-2 rounded delete-btn"
                                     data-identifiant="{{ elem.id }}"><i class="fas fa-trash"></i></button>
                         {% else %}
@@ -582,32 +573,47 @@
     <script>
 
 
-        {% if 8 not in listmodules %}
+        {% if 'customuser' not in listmodules %}
             $("#userslistlink").addClass('hidden');
         {% endif %}
 
-        {% if 15 not in listmodules %}
+        {% if 'produits' not in listmodules %}
             $("#prodlistlink").addClass('hidden');
         {% endif %}
 
-        {% if 10 not in listmodules %}
+        {% if 'distributeur' not in listmodules %}
             $("#distlistlink").addClass('hidden');
         {% endif %}
 
-        {% if 18 not in listmodules %}
+        {% if 'dist_commande' not in listmodules %}
             $("#cmdlistlink").addClass('hidden');
         {% endif %}
 
-        {% if 22 not in listmodules %}
+        {% if 'encaissement' not in listmodules %}
             $("#enclistlink").addClass('hidden');
         {% endif %}
 
-        {% if 25 not in listmodules %}
+        {% if 'formation' not in listmodules %}
             $("#formslistlink").addClass('hidden');
         {% endif %}
         edit_elem = 0;
         edit_user = 0;
         edit_username_old = "";
+        
+        $("#SearchApply").on('click', function (e) {
+            e.preventDefault();
+            
+            if($("#is_activefilter").prop('checked')) filt = true
+            else filt = false
+            if($("#bloquefilter").prop('checked')) filt2 = true
+            else filt2 = false
+            
+            link = "/distributeur/?ville=" + $('#ville_filter').val() +"&region=" + $('#region_filter').val()
+                +"&is_active=" + filt+"&bloquer=" + filt2;
+            //alert(link)
+            window.location.href = link;
+        })
+        
 
         $first_name = $('#first_name');
         $username = $('#username');
@@ -713,6 +719,15 @@
         function newdatauser(id, first_name, last_name, email, telephone, responsable, code, bloque, designation, ville,
                              adresse, nif, nis, art, rc, plafonnement, echeance, ristourne_a, ristourne_na, objectif_a, objectif_m,
                              isactive, username, user_id) {
+
+            console.log(echeance)
+            console.log(ristourne_a)
+            console.log(ristourne_na)
+            console.log(objectif_a)
+            console.log(objectif_m)
+            console.log(isactive)
+            console.log(username)
+            console.log(user_id)
             edit_elem = id;
             edit_user = user_id;
             edit_username_old = username;
@@ -721,11 +736,11 @@
             $("#edit_first_name").val(first_name);
             $("#edit_last_name").val(last_name);
             $("#edit_telephone").val(telephone);
-
             $("#edit_code").val(code);
             $("#edit_bloque").val(bloque);
             $("#edit_designation").val(designation);
             $("#edit_ville").val(ville);
+            $("#edit_adresse").val(adresse);
             $("#edit_nif").val(nif);
             $("#edit_nis").val(nis);
             $("#edit_art").val(art);
@@ -778,7 +793,7 @@
                 if (response['user']['responsable'] === null) {
                     $("#view_responsable").html('Aucun résponsable');
                 } else {
-                    $("#view_responsable").html("Résponsable:: "+ response['user']['responsable']);
+                    $("#view_responsable").html("Résponsable: "+ response['user']['last_name']+" "+ response['user']['first_name']);
                 }
 
                 if (response['user']['is_active'] === true) {
@@ -795,15 +810,16 @@
 
 
                 $("#view_code").html("Code:: "+ response['code']);
+                $("#view_adresse").html("Adresse: "+ response['adresse']);
                 $("#view_designation").html("Désignation: "+ response['designation']);
                 $("#view_nif").html("NIF: "+ response['nif']);
                 $("#view_nis").html("NIS: "+ response['nis']);
                 $("#view_art").html("ART: "+ response['art']);
                 $("#view_rc").html("RC: "+ response['rc']);
                 $("#view_plafonnement").html("Plafonnement: "+ response['plafonnement']);
-                $("#view_echeance_jour").html("Écheance: "+ response['echeance']);
-                $("#view_ristourne_a").html("Ristourne_a: "+ response['ristourne_a']);
-                $("#view_ristourne_na").html("Ristourne_na: "+ response['ristourne_na']);
+                $("#view_echeance_jour").html("Écheance: "+ response['echeance_jour']);
+                $("#view_ristourne_a").html("Ristourne_a: "+ response['ristourn_a']);
+                $("#view_ristourne_na").html("Ristourne_na: "+ response['ristourn_na']);
                 $("#view_objectif_a").html("Objectif_a: "+ response['objectif_a']);
                 $("#view_objectif_m").html("Objectif_m: "+ response['objectif_m']);
             });
@@ -827,8 +843,10 @@
                     telephone: $telephone.val(),
                     responsable: $responsable.val(),
                     region: $ville.find('option:selected').data('region'),
-                    user_permissions: "88, 96, 92, 41, 44, 64, 72, 71, 70, 69, 80, 100, 104,103,102,101, 105, " +
-                        "102,103, 104, 105, 106, 107, 108", 
+                    user_permissions: "view_encaissement,view_encaissementfacture,view_factures,add_payeur,view_payeur,view_dist_bonlivraison" +
+                        ",view_dist_commande,delete_dist_commande,change_dist_commande,add_dist_commande,view_account,view_formation, " +
+                        "add_problematique,change_problematique,delete_problematique,view_problematique,add_formationsingup,change_formationsingup," +
+                        "delete_formationsingup,view_formationsingup,add_customuser,change_customuser,delete_customuser,view_customuser", 
                     is_active: $('#is_active').prop('checked'),
                     ville: parseInt($ville.val()),
                 },
@@ -937,8 +955,10 @@
                     telephone: $('#edit_telephone').val(),
                     responsable: $('#edit_responsable').val(),
                     region: $('#edit_region').find('option:selected').data('region'),
-                    user_permissions: "88, 96, 92, 41, 44, 64, 72, 71, 70, 69, 80, 100, 104,103,102,101, 105, " +
-                        "102,103, 104, 105, 106, 107, 108",
+                    user_permissions: "view_encaissement,view_encaissementfacture,view_factures,add_payeur,view_payeur,view_dist_bonlivraison" +
+                        ",view_dist_commande,delete_dist_commande,change_dist_commande,add_dist_commande,view_account,view_formation, " +
+                        "add_problematique,change_problematique,delete_problematique,view_problematique,add_formationsingup,change_formationsingup," +
+                        "delete_formationsingup,view_formationsingup,add_customuser,change_customuser,delete_customuser,view_customuser",
                     is_active: $('#edit_is_active').prop('checked'),
                     ville: parseInt($('#edit_ville').val()),
                 }
@@ -953,8 +973,10 @@
                     telephone: $('#edit_telephone').val(),
                     responsable: $('#edit_responsable').val(),
                     region: $('#edit_region').find('option:selected').data('region'),
-                    user_permissions: "88, 96, 92, 41, 44, 64, 72, 71, 70, 69, 80, 100, 104,103,102,101, 105, " +
-                        "102,103, 104, 105, 106, 107, 108",
+                    user_permissions: "view_encaissement,view_encaissementfacture,view_factures,add_payeur,view_payeur,view_dist_bonlivraison" +
+                        ",view_dist_commande,delete_dist_commande,change_dist_commande,add_dist_commande,view_account,view_formation, " +
+                        "add_problematique,change_problematique,delete_problematique,view_problematique,add_formationsingup,change_formationsingup," +
+                        "delete_formationsingup,view_formationsingup,add_customuser,change_customuser,delete_customuser,view_customuser",
                     is_active: $('#edit_is_active').prop('checked'),
                     ville: parseInt($('#edit_ville').val()),
                 }

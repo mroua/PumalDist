@@ -32,13 +32,13 @@ class ProduitViewSet(viewsets.ModelViewSet):
 @login_required
 def ProduitView(request):
     listmodules  = list(
-        set(request.user.user_permissions.values_list('content_type_id', flat=True))
+        set(request.user.user_permissions.values_list('content_type_id__model', flat=True))
     )
 
-    if (15 in listmodules):
+    if ('produit' in listmodules):
         listeauth = list(
             set(
-                Permission.objects.filter(user=request.user, content_type = 15).values_list('id', flat=True)
+                Permission.objects.filter(user=request.user, content_type__model = 'produit').values_list('codename', flat=True)
             )
         )
 

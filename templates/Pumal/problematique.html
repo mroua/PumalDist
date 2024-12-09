@@ -250,27 +250,27 @@
 
         <script>
 
-            {% if 8 not in listmodules %}
+            {% if 'customuser' not in listmodules %}
                 $("#userslistlink").addClass('hidden');
             {% endif %}
 
-            {% if 15 not in listmodules %}
+            {% if 'produits' not in listmodules %}
                 $("#prodlistlink").addClass('hidden');
             {% endif %}
 
-            {% if 10 not in listmodules %}
+            {% if 'distributeur' not in listmodules %}
                 $("#distlistlink").addClass('hidden');
             {% endif %}
 
-            {% if 18 not in listmodules %}
+            {% if 'dist_commande' not in listmodules %}
                 $("#cmdlistlink").addClass('hidden');
             {% endif %}
 
-            {% if 22 not in listmodules %}
+            {% if 'encaissement' not in listmodules %}
                 $("#enclistlink").addClass('hidden');
             {% endif %}
 
-            {% if 25 not in listmodules %}
+            {% if 'formation' not in listmodules %}
                 $("#formslistlink").addClass('hidden');
             {% endif %}
             edit_elem = 0;

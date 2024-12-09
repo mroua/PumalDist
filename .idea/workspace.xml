@@ -12,19 +12,60 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="28a87dc8-7290-44f7-bb19-0d3d219967d1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/templates/Dist/Utilisateur.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Commande/Serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/Commande/Serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Commande/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Commande/migrations/0002_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Commande/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/Commande/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Commande/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Commande/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Distributeur/Serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/Distributeur/Serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Distributeur/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Distributeur/migrations/0002_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Distributeur/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Distributeur/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Encaissement/Serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/Encaissement/Serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Encaissement/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Encaissement/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/Encaissement/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Encaissement/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Encaissement/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Formation/Serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/Formation/Serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Formation/migrations/0001_initial.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Formation/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Formation/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Produits/Serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/Produits/Serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Produits/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Produits/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Produits/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PumaDist/addhistory.py" beforeDir="false" afterPath="$PROJECT_DIR$/PumaDist/addhistory.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Session/Serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/Session/Serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Session/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Session/migrations/0002_customuser_ville.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Session/migrations/0003_alter_customuser_ville.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Session/migrations/0004_userurlhistory.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Session/migrations/0005_history_url.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Session/migrations/0006_alter_customuser_type.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Session/migrations/0007_alter_customuser_type.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Session/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/Session/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Session/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Session/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/Dist/Dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Dist/Dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/Dist/Formations.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Dist/Formations.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/Dist/problematique.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Dist/problematique.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/Pumal/Accompte.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pumal/Accompte.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/Pumal/Blivraison.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pumal/Blivraison.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/Pumal/Commande.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pumal/Commande.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/Pumal/Dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pumal/Dashboard.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/Pumal/Distributeur.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pumal/Distributeur.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/Pumal/Encaissement.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pumal/Encaissement.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/Pumal/EncaissementDetail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pumal/EncaissementDetail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/Pumal/Facture.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pumal/Facture.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/Pumal/Formations.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pumal/Formations.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/Pumal/Historique.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pumal/Historique.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/Pumal/Payeur.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pumal/Payeur.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/Pumal/PayeurDraft.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pumal/PayeurDraft.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/Pumal/Produit.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pumal/Produit.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/Pumal/Profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pumal/Profile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/Pumal/Utilisateur.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pumal/Utilisateur.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/Pumal/problematique.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Pumal/problematique.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/access.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/access.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/homelanding.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/homelanding.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -317,29 +358,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;RunOnceActivity.OpenDjangoStructureViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.pycharm.django.structure.promotion.once.per.project&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;django.template.preview.state&quot;: &quot;SHOW_EDITOR&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Salah Eddine/Desktop/DjangoFiles/PumaDist/templates/Pumal&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;terminal&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.pycharm.django.structure.promotion.once.per.project": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "django.template.preview.state": "SHOW_EDITOR",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/Salah Eddine/Desktop/DjangoFiles/PumaDist",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Salah Eddine\Desktop\DjangoFiles\PumaDist\templates\Pumal" />
       <recent name="C:\Users\Salah Eddine\Desktop\DjangoFiles\PumaDist\templates\Dist" />
+      <recent name="C:\Users\Salah Eddine\Desktop\DjangoFiles\PumaDist\templates\Pumal" />
       <recent name="C:\Users\Salah Eddine\Desktop\DjangoFiles\PumaDist\Session" />
       <recent name="C:\Users\Salah Eddine\Desktop\DjangoFiles\PumaDist\PumaDist\static\images" />
       <recent name="C:\Users\Salah Eddine\Desktop\DjangoFiles\PumaDist\Formation" />
@@ -408,8 +450,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-PY-242.23726.102" />
-        <option value="bundled-python-sdk-5e1850174b45-399fe30bd8c1-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-242.23726.102" />
+        <option value="bundled-python-sdk-fb887030ada0-aa17d162503b-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-243.21565.199" />
       </set>
     </attachedChunks>
   </component>
@@ -456,7 +497,10 @@
       <workItem from="1732281780871" duration="9122000" />
       <workItem from="1732293122393" duration="61868000" />
       <workItem from="1732846312665" duration="15000" />
-      <workItem from="1733162146595" duration="18966000" />
+      <workItem from="1733162146595" duration="41686000" />
+      <workItem from="1733356673625" duration="1075000" />
+      <workItem from="1733357973515" duration="11818000" />
+      <workItem from="1733677762465" duration="23393000" />
     </task>
     <servers />
   </component>

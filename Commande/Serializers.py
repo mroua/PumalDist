@@ -21,7 +21,7 @@ class Dist_CommandeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Dist_Commande
-        fields = ['id', 'distributeur', 'date_ajout', 'etat', 'total', 'commandesLines']
+        fields = ['id', 'user', 'date_ajout', 'etat', 'total', 'commandesLines']
         read_only_fields = ['total', 'date_ajout']
 
     def create(self, validated_data):
@@ -43,7 +43,7 @@ class Dist_CommandeSerializer(serializers.ModelSerializer):
 
 
         serializer = Dist_CommandeSerializerDetail(commande)
-        addhistory({}, serializer.data, 18, 1, user=self.context.get('user'))
+        addhistory({}, serializer.data, 'dist_commande', 1, user=self.context.get('user'))
 
         return commande
 
@@ -51,7 +51,7 @@ class Dist_CommandeSerializer(serializers.ModelSerializer):
 
         oldvalue = Dist_CommandeSerializerDetail(instance).data
         commandes_lines_data = validated_data.pop('commandesLines')
-        instance.distributeur = validated_data.get('distributeur', instance.distributeur)
+        instance.user = validated_data.get('user', instance.user)
         instance.etat = validated_data.get('etat', instance.etat)
         instance.save()
         print(commandes_lines_data)
@@ -83,7 +83,7 @@ class Dist_CommandeSerializer(serializers.ModelSerializer):
         instance.save()
 
         serializer = Dist_CommandeSerializerDetail(instance)
-        addhistory(oldvalue, serializer.data, 18, 2, user=self.context.get('user'))
+        addhistory(oldvalue, serializer.data, 'dist_commande', 2, user=self.context.get('user'))
 
         return instance
 
@@ -100,7 +100,7 @@ class Dist_CommandeSerializerDetail(serializers.ModelSerializer):
 
     class Meta:
         model = Dist_Commande
-        fields = ['id', 'distributeur', 'date_ajout', 'etat', 'total', 'commandesLines']
+        fields = ['id', 'user', 'date_ajout', 'etat', 'total', 'commandesLines']
         read_only_fields = ['total', 'date_ajout']
         depth= 2
 
@@ -146,7 +146,7 @@ class Dist_CommandeSerializerDetail(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         commandes_lines_data = validated_data.pop('commandesLines')
-        instance.distributeur = validated_data.get('distributeur', instance.distributeur)
+        instance.user = validated_data.get('user', instance.user)
         instance.etat = validated_data.get('etat', instance.etat)
         instance.save()
 
@@ -225,7 +225,7 @@ class Dist_BonLivraisonSerializer(serializers.ModelSerializer):
         bon_livraison.save()
 
         serializer = Dist_BonLivraisonDetailSerializer(bon_livraison)
-        addhistory({}, serializer.data, 16, 1, user=self.context.get('user'))
+        addhistory({}, serializer.data, 'dist_bonlivraison', 1, user=self.context.get('user'))
 
         return bon_livraison
 
@@ -255,7 +255,7 @@ class Dist_BonLivraisonSerializer(serializers.ModelSerializer):
         # You can handle modifications to BonLivraisonLine objects separately if needed
 
         serializer = Dist_BonLivraisonDetailSerializer(instance)
-        addhistory(oldvalue, serializer.data, 18, 2, user=self.context.get('user'))
+        addhistory(oldvalue, serializer.data, 'dist_commande', 2, user=self.context.get('user'))
         return instance
 
     """def update(self, instance, validated_data):
@@ -426,7 +426,7 @@ class Dist_BonLivraisonNormalSerializer(serializers.ModelSerializer):
 
 
         serializer = Dist_BonLivraisonDetailSerializer(bon_livraison)
-        addhistory({}, serializer.data, 16, 1, user=self.context.get('user'))
+        addhistory({}, serializer.data, 'dist_bonlivraison', 1, user=self.context.get('user'))
         return bon_livraison
 
     def update(self, instance, validated_data):
@@ -451,7 +451,7 @@ class Dist_BonLivraisonNormalSerializer(serializers.ModelSerializer):
 
 
         serializer = Dist_BonLivraisonDetailSerializer(instance)
-        addhistory(oldvalue, serializer.data, 18, 2, user=self.context.get('user'))
+        addhistory(oldvalue, serializer.data, 'dist_commande', 2, user=self.context.get('user'))
         return instance
 
 

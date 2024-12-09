@@ -17,7 +17,7 @@ from datetime import date
 @login_required
 def EncaissementView(request):
     listmodules  = list(
-        set(request.user.user_permissions.values_list('content_type_id', flat=True))
+        set(request.user.user_permissions.values_list('content_type_id__model', flat=True))
     )
     if (request.user.type == "Distributeur"):
         distrib = Distributeur.objects.get(user =request.user)
@@ -121,10 +121,10 @@ def EncaissementView(request):
 
     else:
 
-        if (22 in listmodules):
+        if ('encaissement' in listmodules):
             listeauth = list(
                 set(
-                    Permission.objects.filter(user=request.user, content_type = 22).values_list('id', flat=True)
+                    Permission.objects.filter(user=request.user, content_type__model='encaissement').values_list('codename', flat=True)
                 )
             )
             # Get the list of distributeurs and payeurs
@@ -249,13 +249,13 @@ def EncaissementView(request):
 @login_required
 def EncaissementDetailView(request):
     listmodules  = list(
-        set(request.user.user_permissions.values_list('content_type_id', flat=True))
+        set(request.user.user_permissions.values_list('content_type_id__model', flat=True))
     )
 
-    if (22 in listmodules):
+    if ('encaissement' in listmodules):
         listeauth = list(
             set(
-                Permission.objects.filter(user=request.user, content_type = 22).values_list('id', flat=True)
+                Permission.objects.filter(user=request.user, content_type__model='encaissement').values_list('codename', flat=True)
             )
         )
 
@@ -301,9 +301,9 @@ def EncaissementDetailView(request):
 
 def FactureView(request):
     listmodules  = list(
-        set(request.user.user_permissions.values_list('content_type_id', flat=True))
+        set(request.user.user_permissions.values_list('content_type_id__model', flat=True))
     )
-    if (22 in listmodules):
+    if ('encaissement' in listmodules):
         return render(request, "Facture.html")
     else:
         return render(request,"access.html", {"listmodules": listmodules})
@@ -312,10 +312,10 @@ def FactureView(request):
 @login_required
 def AccompteView(request):
     listmodules  = list(
-        set(request.user.user_permissions.values_list('content_type_id', flat=True))
+        set(request.user.user_permissions.values_list('content_type_id__model', flat=True))
     )
     listmodules  = list(
-        set(request.user.user_permissions.values_list('content_type_id', flat=True))
+        set(request.user.user_permissions.values_list('content_type_id__model', flat=True))
     )
 
     if(request.user.type == "Distributeur"):
@@ -325,10 +325,10 @@ def AccompteView(request):
 
         })
     else:
-        if (22 in listmodules):
+        if ('encaissement' in listmodules):
             listeauth = list(
                 set(
-                    Permission.objects.filter(user=request.user, content_type = 22).values_list('id', flat=True)
+                    Permission.objects.filter(user=request.user, content_type__model='encaissement').values_list('codename', flat=True)
                 )
             )
 
@@ -466,9 +466,9 @@ class EncaissementViewSet(viewsets.ModelViewSet):
 @login_required
 def AccompteDist(request):
     listmodules  = list(
-        set(request.user.user_permissions.values_list('content_type_id', flat=True))
+        set(request.user.user_permissions.values_list('content_type_id__model', flat=True))
     )
-    if (22 in listmodules):
+    if ('encaissement' in listmodules):
         payeur = request.GET.get('payeur_id')
 
         total_amount = Account.objects.filter(
@@ -491,9 +491,9 @@ def AccompteDist(request):
 @login_required
 def get_factures(request, payeur_id):
     listmodules  = list(
-        set(request.user.user_permissions.values_list('content_type_id', flat=True))
+        set(request.user.user_permissions.values_list('content_type_id__model', flat=True))
     )
-    if (22 in listmodules):
+    if ('encaissement' in listmodules):
         factures = Factures.objects.filter(payeur_id=payeur_id, complete=False)
         facture_data = [
             {

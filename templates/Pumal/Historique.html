@@ -73,7 +73,7 @@
             <div class="h-full backslateprime shadow-t-lg p-4 rounded-lg overflow-hidden flex">
                 <div class="flex-grow overflow-y-auto">
                     {% for elem in listhistory %}
-                        <div class="grid grid-cols-5 p-2 backslateslite flex-none mb-2 items-center relative">
+                        <div class="grid grid-cols-6 p-2 backslateslite flex-none mb-2 items-center relative">
 
                             <div>history_{{ elem.id }}</div>
                             <div>{{ elem.user_representative }}</div>
@@ -86,7 +86,48 @@
                                     Suppression
                                 {% endif %}
                             </div>
-                            <div>{{ elem.creation_date|date:'d-m-Y' }}</div>
+                            <div>
+                                {% if elem.content_type == 8 %}
+                                    Utilisateur
+                                {% endif %}
+
+                                {% if elem.content_type ==  10 %}
+                                    Distributeur
+                                {% endif %}
+
+                                {% if elem.content_type == 11 %}
+                                    Payeur
+                                {% endif %}
+
+                                {% if elem.content_type == 15 %}
+                                   Produit
+                                {% endif %}
+
+                                {% if elem.content_type == 18 %}
+                                    Commande
+                                {% endif %}
+
+                                {% if elem.content_type == 16 %}
+                                    Bon de livraison
+                                {% endif %}
+
+                                {% if elem.content_type == 22 %}
+                                    Encaissement
+                                {% endif %}
+
+                                {% if elem.content_type == 23 %}
+                                    Facture
+                                {% endif %}
+
+                                {% if elem.content_type == 25 %}
+                                    Formation
+                                {% endif %}
+
+                                {% if elem.content_type == 26 %}
+                                    Problématique
+                                {% endif %}
+                            </div>
+                            <div>{{ elem.creation_date|date:'d-m-Y H:i' }}</div>
                             <div>
                                 <!-- Arrow for toggling -->
                                 <button class="toggle-arrow flex items-center justify-center text-gray-500 hover:text-blue-500">

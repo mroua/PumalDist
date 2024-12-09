@@ -88,60 +88,94 @@ class ProfileViewSet(viewsets.ModelViewSet):
 @login_required
 def Utilisateurs(request):
     listmodules  = list(
-        set(request.user.user_permissions.values_list('content_type_id', flat=True))
+        set(request.user.user_permissions.values_list('content_type_id__model', flat=True))
     )
+
     listville= Ville.objects.all()
 
-    if(8 in listmodules):
+    if('customuser' in listmodules):
         listeauth = list(
             set(
-                Permission.objects.filter(user=request.user, content_type = 8).values_list('id', flat=True)
+                Permission.objects.filter(user=request.user, content_type__model = "customuser").values_list('codename', flat=True)
             )
         )
 
+        if(request.user.type=="Distributeur"):
+            liste_users = CustomUser.objects.filter(
+                responsable=request.user
+            ).order_by('id').prefetch_related('user_permissions__content_type')
 
-        liste_users = CustomUser.objects.filter(
-            Q(type="Agent")|
-            Q(type="Admin Régional")|
-            Q(type="Admin Wilaya")|
-            Q(type="Résponsable distributeur")|
-            Q(type='Admin')
-        ).order_by('id').prefetch_related('user_permissions__content_type')
+            type = request.GET.get('type', None)
+            ville = request.GET.get('ville', None)
+            region = request.GET.get('region', None)
+            active = request.GET.get('is_active')
+            if(active == "true"):
+                is_active = True
+            else:
+                is_active = False
 
-        type = request.GET.get('type', None)
-        ville = request.GET.get('ville', None)
-        region = request.GET.get('region', None)
-        if(request.GET.get('is_active') == "true"):
-            is_active = True
+
+            if type:
+                liste_users = liste_users.filter(type=type)
+            if (ville):
+                liste_users = liste_users.filter(ville=int(ville))
+            if (region):
+                liste_users = liste_users.filter(region=region)
+            if (active):
+                liste_users = liste_users.filter(is_active=is_active)
+
+
+
+            #return render(request, "Utilisateur.html", {'liste_users': liste_users,'users_select': users_select})
+            return render(request, "Dist/Utilisateur.html", {
+                'liste_users': liste_users,
+                'listeauth': listeauth,
+                "listmodules": listmodules,
+                "listville": listville
+            })
         else:
-            is_active = False
+            liste_users = CustomUser.objects.filter(
+                Q(type="Agent") |
+                Q(type="Admin Régional") |
+                Q(type="Admin Wilaya") |
+                Q(type="Résponsable distributeur") |
+                Q(type='Admin')
+            ).order_by('id').prefetch_related('user_permissions__content_type')
 
-        if type:
-            liste_users = liste_users.filter(type=type)
-        if (ville):
-            liste_users = liste_users.filter(ville=int(ville))
-        if (region):
-            liste_users = liste_users.filter(region=region)
-        if (is_active):
-            liste_users = liste_users.filter(is_active=is_active)
+            type = request.GET.get('type', None)
+            ville = request.GET.get('ville', None)
+            region = request.GET.get('region', None)
+            active = request.GET.get('is_active')
+            if (active == "true"):
+                is_active = True
+            else:
+                is_active = False
 
+            if type:
+                liste_users = liste_users.filter(type=type)
+            if (ville):
+                liste_users = liste_users.filter(ville=int(ville))
+            if (region):
+                liste_users = liste_users.filter(region=region)
+            if (active):
+                liste_users = liste_users.filter(is_active=is_active)
 
-        for user in liste_users:
-            user.permission_ids = ",".join(map(str, user.user_permissions.values_list('id', flat=True)))
+            for user in liste_users:
+                user.permission_ids = ",".join(map(str, user.user_permissions.values_list('codename', flat=True)))
+                # user.permission_ids = list(user.user_permissions.values_list('codename', flat=True))
 
-
-        users_select = CustomUser.objects.filter(
-            Q(type="Agent", is_active=True)|
-            Q(type='Admin', is_active=True)
-        ).order_by('id')
-        #return render(request, "Utilisateur.html", {'liste_users': liste_users,'users_select': users_select})
-        return render(request, "Pumal/Utilisateur.html", {
-            'liste_users': liste_users,
-            'users_select': users_select,
-            'listeauth': listeauth,
-            "listmodules": listmodules,
-            "listville": listville
-        })
+            users_select = CustomUser.objects.filter(
+                Q(type="Agent", is_active=True) |
+                Q(type='Admin', is_active=True)
+            ).order_by('id')
+            # return render(request, "Utilisateur.html", {'liste_users': liste_users,'users_select': users_select})
+            return render(request, "Pumal/Utilisateur.html", {
+                'liste_users': liste_users,
+                'users_select': users_select,
+                'listeauth': listeauth,
+                "listmodules": listmodules,
+                "listville": listville
+            })
     else:
         return render(request,"access.html", {"listmodules": listmodules})
 
@@ -231,9 +265,9 @@ def test(request):
 
 @login_required
 def LandingPage(request):
-    #listeauth = list(request.user.user_permissions.values_list('id', flat=True))
+    #listeauth = list(request.user.user_permissions.values_list('codename', flat=True))
     listeauth = list(
-        set(request.user.user_permissions.values_list('content_type_id', flat=True))
+        set(request.user.user_permissions.values_list('content_type__model', flat=True))
     )
 
     return render(request, "homelanding.html", {
@@ -295,10 +329,13 @@ class Historynotif(APIView):
 
 @login_required
 def HistoryDatadisp(request):
+    print("here")
     listmodules  = list(
-        set(request.user.user_permissions.values_list('content_type_id', flat=True))
+        set(request.user.user_permissions.values_list('content_type_id__model', flat=True))
     )
     if(request.user.type == "Admin"):
+        print("ici")
+        print(request.user.id)
         listhistory = History.objects.filter(user=request.user.id)
 
 
@@ -307,4 +344,11 @@ def HistoryDatadisp(request):
             "listhistory": listhistory,
         })
     else:
-        return render(request,"access.html", {"listmodules": listmodules})
+        print("la")
+        listhistory = History.objects.filter(user=request.user.id)
+
+        return render(request, "Pumal/Historique.html", {
+            "listmodules": listmodules,
+            "listhistory": listhistory,
+        })
+        #return render(request,"access.html", {"listmodules": listmodules})

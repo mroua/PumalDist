@@ -295,7 +295,7 @@
                             <label class="tgl-btn" for="is_activefilter"></label>
                         </div>
                     </div>
-                    
+
                 </div>
 
 
@@ -320,7 +320,7 @@
                     hover:bg-blue-900 hover:border-slate-400 rounded-md">Filtrer
                 </button>
 
-                {% if 57 in listeauth %}
+                {% if 'add_produit' in listeauth %}
                     <button id="addButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
                         hover:bg-blue-900 hover:border-slate-400 rounded-md">Ajouter
                     </button>
@@ -375,7 +375,7 @@
 
 
 
-                        {% if 60 in listeauth %}
+                        {% if "view_produit" in listeauth %}
                             <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded viewelem_{{ elem.id }}"
                                     data-identifiant="{{ elem.id }}">
                                 <i class="fas fa-search"></i>
@@ -387,7 +387,7 @@
                             </button>
                         {% endif %}
 
-                        {% if 58 in listeauth %}
+                        {% if 'change_produit' in listeauth %}
                             <button id="editButton" class="editButton bg-blue-500 text-white p-2 rounded"
                                     data-identifiant="{{ elem.id }}">
                                 <i class="fas fa-pencil-alt"></i>
@@ -399,7 +399,7 @@
                             </button>
                         {% endif %}
 
-                        {% if 59 in listeauth %}
+                        {% if 'delete_produit' in listeauth %}
                             <button class="bg-red-500 text-white p-2 rounded delete-btn"
                                     data-identifiant="{{ elem.id }}"><i class="fas fa-trash"></i></button>
                         {% else %}
@@ -427,27 +427,27 @@
 
         <script>
 
-            {% if 8 not in listmodules %}
+            {% if 'customuser' not in listmodules %}
                 $("#userslistlink").addClass('hidden');
             {% endif %}
 
-            {% if 15 not in listmodules %}
+            {% if 'produits' not in listmodules %}
                 $("#prodlistlink").addClass('hidden');
             {% endif %}
 
-            {% if 10 not in listmodules %}
+            {% if 'distributeur' not in listmodules %}
                 $("#distlistlink").addClass('hidden');
             {% endif %}
 
-            {% if 18 not in listmodules %}
+            {% if 'dist_commande' not in listmodules %}
                 $("#cmdlistlink").addClass('hidden');
             {% endif %}
 
-            {% if 22 not in listmodules %}
+            {% if 'encaissement' not in listmodules %}
                 $("#enclistlink").addClass('hidden');
             {% endif %}
 
-            {% if 25 not in listmodules %}
+            {% if 'formation' not in listmodules %}
                 $("#formslistlink").addClass('hidden');
             {% endif %}
             edit_elem = 0;

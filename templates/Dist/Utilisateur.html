@@ -1,0 +1,1006 @@
+{% extends "baseNew.html" %}
+{% load static %}
+{% block title %}Utilisateurs{% endblock %}
+
+{% block content %}
+
+
+    <div class="w-full h-full backprimer px-4 pb-4 flex flex-col">
+        <!-- Add User Sidebar -->
+        <div id="addSidebar" class="fixed right-0 top-0 bottom-0 w-2/5 backprimer textslate shadow-lg transform translate-x-full transition-transform
+             duration-300 z-50 h-full flex flex-col">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 class="text-lg font-semibold">Ajouter un utilisateur</h3>
+                <button id="closeSidebar" class="text-2xl textslate">&times;</button>
+            </div>
+
+            <!-- Add User Form -->
+            <form id="userForm" class="p-4 flex flex-col flex-grow overflow-hidden">
+                <!-- Other form fields -->
+                <div class="flex items-center justify-center">
+                    <div class="relative p-4">
+                        <input type="file" id="photo" name="photo"
+                               class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md"
+                               accept="image/*"
+                               style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                        <div id="photoPreview"
+                             class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden border border-gray-300">
+                            <img id="previewImage" src="{% static 'images/blank-profile.webp' %}" alt="Preview"
+                                 class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                    </div>
+                </div>
+                <div class="flex-grow grid grid-cols-4 gap-4 mb-4">
+
+                    <label for="email" class="py-3">
+                        Émail:
+                    </label>
+                    <div class="col-span-3">
+                        <input type="email" id="email" name="email" placeholder="Email"
+                               class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                    </div>
+
+                    <label for="username" class="py-3">
+                        Username:
+                    </label>
+                    <div class="col-span-3">
+                        <input type="text" id="username" name="username" placeholder="Username"
+                               class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                    </div>
+
+                    <label for="telephone" class="py-3">
+                        telephone:
+                    </label>
+                    <div class="col-span-3">
+                        <input type="text" id="telephone" name="telephone" placeholder="Téléphone"
+                               class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                    </div>
+
+                    <label for="first_name" class="py-3">
+                        Prénom:
+                    </label>
+                    <div class="col-span-3">
+                        <input type="text" id="first_name" name="first_name" placeholder="first name"
+                               class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                    </div>
+
+                    <label for="last_name" class="py-3">
+                        Nom:
+                    </label>
+                    <div class="col-span-3">
+                        <input type="text" id="last_name" name="last_name" placeholder="last name"
+                               class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                    </div>
+                    <label for="ville" class="py-3">
+                        Ville:
+                    </label>
+                    <div class="col-span-3">
+                        <select id="ville" name="ville"
+                                class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                            {% for ville in listville %}
+                                <option value="{{ ville.id }}">{{ ville.designation }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex justify-end mt-4">
+                    <button type="submit"
+                            class="bg-blue-500 h-10 text-white py-1.5 px-4 rounded-lg hover:bg-blue-400">
+                        Ajouter
+                    </button>
+                </div>
+            </form>
+
+        </div>
+
+        <!-- view User Sidebar -->
+        <div id="viewSidebar" class="fixed right-0 top-0 bottom-0 w-2/5 backprimer textslate shadow-lg transform translate-x-full transition-transform
+             duration-300 z-50 h-full flex flex-col">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 class="text-lg font-semibold">Page utilisateur</h3>
+                <button id="closeSidebarview" class="text-2xl textslate">&times;</button>
+            </div>
+
+            <!-- Add User Form -->
+            <div class="flex-grow overflow-hidden"><!---->
+                <form class="p-4 flex flex-col h-full">
+                    <!-- Other form fields -->
+                    <div id="photoPreviewview"
+                         class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden border border-gray-300">
+                        <img id="previewImageview" src="{% static 'images/blank-profile.webp' %}" alt="Preview"
+                             class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex-grow grid grid-cols-4 gap-4 mb-4">
+                        <label for="emailview" class="py-3">
+                            Émail:
+                        </label>
+                        <div class="col-span-3">
+                            <input type="email" id="emailview" name="emailview" placeholder="Email"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                        </div>
+
+                        <label for="usernameview" class="py-3">
+                            Username:
+                        </label>
+                        <div class="col-span-3">
+                            <input type="text" id="usernameview" name="usernameview" placeholder="Username"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                        </div>
+
+                        <label for="telephoneview" class="py-3">
+                            telephone:
+                        </label>
+                        <div class="col-span-3">
+                            <input type="text" id="telephoneview" name="telephoneview" placeholder="Téléphone"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                        </div>
+
+                        <label for="first_name" class="py-3">
+                            Prénom:
+                        </label>
+                        <div class="col-span-3">
+                            <input type="text" id="first_nameview" name="first_nameview" placeholder="first name"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                        </div>
+
+                        <label for="last_nameview" class="py-3">
+                            Nom:
+                        </label>
+                        <div class="col-span-3">
+                            <input type="text" id="last_nameview" name="last_nameview" placeholder="last name"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                        </div>
+                        <label for="villeview" class="py-3">
+                            Ville:
+                        </label>
+                        <div class="col-span-3">
+                            <select id="villeview" name="villeview"
+                                    class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                                {% for ville in listville %}
+                                    <option value="{{ ville.id }}">{{ ville.designation }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+
+                        <div class="checkbox-wrapper-6 flex items-center gap-6">
+                            <label class="textslate">État</label>
+                            <input class="tgl tgl-light" id="is_activeview" disabled type="checkbox"/>
+                            <label class="tgl-btn" for="is_activeview"></label>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <!-- Edit User Sidebar -->
+        <div id="editSidebar"
+             class="fixed right-0 top-0 bottom-0 w-2/5 backprimer textslate shadow-lg transform translate-x-full transition-transform duration-300 z-50"
+             style="margin-top: -8px">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 class="text-lg font-semibold">Editer l'utilisateur: </h3>
+                <button id="closeEditSidebar" class="text-2xl hover:text-gray-700">&times;</button>
+            </div>
+            <!-- Edit User Form -->
+
+            <form id="edituserForm" class="p-4 flex flex-col flex-grow overflow-hidden">
+                <div class="flex items-center justify-center">
+                    <div class="relative p-4">
+                        <input type="file" id="edit_photo" name="edit_photo"
+                               class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md"
+                               accept="image/*"
+                               style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                        <div id="edit_photoPreview"
+                             class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden border border-gray-300">
+                            <img id="previewImage" src="{% static 'images/blank-profile.webp' %}" alt="Preview"
+                                 class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-grow grid grid-cols-4 gap-4 mb-4">
+
+                    <label for="edit_email" class="py-3">
+                        Émail:
+                    </label>
+                    <div class="col-span-3">
+                        <input type="email" id="edit_email" name="edit_email" placeholder="Email"
+                               class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                    </div>
+
+                    <label for="edit_username" class="py-3">
+                        Username:
+                    </label>
+                    <div class="col-span-3">
+                        <input type="text" id="edit_username" name="edit_username" placeholder="Username"
+                               class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                    </div>
+
+                    <label for="edit_telephone" class="py-3">
+                        telephone:
+                    </label>
+                    <div class="col-span-3">
+                        <input type="edit_text" id="edit_telephone" name="edit_telephone" placeholder="Téléphone"
+                               class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                    </div>
+
+                    <label for="edit_first_name" class="py-3">
+                        Prénom:
+                    </label>
+                    <div class="col-span-3">
+                        <input type="text" id="edit_first_name" name="edit_first_name" placeholder="first name"
+                               class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                    </div>
+
+                    <label for="edit_last_name" class="py-3">
+                        Nom:
+                    </label>
+                    <div class="col-span-3">
+                        <input type="text" id="edit_last_name" name="edit_last_name" placeholder="last name"
+                               class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                    </div>
+                    <label for="edit_ville" class="py-3">
+                        Ville:
+                    </label>
+                    <div class="col-span-3">
+                        <select id="edit_ville" name="edit_ville"
+                                class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                            {% for ville in listville %}
+                                <option value="{{ ville.id }}">{{ ville.designation }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+
+                    <div class="checkbox-wrapper-6 flex items-center gap-6">
+                        <label>État</label>
+                        <input class="tgl tgl-light" id="edit_is_active" type="checkbox"/>
+                        <label class="tgl-btn" for="edit_is_active"></label>
+                    </div>
+                </div>
+
+                <div class="flex justify-end mt-4">
+                    <button type="submit"
+                            class="bg-blue-500 h-10 text-white py-1.5 px-4 rounded-lg hover:bg-blue-400">
+                        Ajouter
+                    </button>
+                </div>
+            </form>
+
+        </div>
+
+
+        <div class="flex justify-between items-center pt-4 mb-4" style="margin-top: -8px">
+            <h2 class="text-2xl font-bold textslate">Liste des utilisateurs</h2>
+            <div>
+                <button id="filterButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
+                    hover:bg-blue-900 hover:border-slate-400 rounded-md">Filtres
+                </button>
+                {% if 'add_customuser' in listeauth %}
+                    <button id="addButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
+                        hover:bg-blue-900 hover:border-slate-400 rounded-md">Ajouter
+                    </button>
+                {% else %}
+                    <button class="btn capitalize bg-gray-500 text-white px-4 py-2 border rounded-md cursor-not-allowed">
+                        Ajouter
+                    </button>
+                {% endif %}
+            </div>
+        </div>
+        <hr/>
+
+        <!-- User List Headers -->
+        <div class="pt-4">
+            <div class="flex items-center justify-between text-gray-600 font-semibold px-4 defaultboldval">
+                <div class="w-1/4 capitalize">Utilisateur</div>
+                <div class="w-1/5 capitalize">Date création</div>
+                <div class="w-1/6 capitalize">Etat</div>
+                <div class="w-1/4 capitalize">émail</div>
+                <div class="w-1/6 capitalize text-right">Actions</div>
+            </div>
+        </div>
+
+        <!-- User List -->
+        <div class="flex-grow shadow-md rounded-b-lg backslateprime p-2 overflow-y-auto">
+            {% for elem in liste_users %}
+
+                <div class="flex items-center justify-between p-2 backslateslite flex-none mb-2">
+                    <div class="flex items-center w-1/4">
+                        <img src="{% if elem.photo %} {{ elem.photo.url }} {% else %} {% static 'images/blank-profile.webp' %} {% endif %}"
+                             alt="Avatar" class="h-10 w-10 rounded-full mr-4">
+                        <div>
+                            <h3 class="text-md font-bold textslate">{{ elem.nom }}</h3>
+                            <p class="defaultval">{{ elem.type }}</p>
+                        </div>
+                    </div>
+                    <div class="defaultval w-1/5">{{ elem.date_joined|date:'d-m-Y' }}</div>
+                    <div class="w-1/6">
+                        <span class="bg-gray-500 text-white text-xs px-2 py-1 rounded">{% if elem.is_active %}
+                            Activé {% else %} Désactivé {% endif %}
+                        </span>
+                    </div>
+                    <div class="defaultval w-1/4">{{ elem.email }}</div>
+                    <div class="flex space-x-2 w-1/6 justify-end">
+                        <!--<button class="bg-blue-500 text-white p-2 rounded"><i class="fas fa-search"></i></button>-->
+                        {% if 'view_customuser' in listeauth %}
+                            <button class="bg-blue-700 text-white p-2 rounded viewelem_{{ elem.id }}" onclick="
+                                    {% if elem.photo %}
+                                        newdatauserview({{ elem.id }});
+                                    {% else %}
+                                        newdatauserview({{ elem.id }});
+                                    {% endif %}
+                                    ">
+                                <i id="ViewButton" class="ViewButton fas fa-search"></i>
+                            </button>
+                        {% else %}
+                            <button class="cursor-not-allowed bg-gray-500 text-white p-2 rounded">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        {% endif %}
+
+                        {% if 'change_customuser' in listeauth %}
+                            <button class="bg-blue-700 text-white p-2 rounded" onclick="
+                                    {% if elem.photo %}
+                                        newdatauser({{ elem.id }}, '{{ elem.photo.url|escapejs }}', '{{ elem.username|escapejs }}', '{{ elem.email|escapejs }}', '{{ elem.first_name|escapejs }}',
+                                        '{{ elem.last_name|escapejs }}', '{{ elem.telephone|escapejs }}', '{{ elem.responsable|escapejs }}', '{{ elem.type|escapejs }}', '{{ elem.region|escapejs }}', '{{ elem.permission_ids|escapejs }}',
+                                        '{{ elem.is_active }}', '{{ elem.ville.id }}');
+                                    {% else %}
+                                        newdatauser({{ elem.id }}, '', '{{ elem.username|escapejs }}', '{{ elem.email|escapejs }}', '{{ elem.first_name|escapejs }}',
+                                        '{{ elem.last_name|escapejs }}', '{{ elem.telephone|escapejs }}', '{{ elem.responsable|escapejs }}', '{{ elem.type|escapejs }}', '{{ elem.region|escapejs }}', '{{ elem.permission_ids|escapejs }}',
+                                        '{{ elem.is_active }}', '{{ elem.ville.id }}');
+                                    {% endif %}
+                                    ">
+                                <i id="editButton" class="editButton fas fa-pencil-alt"></i>
+                            </button>
+                        {% else %}
+                            <button class="cursor-not-allowed bg-gray-500 text-white p-2 rounded">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                        {% endif %}
+
+                        {% if 'delete_customuser' in listeauth %}
+                            <button class="bg-red-500 text-white p-2 rounded delete-btn"
+                                    data-identifiant="{{ elem.id }}"><i class="fas fa-trash"></i></button>
+                        {% else %}
+                            <button class="cursor-not-allowed bg-gray-500 text-white p-2 rounded"><i
+                                    class="fas fa-trash"></i></button>
+                        {% endif %}
+
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id="deleteModal" class="fixed inset-0 flex items-center justify-center hidden bg-gray-800 bg-opacity-50">
+        <div class="bg-white p-4 rounded-lg w-96">
+            <h2 class="text-lg font-semibold text-gray-700 mb-4">Confirmer la suppression</h2>
+            <p>Etes vous sure de vouloir supprimer cet element?</p>
+            <div class="mt-6 flex justify-end space-x-4">
+                <button id="cancelDelete" class="px-4 py-2 bg-gray-300 rounded">Annuler</button>
+                <button id="confirmDelete" class="px-4 py-2 bg-red-500 text-white rounded">Supprimer</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="filterModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40 flex items-center justify-center"
+         style="margin-top: -16px">
+        <div class="backprimer w-1/3 rounded-lg shadow-lg">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 class="text-lg font-semibold">Filtrer les utilisateurs</h3>
+                <button id="closeFilterModal" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+            </div>
+            <div class="p-4">
+                <div class="mb-3">
+                    <label for="type_filter" class="block mb-1 pl-1 text-sm font-medium textslate">Type:</label>
+                    <select id="type_filter" class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                        <option value="" {% if request.GET.type == "" %}selected{% endif %}>Tous</option>
+                        <option value="Admin" {% if request.GET.type == "Admin" %}selected{% endif %}>Admin</option>
+                        <option value="Admin Régional" {% if request.GET.type == "Admin Régional" %}selected{% endif %}>
+                            Admin Régional
+                        </option>
+                        <option value="Admin Wilaya" {% if request.GET.type == "Admin Wilaya" %}selected{% endif %}>
+                            Admin Wilaya
+                        </option>
+                        <option value="Résponsable distributeur"
+                                {% if request.GET.type == "Résponsable distributeur" %}selected{% endif %}>Résponsable
+                            distributeur
+                        </option>
+                        <option value="Agent" {% if request.GET.type == "Agent" %}selected{% endif %}>Agent</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="ville_filter" class="block mb-1 pl-1 text-sm font-medium textslate">Ville:</label>
+                    <select id="ville_filter" class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                        <option value="" {% if request.GET.ville == "" %}selected{% endif %}>Tous</option>
+                        {% for ville in listville %}
+                            <option value="{{ ville.id }}"
+                                    {% if request.GET.ville == ville.id %}selected{% endif %}>{{ ville.designation }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="region_filter" class="block mb-1 pl-1 text-sm font-medium textslate">Région:</label>
+                    <select id="region_filter" class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                        <option value="" {% if request.GET.region == "" %}selected{% endif %}>Tous</option>
+                        <option value="Est" {% if request.GET.region == "Est" %}selected{% endif %}>Est</option>
+                        <option value="Ouest" {% if request.GET.region == "Ouest" %}selected{% endif %}>Ouest</option>
+                        <option value="Centre" {% if request.GET.region == "Centre" %}selected{% endif %}>Centre
+                        </option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <div class="checkbox-wrapper-6 flex items-center gap-6">
+                        <label class="textslate">État</label>
+                        <input class="tgl tgl-light" id="is_activefilter"
+                                {% if request.GET.is_active == "true" or not request.GET.is_active %}
+                               checked
+                                {% endif %} type="checkbox"/>
+                        <label class="tgl-btn" for="is_activefilter"></label>
+                    </div>
+                </div>
+
+
+                <div class="flex justify-between">
+                    <button class="closePopup text-white p-2 rounded btn capitalize bg-[#141b54] hover:bg-blue-900">
+                        Annuler
+                    </button>
+                    <button id="SearchApply"
+                            class="btn capitalize bg-[#141b54] px-4 rounded py-2 border border-slate-300 text-gray-400 text-sm hover:bg-blue-900 hover:border-slate-400">
+                        Lancer recherce
+                    </button>
+                </div>
+
+
+                <!-- Filter Form -->
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+
+        {% if 'customuser' not in listmodules %}
+            $("#userslistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 'produits' not in listmodules %}
+            $("#prodlistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 'distributeur' not in listmodules %}
+            $("#distlistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 'dist_commande' not in listmodules %}
+            $("#cmdlistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 'encaissement' not in listmodules %}
+            $("#enclistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 'formation' not in listmodules %}
+            $("#formslistlink").addClass('hidden');
+        {% endif %}
+
+        edit_elem = 0;
+
+
+        $("#SearchApply").on('click', function (e) {
+            e.preventDefault();
+            if ($("#is_activefilter").prop('checked')) filt = true
+            else filt = false
+            link = "/users/?type=" + $('#type_filter').val() + "&ville=" + $('#ville_filter').val() + "&region=" + $('#region_filter').val()
+                + "&is_active=" + filt;
+            //alert(link)
+            window.location.href = link;
+        })
+
+
+        // Toggle the sidebar
+        $('#addButton').on('click', function () {
+            $('#addSidebar').toggleClass('translate-x-full');
+        });
+
+        // Toggle the sidebar edit
+        $('.ViewButton').on('click', function () {
+            $('#viewSidebar').toggleClass('translate-x-full');
+        });
+
+        // Toggle the sidebar edit
+        $('.editButton').on('click', function () {
+            $('#editSidebar').toggleClass('translate-x-full');
+        });
+
+        // Close the sidebar
+        $('#closeSidebar').on('click', function () {
+            $('#addSidebar').addClass('translate-x-full');
+        });
+
+        // Close the sidebar
+        $('#closeSidebarview').on('click', function () {
+            $('#viewSidebar').addClass('translate-x-full');
+        });
+
+        // Close the sidebar
+        $('#closeEditSidebar').on('click', function () {
+            $('#editSidebar').addClass('translate-x-full');
+        });
+
+        // Show the filter modal
+        $('#filterButton').on('click', function () {
+            $('#filterModal').removeClass('hidden');
+        });
+
+        // Close the filter modal
+        $('#closeFilterModal').on('click', function () {
+            $('#filterModal').addClass('hidden');
+        });
+
+        // Close sidebar when clicking outside
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('#addButton, #addSidebar').length) {
+                $('#addSidebar').addClass('translate-x-full');
+            }
+        });
+
+        // Close sidebar when clicking outside
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('#editButton, #editSidebar').length) {
+                $('#editSidebar').addClass('translate-x-full');
+            }
+        });
+
+        // Close filter modal when clicking outside
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('#filterButton, #filterModal').length) {
+                $('#filterModal').addClass('hidden');
+            }
+        });
+
+        // Update photo preview
+        document.getElementById('photo').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const previewImage = document.getElementById('previewImage');
+                    previewImage.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Update edit_photo preview
+        document.getElementById('edit_photo').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const previewImage = document.getElementById('edit_previewImage');
+                    previewImage.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        $(document).ready(function () {
+            $('#type').change(function () {
+                var selectedType = $(this).val();
+
+                if (selectedType === 'Admin') {
+                    // Select and disable all checkboxes with the class 'checked_add'
+                    $('.checked_add').each(function () {
+                        $(this).prop('checked', true);  // Check the checkbox
+                        $(this).prop('disabled', true); // Disable the checkbox
+                    });
+                } else if (selectedType === 'Admin Régional' || selectedType === 'Admin Wilaya' || selectedType === 'Résponsable distributeur') {
+                    $('.checked_add:checked').each(function () {
+                        $(this).prop('checked', false);  // Check the checkbox
+                        $(this).prop('disabled', false);
+                    });
+
+                    $('.listaddcheck').find("input[name='view_distributeur']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='add_distributeur']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='change_distributeur']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='delete_distributeur']").prop('checked', true);
+
+                    $('.listaddcheck').find("input[name='view_payeur']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='add_payeur']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='change_payeur']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='delete_payeur']").prop('checked', true);
+
+                    $('.listaddcheck').find("input[name='view_produit']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='add_produit']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='change_produit']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='delete_produit']").prop('checked', true);
+
+                    $('.listaddcheck').find("input[name='view_dist_commande']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='add_dist_commande']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='change_dist_commande']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='delete_dist_commande']").prop('checked', true);
+
+                    $('.listaddcheck').find("input[name='view_dist_bonlivraison']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='add_dist_bonlivraison']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='change_dist_bonlivraison']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='delete_dist_bonlivraison']").prop('checked', true);
+
+                    $('.listaddcheck').find("input[name='view_encaissement']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='add_encaissement']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='change_encaissement']").prop('checked', true);
+                    $('.listaddcheck').find("input[name='delete_encaissement']").prop('checked', true);
+                } else {
+                    // Enable all checkboxes if type is not 'Admin'
+                    $('.checked_add').each(function () {
+                        $(this).prop('checked', false);
+                        $(this).prop('disabled', false); // Enable the checkbox
+                    });
+                }
+            });
+        });
+
+        $(document).ready(function () {
+            $('#edit_type').change(function () {
+                var selectedType = $(this).val();
+
+                if (selectedType === 'Admin') {
+                    // Select and disable all checkboxes with the class 'checked_add'
+                    $('.put_checked_add').each(function () {
+                        $(this).prop('checked', true);  // Check the checkbox
+                        $(this).prop('disabled', true); // Disable the checkbox
+                    });
+                } else if (selectedType === 'Admin Régional' || selectedType === 'Admin Wilaya' || selectedType === 'Résponsable distributeur') {
+                    $('.put_checked_add:checked').each(function () {
+                        $(this).prop('checked', false);  // Check the checkbox
+                        $(this).prop('disabled', false);
+                    });
+
+                    $(".listeditcheck").find("input[name='read_only_view_distributeur']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='add_add_distributeur']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='edit_change_distributeur']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='delete_delete_distributeur']").prop('checked', true);
+
+                    $(".listeditcheck").find("input[name='read_only_view_payeur']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='add_add_payeur']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='edit_change_payeur']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='delete_delete_payeur']").prop('checked', true);
+
+                    $(".listeditcheck").find("input[name='read_only_view_produit']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='add_add_produit']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='edit_change_produit']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='delete_delete_produit']").prop('checked', true);
+
+                    $(".listeditcheck").find("input[name='read_only_view_dist_commande']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='add_add_dist_commande']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='edit_change_dist_commande']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='delete_delete_dist_commande']").prop('checked', true);
+
+                    $(".listeditcheck").find("input[name='read_only_view_dist_bonlivraison']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='add_add_dist_bonlivraison']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='edit_change_dist_bonlivraison']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='delete_delete_dist_bonlivraison']").prop('checked', true);
+
+                    $(".listeditcheck").find("input[name='read_only_view_encaissement']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='add_add_encaissement']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='edit_change_encaissement']").prop('checked', true);
+                    $(".listeditcheck").find("input[name='delete_delete_encaissement']").prop('checked', true);
+                } else {
+                    // Enable all checkboxes if type is not 'Admin'
+                    $('.put_checked_add').each(function () {
+                        $(this).prop('checked', false);
+                        $(this).prop('disabled', false); // Enable the checkbox
+                    });
+                }
+            });
+        });
+
+        function newdatauser(id, url, username, email, first_name, last_name, telephone, responsable, type, region, user_permissions, isactive, ville) {
+            edit_elem = id;
+            $("#edit_username").val(username);
+            $("#edit_email").val(email);
+            $("#edit_first_name").val(first_name);
+            $("#edit_last_name").val(last_name);
+            $("#edit_telephone").val(telephone);
+            $("#edit_type").val(type);
+            $("#edit_region").val(region);
+            $("#edit_ville").val(ville);
+
+            if (isactive === "True") {
+                $('#edit_is_active').prop('checked', true);
+            }
+
+            if (responsable === "None") {
+                $("#edit_responsable").val('');
+            } else {
+                $("#edit_responsable").val(responsable);
+            }
+
+            if (url === "") {
+                //$('#edit_photo').val("")
+                $('#edit_previewImage').attr('src', "")
+            } else {
+                //$('#edit_photo').val(url)
+                $('#edit_previewImage').attr('src', url)
+            }
+
+            $('.put_checked_add').each(function () {
+                $(this).prop('checked', false); // Uncheck the checkbox
+            });
+
+            console.log(user_permissions)
+            liste_auth = user_permissions.split(',')
+            for (i = 0; i < liste_auth.length; i++) {
+                //$("#put_"+liste_auth[i]).click()
+                $("#put_" + liste_auth[i]).prop('checked', true);
+            }
+
+
+        }
+
+        function newdatauserview(id) {
+            /*,, , , , , , responsable, type, region, user_permissions,
+                isactive, ville*/
+            edit_elem = id;
+
+            let settings = {
+                url: `/api/user/${edit_elem}`,
+                method: "GET",
+                timeout: 0,
+                headers: {
+                    "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
+                },
+            };
+            $.ajax(settings).done(function (response) {
+                $("#usernameview").html(response['username']);
+                $("#emailview").html(response['email']);
+                $("#first_nameview").html(response['first_name']);
+                $("#last_nameview").html(response['last_name']);
+                $("#telephoneview").html(response['telephone']);
+                $("#typeview").html(response['type']);
+                $("#regionview").html(response['region']);
+                $("#villeview").html(response['ville_des']);
+
+                if (response['photo'] === "null") {
+                    $('#previewImageview').attr('src', "")
+                } else {
+                    $('#previewImageview').attr('src', response['photo'])
+                }
+
+                if (response['responsable'] === null) {
+                    $("#responsableview").html('Aucun résponsable');
+                } else {
+                    $("#responsableview").html(response['responsable']);
+                }
+
+                if (response['is_active'] === true) {
+                    $('#is_activeview').prop('checked', true);
+                } else {
+                    $('#is_activeview').prop('checked', false);
+                }
+
+                $('.put_checked_add').each(function () {
+                    $(this).prop('checked', false);
+                });
+
+                $('.checked_view:checked').each(function () {
+                    $(this).prop('checked', false);
+                });
+
+                liste_auth = response['permission_ids'].split(',');
+                for (i = 0; i < liste_auth.length; i++) {
+                    //$("#put_"+liste_auth[i]).click()
+                    $("#viewput_" + liste_auth[i]).prop('checked', true);
+                }
+            });
+
+        }
+
+        $('#userForm').on('submit', function (e) {
+            e.preventDefault(); // Prevent the default form submission
+
+            var form = new FormData();
+
+            // Add basic form data
+            form.append("username", $('#username').val());
+            form.append("password", '123456');
+            form.append("is_active", true);
+            form.append("first_name", $('#first_name').val());
+            form.append("last_name", $('#last_name').val());
+            form.append("email", $('#email').val());
+            form.append("telephone", $('#telephone').val());
+            form.append("responsable", {{ request.user.id }});
+            form.append("type", 'Employé');
+            form.append("region", $('#region').val());
+            form.append("ville", $('#ville').val());
+            form.append("user_permissions", "view_encaissement,view_encaissementfacture,view_factures,add_payeur,view_payeur,view_dist_bonlivraison" +
+                        ",view_dist_commande,delete_dist_commande,change_dist_commande,add_dist_commande,view_account,view_formation, " +
+                        "add_problematique,change_problematique,delete_problematique,view_problematique,add_formationsingup,change_formationsingup," +
+                        "delete_formationsingup,view_formationsingup,add_customuser,change_customuser,delete_customuser,view_customuser");
+            
+            // Add the photo
+            var photoFile = $('#photo')[0].files[0];
+            if (photoFile) {
+                form.append("photo", photoFile);
+            }
+
+
+
+            for (var pair of form.entries()) {
+                console.log(pair[0] + ": " + pair[1]);
+            }
+
+            var settings = {
+                "url": "/api/user/",
+                "method": "POST",
+                "timeout": 0,
+                "headers": {
+                    "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),  // Assuming you have CSRF token in your template context
+                },
+                "processData": false,
+                "contentType": false,
+                "data": form
+            };
+
+            $.ajax(settings)
+                .done(function (response) {
+                    console.log(response);
+
+                    window.location.href = "/users";
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    // Log the entire jqXHR object to see all details
+                    console.log('jqXHR:', jqXHR);
+
+                    // Log the status text
+                    console.log('Status:', textStatus);
+
+                    // Log the error thrown
+                    console.log('Error Thrown:', errorThrown);
+
+                    // Log the response text, which might contain detailed error messages
+                    console.log('Response Text:', jqXHR.responseText);
+                    alert(jqXHR.responseText)
+
+                    // Optionally, parse the responseText as JSON if it's in JSON format
+                    try {
+                        var responseJSON = JSON.parse(jqXHR.responseText);
+                        console.log('Response JSON:', responseJSON);
+                    } catch (e) {
+                        console.error('Failed to parse response as JSON:', e);
+                    }
+
+                });
+        });
+
+        $('#edituserForm').on('submit', function (e) {
+            e.preventDefault(); // Prevent the default form submission
+
+            var checkedBoxes = $('.put_checked_add:checked');
+            var idList = [];
+
+            checkedBoxes.each(function () {
+                var id = $(this).attr('id');
+                idList.push(id.replaceAll('put_', ''));
+            });
+
+
+            var form = new FormData();
+
+            // Add basic form data
+            form.append("username", $('#edit_username').val());
+            form.append("first_name", $('#edit_first_name').val());
+            form.append("last_name", $('#edit_last_name').val());
+            form.append("email", $('#edit_email').val());
+            form.append("telephone", $('#edit_telephone').val());
+            form.append("responsable", $('#edit_responsable').val());
+            form.append("type", $('#edit_type').val());
+            form.append("region", $('#edit_region').val());
+            form.append("ville", $('#edit_ville').val());
+            form.append("is_active", $('#edit_is_active').prop('checked'));
+            $('#edit_is_active').val()
+
+            // Add the photo
+            var photoFile = $('#edit_photo')[0].files[0];
+            if (photoFile) {
+                form.append("photo", photoFile);
+            }
+
+            form.append('user_permissions', idList.join(','));
+
+
+            for (var pair of form.entries()) {
+                console.log(pair[0] + ": " + pair[1]);
+            }
+
+            var settings = {
+                "url": "/api/user/" + edit_elem + '/',
+                "method": "PUT",
+                "timeout": 0,
+                "headers": {
+                    "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),  // Assuming you have CSRF token in your template context
+                },
+                "processData": false,
+                "contentType": false,
+                "data": form
+            };
+
+            $.ajax(settings)
+                .done(function (response) {
+                    console.log(response);
+                    window.location.href = "/users";
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    // Log the entire jqXHR object to see all details
+                    console.log('jqXHR:', jqXHR);
+
+                    // Log the status text
+                    console.log('Status:', textStatus);
+
+                    // Log the error thrown
+                    console.log('Error Thrown:', errorThrown);
+
+                    // Log the response text, which might contain detailed error messages
+                    console.log('Response Text:', jqXHR.responseText);
+                    alert(jqXHR.responseText)
+
+                    // Optionally, parse the responseText as JSON if it's in JSON format
+                    try {
+                        var responseJSON = JSON.parse(jqXHR.responseText);
+                        console.log('Response JSON:', responseJSON);
+                    } catch (e) {
+                        console.error('Failed to parse response as JSON:', e);
+                    }
+
+                });
+        });
+
+
+        // Open modal when delete button is clicked
+        $('.delete-btn').on('click', function () {
+            currentDeleteId = $(this).data('identifiant');
+
+            console.log(currentDeleteId);
+            $('#deleteModal').removeClass('hidden');
+        });
+
+        // Close modal when cancel is clicked
+        $('#cancelDelete').on('click', function () {
+            $('#deleteModal').addClass('hidden');
+            currentDeleteId = null;
+        });
+
+        // Confirm delete action
+        $('#confirmDelete').on('click', function () {
+            if (currentDeleteId) {
+                // Perform the delete action, e.g., make an AJAX call or redirect
+                console.log('Deleting item with ID:', currentDeleteId);
+
+                var settings = {
+                    "url": "/api/user/" + currentDeleteId + "/",
+                    "method": "DELETE",
+                    "timeout": 0,
+                    "headers": {
+                        "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
+                    },
+                };
+
+                $.ajax(settings).done(function (response) {
+                    console.log(response);
+                    $('#deleteModal').addClass('hidden');
+                    window.location.href = "/users/";
+                });
+
+
+            }
+        });
+
+
+    </script>
+{% endblock %}

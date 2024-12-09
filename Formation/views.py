@@ -54,13 +54,13 @@ class ProblematiqueViewSet(viewsets.ModelViewSet):
 @login_required
 def FormView(request):
     listmodules  = list(
-        set(request.user.user_permissions.values_list('content_type_id', flat=True))
+        set(request.user.user_permissions.values_list('content_type_id__model', flat=True))
     )
 
-    if(26 in listmodules):
+    if('problematique' in listmodules):
         listeauth = list(
             set(
-                Permission.objects.filter(user=request.user, content_type = 26).values_list('id', flat=True)
+                Permission.objects.filter(user=request.user, content_type__model='problematique').values_list('codename', flat=True)
             )
         )
 
@@ -89,16 +89,14 @@ def FormView(request):
 @login_required
 def ProbView(request):
     listmodules  = list(
-        set(request.user.user_permissions.values_list('content_type_id', flat=True))
+        set(request.user.user_permissions.values_list('content_type_id__model', flat=True))
     )
 
 
-    if (26 in listmodules):
-
-
+    if ('formation' in listmodules):
         listeauth = list(
             set(
-                Permission.objects.filter(user=request.user, content_type = 25).values_list('id', flat=True)
+                Permission.objects.filter(user=request.user, content_type__model='formation').values_list('codename', flat=True)
             )
         )
         if (request.user.type=="Distributeur"):

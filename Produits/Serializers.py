@@ -25,7 +25,7 @@ class ProduitSerializer(serializers.ModelSerializer):
         prod = Produit.objects.create(**validated_data)
 
         serializer = ProduitSerializer(prod)
-        addhistory({}, serializer.data, 15, 1, user=self.context.get('user'))
+        addhistory({}, serializer.data, 'produit', 1, user=self.context.get('user'))
 
         return prod
 
@@ -36,6 +36,6 @@ class ProduitSerializer(serializers.ModelSerializer):
         instance.save()
 
         serializer = ProduitSerializer(instance)
-        addhistory(oldvalue, serializer.data, 15, 2, user=self.context.get('user'))
+        addhistory(oldvalue, serializer.data, 'produit', 2, user=self.context.get('user'))
 
         return instance

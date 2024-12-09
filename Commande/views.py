@@ -10,7 +10,7 @@ from rest_framework import viewsets, status
 # Create your views here.
 from Distributeur.models import Distributeur
 from Produits.models import TypeProduit, Couleur, Mesure
-from Session.models import Ville
+from Session.models import Ville, CustomUser
 from .Serializers import Dist_CommandeLinesSerializer, Dist_CommandeSerializer, Dist_BonLivraisonSerializer, \
     Dist_BonLivraisonLineSerializer, Dist_CommandeSerializerDetail, Dist_BonLivraisonDetailSerializer, \
     Dist_BonLivraisonNormalSerializer
@@ -111,31 +111,31 @@ class Dist_BonLivraisonNormalViewset(viewsets.ModelViewSet):
 
 @login_required
 def CommandeView(request):
-    print("voilaaaaaaaaaaaaaaaaaaaaaaaaaaa")
     listmodules  = list(
-        set(request.user.user_permissions.values_list('content_type_id', flat=True))
+        set(request.user.user_permissions.values_list('content_type_id__model', flat=True))
     )
 
-    if (18 in listmodules):
+    if ('dist_commande' in listmodules):
         listeauth = list(
             set(
-                Permission.objects.filter(Q(user=request.user, content_type=16) |
-                                          Q(user=request.user, content_type=18)).values_list('id', flat=True)
+                Permission.objects.filter(Q(user=request.user, content_type__model='dist_bonlivraison') |
+                                          Q(user=request.user, content_type__model='dist_commande')).values_list('codename', flat=True)
             )
         )
+        print(listeauth)
 
         liste_type = TypeProduit.objects.all()
         liste_couleur = Couleur.objects.all()
         liste_mesure = Mesure.objects.all()
-        liste_distributeur = Distributeur.objects.all()
+        liste_distributeur = CustomUser.objects.filter(type__in=["Distributeur", "Employé"], is_active=True)
+
 
         lise_prod = []
-        print(request.user.type)
-        if (request.user.type == "Distributeur"):
+        if (request.user.type in ["Distributeur", "Employé"]):
             dist = Distributeur.objects.get(user=request.user)
             liste_distributeur = [Distributeur.objects.get(user=request.user)]
             query = """SELECT id, code, distributeur, ville, date_ajout, total, etat, total_blivraison, taxedtotal, taxedtotal_blivraison 
-            FROM cmdlist WHERE distributeur_id = """ + str(dist.id)
+            FROM cmdlist WHERE user_id = """ + str(request.user.id)
             params = []  # This will hold the parameters for the SQL query
 
             filters = []  # This will hold the filter conditions
@@ -185,7 +185,6 @@ def CommandeView(request):
                     })
 
             # return render(request, "Commande.html", {
-            print("iciiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
             return render(request, "Dist/Commande.html", {
                 'liste_type': liste_type,
                 'liste_couleur': liste_couleur,
@@ -195,9 +194,9 @@ def CommandeView(request):
                 'listeauth': listeauth
             })
         else:
-            query = """SELECT id, code, distributeur, ville, date_ajout, total, etat, total_blivraison, taxedtotal, taxedtotal_blivraison FROM cmdlist WHERE 1=1"""
+            query = """SELECT id, code, distributeur, ville, date_ajout, total, etat, total_blivraison, taxedtotal, 
+            taxedtotal_blivraison FROM cmdlist WHERE 1=1"""
             params = []  # This will hold the parameters for the SQL query
-
             filters = []  # This will hold the filter conditions
 
             # Extract filter values from request parameters
@@ -265,14 +264,14 @@ def CommandeView(request):
 @login_required
 def BlivraisonView(request):
     listmodules  = list(
-        set(request.user.user_permissions.values_list('content_type_id', flat=True))
+        set(request.user.user_permissions.values_list('content_type_id__model', flat=True))
     )
 
-    if (18 in listmodules):
+    if ('dist_commande' in listmodules):
         listeauth = list(
             set(
-                Permission.objects.filter(Q(user=request.user, content_type=16) |
-                                          Q(user=request.user, content_type=18)).values_list('id', flat=True)
+                Permission.objects.filter(Q(user=request.user, content_type__model='dist_bonlivraison') |
+                                          Q(user=request.user, content_type__model='dist_commande')).values_list('codename', flat=True)
             )
         )
 

@@ -61,15 +61,13 @@
 
                     <!-- Field Filter -->
                     <div class="mb-4 w-64">
-                        <label for="distfield" class="block text-sm font-medium text-gray-700 mb-2 textslate">Selectionner
-                            le
-                            distributeur</label>
+                        <label for="distfield" class="block text-sm font-medium text-gray-700 mb-2 textslate">Selectionner le distributeur</label>
                         <select id="distfield"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                             {% for fil in liste_distributeur %}
-                                <option data-designation="{{ fil.designation }}" data-username="{{ fil.user.nom }}"
-                                        data-email="{{ fil.user.email }}"
-                                        id="{{ fil.id }}" value="{{ fil.id }}">{{ fil.designation }}</option>
+                                <option data-designation="{{ fil.designation }}" data-username="{{ fil.nom }}"
+                                        data-email="{{ fil.email }}"
+                                        id="{{ fil.id }}" value="{{ fil.id }}">{{ fil.nom }} ({{ fil.designation }})</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -381,7 +379,7 @@
                     hover:bg-blue-900 hover:border-slate-400 rounded-md">Filtrer
                 </button>
 
-                {% if 69 in listeauth %}
+                {% if 'add_dist_commande' in listeauth %}
                     <button id="addButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
                         hover:bg-blue-900 hover:border-slate-400 rounded-md">Ajouter
                     </button>
@@ -482,7 +480,7 @@
                                     class="fa-solid fa-truck"></i>
                             </div>
 
-                            {% if 72 in listeauth %}
+                            {% if "view_dist_commande" in listeauth %}
                                 <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded viewelem_{{ elem.id }}"
                                         data-identifiant="{{ elem.id }}" data-etat="{{ elem.etat }}"><i
                                         class="fas fa-search"></i></button>
@@ -493,7 +491,7 @@
                                 </div>
                             {% endif %}
 
-                            {% if 70 in listeauth %}
+                            {% if "change_dist_commande" in listeauth %}
                                 <button id="editButton" class="editButton bg-blue-500 text-white p-2 rounded"
                                         data-identifiant="{{ elem.id }}">
                                     <i class="fas fa-pencil-alt" onclick=""></i>
@@ -505,7 +503,7 @@
                                 </div>
                             {% endif %}
 
-                            {% if 71 in listeauth %}
+                            {% if 'delete_dist_commande' in listeauth %}
                                 <button class="bg-red-500 text-white p-2 rounded delete-btn"
                                         data-identifiant="{{ elem.id }}">
                                     <i class="fas fa-trash"></i>
@@ -527,7 +525,7 @@
                                     class="fa-solid fa-truck"></i>
                             </div>
 
-                            {% if 72 in listeauth %}
+                            {% if 'view_dist_commande' in listeauth %}
                                 <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded viewelem_{{ elem.id }}"
                                         data-identifiant="{{ elem.id }}" data-etat="{{ elem.etat }}"><i
                                         class="fas fa-search"></i></button>
@@ -548,7 +546,7 @@
                             </div>
 
                         {% elif elem.etat == 'En cours' %}
-                            {% if 61 in listeauth %}
+                            {% if 'add_dist_bonlivraison' in listeauth %}
                                 <button id="popupButton" class="popupButton bg-blue-500 text-white p-2 rounded"
                                         data-identifiant="{{ elem.id }}">
                                     <i class="fa-solid fa-truck"></i>
@@ -560,7 +558,7 @@
                                 </div>
                             {% endif %}
 
-                            {% if 72 in listeauth %}
+                            {% if "view_dist_commande" in listeauth %}
                                 <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded viewelem_{{ elem.id }}"
                                         data-identifiant="{{ elem.id }}" data-etat="{{ elem.etat }}"><i
                                         class="fas fa-search"></i></button>
@@ -588,7 +586,7 @@
                                     class="fa-solid fa-truck"></i>
                             </div>
 
-                            {% if 72 in listeauth %}
+                            {% if "view_dist_commande" in listeauth %}
                                 <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded viewelem_{{ elem.id }}"
                                         data-identifiant="{{ elem.id }}" data-etat="{{ elem.etat }}"><i
                                         class="fas fa-search"></i></button>
@@ -790,38 +788,42 @@
 
     <!-- add elems -->
     <script>
+        listeauth = '{{ listeauth }}';
+        listeauth = JSON.parse(listeauth.replaceAll('&#x27;', '"'));
 
 
-        {% if 8 not in listmodules %}
+        {% if 'customuser' not in listmodules %}
             $("#userslistlink").addClass('hidden');
         {% endif %}
 
-        {% if 15 not in listmodules %}
+        {% if 'produits' not in listmodules %}
             $("#prodlistlink").addClass('hidden');
         {% endif %}
 
-        {% if 10 not in listmodules %}
+        {% if 'distributeur' not in listmodules %}
             $("#distlistlink").addClass('hidden');
         {% endif %}
 
-        {% if 18 not in listmodules %}
+        {% if 'dist_commande' not in listmodules %}
             $("#cmdlistlink").addClass('hidden');
         {% endif %}
 
-        {% if 22 not in listmodules %}
+        {% if 'encaissement' not in listmodules %}
             $("#enclistlink").addClass('hidden');
         {% endif %}
 
-        {% if 25 not in listmodules %}
+        {% if 'formation' not in listmodules %}
             $("#formslistlink").addClass('hidden');
         {% endif %}
-        var selectedProducts = [];
-        var editselectedProducts = [];
-        var $containerdatacmd = $('#containerdatacmd');
 
         function formatNumber(num) {
             return new Intl.NumberFormat('fr-FR', {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(num);
         }
+
+
+        var selectedProducts = [];
+        var editselectedProducts = [];
+        var $containerdatacmd = $('#containerdatacmd');
 
         $('#addButton').click(function () {
             $('#addSidebar').removeClass('translate-x-full').addClass('translate-x-0');
@@ -830,11 +832,11 @@
         });
 
 
-        // Close the sidebar
         $('#closeEditSidebar').on('click', function () {
             $('#editSidebar').addClass('translate-x-full');
         });
-        // Close sidebar when clicking outside
+
+
         $(document).on('click', function (e) {
             if (!$(e.target).closest('#editButton, #editSidebar').length) {
                 $('#editSidebar').addClass('translate-x-full');
@@ -858,7 +860,6 @@
             $('#step1').hide();
             $('#step2').show();
         });
-
 
         $('#goToStep1').click(function () {
             $('#step2').hide();
@@ -945,10 +946,7 @@
             $('#amountDueStep3').text(`${formatNumber(totalPrice + taxAmount)} DA`);*/
         });
 
-
         $(document).ready(function () {
-            //"url": "/api/products?active=true&type=" + $('#typeFilter').val() + "&mesure=" + $('#measureFilter').val() + "&couleur=" + $('#colorfilter').val(),
-            // Function to fetch and display products based on filters
             function fetchProducts() {
                 var settings = {
                     "url": "/api/products?active=true&typeproduit=" + $('#typeFilter').val() + "&mesure_id=" + $('#measureFilter').val() + "" +
@@ -1232,13 +1230,63 @@
                 $('#amountDueStep3').text(`${formatNumber(totalPrice + totalTaxStep3)} DA`);
             }
         });
-    </script>
 
 
-    <!-- edit elems -->
-    <script>
+        $('#confirmOrder').on('click', function () {
+            listteproducts = [];
+            for (i = 0; i < selectedProducts.length; i++) {
+                listteproducts.push({
+                    "produit": selectedProducts[i]['id'],
+                    "quantite": parseInt(selectedProducts[i]['quantity'])
+                })
+            }
 
-        listeauth = {{ listeauth }};
+            var settings = {
+                "url": "/api/commande/",
+                "method": "POST",
+                "timeout": 0,
+                "headers": {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),  // Assuming you have CSRF token in your template context
+                },
+                "data": JSON.stringify({
+                    "user": $('#distfield').val(),
+                    "etat": "Reception",
+                    "total": 0,
+                    "commandesLines": listteproducts
+                }),
+            };
+
+            $.ajax(settings)
+                .done(function (response) {
+                    window.location.href = "/commande/";
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    // Log the entire jqXHR object to see all details
+                    console.log('jqXHR:', jqXHR);
+
+                    // Log the status text
+                    console.log('Status:', textStatus);
+
+                    // Log the error thrown
+                    console.log('Error Thrown:', errorThrown);
+
+                    // Log the response text, which might contain detailed error messages
+                    console.log('Response Text:', jqXHR.responseText);
+                    alert(jqXHR.responseText)
+
+                    // Optionally, parse the responseText as JSON if it's in JSON format
+                    try {
+                        var responseJSON = JSON.parse(jqXHR.responseText);
+                        console.log('Response JSON:', responseJSON);
+                    } catch (e) {
+                        console.error('Failed to parse response as JSON:', e);
+                    }
+
+                });
+
+        });
+
 
         $('.editgoToStep2').click(function () {
             $('#editstep1').hide();
@@ -1309,7 +1357,6 @@
 
         });
 
-
         $(document).ready(function () {
             $('.editButton').on('click', function () {
                 $('#editSidebar').toggleClass('translate-x-full');
@@ -1329,7 +1376,7 @@
                 $.ajax(settings).done(function (response) {
                     let responsedata = response;
 
-                    $('#editdistfield').val(responsedata['distributeur']['id']);
+                    $('#editdistfield').val(responsedata['user']['id']);
 
                     responsedata.commandesLines.forEach(function (item) {
                         editselectedProducts.push({
@@ -1679,195 +1726,6 @@
         });
 
 
-        $('.viewButton').on('click', function () {
-            identifiantview = $(this).data('identifiant');
-            etatview = $(this).data('etat');
-            annulelink = "";
-
-            if (etatview === "Reception") {
-                if (listeauth.includes(70)) {
-                    buttonslist = `
-                        <button data-href="/commande/etatview?commande=${identifiantview}&etat=Traitement" class="callstate h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Valider CMD</button>
-                        <button data-href="/commande/etatview?commande=${identifiantview}&etat=Annule" class="callstate h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Annuler CMD</button>
-                    `;
-                }
-            } else if (etatview === "Traitement") {
-                //<a data-href="/commande/bl?commandes=${identifiantview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2.5 rounded-lg">Voir BL</a>
-                if (listeauth.includes(70)) {
-                    buttonslist = `
-                        <button data-href="/commande/etatview?commande=${identifiantview}&etat=Preparation" class="callstate h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Preparation CMD</button>
-                    `;
-                }
-
-            } else if (etatview === "Preparation") {
-                //<a data-href="/commande/bl?commandes=${identifiantview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2.5 rounded-lg">Voir BL</a>
-                if (listeauth.includes(70)) {
-                    buttonslist = `
-                        <button data-href="/commande/etatview?commande=${identifiantview}&etat=En cours" class="callstate h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Lancer Livraison</button>
-                    `;
-                }
-            } else if (etatview === "En cours") {
-                //<a data-href="/commande/bl?commandes=${identifiantview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2.5 rounded-lg">Voir BL</a>
-                buttonslist = ``;
-                if (listeauth.includes(64)) {
-                    buttonslist = buttonslist + `<a href="/commande/bl?commandes=${identifiantview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2.5 rounded-lg">Voir BL</a>
-                    `;
-                }
-
-                if (listeauth.includes(70)) {
-                    buttonslist = buttonslist + `<button data-href="/commande/etatview?commande=${identifiantview}&etat=Complete" class="callstate h-10 mt-4 bg-blue-500
-                        text-white px-4 py-2 rounded-lg">Completer CMD</button>
-                    `;
-                }
-
-
-            } else {
-
-                if (listeauth.includes(64)) {
-                    buttonslist = `<a href="/commande/bl?commandes=${identifiantview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2.5 rounded-lg">Voir BL</a>
-                    `;
-                }
-            }
-
-            $containerdatacmd.html('');
-            let settings = {
-                url: `/api/commandedetail/${identifiantview}`,
-                method: "GET",
-                timeout: 0,
-                headers: {
-                    "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
-                },
-            };
-
-            $.ajax(settings).done(function (response) {
-                let responsedata = response;
-                $containerdatacmd.append(`
-                    <div class="flex defaultval">
-                        <div class="w-12 h-12">
-                            <img src="/static/images/puma.svg" alt="Image" class="w-12 h-12">
-                        </div>
-                        <div class="flex-grow flex flex-wrap">
-                            <div class="w-1/4 p-2 flex items-center space-x-2">
-                                <p class="font-bold">Nom & prénom:</p>
-                                <p>${responsedata['distributeur']['user']['last_name']}</p>
-                            </div>
-                            <div class="w-1/4 p-2 flex items-center space-x-2">
-                                <p class="font-bold">Société:</p>
-                                <p>${responsedata['distributeur']['designation']}</p>
-                            </div>
-                            <div class="w-1/4 p-2 flex items-center space-x-2">
-                                <p class="font-bold">Téléphone:</p>
-                                <p>${responsedata['distributeur']['user']['telephone']}</p>
-                            </div>
-                            <div class="w-1/4 p-2 flex items-center space-x-2">
-                                <p class="font-bold capital">état:</p>
-                                <p>${responsedata['etat']}</p>
-                            </div>
-                            <div class="w-1/4 p-2 flex items-center space-x-2">
-                                <p class="font-bold">Code:</p>
-                                <p>${responsedata['distributeur']['code']}</p>
-                            </div>
-                            <div class="w-1/4 p-2 flex items-center space-x-2">
-                                <p class="font-bold">Ville:</p>
-                                <p>${responsedata['distributeur']['adresse']}</p>
-                            </div>
-                            <div class="w-1/4 p-2 flex items-center space-x-2">
-                                <p class="font-bold">Désignation:</p>
-                                <p>${responsedata['distributeur']['ville']['designation']}</p>
-                            </div>
-                            <div class="w-1/4 p-2 flex items-center space-x-2">
-                                <p class="font-bold">Date:</p>
-                                <p>${responsedata['date_ajout']}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="listeitemsprod" class="flex-grow listeprodview overflow-y-auto py-4">
-                        <p class="font-bold text-lg mb-4">Liste des produits:</p>
-                    </div>
-                    <div class="h-14 flex justify-between items-center" id="totalproducts"></div>
-                `);
-                totalprodlines = 0;
-                for (i = 0; i < responsedata['commandesLines'].length; i++) {
-                    $listeitemsprod = $("#listeitemsprod");
-                    itemprod = responsedata['commandesLines'][i];
-                    totalprodlines = totalprodlines + itemprod['total_prixtotal'];
-                    $listeitemsprod.append(`<div class="flex items-center justify-between p-2 backslateslite flex-none mb-2 defaultval">
-                    <div class="flex items-center w-1/5">
-                        <img src="${itemprod['produit']['image']}" alt="product" class="h-12 w-12 rounded-lg mr-4">
-                        <div>
-                            <h3 class="font-bold text-blue-600 productName">${itemprod['produit']['designation']}</h3>
-                            <p class="text-sm productRef">${itemprod['produit']['reference']}</p>
-                        </div>
-                    </div>
-                    <div class="w-3/5 flex">
-                        <div class="w-1/5">${itemprod['produit']['type']['designation']}</div>
-                        <div class="w-1/5">${itemprod['produit']['mesure']['designation']}</div>
-                        <div class="w-1/5">${itemprod['produit']['couleur']['designation']}</div>
-                        <div class="w-1/5 text-right pr-4">${formatNumber(itemprod['prixunitaire'])} DA</div>
-                        <div class="w-1/5 pr-4">
-                            <div class="flex justify-between">
-                                <div>Commandé</div>
-                                <div>${itemprod['quantite']}</div>
-                            </div>
-                            <div class="flex justify-between">
-                                <div>Livré</div>
-                                <div>${itemprod['total_quantite']}</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="w-1/5 text-right pr-4">
-                        <div class="flex justify-between">
-                            <div>Commandé</div>
-                            <div>${formatNumber(itemprod['prixtotal'])} DA</div>
-                        </div>
-                        <div class="flex justify-between">
-                            <div>Livré</div>
-                            <div>${formatNumber(itemprod['total_prixtotal'])} DA</div>
-                        </div>
-                    </div>
-                </div>`)
-                }
-
-                $("#totalproducts").append(`
-                <div>
-                    ${buttonslist}
-                </div>
-
-                <div class="text-right pr-4 defaultboldval">
-                        <div class="w-full flex">
-                            <span class="w-48">Total Commandé</span>
-                            <span class="w-48">${formatNumber(itemprod['prixtotal'])} DA HT</span>
-                            <span class="w-48">${formatNumber(itemprod['prixtotal'] * 0.19 + itemprod['prixtotal'])} DA Taxe</span>
-                        </div>
-                        <div class="w-full flex">
-                            <span class="w-48">Total Livré</span>
-                            <span class="w-48">${formatNumber(itemprod['total_prixtotal'])} DA HT</span>
-                            <span class="w-48">${formatNumber(totalprodlines * 0.19 + totalprodlines)} DA Taxe</span>
-                        </div>
-                    </div>
-                </div>
-                `);
-
-
-                $('.callstate').on('click', function (event) {
-                    event.preventDefault();
-                    let link = $(this).data('href');
-                    $.ajax({
-                        url: link,
-                        type: 'GET',
-                        success: function (result) {
-                            location.reload();  // Refresh the page on success
-                        }
-                    });
-                });
-
-                $('#viewSidebar').toggleClass('translate-x-full');
-            });
-
-
-        });
-
-
         $('.popupButton').click(function () {
             identifiant = $(this).data('identifiant');
 
@@ -1959,7 +1817,6 @@
             $('#addbl').fadeOut();
         });
 
-        // Optional: Close popup if clicking outside of the popup content
         $(window).click(function (event) {
             if ($(event.target).is('#addbl')) {
                 $('#addbl').fadeOut();
@@ -1967,60 +1824,6 @@
         });
 
 
-        $('#confirmOrder').on('click', function () {
-            listteproducts = [];
-            for (i = 0; i < selectedProducts.length; i++) {
-                listteproducts.push({
-                    "produit": selectedProducts[i]['id'],
-                    "quantite": parseInt(selectedProducts[i]['quantity'])
-                })
-            }
-
-            var settings = {
-                "url": "/api/commande/",
-                "method": "POST",
-                "timeout": 0,
-                "headers": {
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),  // Assuming you have CSRF token in your template context
-                },
-                "data": JSON.stringify({
-                    "distributeur": $('#distfield').val(),
-                    "etat": "Reception",
-                    "total": 0,
-                    "commandesLines": listteproducts
-                }),
-            };
-
-            $.ajax(settings)
-                .done(function (response) {
-                    window.location.href = "/commande/";
-                })
-                .fail(function (jqXHR, textStatus, errorThrown) {
-                    // Log the entire jqXHR object to see all details
-                    console.log('jqXHR:', jqXHR);
-
-                    // Log the status text
-                    console.log('Status:', textStatus);
-
-                    // Log the error thrown
-                    console.log('Error Thrown:', errorThrown);
-
-                    // Log the response text, which might contain detailed error messages
-                    console.log('Response Text:', jqXHR.responseText);
-                    alert(jqXHR.responseText)
-
-                    // Optionally, parse the responseText as JSON if it's in JSON format
-                    try {
-                        var responseJSON = JSON.parse(jqXHR.responseText);
-                        console.log('Response JSON:', responseJSON);
-                    } catch (e) {
-                        console.error('Failed to parse response as JSON:', e);
-                    }
-
-                });
-
-        });
 
 
         $('#editconfirmOrder').on('click', function () {
@@ -2042,7 +1845,7 @@
                 },
                 "data": JSON.stringify({
                     "id": identifiant,
-                    "distributeur": $('#distfield').val(),
+                    "user": $('#distfield').val(),
                     "etat": "Reception",
                     "total": 0,
                     "commandesLines": listteproducts
@@ -2125,7 +1928,6 @@
                 form.append("BonLivraison", liste_prodbl_json);
                 form.append("commandes", identifiant);
                 
-                console.log(form)
 
                 var settings = {
                     "url": "/api/blivraison/",
@@ -2141,7 +1943,6 @@
 
                 $.ajax(settings)
                     .done(function (response) {
-
                         window.location.href = "/commande/";
                         //console.log(response);
                     })
@@ -2222,6 +2023,198 @@
         $('#file-upload2').on('change', function () {
             const fileName = $(this).val().split('\\').pop() || 'No bl file';
             $('#file-name2').text(fileName);
+        });
+
+
+
+
+        $('.viewButton').on('click', function () {
+            identifiantview = $(this).data('identifiant');
+            etatview = $(this).data('etat');
+            annulelink = "";
+            buttonslist = ``;
+
+            if (etatview === "Reception") {
+                if (listeauth.includes('change_dist_bonlivraison')) {
+                    buttonslist = `
+                        <button data-href="/commande/etatview?commande=${identifiantview}&etat=Traitement" class="callstate h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Valider CMD</button>
+                        <button data-href="/commande/etatview?commande=${identifiantview}&etat=Annule" class="callstate h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Annuler CMD</button>
+                    `;
+                }
+            } else if (etatview === "Traitement") {
+                //<a data-href="/commande/bl?commandes=${identifiantview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2.5 rounded-lg">Voir BL</a>
+                if (listeauth.includes('change_dist_bonlivraison')) {
+                    buttonslist = `
+                        <button data-href="/commande/etatview?commande=${identifiantview}&etat=Preparation" class="callstate h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Preparation CMD</button>
+                    `;
+                }
+
+            } else if (etatview === "Preparation") {
+                //<a data-href="/commande/bl?commandes=${identifiantview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2.5 rounded-lg">Voir BL</a>
+                if (listeauth.includes('change_dist_bonlivraison')) {
+                    buttonslist = `
+                        <button data-href="/commande/etatview?commande=${identifiantview}&etat=En cours" class="callstate h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Lancer Livraison</button>
+                    `;
+                }
+            } else if (etatview === "En cours") {
+                //<a data-href="/commande/bl?commandes=${identifiantview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2.5 rounded-lg">Voir BL</a>
+                buttonslist = ``;
+                if (listeauth.includes('change_dist_bonlivraison')) {
+                    buttonslist = buttonslist + `<a href="/commande/bl?commandes=${identifiantview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2.5 rounded-lg">Voir BL</a>
+                    `;
+                }
+
+                if (listeauth.includes('change_dist_bonlivraison')) {
+                    buttonslist = buttonslist + `<button data-href="/commande/etatview?commande=${identifiantview}&etat=Complete" class="callstate h-10 mt-4 bg-blue-500
+                        text-white px-4 py-2 rounded-lg">Completer CMD</button>
+                    `;
+                }
+
+
+            } else {
+
+                if (listeauth.includes('change_dist_bonlivraison')) {
+                    buttonslist = `<a href="/commande/bl?commandes=${identifiantview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2.5 rounded-lg">Voir BL</a>
+                    `;
+                }
+            }
+
+            $containerdatacmd.html('');
+            let settings = {
+                url: `/api/commandedetail/${identifiantview}`,
+                method: "GET",
+                timeout: 0,
+                headers: {
+                    "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
+                },
+            };
+
+            $.ajax(settings).done(function (response) {
+                let responsedata = response;
+                $containerdatacmd.append(`
+                    <div class="flex defaultval">
+                        <div class="w-12 h-12">
+                            <img src="/static/images/puma.svg" alt="Image" class="w-12 h-12">
+                        </div>
+                        <div class="flex-grow flex flex-wrap">
+                            <div class="w-1/4 p-2 flex items-center space-x-2">
+                                <p class="font-bold">Nom & prénom:</p>
+                                <p>${responsedata['user']['last_name']}</p>
+                            </div>
+                            <div class="w-1/4 p-2 flex items-center space-x-2">
+                                <p class="font-bold">Société:</p>
+                                <p>${responsedata['designation']}</p>
+                            </div>
+                            <div class="w-1/4 p-2 flex items-center space-x-2">
+                                <p class="font-bold">Téléphone:</p>
+                                <p>${responsedata['user']['telephone']}</p>
+                            </div>
+                            <div class="w-1/4 p-2 flex items-center space-x-2">
+                                <p class="font-bold capital">état:</p>
+                                <p>${responsedata['etat']}</p>
+                            </div>
+                            <div class="w-1/4 p-2 flex items-center space-x-2">
+                                <p class="font-bold">Code:</p>
+                                <p>${responsedata['code']}</p>
+                            </div>
+                            <div class="w-1/4 p-2 flex items-center space-x-2">
+                                <p class="font-bold">Ville:</p>
+                                <p>${responsedata['adresse']}</p>
+                            </div>
+                            <div class="w-1/4 p-2 flex items-center space-x-2">
+                                <p class="font-bold">Désignation:</p>
+                                <p>${responsedata['user']['ville']['designation']}</p>
+                            </div>
+                            <div class="w-1/4 p-2 flex items-center space-x-2">
+                                <p class="font-bold">Date:</p>
+                                <p>${responsedata['date_ajout']}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="listeitemsprod" class="flex-grow listeprodview overflow-y-auto py-4">
+                        <p class="font-bold text-lg mb-4">Liste des produits:</p>
+                    </div>
+                    <div class="h-14 flex justify-between items-center" id="totalproducts"></div>
+                `);
+                totalprodlines = 0;
+                for (i = 0; i < responsedata['commandesLines'].length; i++) {
+                    $listeitemsprod = $("#listeitemsprod");
+                    itemprod = responsedata['commandesLines'][i];
+                    totalprodlines = totalprodlines + itemprod['total_prixtotal'];
+                    $listeitemsprod.append(`<div class="flex items-center justify-between p-2 backslateslite flex-none mb-2 defaultval">
+                    <div class="flex items-center w-1/5">
+                        <img src="${itemprod['produit']['image']}" alt="product" class="h-12 w-12 rounded-lg mr-4">
+                        <div>
+                            <h3 class="font-bold text-blue-600 productName">${itemprod['produit']['designation']}</h3>
+                            <p class="text-sm productRef">${itemprod['produit']['reference']}</p>
+                        </div>
+                    </div>
+                    <div class="w-3/5 flex">
+                        <div class="w-1/5">${itemprod['produit']['type']['designation']}</div>
+                        <div class="w-1/5">${itemprod['produit']['mesure']['designation']}</div>
+                        <div class="w-1/5">${itemprod['produit']['couleur']['designation']}</div>
+                        <div class="w-1/5 text-right pr-4">${formatNumber(itemprod['prixunitaire'])} DA</div>
+                        <div class="w-1/5 pr-4">
+                            <div class="flex justify-between">
+                                <div>Commandé</div>
+                                <div>${itemprod['quantite']}</div>
+                            </div>
+                            <div class="flex justify-between">
+                                <div>Livré</div>
+                                <div>${itemprod['total_quantite']}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-1/5 text-right pr-4">
+                        <div class="flex justify-between">
+                            <div>Commandé</div>
+                            <div>${formatNumber(itemprod['prixtotal'])} DA</div>
+                        </div>
+                        <div class="flex justify-between">
+                            <div>Livré</div>
+                            <div>${formatNumber(itemprod['total_prixtotal'])} DA</div>
+                        </div>
+                    </div>
+                </div>`)
+                }
+
+                $("#totalproducts").append(`
+                <div>
+                    ${buttonslist}
+                </div>
+
+                <div class="text-right pr-4 defaultboldval">
+                        <div class="w-full flex">
+                            <span class="w-48">Total Commandé</span>
+                            <span class="w-48">${formatNumber(itemprod['prixtotal'])} DA HT</span>
+                            <span class="w-48">${formatNumber(itemprod['prixtotal'] * 0.19 + itemprod['prixtotal'])} DA Taxe</span>
+                        </div>
+                        <div class="w-full flex">
+                            <span class="w-48">Total Livré</span>
+                            <span class="w-48">${formatNumber(itemprod['total_prixtotal'])} DA HT</span>
+                            <span class="w-48">${formatNumber(totalprodlines * 0.19 + totalprodlines)} DA Taxe</span>
+                        </div>
+                    </div>
+                </div>
+                `);
+
+
+                $('.callstate').on('click', function (event) {
+                    event.preventDefault();
+                    let link = $(this).data('href');
+                    $.ajax({
+                        url: link,
+                        type: 'GET',
+                        success: function (result) {
+                            location.reload();  // Refresh the page on success
+                        }
+                    });
+                });
+
+                $('#viewSidebar').toggleClass('translate-x-full');
+            });
+
+
         });
 
 

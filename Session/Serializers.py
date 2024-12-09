@@ -49,7 +49,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
 
-        representation['permission_ids'] = ",".join(map(str, instance.user_permissions.values_list('id', flat=True)))
+        representation['permission_ids'] = ",".join(map(str, instance.user_permissions.values_list('codename', flat=True)))
         representation['ville_des'] = instance.ville.designation
         print(representation['ville_des'])
         return representation
@@ -69,12 +69,12 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
         if user_permissions_data:
             permissions = user_permissions_data.split(',') if isinstance(user_permissions_data, str) else user_permissions_data
-            permission_objects = Permission.objects.filter(id__in=permissions)
+            permission_objects = Permission.objects.filter(codename__in=permissions)
             user.user_permissions.set(permission_objects)
         # Pass depth via context
         if(user.type != "Distributeur"):
             serializer = CustomUserSerializer(user, context={'depth': 1})
-            addhistory({}, serializer.data, 8, 1, user=self.context.get('user'))
+            addhistory({}, serializer.data, 'customuser', 1, user=self.context.get('user'))
 
 
 
@@ -99,13 +99,13 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
         if user_permissions_data:
             permissions = user_permissions_data.split(',') if isinstance(user_permissions_data, str) else user_permissions_data
-            permission_objects = Permission.objects.filter(id__in=permissions)
+            permission_objects = Permission.objects.filter(codename__in=permissions)
             instance.user_permissions.set(permission_objects)
 
 
         if(instance.type != "Distributeur"):
             serializer = CustomUserSerializer(instance, context={'depth': 1})
-            addhistory(oldvalue, serializer.data, 8, 2, user=self.context.get('user'))
+            addhistory(oldvalue, serializer.data, 'customuser', 2, user=self.context.get('user'))
 
         return instance
 

@@ -18,6 +18,8 @@ class DistributeurSerializer(serializers.ModelSerializer):
             'ville': {'required': False}
         }
 
+
+
     def create(self, validated_data):
         user_data = validated_data.pop('user')
         responsable = user_data.pop('responsable')
@@ -47,7 +49,7 @@ class DistributeurSerializer(serializers.ModelSerializer):
         payeur.save()
 
         serializer = DistributeurSerializer(distributeur, context={'depth': 2})
-        addhistory({}, serializer.data, 10, 1, user=self.context.get('user'))
+        addhistory({}, serializer.data, 'distributeur', 1, user=self.context.get('user'))
 
         return distributeur
 
@@ -73,7 +75,7 @@ class DistributeurSerializer(serializers.ModelSerializer):
         instance.save()
 
         serializer = DistributeurSerializer(instance)
-        addhistory(oldvalue, serializer.data, 10, 2, user=self.context.get('user'))
+        addhistory(oldvalue, serializer.data, 'distributeur', 2, user=self.context.get('user'))
 
         return instance
 
@@ -90,7 +92,7 @@ class payeurSerializer(serializers.ModelSerializer):
         payeur = Payeur.objects.create(**validated_data)
 
         serializer = payeurSerializer(payeur)
-        addhistory({}, serializer.data, 11, 1, user=self.context.get('user'))
+        addhistory({}, serializer.data, 'payeur', 1, user=self.context.get('user'))
 
         return payeur
 
@@ -101,6 +103,6 @@ class payeurSerializer(serializers.ModelSerializer):
         instance.save()
 
         serializer = payeurSerializer(instance)
-        addhistory(oldvalue, serializer.data, 11, 2, user=self.context.get('user'))
+        addhistory(oldvalue, serializer.data, 'payeur', 2, user=self.context.get('user'))
 
         return instance

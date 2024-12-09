@@ -4,11 +4,12 @@ from django.db import models
 
 Typeprofile = [
         ('Admin', 'Admin'),
-        ('Distributeur', 'Distributeur'),
         ('Agent', 'Agent'),
         ('Admin Régional', 'Admin Régional'),
         ('Admin Wilaya', 'Admin Wilaya'),
         ('Résponsable distributeur', 'Résponsable distributeur'),
+        ('Distributeur', 'Distributeur'),
+        ('Employé', 'Employé'),
         #('Distributeur', 'Distributeur'),
         #('Corporate', 'Corporate'),
     ]
@@ -51,6 +52,15 @@ class CustomUser(AbstractUser):
 
     def nom(self):
         return self.last_name+' '+self.first_name
+
+    def designation(self):
+        if(self.type == 'Distributeur'):
+            distdesignation = self.distributeur_set.first().designation#Distributeur.objects.get(user=self).designation
+        elif(self.type == 'Employé'):
+            distdesignation = self.distributeur_set.first().designation#Distributeur.objects.get(user=self).designation
+        else:
+            distdesignation = ""
+        return distdesignation
 
 class History(models.Model):
     id = models.AutoField(primary_key=True)

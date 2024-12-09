@@ -64,9 +64,9 @@ class AccountSerializer(serializers.ModelSerializer):
         instance.save()
 
 
-        serializer = FacturesSerializer(instance)
+        serializer = AccountSerializer(instance)
 
-        addhistory({}, serializer.data, 20, 2, user=self.context.get('user'))
+        addhistory({}, serializer.data, 'account', 2, user=self.context.get('user'))
         return instance
 
 
@@ -116,7 +116,7 @@ class FacturesSerializer(serializers.ModelSerializer):
 
         serializer = FacturesSerializer(facture)
 
-        addhistory({}, serializer.data, 23, 1, user=self.context.get('user'))
+        addhistory({}, serializer.data, "factures", 1, user=self.context.get('user'))
 
         return facture
 
@@ -277,7 +277,7 @@ class EncaissementSerializer(serializers.ModelSerializer):
 
         serializer = EncaissementSerializer(encaissement)
 
-        addhistory({}, serializer.data, 22, 1, user=self.context.get('user'))
+        addhistory({}, serializer.data, 'encaissement', 1, user=self.context.get('user'))
 
         return "done"
 
