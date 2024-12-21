@@ -5,6 +5,7 @@ from django.core.files.base import ContentFile
 from django.db.models import Sum
 from rest_framework import serializers
 
+from Encaissement.models import Factures
 from PumaDist.addhistory import addhistory
 from .models import Dist_Commande, Dist_CommandeLines, Produit, Dist_BonLivraison, Dist_BonLivraisonLine
 
@@ -107,6 +108,21 @@ class Dist_CommandeSerializerDetail(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
 
+        if (instance.user.type == 'Distributeur'):
+            dist = instance.user.distributeur_set.first()
+            representation['user']['designation'] = dist.designation
+            representation['user']['adresse'] = dist.adresse
+            representation['user']['code'] = dist.code
+            representation['distributeur_id'] = dist.id
+        elif (instance.user.type == 'Employé'):
+            dist = instance.user.responsable.distributeur_set.first()
+            representation['user']['designation'] = dist.designation
+            representation['user']['adresse'] = dist.adresse
+            representation['user']['code'] = dist.code
+            representation['distributeur_id'] = dist.id
+
+
+
         """bon_livraison_qs = Dist_BonLivraison.objects.filter(commandes=instance)
         bon_livraison_serialized = Dist_BonLivraisonSerializer(bon_livraison_qs, many=True).data
         representation['bonLivraison'] = bon_livraison_serialized"""
@@ -200,6 +216,7 @@ class Dist_BonLivraisonSerializer(serializers.ModelSerializer):
         bon_livraison = Dist_BonLivraison.objects.create(**validated_data)
         total = 0
 
+
         if fc_file_base64:
             fc_file = self._base64_to_file(fc_file_base64)
             bon_livraison.fc_file.save('fc_file', fc_file)
@@ -223,6 +240,18 @@ class Dist_BonLivraisonSerializer(serializers.ModelSerializer):
 
         bon_livraison.total = total
         bon_livraison.save()
+
+        try:
+            fact = Factures.objects.create(
+                code = bon_livraison.facture,
+                bl = bon_livraison,
+                montant = bon_livraison.total,
+                montant_ttc = bon_livraison.total + (bon_livraison.total * 0.19),
+                date_echeance = bon_livraison.date_echeance,
+            )
+            fact.save()
+        except Exception:
+            pass
 
         serializer = Dist_BonLivraisonDetailSerializer(bon_livraison)
         addhistory({}, serializer.data, 'dist_bonlivraison', 1, user=self.context.get('user'))

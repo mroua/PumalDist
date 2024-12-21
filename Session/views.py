@@ -91,6 +91,8 @@ def Utilisateurs(request):
         set(request.user.user_permissions.values_list('content_type_id__model', flat=True))
     )
 
+    print(listmodules)
+
     listville= Ville.objects.all()
 
     if('customuser' in listmodules):

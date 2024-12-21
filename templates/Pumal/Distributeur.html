@@ -288,7 +288,7 @@
             </div>
             <!-- Edit User Form -->
 
-            <form id="edituserForm" class="flex-grow">
+            <form id=viewForm" class="flex-grow">
                     <div class="p-4" style="overflow-y: auto;">
 
                         <div class="grid grid-cols-2 gap-4 mb-4">
@@ -407,17 +407,21 @@
                     <div class="mb-3">
                         <label for="ville_filter" class="block mb-1 pl-1 text-sm font-medium textslate">Ville:</label>
                         <select id="ville_filter" class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                            <option value="" {% if request.GET.ville == "" %}selected{% endif %}>Tous</option>
                             {% for ville in ville_list %}
-                                <option value="{{ ville.id }}">{{ ville.designation }}</option>
+                                <option value="{{ ville.id }}"
+                                        {% if request.GET.ville == ville.id|stringformat:"s" %}selected{% endif %}>{{ ville.designation }}
+                                </option>
                             {% endfor %}
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="region_filter" class="block mb-1 pl-1 text-sm font-medium textslate">Région:</label>
                         <select id="region_filter" class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
-                            <option value="Est">Est</option>
-                            <option value="Ouest">Ouest</option>
-                            <option value="Centre">Centre</option>
+                            <option value="" {% if request.GET.region == "" %}selected{% endif %}>Tous</option>
+                            <option value="Est" {% if request.GET.region == "Est" %}selected{% endif %}>Est</option>
+                            <option value="Ouest" {% if request.GET.region == "Ouest" %}selected{% endif %}>Ouest</option>
+                            <option value="Centre" {% if request.GET.region == "Centre" %}selected{% endif %}>Centre</option>
                         </select>
                     </div>
                 <div class="grid grid-cols-2">
@@ -494,7 +498,7 @@
                 <div class="w-1/6 capitalize">Téléphone</div>
                 <div class="w-1/6 capitalize">Date d'ajout</div>
                 <div class="w-1/6 capitalize">Plafonnement</div>
-                <div class="w-1/6 capitalize pl-8">Bloqué</div>
+                <div class="w-1/6 capitalize pl-8">Achats</div>
                 <div class="w-1/6 capitalize text-right">Actions</div>
             </div>
         </div>
@@ -577,7 +581,7 @@
             $("#userslistlink").addClass('hidden');
         {% endif %}
 
-        {% if 'produits' not in listmodules %}
+        {% if 'produit' not in listmodules %}
             $("#prodlistlink").addClass('hidden');
         {% endif %}
 

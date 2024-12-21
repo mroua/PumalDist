@@ -742,7 +742,7 @@
                             <option value="" {% if request.GET.ville == "" %}selected{% endif %}>Tous</option>
                             {% for ville in listville %}
                                 <option value="{{ ville.id }}"
-                                        {% if request.GET.ville == ville.id %}selected{% endif %}>{{ ville.designation }}
+                                        {% if request.GET.ville == ville.id|stringformat:"s" %}selected{% endif %}>{{ ville.designation }}
                                 </option>
                             {% endfor %}
                         </select>
@@ -792,7 +792,7 @@
             $("#userslistlink").addClass('hidden');
         {% endif %}
 
-        {% if 'produits' not in listmodules %}
+        {% if 'produit' not in listmodules %}
             $("#prodlistlink").addClass('hidden');
         {% endif %}
 

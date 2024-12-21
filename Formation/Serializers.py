@@ -8,7 +8,7 @@ from PumaDist.addhistory import addhistory
 from .models import *
 
 
-
+"""
 class FormationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Formation
@@ -70,8 +70,60 @@ class FormationSerializer(serializers.ModelSerializer):
         addhistory(oldvalue, serializer.data, 'formation', 2, user=self.context.get('user'))
 
         return instance
+"""
 
+class ImagesFormationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ImagesFormation
+        fields = ['id', 'image']
 
+class ImagesProblematiqueSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ImagesProblematique
+        fields = ['id', 'image']
+
+class FormationSerializer(serializers.ModelSerializer):
+    images = ImagesFormationSerializer(many=True, write_only=True, required=False)
+    images_urls = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = Formation
+        fields = [
+            'id', 'titre', 'nbrplace', 'duree', 'tarif', 'datedebut', 'dateajout',
+            'text', 'lieu', 'est', 'ouest', 'centre', 'place_restante', 'images', 'images_urls'
+        ]
+        read_only_fields = ['dateajout', 'place_restante']
+
+    def get_images_urls(self, obj):
+        """Get URLs of related images."""
+        return [img.image.url for img in obj.imagesformation_set.all()]
+
+    def create(self, validated_data):
+        # Extract and process `images` data
+        images_data = self.context['request'].FILES.getlist('images')  # Retrieve file list from request
+        formation = Formation.objects.create(**validated_data)
+        for image_file in images_data:
+            ImagesFormation.objects.create(formation=formation, image=image_file)  # Save image file
+        return formation
+
+    def update(self, instance, validated_data):
+        # Extract and process `images` data
+        images_data = self.context['request'].FILES.getlist('images')  # Retrieve file list from request
+
+        # Update formation fields
+        for field, value in validated_data.items():
+            setattr(instance, field, value)
+        instance.save()
+
+        # Clear existing images and add new ones
+        if images_data:
+            instance.imagesformation_set.all().delete()
+            for image_file in images_data:
+                ImagesFormation.objects.create(formation=instance, image=image_file)  # Save image file
+
+        return instance
+
+        
 class EquipeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Equipe
@@ -82,9 +134,15 @@ class EquipeSerializer(serializers.ModelSerializer):
 
 
 class ProblematiqueSerializer(serializers.ModelSerializer):
+    images = ImagesProblematiqueSerializer(many=True, write_only=True, required=False)
+    images_urls = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = Problematique
         fields = '__all__'
+
+    def get_images_urls(self, obj):
+        """Get URLs of related images."""
+        return [img.image.url for img in obj.imagesformation_set.all()]
 
     def create(self, validated_data):
 

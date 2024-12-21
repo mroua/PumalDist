@@ -51,7 +51,9 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
         representation['permission_ids'] = ",".join(map(str, instance.user_permissions.values_list('codename', flat=True)))
         representation['ville_des'] = instance.ville.designation
-        print(representation['ville_des'])
+
+
+
         return representation
 
     def validate_username(self, value):

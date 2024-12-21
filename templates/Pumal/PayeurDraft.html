@@ -18,7 +18,15 @@
                     <div class="p-4" style="height: calc(100% - 10rem); overflow-y: auto;">
                         <div class="grid grid-cols-2 gap-4 mb-4">
 
-                            <div class="col-span-2">
+                            <div>
+                                <select id="distributeur" name="distributeur"
+                                        class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                    {% for worker in users_select %}
+                                    <option value="{{ worker.id }}">{{ worker.designation }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div>
                                 <input type="text" id="code" name="code" placeholder="Code"
                                        class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                             </div>
@@ -141,7 +149,15 @@
                     <div class="p-4" style="height: calc(100% - 10rem); overflow-y: auto;">
 
                         <div class="grid grid-cols-2 gap-4 mb-4">
-                            <div class="col-span-2">
+                            <div>
+                                <select id="edit_distributeur" name="edit_distributeur"
+                                        class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                    {% for worker in users_select %}
+                                    <option value="{{ worker.id }}">{{ worker.designation }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="">
                                 <input type="text" id="edit_code" name="edit_code" placeholder="Code"
                                        class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                             </div>
@@ -161,6 +177,7 @@
                                         <option data-region="{{ ville.region }}"
                                                 value="{{ ville.id }}">{{ ville.designation }}</option>
                                     {% endfor %}
+                                </select>
                                 </select>
                             </div>
                             <div>
@@ -355,14 +372,57 @@
         <!-- Filter Modal -->
         <div id="filterModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40 flex items-center justify-center"
              style="margin-top: -16px">
-            <div class="bg-white w-1/3 rounded-lg shadow-lg">
+            <div class="backprimer w-1/3 rounded-lg shadow-lg">
                 <div class="flex justify-between items-center p-4 border-b">
                     <h3 class="text-lg font-semibold">Filtres</h3>
                     <button id="closeFilterModal" class="text-gray-500 hover:text-gray-700">&times;</button>
                 </div>
-                <div class="p-4">
-                    <!-- Filter Form -->
+                
+            <div class="p-4">
+                <div class="mb-3">
+                    <label for="dist_filter" class="block mb-1 pl-1 text-sm font-medium textslate">Distributeur:</label>
+                    <select id="dist_filter" class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                        <option value="" {% if request.GET.distributeur == "" %}selected{% endif %}>Tous</option>
+                        {% for dist in users_select %}
+                            <option value="{{ dist.id }}" 
+                                    {% if request.GET.distributeur == dist.id|stringformat:"s" %}selected{% endif %}>{{ dist.user.first_name }} {{ dist.user.last_name }}
+                            ({{ dist.designation }})
+                            </option>
+                        {% endfor %}
+                    </select>
                 </div>
+                <div class="mb-3">
+                    <label for="ville_filter" class="block mb-1 pl-1 text-sm font-medium textslate">Ville:</label>
+                    <select id="ville_filter" class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                        <option value="" {% if request.GET.ville == "" %}selected{% endif %}>Tous</option>
+                            {% for ville in ville_list %}
+                                <option value="{{ ville.id }}"
+                                        {% if request.GET.ville == ville.id|stringformat:"s" %}selected{% endif %}>{{ ville.designation }}
+                                </option>
+                            {% endfor %}
+                    </select>
+                </div>
+                <div class="grid grid-cols-2">
+                    <div class="mb-3">
+                        <div class="checkbox-wrapper-6 flex items-center gap-6">
+                            <label class="textslate">État</label>
+                            <input class="tgl tgl-light" id="is_activefilter" checked type="checkbox"/>
+                            <label class="tgl-btn" for="is_activefilter"></label>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="flex justify-between">
+                    <button class="closePopup text-white p-2 rounded btn capitalize bg-[#141b54] hover:bg-blue-900">
+                        Annuler
+                    </button>
+                    <button id="SearchApply"
+                            class="btn capitalize bg-[#141b54] px-4 rounded py-2 border border-slate-300 text-gray-400 text-sm hover:bg-blue-900 hover:border-slate-400">
+                        Lancer recherce
+                    </button>
+                </div>
+            </div>
             </div>
         </div>
 
@@ -380,7 +440,8 @@
                 </div>
             </div>
             <div>
-                <button id="filterButton" class="bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-700">Filtrer
+                <button id="filterButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
+                        hover:bg-blue-900 hover:border-slate-400 rounded-md">Filtrer
                 </button>
 
 
@@ -489,7 +550,7 @@
             $("#userslistlink").addClass('hidden');
         {% endif %}
 
-        {% if 'produits' not in listmodules %}
+        {% if 'produit' not in listmodules %}
             $("#prodlistlink").addClass('hidden');
         {% endif %}
 
@@ -508,6 +569,22 @@
         {% if 'formation' not in listmodules %}
             $("#formslistlink").addClass('hidden');
         {% endif %}
+
+
+
+        $("#SearchApply").on('click', function (e) {
+            e.preventDefault();
+
+            if($("#is_activefilter").prop('checked')) filt = true
+            else filt = false
+
+            link = "/distributeur/payeurdraft?ville=" + $('#ville_filter').val() +"&distributeur=" + $('#dist_filter').val()
+                +"&is_active=" + filt;
+            //alert(link)
+            window.location.href = link;
+        })
+
+
         edit_payeur_id = 0;
         edit_distri_id = 0;
 
@@ -901,7 +978,7 @@
             form.append("ville", $ville.val());
             form.append("adresse", $adresse.val());
             form.append("telephone", $telephone.val());
-            form.append("distributeur", edit_dist);
+            form.append("distributeur", $("#distributeur").val());
             form.append("nif", $nif.val());
             form.append("nis", $nis.val());
             form.append("art", $art.val());
@@ -981,7 +1058,7 @@
             formedit.append("ville", $('#edit_ville').val())
             formedit.append("adresse", $('#edit_adresse').val())
             formedit.append("telephone", $('#edit_telephone').val())
-            formedit.append("distributeur", edit_distri_id)
+            formedit.append("distributeur", $("#edit_distributeur").val());
             formedit.append("nif", $('#edit_nif').val())
             formedit.append("nis", $('#edit_nis').val())
             formedit.append("art", $('#edit_art').val())

@@ -250,3 +250,29 @@ input::placeholder, select::placeholder, textarea::placeholder {
 }
 
 
+.bluedot {
+    background: #0284c7;
+}
+
+.orangedot {
+    background: #fb923c;
+}
+
+.graydot {
+    background: #9ca3af;
+}
+
+.violetdot {
+    background: #c4b5fd;
+}
+.greendot {
+    background: #4ade80;
+}
+
+.yellowdot {
+    background: #facc15;
+}
+
+.reddot {
+    background: #f87171;
+}

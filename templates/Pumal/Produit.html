@@ -266,24 +266,31 @@
                     <div class="mb-3">
                         <label for="type_filter" class="block mb-1 pl-1 text-sm font-medium textslate">Famille:</label>
                         <select id="type_filter" class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                        <option value="" {% if request.GET.famille == "" %}selected{% endif %}>Tous</option>
                             {% for type in liste_type %}
-                                <option value="{{ type.id }}">{{ type.designation }}</option>
+                                <option value="{{ type.id }}" 
+                                    {% if request.GET.famille == type.id|stringformat:"s" %}selected{% endif %}>{{ type.designation }}
+                                </option>
                             {% endfor %}
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="mesure_filter" class="block mb-1 pl-1 text-sm font-medium textslate">Mesure:</label>
                         <select id="mesure_filter" class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                        <option value="" {% if request.GET.mesure == "" %}selected{% endif %}>Tous</option>
                             {% for mesure in liste_mesure %}
-                                <option value="{{ mesure.id }}">{{ mesure.designation }}</option>
+                                <option value="{{ mesure.id }}" {% if request.GET.mesure == mesure.id|stringformat:"s" %}selected{% endif %}>
+                                    {{ mesure.designation }}
+                                </option>
                             {% endfor %}
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="couleur_filter" class="block mb-1 pl-1 text-sm font-medium textslate">Couleur:</label>
                         <select id="couleur_filter" class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                        <option value="" {% if request.GET.couleur == "" %}selected{% endif %}>Tous</option>
                             {% for col in liste_couleur %}
-                                <option value="{{ col.id }}">{{ col.designation }}</option>
+                                <option value="{{ col.id }}" {% if request.GET.couleur == col.id|stringformat:"s" %}selected{% endif %}>{{ col.designation }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -431,7 +438,7 @@
                 $("#userslistlink").addClass('hidden');
             {% endif %}
 
-            {% if 'produits' not in listmodules %}
+            {% if 'produit' not in listmodules %}
                 $("#prodlistlink").addClass('hidden');
             {% endif %}
 
@@ -450,6 +457,22 @@
             {% if 'formation' not in listmodules %}
                 $("#formslistlink").addClass('hidden');
             {% endif %}
+            
+            
+            $("#SearchApply").on('click', function (e) {
+                e.preventDefault();
+    
+                if($("#is_activefilter").prop('checked')) filt = true
+                else filt = false
+    
+                link = "/produit/?famille=" + $('#type_filter').val() +"&mesure=" + $('#mesure_filter').val()+"&couleur=" + $('#couleur_filter').val()
+                    +"&is_active=" + filt;
+                //alert(link)
+                window.location.href = link;
+            })
+                
+            
+            
             edit_elem = 0;
 
             $reference = $('#reference');

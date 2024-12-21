@@ -13,7 +13,20 @@
         </style>
 
         <div class="flex justify-between items-center pt-8 mb-4" style="margin-top: -8px">
-            <h2 class="text-2xl font-bold textslate">Liste des BL</h2>
+            <div class="flex gap-2">
+                <div>
+                    <a href="{% url 'commande' %}"
+                       class="block px-4 py-2 hoverprimer rounded">Commandes</a>
+                </div>
+                <div><!-- accomptes -->
+                    <a href="{% url 'bl' %}" class="block px-4 py-2 actualprimer rounded">Bon de livraison</a>
+                </div>
+            </div>
+            <div>
+                <button id="filterButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
+                    hover:bg-blue-900 hover:border-slate-400 rounded-md">Filtrer
+                </button>
+            </div>
         </div>
         <hr/>
 
@@ -76,7 +89,7 @@
                         </div>
                     </div>
                     <div class="flex space-x-2 w-1/6 justify-end">
-                        {% if 64 in listeauth %}
+                        {% if 'view_dist_bonlivraison' in listeauth %}
                             <button id="popupButton2" class="popupButton2 bg-blue-500 text-white p-2 rounded viewelem_{{ elem.id }}"
                                     data-identifiant="{{ elem.id }}"><i
                                     class="fas fa-search"></i>
@@ -87,7 +100,7 @@
                                     class="fas fa-search"></i>
                             </div>
                         {% endif %}
-                        {% if 62 in listeauth %}
+                        {% if "change_dist_bonlivraison" in listeauth %}
                             <button id="popupButton" class="popupButton bg-blue-500 text-white p-2 rounded"
                                     data-identifiant="{{ elem.id }}"><i
                                     class="fas fa-pencil-alt"></i>
@@ -98,7 +111,7 @@
                                     class="fas fa-pencil-alt"></i>
                             </div>
                         {% endif %}
-                        {% if 63 in listeauth %}
+                        {% if 'delete_dist_bonlivraison' in listeauth %}
                             <button class="bg-red-500 text-white p-2 rounded delete-btn"
                                     data-code="{{ elem.commandes__distributeur__code }}"
                                     data-identifiant="{{ elem.id }}" data-cmd="{{ cmd }}"><i class="fas fa-trash"></i>
@@ -235,7 +248,7 @@
             $("#userslistlink").addClass('hidden');
         {% endif %}
 
-        {% if 'produits' not in listmodules %}
+        {% if 'produit' not in listmodules %}
             $("#prodlistlink").addClass('hidden');
         {% endif %}
 

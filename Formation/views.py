@@ -19,6 +19,14 @@ class FormationViewSet(viewsets.ModelViewSet):
         return context
 
 
+    """def create(self, request, *args, **kwargs):
+        print('coucou')
+
+        print(request.data)
+
+
+        return Response("coucou")"""
+
 class FormationSingupViewSet(viewsets.ModelViewSet):
     queryset = FormationSingup.objects.all()
     serializer_class = FormationSingupSerializer
@@ -60,7 +68,7 @@ def FormView(request):
     if('problematique' in listmodules):
         listeauth = list(
             set(
-                Permission.objects.filter(user=request.user, content_type__model='problematique').values_list('codename', flat=True)
+                Permission.objects.filter(user=request.user, content_type__model='formation').values_list('codename', flat=True)
             )
         )
 

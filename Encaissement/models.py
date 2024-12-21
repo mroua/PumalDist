@@ -3,6 +3,7 @@ from django.db import models
 # Create your models here.
 from django.db.models import Q
 
+from Commande.models import Dist_BonLivraison
 from Distributeur.models import Payeur
 
 typeencaissement = (
@@ -25,13 +26,14 @@ class Banque(models.Model):
 class Factures(models.Model):
     id = models.AutoField(primary_key=True)
     code = models.CharField(max_length=100)
-    payeur = models.ForeignKey(Payeur, models.CASCADE, blank=True, null=True)
+    #payeur = models.ForeignKey(Payeur, models.CASCADE, blank=True, null=True)
+    bl = models.ForeignKey(Dist_BonLivraison, models.CASCADE)
     montant = models.FloatField(default=0)
     montant_ttc = models.FloatField(default=0)
     date_ajout= models.DateTimeField(auto_now=True)
     date_echeance = models.DateField(blank=True , null=True)
     complete = models.BooleanField(default=False)
-    fc_file = models.FileField(blank=True , null=True)
+    #fc_file = models.FileField(blank=True , null=True)
 
     def __str__(self):
         return self.payeur.distributeur.designation+'/ '+ self.payeur.designation

@@ -5,7 +5,6 @@ from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
 
-
 from rest_framework import viewsets, status
 # Create your views here.
 from Distributeur.models import Distributeur
@@ -19,14 +18,12 @@ from rest_framework.views import APIView
 from django.db import connection
 from django.contrib.auth.decorators import login_required
 
-
-
-
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 
-#Dist_CommandeLinesSerializer
-#Dist_CommandeSerializer
+
+# Dist_CommandeLinesSerializer
+# Dist_CommandeSerializer
 
 class Dist_CommandeLinesViewSet(viewsets.ModelViewSet):
     queryset = Dist_CommandeLines.objects.all()
@@ -75,7 +72,6 @@ class Dist_BonLivraisonViewSet(viewsets.ModelViewSet):
         return context
 
 
-
 class Dist_BonLivraisonLineViewSet(viewsets.ModelViewSet):
     queryset = Dist_BonLivraisonLine.objects.all()
     serializer_class = Dist_BonLivraisonLineSerializer
@@ -111,7 +107,7 @@ class Dist_BonLivraisonNormalViewset(viewsets.ModelViewSet):
 
 @login_required
 def CommandeView(request):
-    listmodules  = list(
+    listmodules = list(
         set(request.user.user_permissions.values_list('content_type_id__model', flat=True))
     )
 
@@ -119,7 +115,8 @@ def CommandeView(request):
         listeauth = list(
             set(
                 Permission.objects.filter(Q(user=request.user, content_type__model='dist_bonlivraison') |
-                                          Q(user=request.user, content_type__model='dist_commande')).values_list('codename', flat=True)
+                                          Q(user=request.user, content_type__model='dist_commande')).values_list(
+                    'codename', flat=True)
             )
         )
         print(listeauth)
@@ -128,7 +125,6 @@ def CommandeView(request):
         liste_couleur = Couleur.objects.all()
         liste_mesure = Mesure.objects.all()
         liste_distributeur = CustomUser.objects.filter(type__in=["Distributeur", "Employé"], is_active=True)
-
 
         lise_prod = []
         if (request.user.type in ["Distributeur", "Employé"]):
@@ -144,7 +140,7 @@ def CommandeView(request):
             code = request.GET.get('code')
             date_ajout_min = request.GET.get('date_ajout_min')
             date_ajout_max = request.GET.get('date_ajout_max')
-            etat = request.GET.get('etat')
+            etat = request.GET.get('etat', None)
 
             # Add filters to the query based on the provided values
             if code:
@@ -157,6 +153,9 @@ def CommandeView(request):
                 filters.append("date_ajout <= %s")
                 params.append(date_ajout_max)
             if etat:
+                filters.append("etat = %s")
+                params.append(etat)
+            else:
                 filters.append("etat = %s")
                 params.append(etat)
 
@@ -196,6 +195,8 @@ def CommandeView(request):
         else:
             query = """SELECT id, code, distributeur, ville, date_ajout, total, etat, total_blivraison, taxedtotal, 
             taxedtotal_blivraison FROM cmdlist WHERE 1=1"""
+
+
             params = []  # This will hold the parameters for the SQL query
             filters = []  # This will hold the filter conditions
 
@@ -203,7 +204,9 @@ def CommandeView(request):
             code = request.GET.get('code')
             date_ajout_min = request.GET.get('date_ajout_min')
             date_ajout_max = request.GET.get('date_ajout_max')
-            etat = request.GET.get('etat')
+            distributeur = request.GET.get('distributeur', None)
+            ville = request.GET.get('ville', None)
+            etat = request.GET.get('etat', None)
 
             # Add filters to the query based on the provided values
             if code:
@@ -219,18 +222,23 @@ def CommandeView(request):
                 filters.append("etat = %s")
                 params.append(etat)
 
+            # Default behavior: Exclude `etat = 'brouillons'` unless it belongs to the logged-in user
+            if not etat:  # Apply the default filter only if no specific `etat` is provided
+                filters.append("(etat != 'brouillons' OR distributeur = %s)")
+                params.append(request.user.id)
+
             # Append the filters to the query if there are any
             if filters:
                 query += " AND " + " AND ".join(filters)
 
+            # Execute the query
             with connection.cursor() as cursor:
-                # Execute the SQL query with parameters
                 cursor.execute(query, params)
-
                 rows = cursor.fetchall()
 
-                for row in rows:
-                    lise_prod.append({
+                # Process the result
+                lise_prod = [
+                    {
                         "id": row[0],
                         "code": row[1],
                         "distributeur": row[2],
@@ -241,10 +249,14 @@ def CommandeView(request):
                         "total_blivraison": row[7],
                         "taxedtotal": row[8],
                         "taxedtotal_blivraison": row[9],
-                    })
+                    }
+                    for row in rows
+                ]
+
+            # Fetch additional data
             liste_ville = Ville.objects.all()
 
-            # return render(request, "Commande.html", {
+            # Render the template with the data
             return render(request, "Pumal/Commande.html", {
                 'liste_type': liste_type,
                 'liste_couleur': liste_couleur,
@@ -255,30 +267,37 @@ def CommandeView(request):
                 'listmodules': listmodules,
                 'liste_ville': liste_ville,
             })
+
     else:
-        return render(request,"access.html", {"listmodules": listmodules})
-
-
+        return render(request, "access.html", {"listmodules": listmodules})
 
 
 @login_required
 def BlivraisonView(request):
-    listmodules  = list(
+    listmodules = list(
         set(request.user.user_permissions.values_list('content_type_id__model', flat=True))
     )
 
-    if ('dist_commande' in listmodules):
+    if ('dist_bonlivraison' in listmodules):
         listeauth = list(
             set(
                 Permission.objects.filter(Q(user=request.user, content_type__model='dist_bonlivraison') |
-                                          Q(user=request.user, content_type__model='dist_commande')).values_list('codename', flat=True)
+                                          Q(user=request.user, content_type__model='dist_commande')).values_list(
+                    'codename', flat=True)
             )
         )
 
-        commandes = request.GET.get('commandes')
-        blist = Dist_BonLivraison.objects.filter(commandes=commandes).values(
+        commandes = request.GET.get('commandes', None)
+
+        if (commandes):
+            blist = Dist_BonLivraison.objects.filter(commandes=commandes)
+        else:
+            blist = Dist_BonLivraison.objects.all()
+
+
+        blist = blist.values(
             'id',
-            'commandes__distributeur__code',
+            'commandes__user__id',
             'facture',
             'date_ajout',
             'date_facturation',
@@ -288,8 +307,6 @@ def BlivraisonView(request):
             'total'
         )
 
-
-
         return render(request, "Pumal/Blivraison.html", {
             "blist": blist,
             "cmd": commandes,
@@ -297,8 +314,7 @@ def BlivraisonView(request):
             "listmodules": listmodules
         })
     else:
-        return render(request,"access.html", {"listmodules": listmodules})
-
+        return render(request, "access.html", {"listmodules": listmodules})
 
 
 @login_required

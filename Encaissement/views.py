@@ -131,7 +131,7 @@ def EncaissementView(request):
             listedist = Distributeur.objects.filter(bloquer=False).order_by('id')
             listebanque = Banque.objects.all().order_by('designation')
             listepayeur = Payeur.objects.filter(distributeur=listedist.first())
-            listefacture = Factures.objects.filter(payeur = listepayeur.first(), complete=False)
+            listefacture = Factures.objects.filter(bl__payeur = listepayeur.first(), complete=False)
 
             # Base SQL query
             query = """

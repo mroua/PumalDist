@@ -46,7 +46,39 @@ def ProduitView(request):
         liste_couleur = Couleur.objects.all()
         liste_mesure = Mesure.objects.all()
 
-        produit = Produit.objects.filter(active = True)
+        produit = Produit.objects.all()
+
+        famille = request.GET.get('famille', None)
+        mesure = request.GET.get('mesure', None)
+        couleur = request.GET.get('couleur', None)
+        active = request.GET.get('is_active', 'true')
+
+        if(active == "true"):
+            is_active = True
+        else:
+            is_active = False
+        
+        print(produit)
+
+        if famille:
+            produit = produit.filter(type=int(famille))
+            print(1)
+        if (mesure):
+            produit = produit.filter(mesure=int(mesure))
+            print(2)
+            print(produit)
+        print(couleur)
+        if (couleur):
+            produit = produit.filter(couleur=int(couleur))
+            print(3)
+            print(produit)
+        if (active):
+            produit = produit.filter(active=int(is_active))
+            print(4)
+
+            print(produit)
+
+
 
         return render(request, "Pumal/Produit.html", {
             'liste_type': liste_type,

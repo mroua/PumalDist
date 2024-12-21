@@ -1,0 +1,344 @@
+CREATE VIEW bonlivraison as
+SELECT cdb.commandes_id as id , sum(cdb.total) as total
+FROM
+     Commande_dist_bonlivraison cdb
+join
+	Commande_dist_commande cc on cc.id = cdb.commandes_id
+JOIN
+	Session_customuser sc on sc.id = cc.user_id
+JOIN
+    Session_ville sv ON sv.id = sc.ville_id group by cc.id;
+
+---------------------------------------------------------------------------
+
+CREATE VIEW cmdlist as
+select c.id, c.code, c.distributeur, c.ville, c.date_ajout, c.total, c.etat, b.total as total_blivraison, c.total + c.total *0.19 as taxedtotal,
+b.total + b.total *0.19 as taxedtotal_blivraison, c.user_id
+from commandes c join bonlivraison b on b.id = c.id
+union
+SELECT
+    c.id,
+    c.code,
+    c.distributeur,
+    c.ville,
+    c.date_ajout,
+    c.total,
+    c.etat,
+    COALESCE((SELECT SUM(b.total) FROM bonlivraison b WHERE b.id = c.id), 0) AS total_blivraison,
+    c.total + c.total * 0.19 AS taxedtotal,
+    COALESCE((SELECT SUM(b.total + b.total * 0.19) FROM bonlivraison b WHERE b.id = c.id), 0) AS taxedtotal_blivraison,
+    c.user_id
+FROM
+    commandes c
+WHERE
+    c.id NOT IN (SELECT b.id FROM bonlivraison b);
+
+
+--------------------------------------------------------------------
+
+
+CREATE VIEW commandes as
+SELECT cc.id,
+    'cmd_' || dd.code || cc.id AS code,
+    dd.designation AS distributeur,
+    sv.designation AS ville,
+    cc.date_ajout,
+    cc.total,
+    cc.etat,
+    cc.user_id
+FROM
+    Commande_dist_commande cc
+JOIN
+    listeusers dd ON dd.id = cc.user_id
+JOIN
+    Session_ville sv ON sv.id = dd.ville_id;
+
+
+------------------------------------------------------------------------
+
+
+CREATE VIEW creance as
+ SELECT
+    f.id,
+    f.code,
+    f.montant AS total,
+    f.date_ajout,
+    f.date_echeance,
+    f.fc_file,
+    f.complete,
+    dp.code AS code_payeur,
+    dp.designation AS payeur,
+    dd.code AS code_distributeur,
+    dd.designation AS distributeur,
+	dd.ville_id,
+
+    -- Sum of encaissement and account where validation = true
+    COALESCE((
+        SELECT SUM(ef.montant)
+        FROM Encaissement_encaissementfacture ef
+        LEFT JOIN Encaissement_encaissement e ON e.id = ef.encaissement_id
+        LEFT JOIN Encaissement_account a ON a.id = ef.account_id
+        WHERE ef.facture_id = f.id AND (e.validation = 1 OR a.validation = 1)
+    ), 0) AS total_encaissement,
+
+    -- Sum of encaissement and account where validation_depot = false and validation = false
+    COALESCE((
+        SELECT SUM(ef.montant)
+        FROM Encaissement_encaissementfacture ef
+        LEFT JOIN Encaissement_encaissement e ON e.id = ef.encaissement_id
+        LEFT JOIN Encaissement_account a ON a.id = ef.account_id
+        WHERE ef.facture_id = f.id AND
+              (e.validation_depot = 0 AND e.validation = 0) OR
+              (a.validation_depot = 0 AND a.validation = 0)
+    ), 0) AS total_validation_depot_false,
+
+    -- Sum of encaissement and account where validation_depot = true and validation = false
+    COALESCE((
+        SELECT SUM(ef.montant)
+        FROM Encaissement_encaissementfacture ef
+        LEFT JOIN Encaissement_encaissement e ON e.id = ef.encaissement_id
+        LEFT JOIN Encaissement_account a ON a.id = ef.account_id
+        WHERE ef.facture_id = f.id AND
+              (e.validation_depot = 1 AND e.validation = 0) OR
+              (a.validation_depot = 1 AND a.validation = 0)
+    ), 0) AS total_validation_depot_true,
+
+    -- Calculate the difference for overdue and incomplete factures
+    CASE
+        WHEN f.date_echeance < CURRENT_DATE AND f.complete = 0 THEN
+            f.montant - COALESCE((
+                SELECT SUM(ef.montant)
+                FROM Encaissement_encaissementfacture ef
+                LEFT JOIN Encaissement_encaissement e ON e.id = ef.encaissement_id
+                LEFT JOIN Encaissement_account a ON a.id = ef.account_id
+                WHERE ef.facture_id = f.id AND (e.validation = 1 OR a.validation = 1)
+            ), 0)
+        ELSE 0
+    END AS montant_echue,
+
+    dd.plafonnement,
+    dd.id as distributeur_id,
+    dp.id as payeur_id
+
+FROM
+    Encaissement_factures f
+JOIN
+    Distributeur_payeur dp ON dp.id = f.payeur_id
+JOIN
+    Distributeur_distributeur dd ON dd.id = dp.distributeur_id;
+
+-----------------------------------------------------------------
+
+
+CREATE VIEW creance_dash as
+SELECT
+	DATE(creance.date_ajout) as date_ajout,
+    creance.total,
+    creance.code_payeur,
+    creance.payeur,
+    creance.id AS payeur_id,
+    creance.distributeur,
+    creance.total_encaissement AS CreanceG,
+    creance.montant_echue AS CreanceE,
+
+    -- Number of factures (count of creance entries)
+    COUNT(creance.id) AS nbrfacture,
+
+    -- Number of factures where complete = false and date_echeance has passed
+    SUM(CASE
+        WHEN creance.complete = 0 AND creance.date_echeance < DATE('now')
+        THEN 1
+        ELSE 0
+    END) AS nbrfactureEc,
+
+    -- Montant echue for the current month (EM)
+    SUM(CASE
+        WHEN strftime('%Y-%m', creance.date_echeance) = strftime('%Y-%m', DATE('now'))
+        THEN creance.montant_echue
+        ELSE 0
+    END) AS EM,
+
+    -- Montant echue for the current year (EA)
+    SUM(CASE
+        WHEN strftime('%Y', creance.date_echeance) = strftime('%Y', DATE('now'))
+        THEN creance.montant_echue
+        ELSE 0
+    END) AS EA,
+    strftime('%m', date_ajout) as month,
+	strftime('%Y', date_ajout) as year
+FROM
+    creance
+group by payeur_id;
+
+
+------------------------------------------------------------------------
+
+
+CREATE VIEW creancedash as
+SELECT
+    creance.total,
+    creance.code_payeur,
+    creance.payeur,
+    creance.id AS payeur_id,
+    creance.distributeur,
+    creance.total_encaissement AS CreanceG,
+    creance.montant_echue AS CreanceE,
+
+    -- Number of factures (count of creance entries)
+    COUNT(creance.id) AS nbrfacture,
+
+    -- Number of factures where complete = false and date_echeance has passed
+    SUM(CASE
+        WHEN creance.complete = 0 AND creance.date_echeance < DATE('now')
+        THEN 1
+        ELSE 0
+    END) AS nbrfactureEc,
+
+    -- Montant echue for the current month (EM)
+    SUM(CASE
+        WHEN strftime('%Y-%m', creance.date_echeance) = strftime('%Y-%m', DATE('now'))
+        THEN creance.montant_echue
+        ELSE 0
+    END) AS EM,
+
+    -- Montant echue for the current year (EA)
+    SUM(CASE
+        WHEN strftime('%Y', creance.date_echeance) = strftime('%Y', DATE('now'))
+        THEN creance.montant_echue
+        ELSE 0
+    END) AS EA,
+    strftime('%m', date_ajout) as month,
+	strftime('%Y', date_ajout) as year
+FROM
+    creance
+group by payeur_id;
+
+
+---------------------------------------------------------
+
+
+CREATE VIEW creancevalidation as
+	select ee.id, dd.designation as distributeur, dp.designation as payeur, ee.montant, ee."type", ee.validation_depot, ee.validation, ee.date_ajout, ee.date_cheque, date_depot, 'Encaissement' as type_validation
+	from Encaissement_encaissement ee
+	join Distributeur_payeur dp on dp.id = ee.payeur_id
+	join Distributeur_distributeur dd on dd.id = dp.distributeur_id
+	union
+
+	select ee.id, dd.designation as distributeur, dp.designation as payeur, ee.montant, ee."type", ee.validation_depot, ee.validation, ee.date_ajout, ee.date_cheque, date_depot, 'Acompte' as type_validation
+	from Encaissement_account ee
+	join Distributeur_payeur dp on dp.id = ee.payeur_id
+	join Distributeur_distributeur dd on dd.id = dp.distributeur_id
+	where ee.encaissement_id is null;
+
+
+---------------------------------------------------------------
+
+
+CREATE VIEW historyview  AS
+SELECT
+    id,
+    elem_id,
+    user_representative,
+    action_flag,
+    old_msg,
+    new_msg,
+    content_type,
+    "user",
+    vue,
+    viewer_id,
+    creation_date,
+    url,
+    CASE
+        WHEN action_flag = 1 THEN 'Ajout'
+        WHEN action_flag = 2 THEN 'Modification'
+        WHEN action_flag = 3 THEN 'Suppression'
+        ELSE 'Action inconnue'
+    END || ' d'' ' ||
+    CASE
+        WHEN content_type = 8 THEN 'un Utilisateur'
+        WHEN content_type = 10 THEN 'un Distributeur'
+        WHEN content_type = 11 THEN 'un Payeur'
+        WHEN content_type = 15 THEN 'un Produit'
+        WHEN content_type = 18 THEN 'une Commande'
+        WHEN content_type = 16 THEN 'un Bon de livraison'
+        WHEN content_type = 22 THEN 'un Encaissement'
+        WHEN content_type = 23 THEN 'une Facture'
+        WHEN content_type = 20 THEN 'un account'
+        WHEN content_type = 25 THEN 'une Formation'
+        WHEN content_type = 27 THEN 'une Inscription'
+        WHEN content_type = 26 THEN 'une Problématique'
+        ELSE 'un Objet inconnu'
+    END AS msg,
+    CASE
+        WHEN content_type = 8 THEN '/users/'
+        WHEN content_type = 10 THEN '/distributeur/'
+        WHEN content_type = 11 THEN '/distributeur/payeur'
+        WHEN content_type = 15 THEN '/produit/'
+        WHEN content_type = 18 THEN '/commande/'
+        WHEN content_type = 16 THEN '/commande/'
+        WHEN content_type = 22 THEN '/encaissement/'
+        WHEN content_type = 23 THEN '/encaissement/'
+        WHEN content_type = 20 THEN '/encaissement/accompte'
+        WHEN content_type = 25 THEN '/formation/'
+        WHEN content_type = 27 THEN '/formation/'
+        else '/formation/problematique'
+    END AS urllink
+FROM
+    Session_history;
+
+
+------------------------------------------------------------
+
+
+CREATE VIEW listeusers as
+select sc.id, sc.username, sc.first_name, sc.last_name, sc.email, sc."type", dd.code, dd.designation, dd.ville_id from Session_customuser sc
+join Distributeur_distributeur dd on dd.user_id = sc.id
+where sc."type" ='Distributeur'
+union
+select sc.id, sc.username, sc.first_name, sc.last_name, sc.email, sc."type", dd2.code, dd2.designation, dd2.ville_id from Session_customuser sc
+join Distributeur_distributeur dd2 on dd2.user_id = sc.responsable_id
+where sc."type" ='Employé';
+
+-------------------------------------------------------------
+
+
+CREATE VIEW products as
+select pp.id as produit_id, pp.designation, pp.image, pp.prix_publique, pp.prix_gros, pp.active, pp.reference,pc.designation as couleur,
+pc.id as couleur_produit, pm.id as mesure_id, pm.designation as mesure_designation, pm."type" as mesure_type,
+	   pt.id as typeproduit_id, pt.designation as typeproduit_designation
+from Produits_produit pp
+join Produits_couleur pc ON pc.id = pp.couleur_id
+join Produits_mesure pm on pm.id = pp.mesure_id
+join Produits_typeproduit pt ON pt.id = pp.type_id;
+
+
+----------------------------------------------------------------
+
+
+CREATE VIEW Total_BL as
+select strftime('%m', cdb.date_ajout) AS month, strftime('%Y', cdb.date_ajout) AS year, sum(cdb.total) as total, cdc.user_id
+from Commande_dist_bonlivraison cdb
+join Commande_dist_commande cdc ON cdc.id =cdb.commandes_id
+group by strftime('%m', cdb.date_ajout), strftime('%Y', cdb.date_ajout), cdc.user_id;
+
+
+----------------------------------------------------------------
+
+
+CREATE VIEW Total_BL_Dash as
+select cdb.date_ajout, strftime('%m', cdb.date_ajout) AS month, strftime('%Y', cdb.date_ajout) AS year, sum(cdb.total) as total, cdc.user_id
+from Commande_dist_bonlivraison cdb
+join Commande_dist_commande cdc ON cdc.id =cdb.commandes_id
+group by cdb.date_ajout, strftime('%m', cdb.date_ajout), strftime('%Y', cdb.date_ajout), cdc.user_id;
+
+
+----------------------------------------------------------------
+CREATE TRIGGER update_history_on_userurlhistory_insert
+AFTER INSERT ON Session_userurlhistory
+BEGIN
+    UPDATE Session_history
+    SET vue = 1
+    WHERE url = NEW.url
+      AND viewer_id = NEW.user_id
+      AND vue = 0;
+END;

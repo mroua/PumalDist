@@ -83,7 +83,7 @@ class PayeurViewSet(viewsets.ModelViewSet):
     serializer_class = payeurSerializer
 
     filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
-    filterset_fields = ['distributeur']
+    filterset_fields = ['distributeur', 'active']
 
 
     def get_serializer_context(self):
@@ -107,8 +107,32 @@ def DistribView(request):
             )
         )
 
+        ville = request.GET.get('ville', None)
+        region = request.GET.get('region', None)
+        active = request.GET.get('is_active', 'true')
+        bloque = request.GET.get('bloquer', 'false')
+
+        if (active == "true"):
+            is_active = True
+        else:
+            is_active = False
+        if (bloque == "true"):
+            is_bloque = False
+        else:
+            is_bloque = True
+
         dist_list = Distributeur.objects.all()
+
+        if (ville):
+            dist_list = dist_list.filter(user__ville=int(ville))
+        if (region):
+            dist_list = dist_list.filter(user__ville__region=region)
+
+        dist_list = dist_list.filter(user__is_active=is_active)
+        dist_list = dist_list.filter(bloquer=is_bloque)
+
         ville_list = Ville.objects.all()
+
 
         users_select = CustomUser.objects.filter(
             type='Résponsable distributeur', is_active=True
@@ -144,7 +168,28 @@ def PayView(request):
                 )
             )
 
+            ville = request.GET.get('ville', None)
+            distributeur = request.GET.get('distributeur', None)
+            active = request.GET.get('is_active', 'true')
+
+            if (active == "true"):
+                is_active = True
+            else:
+                is_active = False
+
             dist_list = Payeur.objects.filter(draft=False)
+
+            if (ville):
+                dist_list = dist_list.filter(distributeur__user__ville=int(ville))
+            if (distributeur):
+                dist_list = dist_list.filter(distributeur=distributeur)
+
+            if (is_active):
+                dist_list = dist_list.filter(active=is_active)
+
+
+
+
             ville_list = Ville.objects.all()
 
             users_select = Distributeur.objects.all().order_by('id')
@@ -165,7 +210,7 @@ def PayView(request):
 
 @login_required
 def PayDiftView(request):
-    if (request.user.type == "Distributeur"):
+    if (request.user.type in ["Distributeur", 'Employé'] ):
         listmodules = list(
             set(request.user.user_permissions.values_list('content_type__model', flat=True))
         )
@@ -209,6 +254,9 @@ def PayDiftView(request):
                 dist_list = dist_list.filter(art__icontains=art)
             if rc:
                 dist_list = dist_list.filter(rc__icontains=rc)
+
+            print(dist_list)
+
             if distributeur:
                 dist_list = dist_list.filter(distributeur_id=distributeur)
             if ville:
@@ -232,6 +280,7 @@ def PayDiftView(request):
             return render(request,"access.html", {"listmodules": listmodules})
 
     else:
+        print("coucou")
         listmodules  = list(
             set(request.user.user_permissions.values_list('content_type__model', flat=True))
         )
@@ -243,11 +292,36 @@ def PayDiftView(request):
                 )
             )
 
+
+            ville = request.GET.get('ville', None)
+            distributeur = request.GET.get('distributeur', None)
+            active = request.GET.get('is_active', 'false')
+
+            if (active == "true"):
+                is_active = True
+            else:
+                is_active = False
+            print(is_active)
+
             dist_list = Payeur.objects.filter(draft = True)
+            print(dist_list)
+
+            if (ville):
+                print('ici')
+                dist_list = dist_list.filter(distributeur__user__ville=int(ville))
+            if (distributeur):
+                print('la')
+                dist_list = dist_list.filter(distributeur=distributeur)
+
+            if (is_active):
+                print('voila')
+                dist_list = dist_list.filter(active=is_active)
+
             ville_list = Ville.objects.all()
 
             users_select = Distributeur.objects.all().order_by('id')
 
+            print(dist_list)
 
             return render(request, "Pumal/PayeurDraft.html",
                           {
