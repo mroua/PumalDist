@@ -36,7 +36,7 @@ class Factures(models.Model):
     #fc_file = models.FileField(blank=True , null=True)
 
     def __str__(self):
-        return self.payeur.distributeur.designation+'/ '+ self.payeur.designation
+        return self.bl.payeur.distributeur.designation+'/ '+ self.bl.payeur.designation
 
     @property
     def restant(self):

@@ -117,19 +117,23 @@ def DistribView(request):
         else:
             is_active = False
         if (bloque == "true"):
-            is_bloque = False
-        else:
             is_bloque = True
+        else:
+            is_bloque = False
 
         dist_list = Distributeur.objects.all()
-
         if (ville):
             dist_list = dist_list.filter(user__ville=int(ville))
         if (region):
             dist_list = dist_list.filter(user__ville__region=region)
 
         dist_list = dist_list.filter(user__is_active=is_active)
+
+        print(dist_list)
+        print(is_bloque)
         dist_list = dist_list.filter(bloquer=is_bloque)
+
+        print(dist_list)
 
         ville_list = Ville.objects.all()
 
@@ -238,7 +242,7 @@ def PayDiftView(request):
 
             dist_list = Payeur.objects.filter(distributeur__user = request.user)
 
-            if code:
+            """if code:
                 dist_list = dist_list.filter(code__icontains=code)
             if designation:
                 dist_list = dist_list.filter(designation__icontains=designation)
@@ -253,12 +257,10 @@ def PayDiftView(request):
             if art:
                 dist_list = dist_list.filter(art__icontains=art)
             if rc:
-                dist_list = dist_list.filter(rc__icontains=rc)
+                dist_list = dist_list.filter(rc__icontains=rc)"""
 
             print(dist_list)
 
-            if distributeur:
-                dist_list = dist_list.filter(distributeur_id=distributeur)
             if ville:
                 dist_list = dist_list.filter(ville_id=ville)
             if active:

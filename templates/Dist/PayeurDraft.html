@@ -360,42 +360,76 @@
                     <h3 class="text-lg font-semibold">Filtres</h3>
                     <button id="closeFilterModal" class="text-gray-500 hover:text-gray-700">&times;</button>
                 </div>
-                <div class="p-4 grid grid-cols-2 gap-x-4">
+                <!--<div class="p-4 grid grid-cols-2 gap-x-4">
                     <div class="mb-2">
-                        <input type="text" name="code" placeholder="Code" value="{{ request.GET.code }}"
+                        <input type="text" name="code" placeholder="Code" value="{ { request.GET.code }}"
                                class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                     </div>
                     <div class="mb-2">
-                        <input type="text" name="designation" placeholder="Designation" value="{{ request.GET.designation }}"
+                        <input type="text" name="designation" placeholder="Designation" value="{ { request.GET.designation }}"
                                class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                     </div>
                     <div class="mb-2">
-                        <input type="text" name="telephone" placeholder="Telephone" value="{{ request.GET.telephone }}"
+                        <input type="text" name="telephone" placeholder="Telephone" value="{ { request.GET.telephone }}"
                                class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                     </div>
                     <div class="mb-2">
-                        <input type="text" name="adresse" placeholder="Adresse" value="{{ request.GET.adresse }}"
+                        <input type="text" name="adresse" placeholder="Adresse" value="{ { request.GET.adresse }}"
                                class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                     </div>
                     <div class="mb-2">
-                        <input type="text" name="nif" placeholder="NIF" value="{{ request.GET.nif }}"
+                        <input type="text" name="nif" placeholder="NIF" value="{ { request.GET.nif }}"
                                class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                     </div>
                     <div class="mb-2">
-                        <input type="text" name="nis" placeholder="NIS" value="{{ request.GET.nis }}"
+                        <input type="text" name="nis" placeholder="NIS" value="{ { request.GET.nis }}"
                                class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                     </div>
                     <div class="mb-2">
-                        <input type="text" name="art" placeholder="ART" value="{{ request.GET.art }}"
+                        <input type="text" name="art" placeholder="ART" value="{ { request.GET.art }}"
                                class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                     </div>
                     <div class="mb-2">
-                        <input type="text" name="rc" placeholder="RC" value="{{ request.GET.rc }}"
+                        <input type="text" name="rc" placeholder="RC" value="{ { request.GET.rc }}"
                                class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                     </div>
 
 
 
+                </div>-->
+                
+                <div class="p-4">
+                    <div class="mb-3">
+                        <label for="ville_filter" class="block mb-1 pl-1 text-sm font-medium textslate">Ville:</label>
+                        <select id="ville_filter" class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                            <option value="" {% if request.GET.ville == "" %}selected{% endif %}>Tous</option>
+                                {% for ville in ville_list %}
+                                    <option value="{{ ville.id }}"
+                                            {% if request.GET.ville == ville.id|stringformat:"s" %}selected{% endif %}>{{ ville.designation }}
+                                    </option>
+                                {% endfor %}
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-2">
+                        <div class="mb-3">
+                            <div class="checkbox-wrapper-6 flex items-center gap-6">
+                                <label class="textslate">État</label>
+                                <input class="tgl tgl-light" id="is_activefilter" checked type="checkbox"/>
+                                <label class="tgl-btn" for="is_activefilter"></label>
+                            </div>
+                        </div>
+                    </div>
+    
+    
+                    <div class="flex justify-between">
+                        <button class="closePopup text-white p-2 rounded btn capitalize bg-[#141b54] hover:bg-blue-900">
+                            Annuler
+                        </button>
+                        <button id="SearchApply"
+                                class="btn capitalize bg-[#141b54] px-4 rounded py-2 border border-slate-300 text-gray-400 text-sm hover:bg-blue-900 hover:border-slate-400">
+                            Lancer recherce
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -403,12 +437,13 @@
         <div class="flex justify-between items-center pt-4 mb-4" style="margin-top: -8px">
             <h2 class="text-2xl font-bold textslate">Liste des payeurs</h2>
             <div>
-                <button id="filterButton" class="bg-gray-800 text-white py-2 px-4 rounded-lg hover:bg-gray-700">Filtrer
+                <button id="filterButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
+                    hover:bg-blue-900 hover:border-slate-400 rounded-md">Filtrer
                 </button>
 
 
 
-                {% if 41 in listeauth %}
+                {% if "add_payeur" in listeauth %}
                     <button id="addButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
                         hover:bg-blue-900 hover:border-slate-400 rounded-md">Ajouter
                     </button>
@@ -506,6 +541,17 @@
         $nis = $('#nis');
         $art = $('#art');
         $rc = $('#rc');
+
+        $("#SearchApply").on('click', function (e) {
+            e.preventDefault();
+
+            if($("#is_activefilter").prop('checked')) filt = true
+            else filt = false
+
+            link = "/distributeur/payeurdraft?ville=" + $('#ville_filter').val() +"&is_active=" + filt;
+            //alert(link)
+            window.location.href = link;
+        })
 
 
         function toggleFileIconColor() {

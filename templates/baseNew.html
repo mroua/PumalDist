@@ -37,7 +37,15 @@
                data-tip="dashboard">
                 <i class="uil uil-apps text-slate-300 text-xl"></i>
             </a>
-            {% if request.user.type != "Distributeur" %}
+            {% if request.user.type == "Distributeur" %}
+                <a id="userslistlink" href="{% url 'users' %}"
+                   class="btn btn-square hover:bg-blue-900 {% if request.path == '/users/' %}bg-blue-900{% endif %} border-none flex items-center justify-center p-1 tooltip tooltip-right capitalize"
+                   data-tip="Utilisateurs">
+                    <i class="uil uil-users-alt text-slate-300 text-xl"></i>
+                </a>
+            {% endif %}
+        
+            {% if request.user.type != "Employé" and request.user.type != "Distributeur" %}
                 <a id="userslistlink" href="{% url 'users' %}"
                    class="btn btn-square hover:bg-blue-900 {% if request.path == '/users/' %}bg-blue-900{% endif %} border-none flex items-center justify-center p-1 tooltip tooltip-right capitalize"
                    data-tip="Utilisateurs">

@@ -13,11 +13,9 @@
         <div class="flex justify-between items-center mb-2">
             <h2 class="text-2xl font-bold textslate">Dashboard Distributeur</h2>
             <div>
-                {% if request.user.type != "Distributeur" %}
                     <button id="filterButton" class="popupButton backprimer text-white py-2 px-4 rounded-lg hover:bg-blue-900">
                         Filtrer
                     </button>
-                {% endif %}
             </div>
         </div>
 

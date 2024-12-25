@@ -73,7 +73,7 @@ class AccountSerializer(serializers.ModelSerializer):
 class FacturesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Factures
-        fields = ['id', 'code', 'payeur', 'montant', 'date_ajout', 'date_echeance', 'complete', 'fc_file']
+        fields = ['id', 'code', 'bl', 'montant', 'date_ajout', 'date_echeance', 'complete']
 
     def to_representation(self, instance):
         # Modify the representation to include the extra fields only on GET requests
@@ -81,18 +81,26 @@ class FacturesSerializer(serializers.ModelSerializer):
         #if self.context['request'].method == 'GET':
             # Add extra fields to the representation
         try:
-            representation['payeur_designation'] = instance.payeur.designation
+            representation['payeur_designation'] = instance.bl.payeur.designation
             representation[
-                    'distributeur_nom'] = instance.payeur.distributeur.user.first_name + ' ' + instance.payeur.distributeur.user.last_name
-            representation['distributeur_designation'] = instance.payeur.distributeur.designation
+                    'distributeur_nom'] = instance.bl.payeur.distributeur.user.first_name + ' ' + instance.bl.payeur.distributeur.user.last_name
+            representation['distributeur_designation'] = instance.bl.payeur.distributeur.designation
             representation['montant_ttc'] = instance.montant_ttc
+
             listeencaissement = EncaissementFacture.objects.filter(facture=instance)
+
+            print(listeencaissement)
             serializer = EncaissementFactureSerializer(listeencaissement, many=True)
             serialized_data = serializer.data
 
             representation['listeencaissement'] = serialized_data
         except Exception:
             pass
+
+        if(instance.bl.fc_file):
+            representation['fc_file'] = instance.bl.fc_file.url
+        else:
+            representation['fc_file'] = None
 
         return representation
 

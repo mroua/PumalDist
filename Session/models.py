@@ -54,10 +54,11 @@ class CustomUser(AbstractUser):
         return self.last_name+' '+self.first_name
 
     def designation(self):
+        print(self.type)
         if(self.type == 'Distributeur'):
             distdesignation = self.distributeur_set.first().designation#Distributeur.objects.get(user=self).designation
         elif(self.type == 'Employé'):
-            distdesignation = self.distributeur_set.first().designation#Distributeur.objects.get(user=self).designation
+            distdesignation = self.responsable.distributeur_set.first().designation#Distributeur.objects.get(user=self).designation
         else:
             distdesignation = ""
         return distdesignation

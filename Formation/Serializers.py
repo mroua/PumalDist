@@ -98,6 +98,43 @@ class FormationSerializer(serializers.ModelSerializer):
         """Get URLs of related images."""
         return [img.image.url for img in obj.imagesformation_set.all()]
 
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+
+        user = self.context.get('user')
+
+        representation["datefin"] = instance.datedebut + timedelta(days=instance.duree)
+        try:
+            representation['placerestante'] = instance.nbrplace - FormationSingup.objects.filter(formation=instance).aggregate(total=Sum('nbrelem'))['total'] or 0
+        except Exception:
+            representation['placerestante'] = 0
+        try:
+            if(user.type=="Distributeur"):
+                formation_signups = FormationSingup.objects.filter(formation=instance, distributeur__user=user)
+            else:
+                formation_signups = FormationSingup.objects.filter(formation=instance)
+        except Exception:
+            pass
+
+        representation['groups'] = []
+
+        for signup in formation_signups:
+            equipes = Equipe.objects.filter(
+                formation=signup)  # Adjust this filter to match the correct relationship
+            equipes_data = EquipeSerializer(equipes, many=True).data
+
+            representation['groups'].append({
+                'id': signup.id,
+                'distributeur': signup.distributeur.id,
+                'distributeurname': signup.distributeur.designation,
+                'nbrelem': signup.nbrelem,
+                'prixtotal': signup.prixtotal,
+                'dateajout': signup.dateajout,
+                'Equipeline': equipes_data  # Add related Equipe data here
+            })
+
+        return representation
+
     def create(self, validated_data):
         # Extract and process `images` data
         images_data = self.context['request'].FILES.getlist('images')  # Retrieve file list from request
@@ -142,11 +179,14 @@ class ProblematiqueSerializer(serializers.ModelSerializer):
 
     def get_images_urls(self, obj):
         """Get URLs of related images."""
-        return [img.image.url for img in obj.imagesformation_set.all()]
+        return [img.image.url for img in obj.imagesproblematique_set.all()]
 
     def create(self, validated_data):
-
+        images_data = self.context['request'].FILES.getlist('images')  # Retrieve file list from request
         form = Problematique.objects.create(**validated_data)
+
+        for image_file in images_data:
+            ImagesProblematique.objects.create(problematique=form, image=image_file)
 
         serializer = ProblematiqueSerializer(form)
         addhistory({}, serializer.data, 'problematique', 1, user=self.context.get('user'))
@@ -154,10 +194,18 @@ class ProblematiqueSerializer(serializers.ModelSerializer):
         return form
 
     def update(self, instance, validated_data):
+        images_data = self.context['request'].FILES.getlist('images')
+
         oldvalue = ProblematiqueSerializer(instance).data
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()
+
+         # Clear existing images and add new ones
+        if images_data:
+            instance.imagesformation_set.all().delete()
+            for image_file in images_data:
+                ImagesProblematique.objects.create(problematique=instance, image=image_file)  # Save image file
 
         serializer = ProblematiqueSerializer(instance)
         addhistory(oldvalue, serializer.data, 'problematique', 2, user=self.context.get('user'))

@@ -72,8 +72,6 @@ def FormView(request):
             )
         )
 
-        print(listeauth)
-
         formations = Formation.objects.all()
 
         if(request.user.type == "Distributeur"):
@@ -83,6 +81,18 @@ def FormView(request):
                 "listmodules": listmodules,
             })
         else:
+
+            date_debut = request.GET.get('date_debut', None)
+            date_fin = request.GET.get('date_fin', None)
+
+
+            if date_debut:
+                formations = formations.filter(datedebut__gte=date_debut)
+
+            if date_fin:
+                # Calculate the end date dynamically as `datedebut + duree`
+                formations = formations.filter(datedebut__lte=date_fin, datedebut__gte=F('datedebut') + timedelta(days=F('duree')))
+
             return render(request, "Pumal/Formations.html", {
                 "formations": formations,
                 "listeauth": listeauth,

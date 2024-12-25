@@ -13,11 +13,10 @@
         <div class="flex justify-between items-center mb-2">
             <h2 class="text-2xl font-bold textslate">Dashboard Distributeur</h2>
             <div>
-                {% if request.user.type != "Distributeur" %}
                     <button id="filterButton" class="popupButton btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
                     hover:bg-blue-900 hover:border-slate-400 rounded-md">Filtrer
                     </button>
-                {% endif %}
+                
             </div>
         </div>
 
@@ -257,15 +256,18 @@
 
                     <div class="flex-grow grid grid-cols-1 overflow-y-auto mb-4">
                         <div class="px-2">
-                            <div class="mb-3">
-                                <label for="distributeur" class="block mb-1 pl-1 text-sm font-medium textslate">Distribupteur</label>
-                                <select id="distributeur" class="text-gray-900 text-sm rounded-lg
-                                    block w-full p-2.5">
-                                    {% for elem in listedist %}
-                                        <option class="p-2.5" value="{{ elem.id }}" {% if elem == first_dist %}selected{% endif %}>{{ elem.designation }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
+                            {% if request.user.type != "Distributeur" %}
+                                <div class="mb-3">
+                                    <label for="distributeur" class="block mb-1 pl-1 text-sm font-medium textslate">Distribupteur</label>
+                                    <select id="distributeur" class="text-gray-900 text-sm rounded-lg
+                                        block w-full p-2.5">
+                                        {% for elem in listedist %}
+                                            <option class="p-2.5" value="{{ elem.id }}" {% if elem == first_dist %}selected{% endif %}>{{ elem.designation }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            {% endif %}
+                            
                             <div class="mb-3">
                                 <label for="datedebut" class="block mb-1 pl-1 text-sm font-medium textslate">Date début</label>
                                 <input type="date" id="datedepot" class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
@@ -439,12 +441,22 @@
             });
         });
 
-        $("#SearchApply").on('click', function (e) {
-            e.preventDefault();
-            link = "/dashboard/?distributeur=" + $('#distributeur').val() +"&date_debut=" + $('#datedepot').val() +"&date_fin=" + $('#datefin').val();
-            //alert(link)
-            window.location.href = link;
-        })
+        {% if request.user.type != "Distributeur" %}
+            $("#SearchApply").on('click', function (e) {
+                e.preventDefault();
+                link = "/dashboard/?distributeur=" + $('#distributeur').val() +"&date_debut=" + $('#datedepot').val() +"&date_fin=" + $('#datefin').val();
+                //alert(link)
+                window.location.href = link;
+            })
+        {% else %}
+            $("#SearchApply").on('click', function (e) {
+                e.preventDefault();
+                link = "/dashboard/?date_debut=" + $('#datedepot').val() +"&date_fin=" + $('#datefin').val();
+                //alert(link)
+                window.location.href = link;
+            })
+        {% endif %}
+        
 
     </script>
 

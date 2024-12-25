@@ -3,6 +3,7 @@ from django.db.models import Sum
 
 # Create your models here.
 from Distributeur.models import Distributeur
+from Session.models import CustomUser
 
 TypePRO=(
     ('Reclamation', 'Reclamation'),
@@ -68,7 +69,7 @@ class Equipe(models.Model):
 class Problematique(models.Model):
     id = models.AutoField(primary_key=True)
     type = models.CharField(max_length=30, choices=TypePRO, default='Reclamation')
-    profile = models.ForeignKey(Distributeur, on_delete=models.CASCADE)#distributeur
+    profile = models.ForeignKey(CustomUser, on_delete=models.CASCADE)#distributeur
     intitule = models.CharField(max_length=300)
     message = models.TextField()
     date_ajout = models.DateField(auto_now_add=True)

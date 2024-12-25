@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.db import connection
 
 from Distributeur.models import Distributeur, Payeur
+from Session.models import Ville
 from .Serializers import BanqueSerializer, AccountSerializer, FacturesSerializer, EncaissementSerializer
 from .models import Banque, Account, Factures, Encaissement
 from django.contrib.auth.decorators import login_required
@@ -19,7 +20,7 @@ def EncaissementView(request):
     listmodules  = list(
         set(request.user.user_permissions.values_list('content_type_id__model', flat=True))
     )
-    if (request.user.type == "Distributeur"):
+    if (request.user.type in ["Distributeur", "Employé"] ):
         distrib = Distributeur.objects.get(user =request.user)
 
         # Base SQL query
@@ -35,10 +36,10 @@ def EncaissementView(request):
         params = []
 
         # Apply filters based on the request parameters
-        ville_id = request.GET.get('ville_id')
-        if ville_id:
+        ville = request.GET.get('ville')
+        if ville:
             filters.append("AND ville_id = %s")
-            params.append(ville_id)
+            params.append(ville)
 
         code = request.GET.get('code')
         if code:
@@ -47,7 +48,7 @@ def EncaissementView(request):
 
         payeur = request.GET.get('payeur')
         if payeur:
-            filters.append("AND payeur LIKE %s")
+            filters.append("AND payeur_id = %s")
             params.append(f"%{payeur}%")
 
         date_ajout_debut = request.GET.get('date_ajout_debut')
@@ -132,6 +133,7 @@ def EncaissementView(request):
             listebanque = Banque.objects.all().order_by('designation')
             listepayeur = Payeur.objects.filter(distributeur=listedist.first())
             listefacture = Factures.objects.filter(bl__payeur = listepayeur.first(), complete=False)
+            listeville = Ville.objects.all()
 
             # Base SQL query
             query = """
@@ -147,10 +149,11 @@ def EncaissementView(request):
             params = []
 
             # Apply filters based on the request parameters
-            ville_id = request.GET.get('ville_id')
-            if ville_id:
+            ville = request.GET.get('ville')
+            print("ville: "+str(ville))
+            if ville:
                 filters.append("AND ville_id = %s")
-                params.append(ville_id)
+                params.append(ville)
 
             code = request.GET.get('code')
             if code:
@@ -158,21 +161,25 @@ def EncaissementView(request):
                 params.append(f"%{code}%")
 
             distributeur = request.GET.get('distributeur')
+            print("distributeur: "+str(distributeur))
             if distributeur:
-                filters.append("AND distributeur LIKE %s")
+                filters.append("AND distributeur_id LIKE %s")
                 params.append(f"%{distributeur}%")
 
             payeur = request.GET.get('payeur')
+            print("payeur: "+str(payeur))
             if payeur:
-                filters.append("AND payeur LIKE %s")
+                filters.append("AND payeur_id LIKE %s")
                 params.append(f"%{payeur}%")
 
             date_ajout_debut = request.GET.get('date_ajout_debut')
+            print("date_ajout_debut: "+str(date_ajout_debut))
             if date_ajout_debut:
                 filters.append("AND date_ajout >= %s")
                 params.append(date_ajout_debut)
 
             date_ajout_fin = request.GET.get('date_ajout_fin')
+            print("date_ajout_fin: "+str(date_ajout_fin))
             if date_ajout_fin:
                 filters.append("AND date_ajout <= %s")
                 params.append(date_ajout_fin)
@@ -238,6 +245,7 @@ def EncaissementView(request):
                 "somme_depot": somme_depot,
                 "somme_echue": somme_echue,
                 "listeauth": listeauth,
+                "listeville": listeville,
                 "listmodules": listmodules
             })
         else:
@@ -494,7 +502,7 @@ def get_factures(request, payeur_id):
         set(request.user.user_permissions.values_list('content_type_id__model', flat=True))
     )
     if ('encaissement' in listmodules):
-        factures = Factures.objects.filter(payeur_id=payeur_id, complete=False)
+        factures = Factures.objects.filter(bl__payeur_id=payeur_id, complete=False)
         facture_data = [
             {
                 'id': facture.id,

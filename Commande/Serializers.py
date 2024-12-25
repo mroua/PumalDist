@@ -4,6 +4,7 @@ from io import BytesIO
 from django.core.files.base import ContentFile
 from django.db.models import Sum
 from rest_framework import serializers
+from datetime import timedelta
 
 from Encaissement.models import Factures
 from PumaDist.addhistory import addhistory
@@ -206,10 +207,11 @@ class Dist_BonLivraisonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Dist_BonLivraison
         fields = ['id', 'facture', 'date_ajout', 'date_facturation', 'date_echeance', 'fc_file', 'bl_file', 'commandes',
-                  'BonLivraison', 'total']
+                  'BonLivraison', 'total', 'payeur']
         read_only_fields = ['date_ajout', 'total']
 
     def create(self, validated_data):
+        print("coucou")
         fc_file_base64 = validated_data.pop('fc_file', None)
         bl_file_base64 = validated_data.pop('bl_file', None)
         bon_livraison_lines_data = validated_data.pop('BonLivraison', [])
@@ -241,17 +243,17 @@ class Dist_BonLivraisonSerializer(serializers.ModelSerializer):
         bon_livraison.total = total
         bon_livraison.save()
 
-        try:
-            fact = Factures.objects.create(
+        #try:
+        fact = Factures.objects.create(
                 code = bon_livraison.facture,
                 bl = bon_livraison,
                 montant = bon_livraison.total,
                 montant_ttc = bon_livraison.total + (bon_livraison.total * 0.19),
                 date_echeance = bon_livraison.date_echeance,
-            )
-            fact.save()
-        except Exception:
-            pass
+        )
+        fact.save()
+        #except Exception:
+        #    pass
 
         serializer = Dist_BonLivraisonDetailSerializer(bon_livraison)
         addhistory({}, serializer.data, 'dist_bonlivraison', 1, user=self.context.get('user'))
@@ -418,7 +420,7 @@ class Dist_BonLivraisonNormalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Dist_BonLivraison
         fields = ['id', 'facture', 'date_ajout', 'date_facturation', 'date_echeance', 'fc_file', 'bl_file', 'commandes',
-                  'BonLivraison', 'total']
+                  'BonLivraison', 'total', 'payeur']
         read_only_fields = ['date_ajout', 'total']
 
 
@@ -452,6 +454,18 @@ class Dist_BonLivraisonNormalSerializer(serializers.ModelSerializer):
 
         bon_livraison.total = total
         bon_livraison.save()
+
+        bon_livraison.date_echeance = bon_livraison.date_ajout + timedelta(days=bon_livraison.payeur.distributeur.echeance_jour)
+        bon_livraison.save()
+
+        fact = Factures.objects.create(
+                code = bon_livraison.facture,
+                bl = bon_livraison,
+                montant = bon_livraison.total,
+                montant_ttc = bon_livraison.total + (bon_livraison.total * 0.19),
+                date_echeance = bon_livraison.date_echeance,
+        )
+        fact.save()
 
 
         serializer = Dist_BonLivraisonDetailSerializer(bon_livraison)

@@ -1634,34 +1634,40 @@
                         secondSliderRow.find('.editproduct-total').text(`${formatNumber(total)} DA`);
                         secondSliderRow.find('.editproduct-totalttc').text(`${formatNumber(totalttc)} DA`);
                     } else {
+                        imgsrc= productRow.find('img').attr('src')
+                        designationdata=productRow.find('.editnameprod').text()
+                        referencedata=productRow.find('.editrefprod').text()
+                        typedata=productRow.find('.edittypeprod').html()
+                        mesuredata=productRow.find('.editmesureprod').html()
+                        couleurdata=productRow.find('.editcolorprod').html()
                         editselectedProducts.push({
                             id: productId,
-                            designation: productRow.find('.nameprod').text(),
-                            reference: productRow.find('.refprod').text(),
-                            type: productRow.find('.typeprod').html(),
-                            mesure: productRow.find('.mesureprod').html(),
-                            couleur: productRow.find('.colorprod').html(),
+                            designation: designationdata,
+                            reference: referencedata,
+                            type: typedata,
+                            mesure: mesuredata,
+                            couleur: couleurdata,
                             prixunitaire: prixunitaire,
                             quantity: quantity,
                             total: total,
-                            img: productRow.find('img').attr('src')
+                            img: imgsrc
                         });
 
                         // Add the product to the second slider
                         $('#editselectedProducts').append(
                             `<div class="relative text-xs grid grid-cols-12 items-center justify-between py-2 rounded-lg editproduct-row mb-3
-                            backslate defaultdark px-2 pr-6" data-product-id="${productId}">
+                            backslate defaultdark px-2 pr-6" id="prodselline_${productId}" data-product-id="${productId}">
                             <div class="flex items-center col-span-3">
-                                <img src="${productRow.find('.imageprod').attr('src')}" alt="Avatar" class="h-12 w-12 rounded-lg mr-4">
+                                <img src="${imgsrc}" alt="Avatar" class="h-12 w-12 rounded-lg mr-4">
                                 <div>
-                                    <h3 class="text-md font-bold text-blue-600 editnameprod">${productRow.find('.nameprod').text()}</h3>
-                                    <p class="text-gray-800 editrefprod">${productRow.find('.refprod').text()}</p>
+                                    <h3 class="text-md font-bold text-blue-600 editnameprod">${designationdata}</h3>
+                                    <p class="text-gray-800 editrefprod">${referencedata}</p>
                                 </div>
                             </div>
                             <div class="col-span-3 grid grid-cols-3 gap-x-2">
-                                <div class="col-span-3 edittypeprod">${productRow.find('.typeprod').text()}</div>
-                                <div class="col-span-1 editmesureprod">${productRow.find('.mesureprod').text()}</div>
-                                <div class="col-span-2 editcolorprod">${productRow.find('.colorprod').text()}</div>
+                                <div class="col-span-3 edittypeprod">${typedata}</div>
+                                <div class="col-span-1 editmesureprod">${mesuredata}</div>
+                                <div class="col-span-2 editcolorprod">${couleurdata}</div>
                             </div>
                             <div class="col-span-2 grid grid-cols-6 gap-x-2 pl-2">
                                 <div class="col-span-1">HT</div>
@@ -2115,6 +2121,7 @@
             etatview = $(this).data('etat');
             annulelink = "";
             buttonslist = ``;
+            
 
             if (etatview === "Reception") {
                 if (listeauth.includes('change_dist_bonlivraison')) {

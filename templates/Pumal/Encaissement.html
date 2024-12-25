@@ -318,20 +318,48 @@
                 </div>
                 <div class="p-4">
                     <div class="mb-3">
-                        <label for="ville_filter" class="block mb-1 pl-1 text-sm font-medium textslate">Distributeur:</label>
+                        <label for="ville_filter" class="block mb-1 pl-1 text-sm font-medium textslate">Ville:</label>
                         <select id="ville_filter" class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                            <option value="" {% if request.GET.ville == "" %}selected{% endif %}>Tous</option>
+                            {% for ville in listeville %}
+                                <option value="{{ ville.id }}"
+                                        {% if request.GET.ville == ville.id|stringformat:"s" %}selected{% endif %}>{{ ville.designation }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="distributeur_filter" class="block mb-1 pl-1 text-sm font-medium textslate">Distributeur:</label>
+                        <select id="distributeur_filter" class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                            <option value="" {% if request.GET.distributeur == "" %}selected{% endif %}>Tous</option>
                             {% for dist in listedist %}
                                 <option value="{{ dist.id }}">{{ dist.designation }}</option>
                             {% endfor %}
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="ville_filter" class="block mb-1 pl-1 text-sm font-medium textslate">Payeur:</label>
-                        <select id="ville_filter" class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                        <label for="payeur_filter" class="block mb-1 pl-1 text-sm font-medium textslate">Payeur:</label>
+                        <select id="payeur_filter" class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                            <option value="" {% if request.GET.payeur == "" %}selected{% endif %}>Tous</option>
                             {% for payeur in listepayeur %}
                                 <option value="{{ payeur.id }}">{{ payeur.designation }}</option>
                             {% endfor %}
                         </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="dated_filter" class="block mb-1 pl-1 text-sm font-medium textslate">Date debut:</label>
+                        <input type="date" id="dated_filter" value="{{ request.GET.date_ajout_debut }}"
+                                       class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="datef_filter" class="block mb-1 pl-1 text-sm font-medium textslate">Date fin:</label>
+                        <input type="date" id="datef_filter" value="{{ request.GET.date_ajout_fin }}"
+                                       class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+
                     </div>
 
 
@@ -374,19 +402,19 @@
                         Filtrer
                     </button>
 
-                    {% if 85 in listeauth %}
+                    {% if 'add_encaissement' in listeauth %}
                         <button id="addButton"
                                 class="addButton btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400 hover:bg-blue-900 hover:border-slate-400 rounded-md">
                             Encaissement
                         </button>
-                        <button id="popupButton"
+                        <!--<button id="popupButton"
                                 class="popupButton btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
                         hover:bg-blue-900 hover:border-slate-400 rounded-md">
                             facture
-                        </button>
+                        </button>-->
                     {% else %}
                         <button class="btn capitalize bg-gray-500 text-white px-4 py-2 border rounded-md cursor-not-allowed">Encaissement</button>
-                        <button class="btn capitalize bg-gray-500 text-white px-4 py-2 border rounded-md cursor-not-allowed">facture</button>
+                        <!--<button class="btn capitalize bg-gray-500 text-white px-4 py-2 border rounded-md cursor-not-allowed">facture</button>-->
                     {% endif %}
 
 
@@ -640,7 +668,7 @@
                                 </div>
                             </div>
                             <div class="capitalize text-center pl-3" style="width: 80px; min-width: 80px">
-                                {% if 88 in listeauth %}
+                                {% if 'view_encaissement' in listeauth %}
                                     <button id="editButton" class="editButton bg-blue-500 text-white p-2 rounded viewelem_{{ elem.id }}"
                                         data-identifiant="{{ elem.id }}">
                                         <i class="fas fa-search"></i>
@@ -650,7 +678,7 @@
                                 {% endif %}
 
 
-                                {% if 87 in listeauth %}
+                                {% if 'change_encaissement' in listeauth %}
                                     <button class="bg-red-500 text-white p-2 rounded delete-btn" data-identifiant="{{ elem.id }}"><i class="fas fa-trash"></i></button>
                                 {% else %}
                                     <button class="cursor-not-allowed bg-gray-500 text-white p-2 rounded"><i class="fas fa-trash"></i></button>
@@ -665,7 +693,8 @@
         </div>
 
         <!-- Filter Modal -->
-        <div id="addbl" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
+        <!--
+ <div id="addbl" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
             <form id="formaddfacture">
                 <div class="relative w-screen h-screen flex justify-center items-center">
                     <div class="w-96 h-3/4 p-6 backprimer  rounded-lg shadow-lg gap-y-2 flex flex-col">
@@ -684,9 +713,9 @@
                                        class="block mb-1 pl-1 text-sm font-medium">Distribupteur</label>
                                 <select id="distributeur" class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
                                         block w-full p-2.5">
-                                    {% for elem in listedist %}
+                                    { % for elem in listedist %}
                                         <option class="p-2.5" value="{{ elem.id }}">{{ elem.designation }}</option>
-                                    {% endfor %}
+                                    { % endfor %}
                                 </select>
                             </div>
                             <div class="mb-3">
@@ -694,9 +723,9 @@
                                        class="block mb-1 pl-1 text-sm font-medium">Payeur</label>
                                 <select id="payeur" class="border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500
                                         block w-full p-2.5">
-                                    {% for elem in listepayeur %}
+                                    { % for elem in listepayeur %}
                                         <option class="p-2.5" value="{{ elem.id }}">{{ elem.designation }}</option>
-                                    {% endfor %}
+                                    { % endfor %}
                                 </select>
                             </div>
                             <div class="mb-3">
@@ -745,7 +774,7 @@
                 </div>
             </form>
 
-        </div>
+        </div>-->
 
 
         <script>
@@ -773,6 +802,17 @@
             {% if 'formation' not in listmodules %}
                 $("#formslistlink").addClass('hidden');
             {% endif %}
+
+
+            $("#SearchApply").on('click', function (e) {
+                e.preventDefault();
+
+                link = "/encaissement/?ville=" + $('#ville_filter').val() +"&distributeur=" + $('#distributeur_filter').val() +"&payeur=" + $('#payeur_filter').val()
+                 +"&date_ajout_debut=" + $('#dated_filter').val() +"&date_ajout_fin=" + $('#datef_filter').val();
+                //alert(link)
+                window.location.href = link;
+            })
+
 
 
         // Show the filter modal

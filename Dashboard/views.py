@@ -35,8 +35,8 @@ def DashView(request):
     echeance_j = first_dist.echeance_jour
     date_debut
     date_fin
-    sqlcmd = ("""SELECT "month", "year", total FROM Total_BL_Dash tbd WHERE distributeur_id="""+
-              str(first_dist.id)+""" AND tbd.date_ajout BETWEEN date('"""+date_debut+"""') AND date('"""+date_fin+"""')
+    sqlcmd = ("""SELECT "month", "year", total FROM Total_BL_Dash tbd WHERE user_id="""+
+              str(first_dist.user.id)+""" AND tbd.date_ajout BETWEEN date('"""+date_debut+"""') AND date('"""+date_fin+"""')
               group by tbd.month, tbd.year
               """)
 
@@ -70,7 +70,7 @@ def DashView(request):
     }
 
     listecmd = Dist_Commande.objects.filter(
-        distributeur=first_dist,
+        user=first_dist.user,
         date_ajout__gte=date_debut,
         date_ajout__lte=date_fin,
     )
@@ -126,13 +126,13 @@ def DashView(request):
 
     en_cour = (plafonnement * en_cour_p) / 100
 
-    sqlcmd = """select sum(quantite) as quantite_cmd, cdc.produit_id, cdc2.distributeur_id, p.typeproduit_designation, p.designation 
+    sqlcmd = """select sum(quantite) as quantite_cmd, cdc.produit_id, cdc2.user_id, p.typeproduit_designation, p.designation 
         from Commande_dist_commandelines cdc 
         join Commande_dist_commande cdc2 
         join products p on p.produit_id = cdc.produit_id
         where cdc2.etat <> 'Annule' and cdc2.date_ajout BETWEEN date('"""+date_debut+"""') AND date('"""+date_fin+"""')
-        and cdc2.distributeur_id="""+str(first_dist.id)+"""
-        group by cdc.produit_id, p.typeproduit_designation, cdc2.distributeur_id 
+        and cdc2.user_id="""+str(first_dist.user.id)+"""
+        group by cdc.produit_id, p.typeproduit_designation, cdc2.user_id 
         order by sum(quantite) desc limit 5
     """
 

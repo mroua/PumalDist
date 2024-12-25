@@ -59,6 +59,7 @@
                         </select>
                     </div>
 
+
                 </div>
                 <div class="overflow-y-auto flex-grow">
                     <div id="productList" class="grid gap-4 w-full"></div>
@@ -201,7 +202,8 @@
 
                     <!-- Measure Filter -->
                     <div class="mb-4 w-64">
-                        <label for="editmeasureFilter" class="block text-sm font-medium text-gray-700 mb-2 textslate">Mesure</label>
+                        <label for="editmeasureFilter"
+                               class="block text-sm font-medium text-gray-700 mb-2 textslate">Mesure</label>
                         <select id="editmeasureFilter"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
 
@@ -213,7 +215,8 @@
 
                     <!-- Field Filter -->
                     <div class="mb-4 w-64">
-                        <label for="editcolorfilter" class="block text-sm font-medium text-gray-700 mb-2 textslate">Couleur</label>
+                        <label for="editcolorfilter"
+                               class="block text-sm font-medium text-gray-700 mb-2 textslate">Couleur</label>
                         <select id="editcolorfilter"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
 
@@ -222,7 +225,6 @@
                             {% endfor %}
                         </select>
                     </div>
-
 
 
                 </div>
@@ -345,18 +347,27 @@
         </div>
 
         <div class="flex justify-between items-center pt-4 mb-4" style="margin-top: -8px">
-            <h2 class="text-2xl font-bold textslate">Liste des commandes</h2>
+            <div class="flex gap-2">
+                <div>
+                    <a href="{% url 'commande' %}"
+                       class="block px-4 py-2 actualprimer rounded">Commandes</a>
+                </div>
+                <div><!-- accomptes -->
+                    <a href="{% url 'bl' %}" class="block px-4 py-2 hoverprimer rounded">Bon de livraison</a>
+                </div>
+            </div>
             <div>
                 <button id="filterButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
                     hover:bg-blue-900 hover:border-slate-400 rounded-md">Filtrer
                 </button>
 
-                {% if 69 in listeauth %}
+                {% if 'add_dist_commande' in listeauth %}
                     <button id="addButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
                         hover:bg-blue-900 hover:border-slate-400 rounded-md">Ajouter
                     </button>
                 {% else %}
-                    <button class="btn capitalize bg-gray-500 text-white px-4 py-2 border rounded-md cursor-not-allowed">Ajouter
+                    <button class="btn capitalize bg-gray-500 text-white px-4 py-2 border rounded-md cursor-not-allowed">
+                        Ajouter
                     </button>
                 {% endif %}
 
@@ -416,8 +427,21 @@
                             </div>
                         </div>
                     </div>
-                    <div class="w-1/6">
-                        <p class="text-sm textslate text-center">{{ elem.etat }}</p>
+                    <div class="w-1/6 flex justify-center items-center">
+                        <div
+                                class='
+                        {% if elem.etat == "Brouillon" %} bluedot
+                        {% elif elem.etat == "Reception" %} reddot
+                        {% elif elem.etat == "Traitement" %} yellowdot
+                        {% elif elem.etat == "Preparation" %} greendot
+                        {% elif elem.etat == "Complete" %} violetdot
+                        {% elif elem.etat == "En cours" %} orangedot
+                        {% else %} graydot
+                        {% endif %}
+                        w-2 h-2 rounded-full text-red-600 capitalize tooltip text-xs mr-2'
+                                data-tip="{{ elem.etat }}">
+                        </div>
+                        <div class="text-sm textslate text-center">{{ elem.etat }}</div>
                     </div>
 
                     <!-- <div class="flex space-x-2 w-1/6 justify-end group">
@@ -427,7 +451,7 @@
                                 <path fill-rule="evenodd" d="M5.292 7.292a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                             </svg>
                         </button>
-
+        
                         <div class="dropdownMenu absolute right-4 z-10 hidden w-56 mt-8 origin-top-right backslate divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
                             <div class="py-1">
                                 <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 popupButton" id="popupButton"
@@ -442,29 +466,26 @@
                             </div>
                         </div>
                     </div>
--->
+        -->
                     <div class="flex space-x-2 w-1/6 justify-end">
 
-                        {% if elem.etat == 'Reception' %}
-                            <div class="bg-gray-300 text-white p-2 rounded"
-                                 data-identifiant="{{ elem.id }}"><i
-                                    class="fa-solid fa-truck"></i>
-                            </div>
+                        {% if elem.etat == 'Brouillon' %}
 
-                            {% if 72 in listeauth %}
-                                <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded viewelem_{{ elem.id }}"
-                                    data-identifiant="{{ elem.id }}" data-etat="{{ elem.etat }}"><i
-                                    class="fas fa-search"></i></button>
+                            {% if "view_dist_commande" in listeauth %}
+                                <button id="viewButton"
+                                        class="viewButton bg-blue-500 text-white p-2 rounded viewelem_{{ elem.id }}"
+                                        data-identifiant="{{ elem.id }}" data-etat="{{ elem.etat }}"><i
+                                        class="fas fa-search"></i></button>
                             {% else %}
-                                <div class="bg-gray-300 text-white p-2 rounded cursor-not-allowed"
+                                <div class="bg-gray-300 text-white p-2 rounded cursor-not-allowed viewelem_{{ elem.id }}"
                                      data-identifiant="{{ elem.id }}"><i
                                         class="fas fa-search"></i>
                                 </div>
                             {% endif %}
 
-                            {% if 70 in listeauth %}
+                            {% if "change_dist_commande" in listeauth %}
                                 <button id="editButton" class="editButton bg-blue-500 text-white p-2 rounded"
-                                    data-identifiant="{{ elem.id }}">
+                                        data-identifiant="{{ elem.id }}">
                                     <i class="fas fa-pencil-alt" onclick=""></i>
                                 </button>
                             {% else %}
@@ -474,9 +495,9 @@
                                 </div>
                             {% endif %}
 
-                            {% if 71 in listeauth %}
+                            {% if 'delete_dist_commande' in listeauth %}
                                 <button class="bg-red-500 text-white p-2 rounded delete-btn"
-                                    data-identifiant="{{ elem.id }}">
+                                        data-identifiant="{{ elem.id }}">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             {% else %}
@@ -487,21 +508,15 @@
                             {% endif %}
 
 
+                        {% elif elem.etat in 'Reception, Traitement, Preparation' %}
 
-
-
-                        {% elif elem.etat in 'Traitement, Preparation' %}
-                            <div class="bg-gray-300 text-white p-2 rounded"
-                                 data-identifiant="{{ elem.id }}"><i
-                                    class="fa-solid fa-truck"></i>
-                            </div>
-
-                            {% if 72 in listeauth %}
-                                <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded viewelem_{{ elem.id }}"
-                                    data-identifiant="{{ elem.id }}" data-etat="{{ elem.etat }}"><i
-                                    class="fas fa-search"></i></button>
+                            {% if 'view_dist_commande' in listeauth %}
+                                <button id="viewButton"
+                                        class="viewButton bg-blue-500 text-white p-2 rounded viewelem_{{ elem.id }}"
+                                        data-identifiant="{{ elem.id }}" data-etat="{{ elem.etat }}"><i
+                                        class="fas fa-search"></i></button>
                             {% else %}
-                                <div class="bg-gray-300 text-white p-2 rounded cursor-not-allowed"
+                                <div class="bg-gray-300 text-white p-2 rounded cursor-not-allowed viewelem_{{ elem.id }}"
                                      data-identifiant="{{ elem.id }}"><i
                                         class="fas fa-search"></i>
                                 </div>
@@ -517,24 +532,13 @@
                             </div>
 
                         {% elif elem.etat == 'En cours' %}
-                            {% if 61 in listeauth %}
-                                <button id="popupButton" class="popupButton bg-blue-500 text-white p-2 rounded"
-                                    data-identifiant="{{ elem.id }}">
-                                    <i class="fa-solid fa-truck"></i>
-                                </button>
+                            {% if "view_dist_commande" in listeauth %}
+                                <button id="viewButton"
+                                        class="viewButton bg-blue-500 text-white p-2 rounded viewelem_{{ elem.id }}"
+                                        data-identifiant="{{ elem.id }}" data-etat="{{ elem.etat }}"><i
+                                        class="fas fa-search"></i></button>
                             {% else %}
-                                <div class="bg-gray-300 text-white p-2 rounded cursor-not-allowed"
-                                     data-identifiant="{{ elem.id }}"><i
-                                        class="fa-solid fa-truck"></i>
-                                </div>
-                            {% endif %}
-
-                            {% if 72 in listeauth %}
-                                <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded viewelem_{{ elem.id }}"
-                                    data-identifiant="{{ elem.id }}" data-etat="{{ elem.etat }}"><i
-                                    class="fas fa-search"></i></button>
-                            {% else %}
-                                <div class="bg-gray-300 text-white p-2 rounded cursor-not-allowed"
+                                <div class="bg-gray-300 text-white p-2 rounded cursor-not-allowed viewelem_{{ elem.id }}"
                                      data-identifiant="{{ elem.id }}"><i
                                         class="fas fa-search"></i>
                                 </div>
@@ -551,18 +555,13 @@
 
                         {% elif elem.etat in 'Complete, Annule' %}
 
-
-                            <div class=" bg-gray-300 text-white p-2 rounded"
-                                 data-identifiant="{{ elem.id }}"><i
-                                    class="fa-solid fa-truck"></i>
-                            </div>
-
-                            {% if 72 in listeauth %}
-                                <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded viewelem_{{ elem.id }}"
-                                    data-identifiant="{{ elem.id }}" data-etat="{{ elem.etat }}"><i
-                                    class="fas fa-search"></i></button>
+                            {% if "view_dist_commande" in listeauth %}
+                                <button id="viewButton"
+                                        class="viewButton bg-blue-500 text-white p-2 rounded viewelem_{{ elem.id }}"
+                                        data-identifiant="{{ elem.id }}" data-etat="{{ elem.etat }}"><i
+                                        class="fas fa-search"></i></button>
                             {% else %}
-                                <div class="bg-gray-300 text-white p-2 rounded cursor-not-allowed"
+                                <div class="bg-gray-300 text-white p-2 rounded cursor-not-allowed viewelem_{{ elem.id }}"
                                      data-identifiant="{{ elem.id }}"><i
                                         class="fas fa-search"></i>
                                 </div>
@@ -612,18 +611,211 @@
 
         </div>
 
+        <!-- Pop up -->
+        <div id="addbl" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
+            <form>
+                <div class="relative w-screen h-screen flex justify-center items-center">
+                    <div class="backprimer textslate w-3/4 h-3/4 p-6 rounded-lg shadow-lg flex flex-col gap-y-2">
+                        <h3 class="text-lg font-semibold">Ajout BL</h3>
+
+
+                        <!-- div list products -->
+                        <div class="grid grid-cols-8 text-gray-600 font-semibold px-4 capitalize">
+                            <div class="col-span-2">Produit</div>
+                            <div class="col-span-1">Type/Mesure</div>
+                            <div class="col-span-1">Couleur</div>
+                            <div class="col-span-1">Prix unitaire</div>
+                            <div class="col-span-1">Quantité restante</div>
+                            <div class="col-span-1">Quantité à livrer</div>
+                            <div class="col-span-1 text-right">Total</div>
+                        </div>
+                        <!--<div class="bg-blue-300 flex w-full">
+                            <div class="flex-grow">Produit</div>
+                            <div class="flex-grow"></div>
+                            <div class="flex-grow"></div>
+                            <div class="flex-grow">Type/Mesure</div>
+                            <div class="flex-grow">Couleur</div>
+                            <div class="flex-grow">Prix unitaire</div>
+                            <div class="flex-grow">Quantité restante</div>
+                            <div class="flex-grow">Quantité a livré</div>
+                            <div class="flex-grow">Total</div>
+                        </div>-->
+                        <div class="listeblprod flex-grow shadow-md rounded-b-lg backslateprime p-2 overflow-y-auto defaultval"
+                             id="listeblprod">
+                        </div>
+                        <div class="grid grid-cols-8 pr-4 text-lg gap-4">
+                            <div class="col-span-6 grid grid-cols-2 gap-4">
+                                <div class="flex items-center space-x-4 border border-gray-300 rounded-lg fileinputback">
+                                    <label for="file-upload" class="block flex-shrink-0">
+                                        <div class="flex items-center justify-center px-4 py-1 rounded-l-lg backslate text-blue-500 cursor-pointer
+                                    hover:bg-blue-500 hover:text-white transition-colors duration-300">
+                                            <span>Fichier FC</span>
+                                        </div>
+                                        <input id="file-upload" type="file" class="hidden"/>
+                                    </label>
+                                    <span id="file-name" class="text-gray-800 truncate">No fc file</span>
+                                </div>
+
+                                <div class="flex items-center justify-center space-x-4">
+                                    <input id="facture_id" class="border border-gray-300 w-full
+                                    text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block
+                                    p-2.5" placeholder="Facture"/>
+                                </div>
+
+                                <div class="flex items-center space-x-4 border border-gray-300 rounded-lg fileinputback">
+                                    <label for="file-upload2" class="block flex-shrink-0">
+                                        <div class="flex items-center justify-center px-4 py-1 rounded-l-lg backslate text-blue-500 cursor-pointer hover:bg-blue-500 hover:text-white transition-colors duration-300">
+                                            <span>Fichier BL</span>
+                                        </div>
+                                        <input id="file-upload2" type="file" class="hidden"/>
+                                    </label>
+                                    <span id="file-name2" class="text-gray-800 truncate">No bl file</span>
+                                </div>
+
+                                <select id="payeur_bl"
+                                        class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+
+                                </select>
+
+
+                            </div>
+                            <div class="col-span-2 grid grid-cols-2 items-center">
+                                <div class="col-span-1">Total HT:</div>
+                                <div class="col-span-1 text-right" id="totalhtbl">0 DA</div>
+                                <div class="col-span-1">Total Taxe:</div>
+                                <div class="col-span-1 text-right" id="totaltaxebl">0 DA</div>
+                            </div>
+
+                        </div>
+
+                        <div class="flex justify-between">
+                            <div class="">
+                                <button type="button" id="closePopup"
+                                        class="bg-gray-500 text-white px-4 py-2 rounded-lg">
+                                    Annuler
+                                </button>
+                            </div>
+
+
+                            <div class="">
+                                <input type="submit" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
+                        hover:bg-blue-900 hover:border-slate-400 rounded-md" style="color: #FFFFFF!important;"
+                                       id="validatebl"
+                                       value="Valider">
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+
+    <div id="filterModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40 flex items-center justify-center"
+         style="margin-top: -16px">
+        <div class="backprimer w-1/3 rounded-lg shadow-lg">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 class="text-lg font-semibold">Filtres</h3>
+                <button id="closeFilterModal" class="text-gray-500 hover:text-gray-700">&times;</button>
+            </div>
+            <div class="p-4">
+                <div class="mb-3">
+                    <label for="ville_filter" class="block mb-1 pl-1 text-sm font-medium textslate">Ville:</label>
+                    <select id="ville_filter" class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                        <option value="" {% if request.GET.ville == "" %}selected{% endif %}>Tous</option>
+                        {% for ville in liste_ville %}
+                            <option value="{{ ville.id }}"
+                                    {% if request.GET.ville == ville.id|stringformat:"s" %}selected{% endif %}>{{ ville.designation }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="etat_filter" class="block mb-1 pl-1 text-sm font-medium textslate">Etat:</label>
+                    <select id="etat_filter" class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                        <option value="" {% if request.GET.etat == "" %}selected{% endif %}>Tous</option>
+                        <option value="Reception" {% if request.GET.etat == "Reception" %}selected{% endif %}>
+                            Reception
+                        </option>
+                        <option value="Traitement" {% if request.GET.etat == "Traitement" %}selected{% endif %}>
+                            Traitement
+                        </option>
+                        <option value="Preparation" {% if request.GET.etat == "Preparation" %}selected{% endif %}>
+                            Preparation
+                        </option>
+                        <option value="En cours" {% if request.GET.etat == "En cours" %}selected{% endif %}>En cours
+                        </option>
+                        <option value="Complete" {% if request.GET.etat == "Complete" %}selected{% endif %}>Complete
+                        </option>
+                        <option value="Annule" {% if request.GET.etat == "Annule" %}selected{% endif %}>Annule</option>
+                    </select>
+                </div>
+
+
+                <div class="flex justify-between">
+                    <button class="closePopup text-white p-2 rounded btn capitalize bg-[#141b54] hover:bg-blue-900">
+                        Annuler
+                    </button>
+                    <button id="SearchApply"
+                            class="btn capitalize bg-[#141b54] px-4 rounded py-2 border border-slate-300 text-gray-400 text-sm hover:bg-blue-900 hover:border-slate-400">
+                        Lancer recherce
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
 
     <!-- add elems -->
     <script>
-        var selectedProducts = [];
-        var editselectedProducts = [];
-        var $containerdatacmd = $('#containerdatacmd');
+        listeauth = '{{ listeauth }}';
+        listeauth = JSON.parse(listeauth.replaceAll('&#x27;', '"'));
+
+
+        $("#SearchApply").on('click', function (e) {
+            e.preventDefault();
+
+            link = "/commande?ville=" + $('#ville_filter').val() +"&etat=" + $('#etat_filter').val();
+            //alert(link)
+            window.location.href = link;
+        })
+
+
+        {% if 'customuser' not in listmodules %}
+            $("#userslistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 'produit' not in listmodules %}
+            $("#prodlistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 'distributeur' not in listmodules %}
+            $("#distlistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 'dist_commande' not in listmodules %}
+            $("#cmdlistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 'encaissement' not in listmodules %}
+            $("#enclistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 'formation' not in listmodules %}
+            $("#formslistlink").addClass('hidden');
+        {% endif %}
 
         function formatNumber(num) {
             return new Intl.NumberFormat('fr-FR', {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(num);
         }
+
+
+        var selectedProducts = [];
+        var editselectedProducts = [];
+        var $containerdatacmd = $('#containerdatacmd');
 
         $('#addButton').click(function () {
             $('#addSidebar').removeClass('translate-x-full').addClass('translate-x-0');
@@ -632,11 +824,11 @@
         });
 
 
-        // Close the sidebar
         $('#closeEditSidebar').on('click', function () {
             $('#editSidebar').addClass('translate-x-full');
         });
-        // Close sidebar when clicking outside
+
+
         $(document).on('click', function (e) {
             if (!$(e.target).closest('#editButton, #editSidebar').length) {
                 $('#editSidebar').addClass('translate-x-full');
@@ -661,7 +853,6 @@
             $('#step2').show();
         });
 
-
         $('#goToStep1').click(function () {
             $('#step2').hide();
             $('#step1').show();
@@ -683,7 +874,7 @@
 
             // Generate a fake facture code and date for now
             /*var factureCode = 'FAC-' + Math.floor(Math.random() * 1000000);
-
+    
             $('#factureCode').text(factureCode);*/
             var currentDate = new Date().toLocaleDateString('fr-FR');
             $('#factureDate').text(currentDate);
@@ -702,13 +893,13 @@
                 totalAmount += product.total;
 
                 factureProductDetails += `
-                    <tr class="defaultboldval">
-                        <td class="p-2">${productName} (${productRef})</td>
-                        <td class="p-2 text-right">${productPrice}</td>
-                        <td class="p-2 text-right">${productQuantity}</td>
-                        <td class="p-2 text-right">${productTotal}</td>
-                    </tr>
-                `;
+                <tr class="defaultboldval">
+                    <td class="p-2">${productName} (${productRef})</td>
+                    <td class="p-2 text-right">${productPrice}</td>
+                    <td class="p-2 text-right">${productQuantity}</td>
+                    <td class="p-2 text-right">${productTotal}</td>
+                </tr>
+            `;
             });
 
 
@@ -746,10 +937,7 @@
             $('#amountDueStep3').text(`${formatNumber(totalPrice + taxAmount)} DA`);*/
         });
 
-
         $(document).ready(function () {
-            //"url": "/api/products?active=true&type=" + $('#typeFilter').val() + "&mesure=" + $('#measureFilter').val() + "&couleur=" + $('#colorfilter').val(),
-            // Function to fetch and display products based on filters
             function fetchProducts() {
                 var settings = {
                     "url": "/api/products?active=true&typeproduit=" + $('#typeFilter').val() + "&mesure_id=" + $('#measureFilter').val() + "" +
@@ -775,49 +963,49 @@
                         var prixttc = product.prix_publique + product.prix_publique * 0.19;
 
                         var productHtml = `
-                            <div class="text-xs grid grid-cols-12 items-center justify-between ${isSelected ? 'backslate defaultdark' : 'backslateslite text-slate'} p-2 rounded-lg product-row"
-                                data-price="${product.prix_publique}" data-product-id="${productId}">
-                                <div class="flex items-center col-span-3">
-                                    <img src="/media/${product.image || 'default_image.png'}" alt="Avatar" class="h-12 w-12 rounded-lg mr-4 imageprod">
-                                    <div>
-                                        <h3 class="text-md font-bold text-blue-600 nameprod">${product.designation}</h3>
-                                        <p class="text-gray-800 refprod">${product.reference}</p>
-                                    </div>
-                                </div>
-
-                                <div class="col-span-3 grid grid-cols-3 gap-x-2">
-                                    <div class="col-span-3 typeprod">${product.typeproduit_designation}</div>
-                                    <div class="col-span-1 mesureprod">${product.mesure_designation}</div>
-                                    <div class="col-span-2 colorprod">${product.couleur}</div>
-                                </div>
-
-                                <div class="col-span-2 grid grid-cols-6 gap-x-2 pl-2">
-                                    <div class="col-span-1">HT</div>
-                                    <div class="col-span-5 priceprod text-right pr-4 font-bold" data-value="${product.prix_publique}">
-                                        ${prix_publiqueformat} DA
-                                    </div>
-                                    <div class="col-span-1">TTC</div>
-                                    <div class="col-span-5 text-right pr-4 priceprodttc font-bold" data-value="${product.prix_publique}">
-                                        ${formatNumber(prixttc)} DA
-                                    </div>
-                                </div>
-
-                                <div class="col-span-2 pr-2">
-                                    <input type="number" class="numbprod product-quantity bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="${quantity}" min="0" />
-                                </div>
-
-                                <div class="col-span-2 grid grid-cols-6 gap-x-2">
-                                    <div class="col-span-1">HT</div>
-                                    <div class="col-span-5 product-total text-right pr-4 font-bold">
-                                        ${formatNumber(quantity * product.prix_publique)} DA
-                                    </div>
-                                    <div class="col-span-1">TTC</div>
-                                    <div class="col-span-5 text-right pr-4 product-totalttc font-bold">
-                                        ${formatNumber(quantity * product.prix_publique + (quantity * product.prix_publique * 0.19))} DA
-                                    </div>
+                        <div class="text-xs grid grid-cols-12 items-center justify-between ${isSelected ? 'backslate defaultdark' : 'backslateslite text-slate'} p-2 rounded-lg product-row"
+                            data-price="${product.prix_publique}" data-product-id="${productId}">
+                            <div class="flex items-center col-span-3">
+                                <img src="/media/${product.image || 'default_image.png'}" alt="Avatar" class="h-12 w-12 rounded-lg mr-4 imageprod">
+                                <div>
+                                    <h3 class="text-md font-bold text-blue-600 nameprod">${product.designation}</h3>
+                                    <p class="text-gray-800 refprod">${product.reference}</p>
                                 </div>
                             </div>
-                        `;
+
+                            <div class="col-span-3 grid grid-cols-3 gap-x-2">
+                                <div class="col-span-3 typeprod">${product.typeproduit_designation}</div>
+                                <div class="col-span-1 mesureprod">${product.mesure_designation}</div>
+                                <div class="col-span-2 colorprod">${product.couleur}</div>
+                            </div>
+
+                            <div class="col-span-2 grid grid-cols-6 gap-x-2 pl-2">
+                                <div class="col-span-1">HT</div>
+                                <div class="col-span-5 priceprod text-right pr-4 font-bold" data-value="${product.prix_publique}">
+                                    ${prix_publiqueformat} DA
+                                </div>
+                                <div class="col-span-1">TTC</div>
+                                <div class="col-span-5 text-right pr-4 priceprodttc font-bold" data-value="${product.prix_publique}">
+                                    ${formatNumber(prixttc)} DA
+                                </div>
+                            </div>
+
+                            <div class="col-span-2 pr-2">
+                                <input type="number" class="numbprod product-quantity bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="${quantity}" min="0" />
+                            </div>
+
+                            <div class="col-span-2 grid grid-cols-6 gap-x-2">
+                                <div class="col-span-1">HT</div>
+                                <div class="col-span-5 product-total text-right pr-4 font-bold">
+                                    ${formatNumber(quantity * product.prix_publique)} DA
+                                </div>
+                                <div class="col-span-1">TTC</div>
+                                <div class="col-span-5 text-right pr-4 product-totalttc font-bold">
+                                    ${formatNumber(quantity * product.prix_publique + (quantity * product.prix_publique * 0.19))} DA
+                                </div>
+                            </div>
+                        </div>
+                    `;
 
                         $('#productList').append(productHtml);
 
@@ -881,48 +1069,48 @@
                         // Add the product to the second slider
                         $('#selectedProducts').append(
                             `<div class="relative text-xs grid grid-cols-12 items-center justify-between py-2 rounded-lg product-row mb-3
-                                backslate defaultdark px-2 pr-6" data-product-id="${productId}">
-                                <div class="flex items-center col-span-3">
-                                    <img src="${productRow.find('.imageprod').attr('src')}" alt="Avatar" class="h-12 w-12 rounded-lg mr-4">
-                                    <div>
-                                        <h3 class="text-md font-bold text-blue-600 nameprod">${productRow.find('.nameprod').text()}</h3>
-                                        <p class="text-gray-800 refprod">${productRow.find('.refprod').text()}</p>
-                                    </div>
+                            backslate defaultdark px-2 pr-6" data-product-id="${productId}">
+                            <div class="flex items-center col-span-3">
+                                <img src="${productRow.find('.imageprod').attr('src')}" alt="Avatar" class="h-12 w-12 rounded-lg mr-4">
+                                <div>
+                                    <h3 class="text-md font-bold text-blue-600 nameprod">${productRow.find('.nameprod').text()}</h3>
+                                    <p class="text-gray-800 refprod">${productRow.find('.refprod').text()}</p>
                                 </div>
-                                <div class="col-span-3 grid grid-cols-3 gap-x-2">
-                                    <div class="col-span-3 typeprod">${productRow.find('.typeprod').text()}</div>
-                                    <div class="col-span-1 mesureprod">${productRow.find('.mesureprod').text()}</div>
-                                    <div class="col-span-2 colorprod">${productRow.find('.colorprod').text()}</div>
+                            </div>
+                            <div class="col-span-3 grid grid-cols-3 gap-x-2">
+                                <div class="col-span-3 typeprod">${productRow.find('.typeprod').text()}</div>
+                                <div class="col-span-1 mesureprod">${productRow.find('.mesureprod').text()}</div>
+                                <div class="col-span-2 colorprod">${productRow.find('.colorprod').text()}</div>
+                            </div>
+                            <div class="col-span-2 grid grid-cols-6 gap-x-2 pl-2">
+                                <div class="col-span-1">HT</div>
+                                <div class="col-span-5 priceprod text-right pr-4 font-bold" data-value="${prixunitaire}">
+                                    ${formatNumber(prixunitaire)} DA
                                 </div>
-                                <div class="col-span-2 grid grid-cols-6 gap-x-2 pl-2">
-                                    <div class="col-span-1">HT</div>
-                                    <div class="col-span-5 priceprod text-right pr-4 font-bold" data-value="${prixunitaire}">
-                                        ${formatNumber(prixunitaire)} DA
-                                    </div>
-                                    <div class="col-span-1">TTC</div>
-                                    <div class="col-span-5 text-right pr-4 priceprodttc font-bold" data-value="${prixunitaire * 0.19 + prixunitaire}">
-                                        ${prixunitaire * 0.19 + prixunitaire} DA
-                                    </div>
+                                <div class="col-span-1">TTC</div>
+                                <div class="col-span-5 text-right pr-4 priceprodttc font-bold" data-value="${prixunitaire * 0.19 + prixunitaire}">
+                                    ${prixunitaire * 0.19 + prixunitaire} DA
                                 </div>
+                            </div>
 
-                                <div class="col-span-2 pr-2">
-                                    <input type="number" class="product-quantity bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="${quantity}" min="0" />
-                                </div>
+                            <div class="col-span-2 pr-2">
+                                <input type="number" class="product-quantity bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="${quantity}" min="0" />
+                            </div>
 
-                                <div class="col-span-2 grid grid-cols-6 gap-x-2">
-                                    <div class="col-span-1">HT</div>
-                                    <div class="col-span-5 product-total text-right pr-4 font-bold">
-                                        ${formatNumber(total)} DA
-                                    </div>
-                                    <div class="col-span-1">TTC</div>
-                                    <div class="col-span-5 text-right pr-4 product-totalttc font-bold">
-                                        ${formatNumber(total + total * 0.19)} DA
-                                    </div>
+                            <div class="col-span-2 grid grid-cols-6 gap-x-2">
+                                <div class="col-span-1">HT</div>
+                                <div class="col-span-5 product-total text-right pr-4 font-bold">
+                                    ${formatNumber(total)} DA
                                 </div>
-                                <button class="absolute top-4 right-2 removeProduct bg-red-500 text-white p-2 rounded-lg hover:bg-red-400" data-product-id="${productId}">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>`
+                                <div class="col-span-1">TTC</div>
+                                <div class="col-span-5 text-right pr-4 product-totalttc font-bold">
+                                    ${formatNumber(total + total * 0.19)} DA
+                                </div>
+                            </div>
+                            <button class="absolute top-4 right-2 removeProduct bg-red-500 text-white p-2 rounded-lg hover:bg-red-400" data-product-id="${productId}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>`
                         );
                     }
                 } else {
@@ -969,7 +1157,7 @@
                 selectedProducts.forEach(function (product) {
                     totalPrice += product.total;
                 });
-
+    
                 // Update the total price and tax amounts
                 $('#totalPrice').text(`${formatNumber(totalPrice)} DA`);
                 const taxAmount = totalPrice * 0.19;
@@ -1033,14 +1221,63 @@
                 $('#amountDueStep3').text(`${formatNumber(totalPrice + totalTaxStep3)} DA`);
             }
         });
-    </script>
 
 
-    <!-- edit elems -->
-    <script>
+        $('#confirmOrder').on('click', function () {
+            listteproducts = [];
+            for (i = 0; i < selectedProducts.length; i++) {
+                listteproducts.push({
+                    "produit": selectedProducts[i]['id'],
+                    "quantite": parseInt(selectedProducts[i]['quantity'])
+                })
+            }
 
-        listeauth = {{ listeauth }};
-        console.log(listeauth)
+            var settings = {
+                "url": "/api/commande/",
+                "method": "POST",
+                "timeout": 0,
+                "headers": {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),  // Assuming you have CSRF token in your template context
+                },
+                "data": JSON.stringify({
+                    "user": {{ request.user.id }},
+                    "etat": "Brouillon",
+                    "total": 0,
+                    "commandesLines": listteproducts
+                }),
+            };
+
+            $.ajax(settings)
+                .done(function (response) {
+                    window.location.href = "/commande/";
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    // Log the entire jqXHR object to see all details
+                    console.log('jqXHR:', jqXHR);
+
+                    // Log the status text
+                    console.log('Status:', textStatus);
+
+                    // Log the error thrown
+                    console.log('Error Thrown:', errorThrown);
+
+                    // Log the response text, which might contain detailed error messages
+                    console.log('Response Text:', jqXHR.responseText);
+                    alert(jqXHR.responseText)
+
+                    // Optionally, parse the responseText as JSON if it's in JSON format
+                    try {
+                        var responseJSON = JSON.parse(jqXHR.responseText);
+                        console.log('Response JSON:', responseJSON);
+                    } catch (e) {
+                        console.error('Failed to parse response as JSON:', e);
+                    }
+
+                });
+
+        });
+
 
         $('.editgoToStep2').click(function () {
             $('#editstep1').hide();
@@ -1065,7 +1302,7 @@
 
             // Generate a fake facture code and date for now
             /*var factureCode = 'FAC-' + Math.floor(Math.random() * 1000000);
-
+    
             $('#factureCode').text(factureCode);*/
             var currentDate = new Date().toLocaleDateString('fr-FR');
             $('#editfactureDate').text(currentDate);
@@ -1084,13 +1321,13 @@
                 totalAmount += product.total;
 
                 factureProductDetails += `
-                    <tr>
-                        <td class="p-2">${productName} (${productRef})</td>
-                        <td class="p-2 text-right">${productPrice}</td>
-                        <td class="p-2 text-right">${productQuantity}</td>
-                        <td class="p-2 text-right">${productTotal}</td>
-                    </tr>
-                `;
+                <tr>
+                    <td class="p-2">${productName} (${productRef})</td>
+                    <td class="p-2 text-right">${productPrice}</td>
+                    <td class="p-2 text-right">${productQuantity}</td>
+                    <td class="p-2 text-right">${productTotal}</td>
+                </tr>
+            `;
             });
 
 
@@ -1110,10 +1347,9 @@
 
         });
 
-
         $(document).ready(function () {
-
             $('.editButton').on('click', function () {
+                $('#editSidebar').toggleClass('translate-x-full');
                 identifiant = $(this).data('identifiant');
                 editselectedProducts = [];
                 $('#editselectedProducts').html("");
@@ -1147,53 +1383,51 @@
 
                         $('#editselectedProducts').append(
                             `<div class="relative text-xs grid grid-cols-12 items-center justify-between py-2 rounded-lg editproduct-row mb-3
-                                backslate defaultdark px-2 pr-6" data-product-id="${item.produit.id}">
-                                <div class="flex items-center col-span-3">
-                                    <img src="${item.produit.image}" alt="Avatar" class="h-12 w-12 rounded-lg mr-4">
-                                    <div>
-                                        <h3 class="text-md font-bold text-blue-600 editnameprod">${item.produit.designation}</h3>
-                                        <p class="text-gray-800 editrefprod">${item.produit.reference}</p>
-                                    </div>
+                            backslate defaultdark px-2 pr-6" id="prodselline_${item.produit.id}" data-product-id="${item.produit.id}">
+                            <div class="flex items-center col-span-3">
+                                <img src="${item.produit.image}" alt="Avatar" class="h-12 w-12 rounded-lg mr-4">
+                                <div>
+                                    <h3 class="text-md font-bold text-blue-600 editnameprod">${item.produit.designation}</h3>
+                                    <p class="text-gray-800 editrefprod">${item.produit.reference}</p>
                                 </div>
-                                <div class="col-span-3 grid grid-cols-3 gap-x-2">
-                                    <div class="col-span-3 edittypeprod">${item.produit.type.designation}</div>
-                                    <div class="col-span-1 editmesureprod">${item.produit.mesure.designation}</div>
-                                    <div class="col-span-2 editcolorprod">${item.produit.couleur.designation}</div>
+                            </div>
+                            <div class="col-span-3 grid grid-cols-3 gap-x-2">
+                                <div class="col-span-3 edittypeprod">${item.produit.type.designation}</div>
+                                <div class="col-span-1 editmesureprod">${item.produit.mesure.designation}</div>
+                                <div class="col-span-2 editcolorprod">${item.produit.couleur.designation}</div>
+                            </div>
+                            <div class="col-span-2 grid grid-cols-6 gap-x-2 pl-2">
+                                <div class="col-span-1">HT</div>
+                                <div class="col-span-5 editpriceprod text-right pr-4 font-bold" data-value="${item.prixunitaire}">
+                                    ${item.prixunitaire} DA
                                 </div>
-                                <div class="col-span-2 grid grid-cols-6 gap-x-2 pl-2">
-                                    <div class="col-span-1">HT</div>
-                                    <div class="col-span-5 editpriceprod text-right pr-4 font-bold" data-value="${item.prixunitaire}">
-                                        ${item.prixunitaire} DA
-                                    </div>
-                                    <div class="col-span-1">TTC</div>
-                                    <div class="col-span-5 text-right pr-4 editpriceprodttc font-bold" data-value="${item.prixunitaire * 0.19 + item.prixunitaire}">
-                                        ${item.prixunitaire * 0.19 + item.prixunitaire} DA
-                                    </div>
+                                <div class="col-span-1">TTC</div>
+                                <div class="col-span-5 text-right pr-4 editpriceprodttc font-bold" data-value="${item.prixunitaire * 0.19 + item.prixunitaire}">
+                                    ${item.prixunitaire * 0.19 + item.prixunitaire} DA
                                 </div>
+                            </div>
 
-                                <div class="col-span-2 pr-2">
-                                    <input type="number" class="editproduct-quantity bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
-                                    focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="${item.quantite}" min="0" />
-                                </div>
+                            <div class="col-span-2 pr-2">
+                                <input type="number" class="editproduct-quantity bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                                focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="${item.quantite}" min="0" />
+                            </div>
 
-                                <div class="col-span-2 grid grid-cols-6 gap-x-2">
-                                    <div class="col-span-1">HT</div>
-                                    <div class="col-span-5 editproduct-total text-right pr-4 font-bold">
-                                        ${formatNumber(item.prixtotal)} DA
-                                    </div>
-                                    <div class="col-span-1">TTC</div>
-                                    <div class="col-span-5 text-right pr-4 editproduct-totalttc font-bold">
-                                        ${formatNumber(item.prixtotal + item.prixtotal * 0.19)} DA
-                                    </div>
+                            <div class="col-span-2 grid grid-cols-6 gap-x-2">
+                                <div class="col-span-1">HT</div>
+                                <div class="col-span-5 editproduct-total text-right pr-4 font-bold">
+                                    ${formatNumber(item.prixtotal)} DA
                                 </div>
-                                <button class="absolute top-4 right-2 editremoveProduct bg-red-500 text-white p-2 rounded-lg hover:bg-red-400" data-product-id="${item.id}">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>`
+                                <div class="col-span-1">TTC</div>
+                                <div class="col-span-5 text-right pr-4 editproduct-totalttc font-bold">
+                                    ${formatNumber(item.prixtotal + item.prixtotal * 0.19)} DA
+                                </div>
+                            </div>
+                            <button class="absolute top-4 right-2 editremoveProduct bg-red-500 text-white p-2 rounded-lg hover:bg-red-400" data-product-id="${item.id}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>`
                         );
-                        console.log("voila");
 
-                        $('#editSidebar').toggleClass('translate-x-full');
 
                     });
 
@@ -1206,7 +1440,6 @@
             });
 
             function editfetchProducts() {
-                console.log("ici");
                 var settings = {
                     "url": "/api/products?active=true&typeproduit=" + $('#edittypeFilter').val() + "&mesure_id=" + $('#editmeasureFilter').val() + "" +
                         "&couleur_produit=" + $('#editcolorfilter').val(),
@@ -1231,49 +1464,49 @@
                         var prixttc = product.prix_publique + product.prix_publique * 0.19;
 
                         var productHtml = `
-                            <div class="text-xs grid grid-cols-12 items-center justify-between ${isSelected ? 'backslate defaultdark' : 'backslateslite text-slate'} p-2
-                                rounded-lg editproduct-row" data-price="${product.prix_publique}" data-product-id="${productId}">
-                                <div class="flex items-center col-span-3">
-                                    <img src="/media/${product.image || 'default_image.png'}" alt="Avatar" class="h-12 w-12 rounded-lg mr-4 editimageprod">
-                                    <div>
-                                        <h3 class="text-md font-bold text-blue-600 editnameprod">${product.designation}</h3>
-                                        <p class="text-gray-800 editrefprod">${product.reference}</p>
-                                    </div>
-                                </div>
-
-                                <div class="col-span-3 grid grid-cols-3 gap-x-2">
-                                    <div class="col-span-3 edittypeprod">${product.typeproduit_designation}</div>
-                                    <div class="col-span-1 editmesureprod">${product.mesure_designation}</div>
-                                    <div class="col-span-2 editcolorprod">${product.couleur}</div>
-                                </div>
-
-                                <div class="col-span-2 grid grid-cols-6 gap-x-2 pl-2">
-                                    <div class="col-span-1">HT</div>
-                                    <div class="col-span-5 editpriceprod text-right pr-4 font-bold" data-value="${product.prix_publique}">
-                                        ${prix_publiqueformat} DA
-                                    </div>
-                                    <div class="col-span-1">TTC</div>
-                                    <div class="col-span-5 text-right pr-4 editpriceprodttc font-bold" data-value="${product.prix_publique}">
-                                        ${formatNumber(prixttc)} DA
-                                    </div>
-                                </div>
-
-                                <div class="col-span-2 pr-2">
-                                    <input type="number" class="editnumbprod editproduct-quantity bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="${quantity}" min="0" />
-                                </div>
-
-                                <div class="col-span-2 grid grid-cols-6 gap-x-2">
-                                    <div class="col-span-1">HT</div>
-                                    <div class="col-span-5 editproduct-total text-right pr-4 font-bold">
-                                        ${formatNumber(quantity * product.prix_publique)} DA
-                                    </div>
-                                    <div class="col-span-1">TTC</div>
-                                    <div class="col-span-5 text-right pr-4 editproduct-totalttc font-bold">
-                                        ${formatNumber(quantity * product.prix_publique + (quantity * product.prix_publique * 0.19))} DA
-                                    </div>
+                        <div class="text-xs grid grid-cols-12 items-center justify-between ${isSelected ? 'backslate defaultdark' : 'backslateslite text-slate'} p-2
+                            rounded-lg editproduct-row" data-price="${product.prix_publique}" data-product-id="${productId}">
+                            <div class="flex items-center col-span-3">
+                                <img src="/media/${product.image || 'default_image.png'}" alt="Avatar" class="h-12 w-12 rounded-lg mr-4 editimageprod">
+                                <div>
+                                    <h3 class="text-md font-bold text-blue-600 editnameprod">${product.designation}</h3>
+                                    <p class="text-gray-800 editrefprod">${product.reference}</p>
                                 </div>
                             </div>
-                        `;
+
+                            <div class="col-span-3 grid grid-cols-3 gap-x-2">
+                                <div class="col-span-3 edittypeprod">${product.typeproduit_designation}</div>
+                                <div class="col-span-1 editmesureprod">${product.mesure_designation}</div>
+                                <div class="col-span-2 editcolorprod">${product.couleur}</div>
+                            </div>
+
+                            <div class="col-span-2 grid grid-cols-6 gap-x-2 pl-2">
+                                <div class="col-span-1">HT</div>
+                                <div class="col-span-5 editpriceprod text-right pr-4 font-bold" data-value="${product.prix_publique}">
+                                    ${prix_publiqueformat} DA
+                                </div>
+                                <div class="col-span-1">TTC</div>
+                                <div class="col-span-5 text-right pr-4 editpriceprodttc font-bold" data-value="${product.prix_publique}">
+                                    ${formatNumber(prixttc)} DA
+                                </div>
+                            </div>
+
+                            <div class="col-span-2 pr-2">
+                                <input type="number" class="editnumbprod editproduct-quantity bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="${quantity}" min="0" />
+                            </div>
+
+                            <div class="col-span-2 grid grid-cols-6 gap-x-2">
+                                <div class="col-span-1">HT</div>
+                                <div class="col-span-5 editproduct-total text-right pr-4 font-bold">
+                                    ${formatNumber(quantity * product.prix_publique)} DA
+                                </div>
+                                <div class="col-span-1">TTC</div>
+                                <div class="col-span-5 text-right pr-4 editproduct-totalttc font-bold">
+                                    ${formatNumber(quantity * product.prix_publique + (quantity * product.prix_publique * 0.19))} DA
+                                </div>
+                            </div>
+                        </div>
+                    `;
 
                         $('#editproductList').append(productHtml);
 
@@ -1312,74 +1545,87 @@
 
                     // Add or update in selectedProducts list
                     var existingProduct = editselectedProducts.find(p => p.id === productId);
+
                     if (existingProduct) {
+                        console.log('ici')
                         existingProduct.quantity = quantity;
                         existingProduct.total = total;
+                        console.log(existingProduct)
 
                         // Update the second slider if the product is already added
-                        var secondSliderRow = $('#editselectedProducts .editproduct-row[data-product-id="' + productId + '"]');
+
+                        //var secondSliderRow = $('#editselectedProducts .editproduct-row[data-product-id="' + productId + '"]').first();
+                        secondSliderRow = $('#prodselline_' + productId);
+
+
                         secondSliderRow.find('.editproduct-quantity').val(quantity);
                         secondSliderRow.find('.editproduct-total').text(`${formatNumber(total)} DA`);
                         secondSliderRow.find('.editproduct-totalttc').text(`${formatNumber(totalttc)} DA`);
                     } else {
+                        imgsrc= productRow.find('img').attr('src')
+                        designationdata=productRow.find('.editnameprod').text()
+                        referencedata=productRow.find('.editrefprod').text()
+                        typedata=productRow.find('.edittypeprod').html()
+                        mesuredata=productRow.find('.editmesureprod').html()
+                        couleurdata=productRow.find('.editcolorprod').html()
                         editselectedProducts.push({
                             id: productId,
-                            designation: productRow.find('.nameprod').text(),
-                            reference: productRow.find('.refprod').text(),
-                            type: productRow.find('.typeprod').html(),
-                            mesure: productRow.find('.mesureprod').html(),
-                            couleur: productRow.find('.colorprod').html(),
+                            designation: designationdata,
+                            reference: referencedata,
+                            type: typedata,
+                            mesure: mesuredata,
+                            couleur: couleurdata,
                             prixunitaire: prixunitaire,
                             quantity: quantity,
                             total: total,
-                            img: productRow.find('img').attr('src')
+                            img: imgsrc
                         });
 
                         // Add the product to the second slider
                         $('#editselectedProducts').append(
                             `<div class="relative text-xs grid grid-cols-12 items-center justify-between py-2 rounded-lg editproduct-row mb-3
-                                backslate defaultdark px-2 pr-6" data-product-id="${productId}">
-                                <div class="flex items-center col-span-3">
-                                    <img src="${productRow.find('.imageprod').attr('src')}" alt="Avatar" class="h-12 w-12 rounded-lg mr-4">
-                                    <div>
-                                        <h3 class="text-md font-bold text-blue-600 editnameprod">${productRow.find('.nameprod').text()}</h3>
-                                        <p class="text-gray-800 editrefprod">${productRow.find('.refprod').text()}</p>
-                                    </div>
+                            backslate defaultdark px-2 pr-6" id="prodselline_${productId}" data-product-id="${productId}">
+                            <div class="flex items-center col-span-3">
+                                <img src="${imgsrc}" alt="Avatar" class="h-12 w-12 rounded-lg mr-4">
+                                <div>
+                                    <h3 class="text-md font-bold text-blue-600 editnameprod">${designationdata}</h3>
+                                    <p class="text-gray-800 editrefprod">${referencedata}</p>
                                 </div>
-                                <div class="col-span-3 grid grid-cols-3 gap-x-2">
-                                    <div class="col-span-3 edittypeprod">${productRow.find('.typeprod').text()}</div>
-                                    <div class="col-span-1 editmesureprod">${productRow.find('.mesureprod').text()}</div>
-                                    <div class="col-span-2 editcolorprod">${productRow.find('.colorprod').text()}</div>
+                            </div>
+                            <div class="col-span-3 grid grid-cols-3 gap-x-2">
+                                <div class="col-span-3 edittypeprod">${typedata}</div>
+                                <div class="col-span-1 editmesureprod">${mesuredata}</div>
+                                <div class="col-span-2 editcolorprod">${couleurdata}</div>
+                            </div>
+                            <div class="col-span-2 grid grid-cols-6 gap-x-2 pl-2">
+                                <div class="col-span-1">HT</div>
+                                <div class="col-span-5 editpriceprod text-right pr-4 font-bold" data-value="${prixunitaire}">
+                                    ${formatNumber(prixunitaire)} DA
                                 </div>
-                                <div class="col-span-2 grid grid-cols-6 gap-x-2 pl-2">
-                                    <div class="col-span-1">HT</div>
-                                    <div class="col-span-5 editpriceprod text-right pr-4 font-bold" data-value="${prixunitaire}">
-                                        ${formatNumber(prixunitaire)} DA
-                                    </div>
-                                    <div class="col-span-1">TTC</div>
-                                    <div class="col-span-5 text-right pr-4 editpriceprodttc font-bold" data-value="${prixunitaire * 0.19 + prixunitaire}">
-                                        ${prixunitaire * 0.19 + prixunitaire} DA
-                                    </div>
+                                <div class="col-span-1">TTC</div>
+                                <div class="col-span-5 text-right pr-4 editpriceprodttc font-bold" data-value="${prixunitaire * 0.19 + prixunitaire}">
+                                    ${prixunitaire * 0.19 + prixunitaire} DA
                                 </div>
+                            </div>
 
-                                <div class="col-span-2 pr-2">
-                                    <input type="number" class="editproduct-quantity bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="${quantity}" min="0" />
-                                </div>
+                            <div class="col-span-2 pr-2">
+                                <input type="number" class="editproduct-quantity bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="${quantity}" min="0" />
+                            </div>
 
-                                <div class="col-span-2 grid grid-cols-6 gap-x-2">
-                                    <div class="col-span-1">HT</div>
-                                    <div class="col-span-5 editproduct-total text-right pr-4 font-bold">
-                                        ${formatNumber(total)} DA
-                                    </div>
-                                    <div class="col-span-1">TTC</div>
-                                    <div class="col-span-5 text-right pr-4 editproduct-totalttc font-bold">
-                                        ${formatNumber(total + total * 0.19)} DA
-                                    </div>
+                            <div class="col-span-2 grid grid-cols-6 gap-x-2">
+                                <div class="col-span-1">HT</div>
+                                <div class="col-span-5 editproduct-total text-right pr-4 font-bold">
+                                    ${formatNumber(total)} DA
                                 </div>
-                                <button class="absolute top-4 right-2 editremoveProduct bg-red-500 text-white p-2 rounded-lg hover:bg-red-400" data-product-id="${productId}">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>`
+                                <div class="col-span-1">TTC</div>
+                                <div class="col-span-5 text-right pr-4 editproduct-totalttc font-bold">
+                                    ${formatNumber(total + total * 0.19)} DA
+                                </div>
+                            </div>
+                            <button class="absolute top-4 right-2 editremoveProduct bg-red-500 text-white p-2 rounded-lg hover:bg-red-400" data-product-id="${productId}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>`
                         );
                     }
                 } else {
@@ -1476,195 +1722,6 @@
         });
 
 
-        $('.viewButton').on('click', function () {
-            identifiantview = $(this).data('identifiant');
-            etatview = $(this).data('etat');
-            annulelink = "";
-
-            if (etatview === "Reception") {
-                if(listeauth.includes(70)){
-                    buttonslist = `
-                        <button data-href="/commande/etatview?commande=${identifiantview}&etat=Traitement" class="callstate h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Valider CMD</button>
-                        <button data-href="/commande/etatview?commande=${identifiantview}&etat=Annule" class="callstate h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Annuler CMD</button>
-                    `;
-                }
-            } else if (etatview === "Traitement") {
-                //<a data-href="/commande/bl?commandes=${identifiantview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2.5 rounded-lg">Voir BL</a>
-                if(listeauth.includes(70)){
-                    buttonslist = `
-                        <button data-href="/commande/etatview?commande=${identifiantview}&etat=Preparation" class="callstate h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Preparation CMD</button>
-                    `;
-                }
-
-            } else if (etatview === "Preparation") {
-                //<a data-href="/commande/bl?commandes=${identifiantview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2.5 rounded-lg">Voir BL</a>
-                if(listeauth.includes(70)){
-                    buttonslist = `
-                        <button data-href="/commande/etatview?commande=${identifiantview}&etat=En cours" class="callstate h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Lancer Livraison</button>
-                    `;
-                }
-            } else if (etatview === "En cours") {
-                //<a data-href="/commande/bl?commandes=${identifiantview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2.5 rounded-lg">Voir BL</a>
-                buttonslist = ``;
-                if(listeauth.includes(64)){
-                    buttonslist = buttonslist + `<a href="/commande/bl?commandes=${identifiantview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2.5 rounded-lg">Voir BL</a>
-                    `;
-                }
-
-                if(listeauth.includes(70)){
-                    buttonslist =  buttonslist + `<button data-href="/commande/etatview?commande=${identifiantview}&etat=Complete" class="callstate h-10 mt-4 bg-blue-500
-                        text-white px-4 py-2 rounded-lg">Completer CMD</button>
-                    `;
-                }
-
-
-            } else {
-
-                if(listeauth.includes(64)){
-                    buttonslist = `<a href="/commande/bl?commandes=${identifiantview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2.5 rounded-lg">Voir BL</a>
-                    `;
-                }
-            }
-
-            $containerdatacmd.html('');
-            let settings = {
-                url: `/api/commandedetail/${identifiantview}`,
-                method: "GET",
-                timeout: 0,
-                headers: {
-                    "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
-                },
-            };
-
-            $.ajax(settings).done(function (response) {
-                let responsedata = response;
-                $containerdatacmd.append(`
-                    <div class="flex defaultval">
-                        <div class="w-12 h-12">
-                            <img src="/static/images/puma.svg" alt="Image" class="w-12 h-12">
-                        </div>
-                        <div class="flex-grow flex flex-wrap">
-                            <div class="w-1/4 p-2 flex items-center space-x-2">
-                                <p class="font-bold">Nom & prénom:</p>
-                                <p>${responsedata['distributeur']['user']['last_name']}</p>
-                            </div>
-                            <div class="w-1/4 p-2 flex items-center space-x-2">
-                                <p class="font-bold">Société:</p>
-                                <p>${responsedata['distributeur']['designation']}</p>
-                            </div>
-                            <div class="w-1/4 p-2 flex items-center space-x-2">
-                                <p class="font-bold">Téléphone:</p>
-                                <p>${responsedata['distributeur']['user']['telephone']}</p>
-                            </div>
-                            <div class="w-1/4 p-2 flex items-center space-x-2">
-                                <p class="font-bold capital">état:</p>
-                                <p>${responsedata['etat']}</p>
-                            </div>
-                            <div class="w-1/4 p-2 flex items-center space-x-2">
-                                <p class="font-bold">Code:</p>
-                                <p>${responsedata['distributeur']['code']}</p>
-                            </div>
-                            <div class="w-1/4 p-2 flex items-center space-x-2">
-                                <p class="font-bold">Ville:</p>
-                                <p>${responsedata['distributeur']['adresse']}</p>
-                            </div>
-                            <div class="w-1/4 p-2 flex items-center space-x-2">
-                                <p class="font-bold">Désignation:</p>
-                                <p>${responsedata['distributeur']['ville']['designation']}</p>
-                            </div>
-                            <div class="w-1/4 p-2 flex items-center space-x-2">
-                                <p class="font-bold">Date:</p>
-                                <p>${responsedata['date_ajout']}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="listeitemsprod" class="flex-grow listeprodview overflow-y-auto py-4">
-                        <p class="font-bold text-lg mb-4">Liste des produits:</p>
-                    </div>
-                    <div class="h-14 flex justify-between items-center" id="totalproducts"></div>
-                `);
-                totalprodlines = 0;
-                for (i = 0; i < responsedata['commandesLines'].length; i++) {
-                    $listeitemsprod = $("#listeitemsprod");
-                    itemprod = responsedata['commandesLines'][i];
-                    totalprodlines = totalprodlines + itemprod['total_prixtotal'];
-                    $listeitemsprod.append(`<div class="flex items-center justify-between p-2 backslateslite flex-none mb-2 defaultval">
-                    <div class="flex items-center w-1/5">
-                        <img src="${itemprod['produit']['image']}" alt="product" class="h-12 w-12 rounded-lg mr-4">
-                        <div>
-                            <h3 class="font-bold text-blue-600 productName">${itemprod['produit']['designation']}</h3>
-                            <p class="text-sm productRef">${itemprod['produit']['reference']}</p>
-                        </div>
-                    </div>
-                    <div class="w-3/5 flex">
-                        <div class="w-1/5">${itemprod['produit']['type']['designation']}</div>
-                        <div class="w-1/5">${itemprod['produit']['mesure']['designation']}</div>
-                        <div class="w-1/5">${itemprod['produit']['couleur']['designation']}</div>
-                        <div class="w-1/5 text-right pr-4">${formatNumber(itemprod['prixunitaire'])} DA</div>
-                        <div class="w-1/5 pr-4">
-                            <div class="flex justify-between">
-                                <div>Commandé</div>
-                                <div>${itemprod['quantite']}</div>
-                            </div>
-                            <div class="flex justify-between">
-                                <div>Livré</div>
-                                <div>${itemprod['total_quantite']}</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="w-1/5 text-right pr-4">
-                        <div class="flex justify-between">
-                            <div>Commandé</div>
-                            <div>${formatNumber(itemprod['prixtotal'])} DA</div>
-                        </div>
-                        <div class="flex justify-between">
-                            <div>Livré</div>
-                            <div>${formatNumber(itemprod['total_prixtotal'])} DA</div>
-                        </div>
-                    </div>
-                </div>`)
-                }
-
-                $("#totalproducts").append(`
-                <div>
-                    ${buttonslist}
-                </div>
-
-                <div class="text-right pr-4 defaultboldval">
-                        <div class="w-full flex">
-                            <span class="w-48">Total Commandé</span>
-                            <span class="w-48">${formatNumber(itemprod['prixtotal'])} DA HT</span>
-                            <span class="w-48">${formatNumber(itemprod['prixtotal'] * 0.19 + itemprod['prixtotal'])} DA Taxe</span>
-                        </div>
-                        <div class="w-full flex">
-                            <span class="w-48">Total Livré</span>
-                            <span class="w-48">${formatNumber(itemprod['total_prixtotal'])} DA HT</span>
-                            <span class="w-48">${formatNumber(totalprodlines * 0.19 + totalprodlines)} DA Taxe</span>
-                        </div>
-                    </div>
-                </div>
-                `);
-
-
-                $('.callstate').on('click', function (event) {
-                    event.preventDefault();
-                    let link = $(this).data('href');
-                    $.ajax({
-                        url: link,
-                        type: 'GET',
-                        success: function (result) {
-                            location.reload();  // Refresh the page on success
-                        }
-                    });
-                });
-
-                $('#viewSidebar').toggleClass('translate-x-full');
-            });
-
-
-        });
-
-
         $('.popupButton').click(function () {
             identifiant = $(this).data('identifiant');
 
@@ -1681,34 +1738,36 @@
             cpt = 0;
             $.ajax(settings).done(function (response) {
                 let responsedata = response;
+                let distributeur_id = responsedata['distributeur_id']; // Defined inside this scope
+
                 for (i = 0; i < responsedata['commandesLines'].length; i++) {
                     itemprod = responsedata['commandesLines'][i];
                     nbrrestant = itemprod['quantite'] - itemprod['total_quantite'];
                     $listeblprod.append(`
-                            <div class="grid grid-cols-8 bg-gray-50 p-2 rounded-lg mb-2 product-line backslateslite"
-                                data-unitprice="${itemprod['prixunitaire']}" data-idprodelem="${itemprod['produit']['id']}">
-                                <div class="flex items-center col-span-2">
-                                    <img src="${itemprod['produit']['image']}" alt="product" class="h-12 w-12 rounded-lg mr-4">
-                                    <div>
-                                        <h3 class="font-bold text-blue-600 productName">${itemprod['produit']['designation']}</h3>
-                                        <p class="text-sm productRef">${itemprod['produit']['reference']}</p>
-                                    </div>
-                                </div>
-                                <div class="col-span-1">
-                                    <h3 class="font-bold productName">${itemprod['produit']['type']['designation']}</h3>
-                                    <p class="text-sm productRef">${itemprod['produit']['mesure']['designation']}</p>
-                                </div>
-                                <div class="col-span-1">${itemprod['produit']['couleur']['designation']}</div>
-                                <div class="col-span-1 prixunitaire">${formatNumber(itemprod['prixunitaire'])} DA</div>
-                                <div class="col-span-1 pr-4 nbrrestant">${nbrrestant}</div>
-                                <div class="col-span-1 text-right pr-4">
-                                    <input type="number" data-idelem="${cpt}" class="inputblquantity review-quantity bg-gray-50 border border-gray-300
-                                        text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block
-                                        w-full p-2.5" value="0" min="0" max="${nbrrestant}" />
-                                </div>
-                                <div class="col-span-1 text-right pr-4 totalbl" id="totalbl_${cpt}">0 DA</div>
-                            </div>
-                        `);
+                <div class="grid grid-cols-8 bg-gray-50 p-2 rounded-lg mb-2 product-line backslateslite"
+                    data-unitprice="${itemprod['prixunitaire']}" data-idprodelem="${itemprod['produit']['id']}">
+                    <div class="flex items-center col-span-2">
+                        <img src="${itemprod['produit']['image']}" alt="product" class="h-12 w-12 rounded-lg mr-4">
+                        <div>
+                            <h3 class="font-bold text-blue-600 productName">${itemprod['produit']['designation']}</h3>
+                            <p class="text-sm productRef">${itemprod['produit']['reference']}</p>
+                        </div>
+                    </div>
+                    <div class="col-span-1">
+                        <h3 class="font-bold productName">${itemprod['produit']['type']['designation']}</h3>
+                        <p class="text-sm productRef">${itemprod['produit']['mesure']['designation']}</p>
+                    </div>
+                    <div class="col-span-1">${itemprod['produit']['couleur']['designation']}</div>
+                    <div class="col-span-1 prixunitaire">${formatNumber(itemprod['prixunitaire'])} DA</div>
+                    <div class="col-span-1 pr-4 nbrrestant">${nbrrestant}</div>
+                    <div class="col-span-1 text-right pr-4">
+                        <input type="number" data-idelem="${cpt}" class="inputblquantity review-quantity bg-gray-50 border border-gray-300
+                            text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block
+                            w-full p-2.5" value="0" min="0" max="${nbrrestant}" />
+                    </div>
+                    <div class="col-span-1 text-right pr-4 totalbl" id="totalbl_${cpt}">0 DA</div>
+                </div>
+            `);
                     cpt++;
                 }
 
@@ -1748,74 +1807,40 @@
                 calculateTotals();
 
                 $('#addbl').fadeIn();
+
+                // Chain the second AJAX request here
+                var settings2 = {
+                    url: `/api/payeur?distributeur=${distributeur_id}&active=true&draft=false`,
+                    method: "GET",
+                    timeout: 0,
+                };
+
+                $.ajax(settings2).done(function (response) {
+                    var $payeurBl = $("#payeur_bl");
+
+                    // Empty the select element
+                    $payeurBl.empty();
+
+                    // Populate the select element with the response data
+                    response.forEach(function (item) {
+                        $payeurBl.append(`<option value="${item.id}">${item.designation}</option>`);
+                    });
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    console.error("Request failed:", textStatus, errorThrown);
+                });
             });
         });
+
 
         // Close the popup
         $('#closePopup').click(function () {
             $('#addbl').fadeOut();
         });
 
-        // Optional: Close popup if clicking outside of the popup content
         $(window).click(function (event) {
             if ($(event.target).is('#addbl')) {
                 $('#addbl').fadeOut();
             }
-        });
-
-
-        $('#confirmOrder').on('click', function () {
-            listteproducts = [];
-            for (i = 0; i < selectedProducts.length; i++) {
-                listteproducts.push({
-                    "produit": selectedProducts[i]['id'],
-                    "quantite": parseInt(selectedProducts[i]['quantity'])
-                })
-            }
-
-            var settings = {
-                "url": "/api/commande/",
-                "method": "POST",
-                "timeout": 0,
-                "headers": {
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),  // Assuming you have CSRF token in your template context
-                },
-                "data": JSON.stringify({
-                    "distributeur": {{ request.user.distributeur_set.first.id }},
-                    "etat": "Reception",
-                    "total": 0,
-                    "commandesLines": listteproducts
-                }),
-            };
-
-            $.ajax(settings)
-                .done(function (response) {
-                    window.location.href = /commande/;
-                })
-                .fail(function (jqXHR, textStatus, errorThrown) {
-                    // Log the entire jqXHR object to see all details
-                    console.log('jqXHR:', jqXHR);
-
-                    // Log the status text
-                    console.log('Status:', textStatus);
-
-                    // Log the error thrown
-                    console.log('Error Thrown:', errorThrown);
-
-                    // Log the response text, which might contain detailed error messages
-                    console.log('Response Text:', jqXHR.responseText); alert(jqXHR.responseText)
-
-                    // Optionally, parse the responseText as JSON if it's in JSON format
-                    try {
-                        var responseJSON = JSON.parse(jqXHR.responseText);
-                        console.log('Response JSON:', responseJSON);
-                    } catch (e) {
-                        console.error('Failed to parse response as JSON:', e);
-                    }
-
-                });
-
         });
 
 
@@ -1838,8 +1863,8 @@
                 },
                 "data": JSON.stringify({
                     "id": identifiant,
-                    "distributeur": {{ request.user.distributeur_set.first.id }},
-                    "etat": "Reception",
+                    "user": {{ request.user.id }},
+                    "etat": "Brouillon",
                     "total": 0,
                     "commandesLines": listteproducts
                 }),
@@ -1847,7 +1872,8 @@
 
             $.ajax(settings)
                 .done(function (response) {
-                    window.location.href = /commande/;
+                    console.log(response);
+                    window.location.href = "/commande/";
                 })
                 .fail(function (jqXHR, textStatus, errorThrown) {
                     // Log the entire jqXHR object to see all details
@@ -1860,7 +1886,8 @@
                     console.log('Error Thrown:', errorThrown);
 
                     // Log the response text, which might contain detailed error messages
-                    console.log('Response Text:', jqXHR.responseText); alert(jqXHR.responseText)
+                    console.log('Response Text:', jqXHR.responseText);
+                    alert(jqXHR.responseText)
 
                     // Optionally, parse the responseText as JSON if it's in JSON format
                     try {
@@ -1871,95 +1898,6 @@
                     }
 
                 });
-
-        });
-
-
-        $('#validatebl').on('click', function (e) {
-            e.preventDefault();
-            liste_prodbl = [];
-            $('#listeblprod .product-line').each(function (index) {
-                var product_idbl = parseInt($(this).data('idprodelem'));
-                var quantity = parseInt($(this).find('.inputblquantity').val());
-                var nbrrestant = parseInt($(this).find('.nbrrestant').html());
-
-                if (quantity > nbrrestant) {
-                    alert("Vous ne pouvez pas depasser la quantité réstante.")
-                } else {
-                    liste_prodbl.push({
-                        "produit": product_idbl,
-                        "quantite": quantity
-                    })
-                }
-            });
-            if (!quantity > nbrrestant) {
-                let liste_prodbl_json = JSON.stringify(liste_prodbl);
-
-                var form = new FormData();
-
-                var fcFile = $("#file-upload")[0].files[0];
-                var blFile = $("#file-upload2")[0].files[0];
-
-                if (fcFile) {
-                    form.append("fc_file", fcFile);
-                }
-                if (blFile) {
-                    form.append("bl_file", blFile);
-                }
-
-                $facture_id = $('#facture_id');
-
-                if ($facture_id.val() === "") facture = null;
-                else facture = $facture_id.val();
-
-                // Additional data
-                form.append("facture", facture);
-                form.append("BonLivraison", liste_prodbl_json);
-                form.append("commandes", identifiant);
-
-
-                var settings = {
-                    "url": "/api/blivraison/",
-                    "method": "POST",
-                    "timeout": 0,
-                    "headers": {
-                        "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),
-                    },
-                    "processData": false,
-                    "contentType": false,
-                    "data": form,
-                };
-
-                $.ajax(settings)
-                    .done(function (response) {
-
-                        window.location.href = "/commande/";
-                        console.log(response);
-                    })
-                    .fail(function (jqXHR, textStatus, errorThrown) {
-                        // Log the entire jqXHR object to see all details
-                        console.log('jqXHR:', jqXHR);
-
-                        // Log the status text
-                        console.log('Status:', textStatus);
-
-                        // Log the error thrown
-                        console.log('Error Thrown:', errorThrown);
-
-                        // Log the response text, which might contain detailed error messages
-                        console.log('Response Text:', jqXHR.responseText); alert(jqXHR.responseText)
-
-                        // Optionally, parse the responseText as JSON if it's in JSON format
-                        try {
-                            var responseJSON = JSON.parse(jqXHR.responseText);
-                            console.log('Response JSON:', responseJSON);
-                        } catch (e) {
-                            console.error('Failed to parse response as JSON:', e);
-                        }
-
-                    });
-            }
-
 
         });
 
@@ -1996,6 +1934,7 @@
                 $.ajax(settings).done(function (response) {
                     console.log(response);
                     $('#deleteModal').addClass('hidden');
+                    window.location.href = '/commande/'
                 });
 
 
@@ -2011,6 +1950,169 @@
         $('#file-upload2').on('change', function () {
             const fileName = $(this).val().split('\\').pop() || 'No bl file';
             $('#file-name2').text(fileName);
+        });
+
+
+        $('.viewButton').on('click', function () {
+            identifiantview = $(this).data('identifiant');
+            etatview = $(this).data('etat');
+            annulelink = "";
+            buttonslist = ``;
+
+            if (etatview === "Brouillon") {
+                    buttonslist = `
+                    <button data-href="/commande/etatview?commande=${identifiantview}&etat=Reception" class="callstate h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Valider CMD</button>
+                    <button data-href="/commande/etatview?commande=${identifiantview}&etat=Annule" class="callstate h-10 mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg">Annuler CMD</button>
+                `;
+            }
+
+            else if (etatview === "Reception" || etatview === "Traitement" || etatview === "Preparation" || etatview === "En cours" ) {
+                buttonslist = ``
+            }
+            else {
+
+                if (listeauth.includes('change_dist_bonlivraison')) {
+                    buttonslist = `<a href="/commande/bl?commandes=${identifiantview}" class="h-10 mt-4 bg-blue-500 text-white px-4 py-2.5 rounded-lg">Voir BL</a>
+                `;
+                }
+            }
+
+            $containerdatacmd.html('');
+            let settings = {
+                url: `/api/commandedetail/${identifiantview}`,
+                method: "GET",
+                timeout: 0,
+                headers: {
+                    "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
+                },
+            };
+
+            $.ajax(settings).done(function (response) {
+                let responsedata = response;
+                $containerdatacmd.append(`
+                <div class="flex defaultval">
+                    <div class="w-12 h-12">
+                        <img src="/static/images/puma.svg" alt="Image" class="w-12 h-12">
+                    </div>
+                    <div class="flex-grow flex flex-wrap">
+                        <div class="w-1/4 p-2 flex items-center space-x-2">
+                            <p class="font-bold">Nom & prénom:</p>
+                            <p>${responsedata['user']['last_name']} ${responsedata['user']['first_name']}</p>
+                        </div>
+                        <div class="w-1/4 p-2 flex items-center space-x-2">
+                            <p class="font-bold">Société:</p>
+                            <p>${responsedata['user']['designation']}</p>
+                        </div>
+                        <div class="w-1/4 p-2 flex items-center space-x-2">
+                            <p class="font-bold">Téléphone:</p>
+                            <p>${responsedata['user']['telephone']}</p>
+                        </div>
+                        <div class="w-1/4 p-2 flex items-center space-x-2">
+                            <p class="font-bold capital">état:</p>
+                            <p>${responsedata['etat']}</p>
+                        </div>
+                        <div class="w-1/4 p-2 flex items-center space-x-2">
+                            <p class="font-bold">Code:</p>
+                            <p>${responsedata['user']['code']}</p>
+                        </div>
+                        <div class="w-1/4 p-2 flex items-center space-x-2">
+                            <p class="font-bold">Ville:</p>
+                            <p>${responsedata['user']['ville']['designation']}</p>
+                        </div>
+                        <div class="w-1/4 p-2 flex items-center space-x-2">
+                            <p class="font-bold">Adresse:</p>
+                            <p>${responsedata['user']['adresse']}</p>
+                        </div>
+                        <div class="w-1/4 p-2 flex items-center space-x-2">
+                            <p class="font-bold">Date:</p>
+                            <p>${responsedata['date_ajout']}</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="listeitemsprod" class="flex-grow listeprodview overflow-y-auto py-4">
+                    <p class="font-bold text-lg mb-4">Liste des produits:</p>
+                </div>
+                <div class="h-14 flex justify-between items-center" id="totalproducts"></div>
+            `);
+                totalprodlines = 0;
+                for (i = 0; i < responsedata['commandesLines'].length; i++) {
+                    $listeitemsprod = $("#listeitemsprod");
+                    itemprod = responsedata['commandesLines'][i];
+                    totalprodlines = totalprodlines + itemprod['total_prixtotal'];
+                    $listeitemsprod.append(`<div class="flex items-center justify-between p-2 backslateslite flex-none mb-2 defaultval">
+                <div class="flex items-center w-1/5">
+                    <img src="${itemprod['produit']['image']}" alt="product" class="h-12 w-12 rounded-lg mr-4">
+                    <div>
+                        <h3 class="font-bold text-blue-600 productName">${itemprod['produit']['designation']}</h3>
+                        <p class="text-sm productRef">${itemprod['produit']['reference']}</p>
+                    </div>
+                </div>
+                <div class="w-3/5 flex">
+                    <div class="w-1/5">${itemprod['produit']['type']['designation']}</div>
+                    <div class="w-1/5">${itemprod['produit']['mesure']['designation']}</div>
+                    <div class="w-1/5">${itemprod['produit']['couleur']['designation']}</div>
+                    <div class="w-1/5 text-right pr-4">${formatNumber(itemprod['prixunitaire'])} DA</div>
+                    <div class="w-1/5 pr-4">
+                        <div class="flex justify-between">
+                            <div>Commandé</div>
+                            <div>${itemprod['quantite']}</div>
+                        </div>
+                        <div class="flex justify-between">
+                            <div>Livré</div>
+                            <div>${itemprod['total_quantite']}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-1/5 text-right pr-4">
+                    <div class="flex justify-between">
+                        <div>Commandé</div>
+                        <div>${formatNumber(itemprod['prixtotal'])} DA</div>
+                    </div>
+                    <div class="flex justify-between">
+                        <div>Livré</div>
+                        <div>${formatNumber(itemprod['total_prixtotal'])} DA</div>
+                    </div>
+                </div>
+            </div>`)
+                }
+
+                $("#totalproducts").append(`
+            <div>
+                ${buttonslist}
+            </div>
+
+            <div class="text-right pr-4 defaultboldval">
+                    <div class="w-full flex">
+                        <span class="w-48">Total Commandé</span>
+                        <span class="w-48">${formatNumber(itemprod['prixtotal'])} DA HT</span>
+                        <span class="w-48">${formatNumber(itemprod['prixtotal'] * 0.19 + itemprod['prixtotal'])} DA Taxe</span>
+                    </div>
+                    <div class="w-full flex">
+                        <span class="w-48">Total Livré</span>
+                        <span class="w-48">${formatNumber(itemprod['total_prixtotal'])} DA HT</span>
+                        <span class="w-48">${formatNumber(totalprodlines * 0.19 + totalprodlines)} DA Taxe</span>
+                    </div>
+                </div>
+            </div>
+            `);
+
+
+                $('.callstate').on('click', function (event) {
+                    event.preventDefault();
+                    let link = $(this).data('href');
+                    $.ajax({
+                        url: link,
+                        type: 'GET',
+                        success: function (result) {
+                            location.reload();  // Refresh the page on success
+                        }
+                    });
+                });
+
+                $('#viewSidebar').toggleClass('translate-x-full');
+            });
+
+
         });
 
 

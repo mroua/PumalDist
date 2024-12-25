@@ -80,7 +80,7 @@
                         <select id="ville" name="ville"
                                 class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
                             {% for ville in listville %}
-                                <option value="{{ ville.id }}">{{ ville.designation }}</option>
+                                <option data-region="{{ ville.region }}" value="{{ ville.id }}">{{ ville.designation }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -160,7 +160,7 @@
                             <select id="villeview" name="villeview"
                                     class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
                                 {% for ville in listville %}
-                                    <option value="{{ ville.id }}">{{ ville.designation }}</option>
+                                    <option data-region="{{ ville.region }}" value="{{ ville.id }}">{{ ville.designation }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -397,24 +397,6 @@
             </div>
             <div class="p-4">
                 <div class="mb-3">
-                    <label for="type_filter" class="block mb-1 pl-1 text-sm font-medium textslate">Type:</label>
-                    <select id="type_filter" class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
-                        <option value="" {% if request.GET.type == "" %}selected{% endif %}>Tous</option>
-                        <option value="Admin" {% if request.GET.type == "Admin" %}selected{% endif %}>Admin</option>
-                        <option value="Admin Régional" {% if request.GET.type == "Admin Régional" %}selected{% endif %}>
-                            Admin Régional
-                        </option>
-                        <option value="Admin Wilaya" {% if request.GET.type == "Admin Wilaya" %}selected{% endif %}>
-                            Admin Wilaya
-                        </option>
-                        <option value="Résponsable distributeur"
-                                {% if request.GET.type == "Résponsable distributeur" %}selected{% endif %}>Résponsable
-                            distributeur
-                        </option>
-                        <option value="Agent" {% if request.GET.type == "Agent" %}selected{% endif %}>Agent</option>
-                    </select>
-                </div>
-                <div class="mb-3">
                     <label for="ville_filter" class="block mb-1 pl-1 text-sm font-medium textslate">Ville:</label>
                     <select id="ville_filter" class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
                         <option value="" {% if request.GET.ville == "" %}selected{% endif %}>Tous</option>
@@ -497,7 +479,7 @@
             e.preventDefault();
             if ($("#is_activefilter").prop('checked')) filt = true
             else filt = false
-            link = "/users/?type=" + $('#type_filter').val() + "&ville=" + $('#ville_filter').val() + "&region=" + $('#region_filter').val()
+            link = "/users/?ville=" + $('#ville_filter').val() + "&region=" + $('#region_filter').val()
                 + "&is_active=" + filt;
             //alert(link)
             window.location.href = link;
@@ -817,12 +799,12 @@
             form.append("telephone", $('#telephone').val());
             form.append("responsable", {{ request.user.id }});
             form.append("type", 'Employé');
-            form.append("region", $('#region').val());
+            form.append("region", $('#ville').find(':selected').data('region'));
             form.append("ville", $('#ville').val());
-            form.append("user_permissions", "view_encaissement,view_encaissementfacture,view_factures,add_payeur,view_payeur,view_dist_bonlivraison" +
+            form.append("user_permissions", "view_encaissement,view_encaissementfacture,view_factures,add_payeur,view_payeur,view_dist_bonlivraison, change_dist_bonlivraison" +
                         ",view_dist_commande,delete_dist_commande,change_dist_commande,add_dist_commande,view_account,view_formation, " +
                         "add_problematique,change_problematique,delete_problematique,view_problematique,add_formationsingup,change_formationsingup," +
-                        "delete_formationsingup,view_formationsingup,add_customuser,change_customuser,delete_customuser,view_customuser");
+                        "delete_formationsingup,view_formationsingup");
             
             // Add the photo
             var photoFile = $('#photo')[0].files[0];
@@ -901,7 +883,7 @@
             form.append("telephone", $('#edit_telephone').val());
             form.append("responsable", $('#edit_responsable').val());
             form.append("type", $('#edit_type').val());
-            form.append("region", $('#edit_region').val());
+            form.append("region", $('#edit_ville').find(':selected').data('region'));
             form.append("ville", $('#edit_ville').val());
             form.append("is_active", $('#edit_is_active').prop('checked'));
             $('#edit_is_active').val()

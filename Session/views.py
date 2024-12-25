@@ -107,7 +107,6 @@ def Utilisateurs(request):
                 responsable=request.user
             ).order_by('id').prefetch_related('user_permissions__content_type')
 
-            type = request.GET.get('type', None)
             ville = request.GET.get('ville', None)
             region = request.GET.get('region', None)
             active = request.GET.get('is_active')
@@ -116,17 +115,12 @@ def Utilisateurs(request):
             else:
                 is_active = False
 
-
-            if type:
-                liste_users = liste_users.filter(type=type)
             if (ville):
                 liste_users = liste_users.filter(ville=int(ville))
             if (region):
                 liste_users = liste_users.filter(region=region)
             if (active):
                 liste_users = liste_users.filter(is_active=is_active)
-
-
 
             #return render(request, "Utilisateur.html", {'liste_users': liste_users,'users_select': users_select})
             return render(request, "Dist/Utilisateur.html", {

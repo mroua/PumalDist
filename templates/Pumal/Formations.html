@@ -4,667 +4,693 @@
 {% block title %}Formation{% endblock %}
 
 {% block content %}
-<style>
-    .hiddenelem {
-        display: none;
-    }
-</style>
+    <style>
+        .hiddenelem {
+            display: none;
+        }
+    </style>
 
-<div class="w-full h-full backprimer px-4 pb-4 flex flex-col">
+    <div class="w-full h-full backprimer px-4 pb-4 flex flex-col">
 
-    <!-- Add Produit Sidebar -->
-    <div id="addSidebar" style="margin-top: -10px" class="fixed right-0 top-0 bottom-0 w-2/5 backprimer shadow-lg transform translate-x-full transition-transform duration-300 z-50">
-        <div class="flex justify-between items-center p-4 border-b">
-            <h3 class="text-lg font-semibold textslate">Ajouter une formation</h3>
-            <button id="closeSidebar" class="text-xl textslate text-md">&times;</button>
-        </div>
-
-        <!-- Step 1: Add Formation Details -->
-        <div id="step1" class="p-4 containerdef flex flex-col">
-            <div class="p-4 rounded-lg mb-4 gap-4 overflow-y-auto">
-
-                <!-- Images: Display and Delete -->
-                <div class="relative">
-                    <div class="mb-4">
-                        <label for="images" class="block text-sm font-medium text-gray-700 mb-2 textslate ">Ajout images
-                            <i class="fas fa-add"></i>
-                        </label>
-                        <input type="file" id="images" name="images" multiple
-                            class="hidden mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" onchange="previewImages()">
-                    </div>
-                </div>
-                <div id="imagePreview" class="mb-4 flex flex-wrap gap-2 relative">
-                    <!-- Fourth Row: Images Upload -->
-
-                </div>
-
-                <div class="grid grid-cols-2 gap-4 mb-4">
-                    <!-- First Column -->
-                    <div>
-                        <label for="titre" class="block text-sm font-medium text-gray-700 mb-2 textslate">Titre</label>
-                        <input type="text" id="titre" name="titre" placeholder="Titre"
-                            class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                    </div>
-
-                    <div>
-                        <label for="nbrplace" class="block text-sm font-medium text-gray-700 mb-2 textslate">Nombre de place</label>
-                        <input type="number" id="nbrplace" name="nbrplace" placeholder="Nombre de place"
-                            class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                    </div>
-                    <!-- Third Row: Text Area -->
-                <div class="col-span-2">
-                    <label for="textfile" class="block text-sm font-medium text-gray-700 mb-2 textslate">Description</label>
-                    <textarea id="textfile" name="textfile" rows="4" placeholder="Description"
-                            class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
-                </div>
-
-                    <div>
-                        <label for="duree" class="block text-sm font-medium text-gray-700 mb-2 textslate">Durée</label>
-                        <input type="number" id="duree" name="duree" placeholder="Durée"
-                            class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                    </div>
-
-                    <div>
-                        <label for="tarif" class="block text-sm font-medium text-gray-700 mb-2 textslate">Tarif par
-                            personne</label>
-                        <input type="number" id="tarif" name="tarif" placeholder="Tarif"
-                            class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                    </div>
-
-                    <div>
-                        <label for="datedebut" class="block text-sm font-medium text-gray-700 mb-2 textslate">Date début</label>
-                        <input type="date" id="datedebut" name="datedebut" placeholder="Date début"
-                            class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                    </div>
-
-                    <div>
-                        <label for="lieu" class="block text-sm font-medium text-gray-700 mb-2 textslate">Lieu</label>
-                        <input type="text" id="lieu" name="lieu" placeholder="Lieu"
-                            class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                    </div>
-                </div>
-
-                <!-- Second Row: Checkboxes -->
-                <div class="grid grid-cols-3 gap-4 mb-4">
-                    <div class="flex items-center justify-center">
-                        <label class="block text-sm font-medium text-gray-700 mr-2 textslate">Est</label>
-                        <input type="checkbox" checked id="est" name="est" class="mt-1">
-                    </div>
-                    <div class="flex items-center justify-center">
-                        <label class="block text-sm font-medium text-gray-700 mr-2 textslate">Ouest</label>
-                        <input type="checkbox" checked id="ouest" name="ouest" class="mt-1">
-                    </div>
-                    <div class="flex items-center justify-center">
-                        <label class="block text-sm font-medium text-gray-700 mr-2 textslate">Centre</label>
-                        <input type="checkbox" checked id="centre" name="centre" class="mt-1">
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- Footer Buttons -->
-            <div class="h-12 flex justify-end pt-2">
-                <button id="goToStep2" class="goToStep2 h-10 bg-blue-500 text-white px-4 py-2 rounded-lg">Ajouter</button>
-            </div>
-        </div>
-    </div>
-    <!-- edit Produit Sidebar -->
-    <div id="editSidebar" style="margin-top: -10px"
-         class="fixed right-0 top-0 bottom-0 w-2/5 backprimer shadow-lg transform translate-x-full transition-transform duration-300 z-50">
-        <div class="flex justify-between items-center p-4 border-b">
-            <h3 class="text-lg font-semibold textslate">Editer une formation</h3>
-            <button id="closeEditSidebar" class="text-xl textslate text-md">&times;</button>
-        </div>
-        <!-- Step 1: Select Products -->
-        <div id="step1edit" class="p-4 containerdef flex flex-col">
-
-            <div class="p-4 h-28 flex-grow rounded-lg mb-4 gap-4 overflow-y-auto">
-
-
-                <!-- Images: Display and Delete -->
-                <div class="relative">
-                    <div class="mb-4">
-                        <label for="edit_images" class="block text-sm font-medium text-gray-700 mb-2 textslate ">Ajout images
-                            <i class="fas fa-add"></i>
-                        </label>
-                        <input type="file" id="edit_images" name="edit_images" multiple
-                            class="hidden mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" onchange="editpreviewImages()">
-                    </div>
-                </div>
-                <div id="edit_imagePreview" class="mb-4 flex flex-wrap gap-2 relative">
-                    <!-- Fourth Row: Images Upload -->
-
-                </div>
-
-                <div class="grid grid-cols-2 gap-4 mb-4">
-                    <!-- First Column -->
-                    <div>
-                        <label for="edit_titre" class="block text-sm font-medium text-gray-700 mb-2 textslate">Titre</label>
-                        <input type="text" id="edit_titre" name="edit_titre" placeholder="Titre"
-                            class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                    </div>
-
-                    <div>
-                        <label for="edit_nbrplace" class="block text-sm font-medium text-gray-700 mb-2 textslate">Nombre de place</label>
-                        <input type="number" id="edit_nbrplace" name="edit_nbrplace" placeholder="Nombre de place"
-                            class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                    </div>
-                    <!-- Third Row: Text Area -->
-                <div class="col-span-2">
-                    <label for="edit_textfile" class="block text-sm font-medium text-gray-700 mb-2 textslate">Description</label>
-                    <textarea id="edit_textfile" name="edit_textfile" rows="4" placeholder="Description"
-                            class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
-                </div>
-
-                    <div>
-                        <label for="edit_duree" class="block text-sm font-medium text-gray-700 mb-2 textslate">Durée</label>
-                        <input type="number" id="edit_duree" name="edit_duree" placeholder="Durée"
-                            class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                    </div>
-
-                    <div>
-                        <label for="edit_tarif" class="block text-sm font-medium text-gray-700 mb-2 textslate">Tarif par
-                            personne</label>
-                        <input type="number" id="edit_tarif" name="edit_tarif" placeholder="Tarif"
-                            class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                    </div>
-
-                    <div>
-                        <label for="edit_datedebut" class="block text-sm font-medium text-gray-700 mb-2 textslate">Date début</label>
-                        <input type="date" id="edit_datedebut" name="edit_datedebut" placeholder="Date début"
-                            class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                    </div>
-
-                    <div>
-                        <label for="edit_lieu" class="block text-sm font-medium text-gray-700 mb-2 textslate">Lieu</label>
-                        <input type="text" id="edit_lieu" name="edit_lieu" placeholder="Lieu"
-                            class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                    </div>
-                </div>
-
-                <!-- Second Row: Checkboxes -->
-                <div class="grid grid-cols-3 gap-4 mb-4">
-                    <div class="flex items-center justify-center">
-                        <label class="block text-sm font-medium text-gray-700 mr-2 textslate">Est</label>
-                        <input type="checkbox" id="edit_est" name="edit_est" class="mt-1">
-                    </div>
-                    <div class="flex items-center justify-center">
-                        <label class="block text-sm font-medium text-gray-700 mr-2 textslate">Ouest</label>
-                        <input type="checkbox" id="edit_ouest" name="edit_ouest" class="mt-1">
-                    </div>
-                    <div class="flex items-center justify-center">
-                        <label class="block text-sm font-medium text-gray-700 mr-2 textslate">Centre</label>
-                        <input type="checkbox" id="edit_centre" name="edit_centre" class="mt-1">
-                    </div>
-                </div>
-
-
-
-
-
-
-
-
-
-
-
-
-            </div>
-
-            <div class="h-12 flex justify-end pt-2">
-                <button id="EditForm" class="goToStep2 h-10 bg-blue-500 text-white px-4 py-2 rounded-lg">Editer
-                </button>
-            </div>
-
-        </div>
-
-
-    </div>
-
-    <div class="flex justify-between items-center pt-4 mb-4" style="margin-top: -8px">
-        <div class="flex gap-2">
-            <div>
-                <a href="{% url 'formation' %}"
-                   class="block px-4 py-2 actualprimer rounded">Formation</a>
-            </div>
-            <div><!-- accomptes -->
-                <a href="{% url 'problematique' %}" class="block px-4 py-2 hoverprimer rounded">Problematique</a>
-            </div>
-        </div>
-        <div>
-            <button id="filterButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
-                    hover:bg-blue-900 hover:border-slate-400 rounded-md">Filtrer
-            </button>
-
-            {% if 'add_formation' in listeauth %}
-            <button id="addButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
-                        hover:bg-blue-900 hover:border-slate-400 rounded-md">Ajouter
-            </button>
-            {% else %}
-            <button class="btn capitalize bg-gray-500 text-white px-4 py-2 border rounded-md cursor-not-allowed">
-                Ajouter
-            </button>
-            {% endif %}
-
-        </div>
-    </div>
-    <hr/>
-
-    <!-- Produit List Headers -->
-    <div class="pt-4">
-        <div class="flex items-center justify-between text-gray-600 font-semibold px-4 defaultboldval">
-            <div class="w-3/12 capitalize">titre</div>
-            <div class="w-1/12 capitalize text-right">place libre</div>
-            <div class="w-1/12 capitalize text-right">places</div>
-            <div class="w-2/12 capitalize text-right">duree</div>
-            <div class="w-2/12 capitalize text-right">tarif/personne</div>
-            <div class="w-2/12 capitalize px-4 text-right">datedebut</div>
-            <div class="w-2/12 capitalize pr-10 text-right">Actions</div>
-        </div>
-    </div>
-
-    <div class="flex-grow shadow-md rounded-b-lg backslateprime p-2 overflow-y-auto">
-        {% for elem in formations %}
-        <div class="flex items-center justify-between p-2 backslateslite flex-none mb-2">
-            <div class="w-3/12 capitalize">{{ elem.titre }}</div>
-            <div class="w-1/12 capitalize text-right">{{ elem.place_restante }}</div>
-            <div class="w-1/12 capitalize text-right">{{ elem.nbrplace }}</div>
-            <div class="w-2/12 capitalize text-right">{{ elem.duree }} Jours</div>
-            <div class="w-2/12 capitalize text-right">{{ elem.tarif|floate_redefined }} DA</div>
-            <div class="w-2/12 capitalize px-4 text-right">{{ elem.datedebut|date:"d-m-Y" }}</div>
-            <div class="w-2/12 capitalize px-4 text-right">
-                <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded viewelem_{{ elem.id }}"
-                        data-identifiant="{{ elem.id }}" data-etat="{{ elem.etat }}">
-                    <i class="fas fa-search"></i>
-                </button>
-
-                <button id="editButton" class="editButton bg-blue-500 text-white p-2 rounded"
-                        data-identifiant="{{ elem.id }}">
-                    <i class="fas fa-pencil-alt" onclick=""></i>
-                </button>
-
-                <button class="bg-red-500 text-white p-2 rounded delete-btn"
-                        data-identifiant="{{ elem.id }}">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
-
-        </div>
-        {% endfor %}
-    </div>
-
-
-    <div id="deleteModal" class="fixed inset-0 flex items-center justify-center hidden bg-gray-800 bg-opacity-50">
-        <div class="backslate p-4 rounded-lg w-96 backprimer">
-            <h2 class="text-lg font-semibold text-gray-700 mb-4">Confirm Delete</h2>
-            <p>Etes vous sure de vouloir supprimer cette commande?</p>
-            <div class="mt-6 flex justify-end space-x-4">
-                <button id="cancelDelete" class="px-4 py-2 bg-gray-300 rounded">Annuler</button>
-                <button id="confirmDelete" class="px-4 py-2 bg-red-500 text-white rounded">Supprimer</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- View Sidebar -->
-    <div id="viewSidebar" style="margin-top: -10px"
-         class="flex flex-col fixed right-0 top-0 bottom-0 w-4/5 backprimer shadow-lg transform translate-x-full transition-transform duration-300 z-50">
-        <div class="flex justify-between items-center p-4 border-b">
-            <h3 class="text-lg font-semibold textslate">Détail Formation</h3>
-            <button id="closeViewSidebar" class="text-xl textslate hover:text-gray-700">&times;</button>
-        </div>
-
-        <div id="containerdatacmd" class="flex-grow flex flex-col p-8">
-            <div class="grid grid-cols-5 gap-4">
-                <label class="col-span-3">Titre</label>
-                <label>Nombre de place</label>
-                <label>Durée</label>
-                <div id="view_titre"
-                     class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md col-span-3 h-10"></div>
-                <div id="view_duree"
-                     class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md h-10"></div>
-                <div id="view_nbrplace"
-                     class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md h-10"></div>
-
-
-                <label class="col-span-3">Tarif par personne</label>
-                <label>Date début</label>
-                <label>date fin</label>
-                <div id="view_tarif"
-                     class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md col-span-3 h-10 text-right"></div>
-                <div id="view_datedebut"
-                     class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md h-10"></div>
-                <div id="view_datefin"
-                     class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md h-10"></div>
-            </div>
-            <div class="flex p-2">
-                <div class="w-1/4">
-                    <label>Distributeurs</label>
-                </div>
-                <div class="flex w-3/4">
-                    <div class="w-2/5">nom</div>
-                    <div class="w-1/5">prenom</div>
-                    <div class="w-1/5">poste</div>
-                    <div class="w-1/5">dateajout</div>
-                </div>
-            </div>
-            <div id="listesingup" class="flex-grow overflow-y-auto">
-            </div>
-
-
-        </div>
-
-
-    </div>
-
-
-    <!-- Filter Modal -->
-    <div id="filterModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40 flex items-center justify-center"
-         style="margin-top: -16px">
-        <div class="backprimer w-1/3 rounded-lg shadow-lg">
+        <!-- Add Produit Sidebar -->
+        <div id="addSidebar" style="margin-top: -10px"
+             class="fixed right-0 top-0 bottom-0 w-2/5 backprimer shadow-lg transform translate-x-full transition-transform duration-300 z-50">
             <div class="flex justify-between items-center p-4 border-b">
-                <h3 class="text-lg font-semibold">Filtres</h3>
-                <button id="closeFilterModal" class="text-gray-500 hover:text-gray-700">&times;</button>
+                <h3 class="text-lg font-semibold textslate">Ajouter une formation</h3>
+                <button id="closeSidebar" class="text-xl textslate text-md">&times;</button>
             </div>
-            <div class="p-4">
 
-                <div class="mb-3">
-                    <label for="date_debut" class="block mb-1 pl-1 text-sm font-medium textslate">Date début:</label>
-                    <input type="date" id="date_debut"
-                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block
-                       w-full p-2.5">
+            <!-- Step 1: Add Formation Details -->
+            <div id="step1" class="p-4 containerdef flex flex-col">
+                <div class="p-4 rounded-lg mb-4 gap-4 overflow-y-auto">
+
+                    <!-- Images: Display and Delete -->
+                    <div class="relative">
+                        <div class="mb-4">
+                            <label for="images" class="block text-sm font-medium text-gray-700 mb-2 textslate ">Ajout
+                                images
+                                <i class="fas fa-add"></i>
+                            </label>
+                            <input type="file" id="images" name="images" multiple
+                                   class="hidden mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                   onchange="previewImages()">
+                        </div>
+                    </div>
+                    <div id="imagePreview" class="mb-4 flex flex-wrap gap-2 relative">
+                        <!-- Fourth Row: Images Upload -->
+
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <!-- First Column -->
+                        <div>
+                            <label for="titre"
+                                   class="block text-sm font-medium text-gray-700 mb-2 textslate">Titre</label>
+                            <input type="text" id="titre" name="titre" placeholder="Titre"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+
+                        <div>
+                            <label for="nbrplace" class="block text-sm font-medium text-gray-700 mb-2 textslate">Nombre
+                                de place</label>
+                            <input type="number" id="nbrplace" name="nbrplace" placeholder="Nombre de place"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                        <!-- Third Row: Text Area -->
+                        <div class="col-span-2">
+                            <label for="textfile" class="block text-sm font-medium text-gray-700 mb-2 textslate">Description</label>
+                            <textarea id="textfile" name="textfile" rows="4" placeholder="Description"
+                                      class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
+                        </div>
+
+                        <div>
+                            <label for="duree"
+                                   class="block text-sm font-medium text-gray-700 mb-2 textslate">Durée</label>
+                            <input type="number" id="duree" name="duree" placeholder="Durée"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+
+                        <div>
+                            <label for="tarif" class="block text-sm font-medium text-gray-700 mb-2 textslate">Tarif par
+                                personne</label>
+                            <input type="number" id="tarif" name="tarif" placeholder="Tarif"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+
+                        <div>
+                            <label for="datedebut" class="block text-sm font-medium text-gray-700 mb-2 textslate">Date
+                                début</label>
+                            <input type="date" id="datedebut" name="datedebut" placeholder="Date début"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+
+                        <div>
+                            <label for="lieu"
+                                   class="block text-sm font-medium text-gray-700 mb-2 textslate">Lieu</label>
+                            <input type="text" id="lieu" name="lieu" placeholder="Lieu"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                    </div>
+
+                    <!-- Second Row: Checkboxes -->
+                    <div class="grid grid-cols-3 gap-4 mb-4">
+                        <div class="flex items-center justify-center">
+                            <label class="block text-sm font-medium text-gray-700 mr-2 textslate">Est</label>
+                            <input type="checkbox" checked id="est" name="est" class="mt-1">
+                        </div>
+                        <div class="flex items-center justify-center">
+                            <label class="block text-sm font-medium text-gray-700 mr-2 textslate">Ouest</label>
+                            <input type="checkbox" checked id="ouest" name="ouest" class="mt-1">
+                        </div>
+                        <div class="flex items-center justify-center">
+                            <label class="block text-sm font-medium text-gray-700 mr-2 textslate">Centre</label>
+                            <input type="checkbox" checked id="centre" name="centre" class="mt-1">
+                        </div>
+                    </div>
 
                 </div>
-                <div class="mb-3">
-                    <label for="date_fin" class="block mb-1 pl-1 text-sm font-medium textslate">Date fin:</label>
-                    <input type="date" id="date_fin"
-                           class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block
+
+                <!-- Footer Buttons -->
+                <div class="h-12 flex justify-end pt-2">
+                    <button id="goToStep2" class="goToStep2 h-10 bg-blue-500 text-white px-4 py-2 rounded-lg">Ajouter
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- edit Produit Sidebar -->
+        <div id="editSidebar" style="margin-top: -10px"
+             class="fixed right-0 top-0 bottom-0 w-2/5 backprimer shadow-lg transform translate-x-full transition-transform duration-300 z-50">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 class="text-lg font-semibold textslate">Editer une formation</h3>
+                <button id="closeEditSidebar" class="text-xl textslate text-md">&times;</button>
+            </div>
+            <!-- Step 1: Select Products -->
+            <div id="step1edit" class="p-4 containerdef flex flex-col">
+
+                <div class="p-4 h-28 flex-grow rounded-lg mb-4 gap-4 overflow-y-auto">
+
+
+                    <!-- Images: Display and Delete -->
+                    <div class="relative">
+                        <div class="mb-4">
+                            <label for="edit_images" class="block text-sm font-medium text-gray-700 mb-2 textslate ">Ajout
+                                images
+                                <i class="fas fa-add"></i>
+                            </label>
+                            <input type="file" id="edit_images" name="edit_images" multiple
+                                   class="hidden mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                   onchange="editpreviewImages()">
+                        </div>
+                    </div>
+                    <div id="edit_imagePreview" class="mb-4 flex flex-wrap gap-2 relative">
+                        <!-- Fourth Row: Images Upload -->
+
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <!-- First Column -->
+                        <div>
+                            <label for="edit_titre"
+                                   class="block text-sm font-medium text-gray-700 mb-2 textslate">Titre</label>
+                            <input type="text" id="edit_titre" name="edit_titre" placeholder="Titre"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+
+                        <div>
+                            <label for="edit_nbrplace" class="block text-sm font-medium text-gray-700 mb-2 textslate">Nombre
+                                de place</label>
+                            <input type="number" id="edit_nbrplace" name="edit_nbrplace" placeholder="Nombre de place"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                        <!-- Third Row: Text Area -->
+                        <div class="col-span-2">
+                            <label for="edit_textfile" class="block text-sm font-medium text-gray-700 mb-2 textslate">Description</label>
+                            <textarea id="edit_textfile" name="edit_textfile" rows="4" placeholder="Description"
+                                      class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
+                        </div>
+
+                        <div>
+                            <label for="edit_duree"
+                                   class="block text-sm font-medium text-gray-700 mb-2 textslate">Durée</label>
+                            <input type="number" id="edit_duree" name="edit_duree" placeholder="Durée"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+
+                        <div>
+                            <label for="edit_tarif" class="block text-sm font-medium text-gray-700 mb-2 textslate">Tarif
+                                par
+                                personne</label>
+                            <input type="number" id="edit_tarif" name="edit_tarif" placeholder="Tarif"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+
+                        <div>
+                            <label for="edit_datedebut" class="block text-sm font-medium text-gray-700 mb-2 textslate">Date
+                                début</label>
+                            <input type="date" id="edit_datedebut" name="edit_datedebut" placeholder="Date début"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+
+                        <div>
+                            <label for="edit_lieu"
+                                   class="block text-sm font-medium text-gray-700 mb-2 textslate">Lieu</label>
+                            <input type="text" id="edit_lieu" name="edit_lieu" placeholder="Lieu"
+                                   class="mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+                    </div>
+
+                    <!-- Second Row: Checkboxes -->
+                    <div class="grid grid-cols-3 gap-4 mb-4">
+                        <div class="flex items-center justify-center">
+                            <label class="block text-sm font-medium text-gray-700 mr-2 textslate">Est</label>
+                            <input type="checkbox" id="edit_est" name="edit_est" class="mt-1">
+                        </div>
+                        <div class="flex items-center justify-center">
+                            <label class="block text-sm font-medium text-gray-700 mr-2 textslate">Ouest</label>
+                            <input type="checkbox" id="edit_ouest" name="edit_ouest" class="mt-1">
+                        </div>
+                        <div class="flex items-center justify-center">
+                            <label class="block text-sm font-medium text-gray-700 mr-2 textslate">Centre</label>
+                            <input type="checkbox" id="edit_centre" name="edit_centre" class="mt-1">
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="h-12 flex justify-end pt-2">
+                    <button id="EditForm" class="goToStep2 h-10 bg-blue-500 text-white px-4 py-2 rounded-lg">Editer
+                    </button>
+                </div>
+
+            </div>
+
+
+        </div>
+
+        <div class="flex justify-between items-center pt-4 mb-4" style="margin-top: -8px">
+            <div class="flex gap-2">
+                <div>
+                    <a href="{% url 'formation' %}"
+                       class="block px-4 py-2 actualprimer rounded">Formation</a>
+                </div>
+                <div><!-- accomptes -->
+                    <a href="{% url 'problematique' %}" class="block px-4 py-2 hoverprimer rounded">Problematique</a>
+                </div>
+            </div>
+            <div>
+                <button id="filterButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
+                    hover:bg-blue-900 hover:border-slate-400 rounded-md">Filtrer
+                </button>
+
+                {% if 'add_formation' in listeauth %}
+                    <button id="addButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
+                        hover:bg-blue-900 hover:border-slate-400 rounded-md">Ajouter
+                    </button>
+                {% else %}
+                    <button class="btn capitalize bg-gray-500 text-white px-4 py-2 border rounded-md cursor-not-allowed">
+                        Ajouter
+                    </button>
+                {% endif %}
+
+            </div>
+        </div>
+        <hr/>
+
+        <!-- Produit List Headers -->
+        <div class="pt-4">
+            <div class="flex items-center justify-between text-gray-600 font-semibold px-4 defaultboldval">
+                <div class="w-3/12 capitalize">titre</div>
+                <div class="w-1/12 capitalize text-right">place libre</div>
+                <div class="w-1/12 capitalize text-right">places</div>
+                <div class="w-2/12 capitalize text-right">duree</div>
+                <div class="w-2/12 capitalize text-right">tarif/personne</div>
+                <div class="w-2/12 capitalize px-4 text-right">datedebut</div>
+                <div class="w-2/12 capitalize pr-10 text-right">Actions</div>
+            </div>
+        </div>
+
+        <div class="flex-grow shadow-md rounded-b-lg backslateprime p-2 overflow-y-auto">
+            {% for elem in formations %}
+                <div class="flex items-center justify-between p-2 backslateslite flex-none mb-2">
+                    <div class="w-3/12 capitalize">{{ elem.titre }}</div>
+                    <div class="w-1/12 capitalize text-right">{{ elem.place_restante }}</div>
+                    <div class="w-1/12 capitalize text-right">{{ elem.nbrplace }}</div>
+                    <div class="w-2/12 capitalize text-right">{{ elem.duree }} Jours</div>
+                    <div class="w-2/12 capitalize text-right">{{ elem.tarif|floate_redefined }} DA</div>
+                    <div class="w-2/12 capitalize px-4 text-right">{{ elem.datedebut|date:"d-m-Y" }}</div>
+                    <div class="w-2/12 capitalize px-4 text-right">
+                        <button id="viewButton"
+                                class="viewButton bg-blue-500 text-white p-2 rounded viewelem_{{ elem.id }}"
+                                data-identifiant="{{ elem.id }}" data-etat="{{ elem.etat }}">
+                            <i class="fas fa-search"></i>
+                        </button>
+
+                        <button id="editButton" class="editButton bg-blue-500 text-white p-2 rounded"
+                                data-identifiant="{{ elem.id }}">
+                            <i class="fas fa-pencil-alt" onclick=""></i>
+                        </button>
+
+                        <button class="bg-red-500 text-white p-2 rounded delete-btn"
+                                data-identifiant="{{ elem.id }}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+
+                </div>
+            {% endfor %}
+        </div>
+
+
+        <div id="deleteModal" class="fixed inset-0 flex items-center justify-center hidden bg-gray-800 bg-opacity-50">
+            <div class="backslate p-4 rounded-lg w-96 backprimer">
+                <h2 class="text-lg font-semibold text-gray-700 mb-4">Confirm Delete</h2>
+                <p>Etes vous sure de vouloir supprimer cette commande?</p>
+                <div class="mt-6 flex justify-end space-x-4">
+                    <button id="cancelDelete" class="px-4 py-2 bg-gray-300 rounded">Annuler</button>
+                    <button id="confirmDelete" class="px-4 py-2 bg-red-500 text-white rounded">Supprimer</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- View Sidebar -->
+        <div id="viewSidebar" style="margin-top: -10px"
+             class="flex flex-col fixed right-0 top-0 bottom-0 w-4/5 backprimer shadow-lg transform translate-x-full transition-transform duration-300 z-50">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 class="text-lg font-semibold textslate">Détail Formation</h3>
+                <button id="closeViewSidebar" class="text-xl textslate hover:text-gray-700">&times;</button>
+            </div>
+
+            <div id="containerdatacmd" class="flex-grow flex flex-col p-8">
+                
+                <div id="view_imagePreview" class="mb-4 flex flex-wrap gap-2 relative">
+                    
+                </div>
+                
+                <div class="grid grid-cols-5 gap-4">
+                    <label class="col-span-3">Titre</label>
+                    <label>Nombre de place</label>
+                    <label>Durée</label>
+                    <div id="view_titre"
+                         class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md col-span-3 h-10"></div>
+                    <div id="view_duree"
+                         class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md h-10"></div>
+                    <div id="view_nbrplace"
+                         class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md h-10"></div>
+
+
+                    <label class="col-span-3">Tarif par personne</label>
+                    <label>Date début</label>
+                    <label>date fin</label>
+                    <div id="view_tarif"
+                         class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md col-span-3 h-10 text-right"></div>
+                    <div id="view_datedebut"
+                         class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md h-10"></div>
+                    <div id="view_datefin"
+                         class="mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md h-10"></div>
+                </div>
+                <div class="flex p-2">
+                    <div class="w-1/4">
+                        <label>Distributeurs</label>
+                    </div>
+                    <div class="flex w-3/4">
+                        <div class="w-2/5">nom</div>
+                        <div class="w-1/5">prenom</div>
+                        <div class="w-1/5">poste</div>
+                        <div class="w-1/5">dateajout</div>
+                    </div>
+                </div>
+                <div id="listesingup" class="flex-grow overflow-y-auto">
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+        <!-- Filter Modal -->
+        <div id="filterModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40 flex items-center justify-center"
+             style="margin-top: -16px">
+            <div class="backprimer w-1/3 rounded-lg shadow-lg">
+                <div class="flex justify-between items-center p-4 border-b">
+                    <h3 class="text-lg font-semibold">Filtres</h3>
+                    <button id="closeFilterModal" class="text-gray-500 hover:text-gray-700">&times;</button>
+                </div>
+                <div class="p-4">
+
+                    <div class="mb-3">
+                        <label for="date_debut" class="block mb-1 pl-1 text-sm font-medium textslate">Date
+                            début:</label>
+                        <input type="date" id="date_debut"
+                               class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block
                        w-full p-2.5">
 
+                    </div>
+                    <div class="mb-3">
+                        <label for="date_fin" class="block mb-1 pl-1 text-sm font-medium textslate">Date fin:</label>
+                        <input type="date" id="date_fin"
+                               class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block
+                       w-full p-2.5">
+
+                    </div>
+
+                    <div class="flex justify-between">
+                        <button class="closePopup text-white p-2 rounded btn capitalize bg-[#141b54] hover:bg-blue-900">
+                            Annuler
+                        </button>
+                        <button id="SearchApply"
+                                class="btn capitalize bg-[#141b54] px-4 rounded py-2 border border-slate-300 text-gray-400 text-sm hover:bg-blue-900 hover:border-slate-400">
+                            Lancer recherce
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 
-<script>
- 
-    function previewImages() {
-        const fileInput = document.getElementById('images');
-        const imagePreviewContainer = document.getElementById('imagePreview');
-        const files = fileInput.files;
+    <script>
 
-        // Clear previous previews
-        //imagePreviewContainer.innerHTML = '';
+        function previewImages() {
+            const fileInput = document.getElementById('images');
+            const imagePreviewContainer = document.getElementById('imagePreview');
+            const files = fileInput.files;
 
-        // Loop through selected files
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i]; // Get the file object
-            const reader = new FileReader();
+            // Clear previous previews
+            //imagePreviewContainer.innerHTML = '';
 
-            reader.onload = function (event) {
-                const imageWrapper = document.createElement('div');
-                imageWrapper.classList.add('relative', 'w-24', 'h-24', 'overflow-hidden', 'rounded', 'border');
+            // Loop through selected files
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i]; // Get the file object
+                const reader = new FileReader();
 
-                // Store the file using jQuery's data() method
-                $(imageWrapper).data('file', file);
+                reader.onload = function (event) {
+                    const imageWrapper = document.createElement('div');
+                    imageWrapper.classList.add('relative', 'w-24', 'h-24', 'overflow-hidden', 'rounded', 'border');
 
-                // Image element
-                const img = document.createElement('img');
-                img.src = event.target.result;
-                img.classList.add('object-cover', 'w-full', 'h-full');
-                imageWrapper.appendChild(img);
+                    // Store the file using jQuery's data() method
+                    $(imageWrapper).data('file', file);
 
-                // Delete button
-                const deleteButton = document.createElement('button');
-                deleteButton.innerHTML = '&times;';
-                deleteButton.classList.add(
-                    'absolute', 'top-1', 'right-1', 'text-white', 'bg-red-500',
-                    'bg-opacity-75', 'w-6', 'h-6', 'rounded-full', 'flex', 'items-center', 'justify-center', 'text-xs'
-                );
-                deleteButton.onclick = function () {
-                    imageWrapper.remove(); // Remove the image element
+                    // Image element
+                    const img = document.createElement('img');
+                    img.src = event.target.result;
+                    img.classList.add('object-cover', 'w-full', 'h-full');
+                    imageWrapper.appendChild(img);
+
+                    // Delete button
+                    const deleteButton = document.createElement('button');
+                    deleteButton.innerHTML = '&times;';
+                    deleteButton.classList.add(
+                        'absolute', 'top-1', 'right-1', 'text-white', 'bg-red-500',
+                        'bg-opacity-75', 'w-6', 'h-6', 'rounded-full', 'flex', 'items-center', 'justify-center', 'text-xs'
+                    );
+                    deleteButton.onclick = function () {
+                        imageWrapper.remove(); // Remove the image element
+                    };
+
+                    imageWrapper.appendChild(deleteButton);
+                    imagePreviewContainer.appendChild(imageWrapper);
                 };
 
-                imageWrapper.appendChild(deleteButton);
-                imagePreviewContainer.appendChild(imageWrapper);
-            };
-
-            reader.readAsDataURL(file);
-        }
-    }
-
-    function editpreviewImages() {
-        const fileInput = document.getElementById('edit_images');
-        const imagePreviewContainer = document.getElementById('edit_imagePreview');
-        const files = fileInput.files;
-    
-        // Loop through selected files
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i]; // Get the file object
-            const reader = new FileReader();
-    
-            reader.onload = function (event) {
-                const imageWrapper = document.createElement('div');
-                imageWrapper.classList.add('relative', 'w-24', 'h-24', 'overflow-hidden', 'rounded', 'border');
-    
-                // Store the file using jQuery's data() method
-                $(imageWrapper).data('file', file);
-    
-                // Image element
-                const img = document.createElement('img');
-                img.src = event.target.result;
-                img.classList.add('object-cover', 'w-full', 'h-full');
-                imageWrapper.appendChild(img);
-    
-                // Delete button
-                const deleteButton = document.createElement('button');
-                deleteButton.innerHTML = '&times;';
-                deleteButton.classList.add(
-                    'absolute', 'top-1', 'right-1', 'text-white', 'bg-red-500',
-                    'bg-opacity-75', 'w-6', 'h-6', 'rounded-full', 'flex', 'items-center', 'justify-center', 'text-xs'
-                );
-    
-                // Prevent closing the popup
-                deleteButton.onclick = function (event) {
-                    event.preventDefault(); // Prevent form submission
-                    event.stopPropagation(); // Prevent event bubbling
-                    imageWrapper.remove(); // Remove the image element
-                };
-    
-                imageWrapper.appendChild(deleteButton);
-                imagePreviewContainer.appendChild(imageWrapper);
-            };
-    
-            reader.readAsDataURL(file);
-        }
-    }
-
-    $("#goToStep2").on("click", function (e) {
-        e.preventDefault();
-
-        // Initialize FormData
-        var form = new FormData();
-        form.append("titre", $("#titre").val());
-        form.append("nbrplace", $("#nbrplace").val());
-        form.append("duree", $("#duree").val());
-        form.append("tarif", $("#tarif").val());
-        form.append("datedebut", $("#datedebut").val());
-        form.append("text", $("#textfile").val());
-        form.append("lieu", $("#lieu").val());
-        form.append("est", $("#est").is(":checked"));
-        form.append("ouest", $("#ouest").is(":checked"));
-        form.append("centre", $("#centre").is(":checked"));
-
-        // Append images from #imagePreview
-        $("#imagePreview div").each(function () {
-            let file = $(this).data("file"); // Retrieve file stored using jQuery's data() method
-            if (file) {
-                form.append("images", file);
-            } else {
-                console.log("No file found for this image preview.");
+                reader.readAsDataURL(file);
             }
-        });
-
-        console.log("FormData content:");
-        for (let [key, value] of form.entries()) {
-            console.log(`${key}:`, value instanceof File ? value.name : value);
         }
 
-        // AJAX Request
-        $.ajax({
-            url: "/api/formation/",
-            method: "POST",
-            headers: {
-                "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
-            },
-            processData: false, // Prevent jQuery from processing data
-            contentType: false, // Let the browser set Content-Type with boundary
-            data: form,
-            success: function (response) {
-                console.log("Formation added successfully:", response);
-                alert("Formation added successfully!");
-            },
-            error: function (xhr, status, error) {
-                console.error("Error adding formation:", xhr.responseText);
-                alert("Error adding formation: " + xhr.responseText);
-            },
-        });
-    });
+        function editpreviewImages() {
+            const fileInput = document.getElementById('edit_images');
+            const imagePreviewContainer = document.getElementById('edit_imagePreview');
+            const files = fileInput.files;
 
-    {% if 'customuser' not in listmodules %}
-        $("#userslistlink").addClass('hidden');
-    {% endif %}
+            // Loop through selected files
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i]; // Get the file object
+                const reader = new FileReader();
 
-    {% if 'produit' not in listmodules %}
-        $("#prodlistlink").addClass('hidden');
-    {% endif %}
+                reader.onload = function (event) {
+                    const imageWrapper = document.createElement('div');
+                    imageWrapper.classList.add('relative', 'w-24', 'h-24', 'overflow-hidden', 'rounded', 'border');
 
-    {% if 'distributeur' not in listmodules %}
-        $("#distlistlink").addClass('hidden');
-    {% endif %}
+                    // Store the file using jQuery's data() method
+                    $(imageWrapper).data('file', file);
 
-    {% if 'dist_commande' not in listmodules %}
-        $("#cmdlistlink").addClass('hidden');
-    {% endif %}
+                    // Image element
+                    const img = document.createElement('img');
+                    img.src = event.target.result;
+                    img.classList.add('object-cover', 'w-full', 'h-full');
+                    imageWrapper.appendChild(img);
 
-    {% if 'encaissement' not in listmodules %}
-        $("#enclistlink").addClass('hidden');
-    {% endif %}
+                    // Delete button
+                    const deleteButton = document.createElement('button');
+                    deleteButton.innerHTML = '&times;';
+                    deleteButton.classList.add(
+                        'absolute', 'top-1', 'right-1', 'text-white', 'bg-red-500',
+                        'bg-opacity-75', 'w-6', 'h-6', 'rounded-full', 'flex', 'items-center', 'justify-center', 'text-xs'
+                    );
 
-    {% if 'formation' not in listmodules %}
-        $("#formslistlink").addClass('hidden');
-    {% endif %}
-    var selectedProducts = [];
-    var editselectedProducts = [];
-    var $containerdatacmd = $('#containerdatacmd');
+                    // Prevent closing the popup
+                    deleteButton.onclick = function (event) {
+                        event.preventDefault(); // Prevent form submission
+                        event.stopPropagation(); // Prevent event bubbling
+                        imageWrapper.remove(); // Remove the image element
+                    };
 
-    function formatNumber(num) {
-        return new Intl.NumberFormat('fr-FR', {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(num);
-    }
+                    imageWrapper.appendChild(deleteButton);
+                    imagePreviewContainer.appendChild(imageWrapper);
+                };
 
-    $('#addButton').click(function () {
-        $('#addSidebar').removeClass('translate-x-full').addClass('translate-x-0');
-    });
-
-
-    // Close the sidebar
-    $('#closeEditSidebar').on('click', function () {
-        $('#editSidebar').addClass('translate-x-full');
-    });
-    // Close sidebar when clicking outside
-    $(document).on('click', function (e) {
-        if (!$(e.target).closest('#editButton, #editSidebar').length) {
-            $('#editSidebar').addClass('translate-x-full');
+                reader.readAsDataURL(file);
+            }
         }
-    });
 
+        $("#goToStep2").on("click", function (e) {
+            e.preventDefault();
 
-    $('#closeSidebar').click(function () {
-        $('#addSidebar').removeClass('translate-x-0').addClass('translate-x-full');
-    });
+            // Initialize FormData
+            var form = new FormData();
+            form.append("titre", $("#titre").val());
+            form.append("nbrplace", $("#nbrplace").val());
+            form.append("duree", $("#duree").val());
+            form.append("tarif", $("#tarif").val());
+            form.append("datedebut", $("#datedebut").val());
+            form.append("text", $("#textfile").val());
+            form.append("lieu", $("#lieu").val());
+            form.append("est", $("#est").is(":checked"));
+            form.append("ouest", $("#ouest").is(":checked"));
+            form.append("centre", $("#centre").is(":checked"));
 
-    $('#filterButton').click(function () {
-        $('#filterModal').removeClass('hidden');
-    });
+            // Append images from #imagePreview
+            $("#imagePreview div").each(function () {
+                let file = $(this).data("file"); // Retrieve file stored using jQuery's data() method
+                if (file) {
+                    form.append("images", file);
+                } else {
+                    console.log("No file found for this image preview.");
+                }
+            });
 
-    $('#closeFilterModal').click(function () {
-        $('#filterModal').addClass('hidden');
-    });
+            console.log("FormData content:");
+            for (let [key, value] of form.entries()) {
+                console.log(`${key}:`, value instanceof File ? value.name : value);
+            }
 
-
-    $('#closeViewSidebar').on('click', function () {
-        $('#viewSidebar').addClass('translate-x-full');
-    });
-
-
-    //listeauth = { { listeauth }};
-
-
-    $(document).ready(function () {
-        $('.editButton').on('click', function () {
-            identifiant = $(this).data('identifiant');
-            $('#editselectedProducts').html("");
-    
-            let settings = {
-                url: `/api/formation/${identifiant}`,
-                method: "GET",
-                timeout: 0,
+            // AJAX Request
+            $.ajax({
+                url: "/api/formation/",
+                method: "POST",
                 headers: {
                     "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
                 },
-            };
-    
-            $.ajax(settings).done(function (response) {
-                let responsedata = response;
-    
-                // Populate form fields
-                $('#edit_titre').val(responsedata['titre']);
-                $('#edit_nbrplace').val(responsedata['nbrplace']);
-                $('#edit_duree').val(responsedata['duree']);
-                $('#edit_tarif').val(responsedata['tarif']);
-                $('#edit_datedebut').val(responsedata['datedebut']);
-                $('#edit_textfile').val(responsedata['text']);
-                $('#edit_lieu').val(responsedata['lieu']);
-                $('#edit_est').prop('checked', responsedata['est']);
-                $('#edit_ouest').prop('checked', responsedata['ouest']);
-                $('#edit_centre').prop('checked', responsedata['centre']);
-    
-                // Clear and populate image preview
-                const imagePreviewContainer = $('#edit_imagePreview');
-                imagePreviewContainer.html(""); // Clear previous images
-                if (responsedata['images_urls'] && responsedata['images_urls'].length > 0) {
-                    responsedata['images_urls'].forEach(function (imageUrl) {
-                        const imageWrapper = $('<div>', { class: 'relative w-24 h-24 overflow-hidden rounded border' });
-    
-                        // Add the image
-                        const img = $('<img>', {
-                            src: imageUrl,
-                            class: 'object-cover w-full h-full'
+                processData: false, // Prevent jQuery from processing data
+                contentType: false, // Let the browser set Content-Type with boundary
+                data: form,
+                success: function (response) {
+                    console.log("Formation added successfully:", response);
+                    alert("Formation added successfully!");
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error adding formation:", xhr.responseText);
+                    alert("Error adding formation: " + xhr.responseText);
+                },
+            });
+        });
+
+        {% if 'customuser' not in listmodules %}
+            $("#userslistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 'produit' not in listmodules %}
+            $("#prodlistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 'distributeur' not in listmodules %}
+            $("#distlistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 'dist_commande' not in listmodules %}
+            $("#cmdlistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 'encaissement' not in listmodules %}
+            $("#enclistlink").addClass('hidden');
+        {% endif %}
+
+        {% if 'formation' not in listmodules %}
+            $("#formslistlink").addClass('hidden');
+        {% endif %}
+        
+        
+        var selectedProducts = [];
+        var editselectedProducts = [];
+        var $containerdatacmd = $('#containerdatacmd');
+
+        function formatNumber(num) {
+            return new Intl.NumberFormat('fr-FR', {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(num);
+        }
+
+        $('#addButton').click(function () {
+            $('#addSidebar').removeClass('translate-x-full').addClass('translate-x-0');
+        });
+
+
+        // Close the sidebar
+        $('#closeEditSidebar').on('click', function () {
+            $('#editSidebar').addClass('translate-x-full');
+        });
+        // Close sidebar when clicking outside
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('#editButton, #editSidebar').length) {
+                $('#editSidebar').addClass('translate-x-full');
+            }
+        });
+
+
+        $('#closeSidebar').click(function () {
+            $('#addSidebar').removeClass('translate-x-0').addClass('translate-x-full');
+        });
+
+        $('#filterButton').click(function () {
+            $('#filterModal').removeClass('hidden');
+        });
+
+        $('#closeFilterModal').click(function () {
+            $('#filterModal').addClass('hidden');
+        });
+
+
+        $('#closeViewSidebar').on('click', function () {
+            $('#viewSidebar').addClass('translate-x-full');
+        });
+
+
+        //listeauth = { { listeauth }};
+
+
+        $(document).ready(function () {
+            $('.editButton').on('click', function () {
+                identifiant = $(this).data('identifiant');
+                $('#editselectedProducts').html("");
+
+                let settings = {
+                    url: `/api/formation/${identifiant}`,
+                    method: "GET",
+                    timeout: 0,
+                    headers: {
+                        "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
+                    },
+                };
+
+                $.ajax(settings).done(function (response) {
+                    let responsedata = response;
+
+                    // Populate form fields
+                    $('#edit_titre').val(responsedata['titre']);
+                    $('#edit_nbrplace').val(responsedata['nbrplace']);
+                    $('#edit_duree').val(responsedata['duree']);
+                    $('#edit_tarif').val(responsedata['tarif']);
+                    $('#edit_datedebut').val(responsedata['datedebut']);
+                    $('#edit_textfile').val(responsedata['text']);
+                    $('#edit_lieu').val(responsedata['lieu']);
+                    $('#edit_est').prop('checked', responsedata['est']);
+                    $('#edit_ouest').prop('checked', responsedata['ouest']);
+                    $('#edit_centre').prop('checked', responsedata['centre']);
+
+                    // Clear and populate image preview
+                    const imagePreviewContainer = $('#edit_imagePreview');
+                    imagePreviewContainer.html(""); // Clear previous images
+                    if (responsedata['images_urls'] && responsedata['images_urls'].length > 0) {
+                        responsedata['images_urls'].forEach(function (imageUrl) {
+                            const imageWrapper = $('<div>', {class: 'relative w-24 h-24 overflow-hidden rounded border'});
+
+                            // Add the image
+                            const img = $('<img>', {
+                                src: imageUrl,
+                                class: 'object-cover w-full h-full'
+                            });
+                            imageWrapper.append(img);
+
+                            // Add the delete button
+                            const deleteButton = $('<button>', {
+                                html: '&times;',
+                                class: 'absolute top-1 right-1 text-white bg-red-500 bg-opacity-75 w-6 h-6 rounded-full flex items-center justify-center text-xs',
+                                click: function (e) {
+                                    e.stopPropagation(); // Prevent event bubbling
+                                    imageWrapper.remove(); // Remove the image wrapper
+                                }
+                            });
+                            imageWrapper.append(deleteButton);
+
+                            // Append to the container
+                            imagePreviewContainer.append(imageWrapper);
                         });
-                        imageWrapper.append(img);
-    
-                        // Add the delete button
-                        const deleteButton = $('<button>', {
-                            html: '&times;',
-                            class: 'absolute top-1 right-1 text-white bg-red-500 bg-opacity-75 w-6 h-6 rounded-full flex items-center justify-center text-xs',
-                            click: function (e) {
-                                e.stopPropagation(); // Prevent event bubbling
-                                imageWrapper.remove(); // Remove the image wrapper
-                            }
-                        });
-                        imageWrapper.append(deleteButton);
-    
-                        // Append to the container
-                        imagePreviewContainer.append(imageWrapper);
-                    });
-                }
-    
-                // Populate sign-up list (if needed)
-                $('#listesingup').html('');
-                if (responsedata['groups'] && responsedata['groups'].length > 0) {
-                    responsedata['groups'].forEach(function (group) {
-                        $('#listesingup').append(`
+                    }
+
+                    // Populate sign-up list (if needed)
+                    $('#listesingup').html('');
+                    if (responsedata['groups'] && responsedata['groups'].length > 0) {
+                        responsedata['groups'].forEach(function (group) {
+                            $('#listesingup').append(`
                             <div class="flex">
                                 <div class="w-1/4">
                                     <label>Distributeur:</label>
@@ -687,56 +713,74 @@
                                 </div>
                             </div>
                         `);
-                    });
-                }
-    
-                // Show the edit sidebar
-                $('#editSidebar').removeClass('translate-x-full');
+                        });
+                    }
+
+                    // Show the edit sidebar
+                    $('#editSidebar').removeClass('translate-x-full');
+                });
             });
         });
-    });
-    
-    
 
 
-    $('.viewButton').on('click', function () {
+        $('.viewButton').on('click', function () {
 
-        identifiantview = $(this).data('identifiant');
-        editselectedProducts = [];
-        $('#editselectedProducts').html("");
+            identifiantview = $(this).data('identifiant');
+            editselectedProducts = [];
+            $('#editselectedProducts').html("");
 
-        let settings = {
-            url: `/api/formation/${identifiantview}`,
-            method: "GET",
-            timeout: 0,
-            headers: {
-                "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
-            },
-        };
+            let settings = {
+                url: `/api/formation/${identifiantview}`,
+                method: "GET",
+                timeout: 0,
+                headers: {
+                    "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
+                },
+            };
 
-        $.ajax(settings).done(function (response) {
-            let responsedata = response;
+            $.ajax(settings).done(function (response) {
+                let responsedata = response;
+                
+                const view_imagePreviewContainer = $('#view_imagePreview');
+                    view_imagePreviewContainer.html(""); // Clear previous images
+                    if (responsedata['images_urls'] && responsedata['images_urls'].length > 0) {
+                        responsedata['images_urls'].forEach(function (imageUrl) {
+                            const imageWrapper = $('<div>', {class: 'relative w-24 h-24 overflow-hidden rounded border'});
 
-            $('#view_titre').html(responsedata['titre']);
-            $('#view_duree').html(responsedata['nbrplace']);
-            $('#view_nbrplace').html(responsedata['duree']);
-            $('#view_tarif').html(formatNumber(responsedata['tarif']) + " DA Par personne");
-            $('#view_datedebut').html(responsedata['datedebut']);
-            $('#view_datefin').html(responsedata['datefin']);
+                            // Add the image
+                            const img = $('<img>', {
+                                src: imageUrl,
+                                class: 'object-cover w-full h-full'
+                            });
+                            imageWrapper.append(img);
 
-            console.log(responsedata)
-            $('#listesingup').html('');
+                            // Append to the container
+                            view_imagePreviewContainer.append(imageWrapper);
+                        });
+                    }
+                
+                
 
-            for (ind = 0; ind < responsedata['groups'].length; ind++) {
-                data1 = responsedata['groups'][ind]
-                data2list = data1['Equipeline']
-                console.log(data2list)
-                idelem = "listdist_" + data1['distributeur']
-                listeinfo = ""
+                $('#view_titre').html(responsedata['titre']);
+                $('#view_duree').html(responsedata['nbrplace']);
+                $('#view_nbrplace').html(responsedata['duree']);
+                $('#view_tarif').html(formatNumber(responsedata['tarif']) + " DA Par personne");
+                $('#view_datedebut').html(responsedata['datedebut']);
+                $('#view_datefin').html(responsedata['datefin']);
 
-                for (ind2 = 0; ind2 < data2list.length; ind2++) {
-                    data2 = data2list[ind2]
-                    listeinfo = listeinfo + `
+                console.log(responsedata)
+                $('#listesingup').html('');
+
+                for (ind = 0; ind < responsedata['groups'].length; ind++) {
+                    data1 = responsedata['groups'][ind]
+                    data2list = data1['Equipeline']
+                    console.log(data2list)
+                    idelem = "listdist_" + data1['distributeur']
+                    listeinfo = ""
+
+                    for (ind2 = 0; ind2 < data2list.length; ind2++) {
+                        data2 = data2list[ind2]
+                        listeinfo = listeinfo + `
                             <div class="w-full flex mt-1 p-2 block w-full bg-white shadow-sm sm:text-sm border-gray-300 rounded-md col-span-3 h-10">
                                 <div class="w-2/5">` + data2['nom'] + `</div>
                                 <div class="w-1/5">` + data2['prenom'] + `</div>
@@ -745,9 +789,9 @@
                             </div>
                         `
 
-                }
+                    }
 
-                $('#listesingup').append(`
+                    $('#listesingup').append(`
                             <div class="flex items-center justify-between p-2 backslateslite flex-none mb-2">
                                 <div class="w-1/4 flex flex-col">
                                     <label>Distributeur: ` + data1['distributeurname'] + `</label>
@@ -760,168 +804,166 @@
                             </div>
                         `)
 
-            }
+                }
 
 
-            $('#viewSidebar').toggleClass('translate-x-full');
+                $('#viewSidebar').toggleClass('translate-x-full');
+            });
+
+
         });
 
 
-    });
+        $('#EditForm').on('click', function () {
 
 
-    $('#EditForm').on('click', function () {
-        
-        
-        var form = new FormData();
-        form.append("titre", $("#edit_titre").val());
-        form.append("nbrplace", $("#edit_nbrplace").val());
-        form.append("duree", $("#edit_duree").val());
-        form.append("tarif", $("#edit_tarif").val());
-        form.append("datedebut", $("#edit_datedebut").val());
-        form.append("text", $("#edit_textfile").val());
-        form.append("lieu", $("#edit_lieu").val());
-        form.append("est", $("#edit_est").val());
-        form.append("ouest", $("#edit_ouest").val());
-        form.append("centre", $("#edit_centre").val());
+            var form = new FormData();
+            form.append("titre", $("#edit_titre").val());
+            form.append("nbrplace", $("#edit_nbrplace").val());
+            form.append("duree", $("#edit_duree").val());
+            form.append("tarif", $("#edit_tarif").val());
+            form.append("datedebut", $("#edit_datedebut").val());
+            form.append("text", $("#edit_textfile").val());
+            form.append("lieu", $("#edit_lieu").val());
+            form.append("est", $("#edit_est").val());
+            form.append("ouest", $("#edit_ouest").val());
+            form.append("centre", $("#edit_centre").val());
 
 
-        $("#edit_imagePreview div").each(function () {
-            let file = $(this).data("file"); // Retrieve file stored using jQuery's data() method
-            if (file) {
-                form.append("images", file);
-            } else {
-                console.log("No file found for this image preview.");
-            }
-
-        var settings = {
-          "url": `/api/formation/${identifiant}/`,
-          "method": "PUT",
-          "timeout": 0,
-          "processData": false,
-          "mimeType": "multipart/form-data",
-          "contentType": false,
-          "data": form
-        };
-
-        $.ajax(settings)
-            .done(function (response) {
-                console.log('Response:', response);
-                window.location.href = "/formation/"; // Redirect on success
-            })
-            .fail(function (jqXHR, textStatus, errorThrown) {
-                console.error('Error occurred:');
-                console.error('jqXHR:', jqXHR); // Full details of the error
-                console.error('Status:', textStatus);
-                console.error('Error Thrown:', errorThrown);
-                console.error('Response Text:', jqXHR.responseText);
-
-                // Parse the error response, if it's in JSON format
-                try {
-                    const responseJSON = JSON.parse(jqXHR.responseText);
-                    alert(`Error: ${responseJSON.message || 'Something went wrong!'}`);
-                } catch (e) {
-                    console.error('Failed to parse response as JSON:', e);
-                    alert('An unexpected error occurred.');
+            $("#edit_imagePreview div").each(function () {
+                let file = $(this).data("file"); // Retrieve file stored using jQuery's data() method
+                if (file) {
+                    form.append("images", file);
+                } else {
+                    console.log("No file found for this image preview.");
                 }
             });
-
-
-    });
-    
-
-
-    /*$('#goToStep2').on('click', function () {
-
-        var settings = {
-            "url": "/api/formation/",
-            "method": "POST",
-            "timeout": 0,
-            "headers": {
-                "Content-Type": "application/json",
-                "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),  // Assuming you have CSRF token in your template context
-            },
-            "data": JSON.stringify({
-                "titre": $('#titre').val(),
-                "nbrplace": $('#nbrplace').val(),
-                "duree": $('#duree').val(),
-                "tarif": $('#tarif').val(),
-                "datedebut": $('#datedebut').val(),
-            }),
-        };
-
-        $.ajax(settings)
-            .done(function (response) {
-                console.log(response);
-
-
-                window.location.href = "/formation/";
-            })
-            .fail(function (jqXHR, textStatus, errorThrown) {
-                // Log the entire jqXHR object to see all details
-                console.log('jqXHR:', jqXHR);
-
-                // Log the status text
-                console.log('Status:', textStatus);
-
-                // Log the error thrown
-                console.log('Error Thrown:', errorThrown);
-
-                // Log the response text, which might contain detailed error messages
-                console.log('Response Text:', jqXHR.responseText); alert(jqXHR.responseText)
-
-                // Optionally, parse the responseText as JSON if it's in JSON format
-                try {
-                    var responseJSON = JSON.parse(jqXHR.responseText);
-                    console.log('Response JSON:', responseJSON);
-                } catch (e) {
-                    console.error('Failed to parse response as JSON:', e);
-                }
-
-            });
-
-    });*/
-
-
-    let currentDeleteId = null;
-
-    // Open modal when delete button is clicked
-    $('.delete-btn').on('click', function () {
-        currentDeleteId = $(this).data('identifiant');
-        console.log(currentDeleteId);
-        $('#deleteModal').removeClass('hidden');
-    });
-
-    // Close modal when cancel is clicked
-    $('#cancelDelete').on('click', function () {
-        $('#deleteModal').addClass('hidden');
-        currentDeleteId = null;
-    });
-
-    // Confirm delete action
-    $('#confirmDelete').on('click', function () {
-        if (currentDeleteId) {
-            // Perform the delete action, e.g., make an AJAX call or redirect
-            console.log('Deleting item with ID:', currentDeleteId);
 
             var settings = {
-                "url": "/api/formation/" + currentDeleteId + "/",
-                "method": "DELETE",
+                "url": `/api/formation/${identifiant}/`,
+                "method": "PUT",
                 "timeout": 0,
-                "headers": {
-                    "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
-                },
+                "processData": false,
+                "mimeType": "multipart/form-data",
+                "contentType": false,
+                "data": form
             };
 
-            $.ajax(settings).done(function (response) {
-                console.log(response);
-                $('#deleteModal').addClass('hidden');
-            });
+            $.ajax(settings)
+                .done(function (response) {
+                    console.log('Response:', response);
+                    window.location.href = "/formation/"; // Redirect on success
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    console.error('Error occurred:');
+                    console.error('jqXHR:', jqXHR); // Full details of the error
+                    console.error('Status:', textStatus);
+                    console.error('Error Thrown:', errorThrown);
+                    console.error('Response Text:', jqXHR.responseText);
+
+                    // Parse the error response, if it's in JSON format
+                    try {
+                        const responseJSON = JSON.parse(jqXHR.responseText);
+                        alert(`Error: ${responseJSON.message || 'Something went wrong!'}`);
+                    } catch (e) {
+                        console.error('Failed to parse response as JSON:', e);
+                        alert('An unexpected error occurred.');
+                    }
+                });
 
 
-        }
-    });
+        });
+
+        /*$('#goToStep2').on('click', function () {
+    
+            var settings = {
+                "url": "/api/formation/",
+                "method": "POST",
+                "timeout": 0,
+                "headers": {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),  // Assuming you have CSRF token in your template context
+                },
+                "data": JSON.stringify({
+                    "titre": $('#titre').val(),
+                    "nbrplace": $('#nbrplace').val(),
+                    "duree": $('#duree').val(),
+                    "tarif": $('#tarif').val(),
+                    "datedebut": $('#datedebut').val(),
+                }),
+            };
+    
+            $.ajax(settings)
+                .done(function (response) {
+                    console.log(response);
+    
+    
+                    window.location.href = "/formation/";
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    // Log the entire jqXHR object to see all details
+                    console.log('jqXHR:', jqXHR);
+    
+                    // Log the status text
+                    console.log('Status:', textStatus);
+    
+                    // Log the error thrown
+                    console.log('Error Thrown:', errorThrown);
+    
+                    // Log the response text, which might contain detailed error messages
+                    console.log('Response Text:', jqXHR.responseText); alert(jqXHR.responseText)
+    
+                    // Optionally, parse the responseText as JSON if it's in JSON format
+                    try {
+                        var responseJSON = JSON.parse(jqXHR.responseText);
+                        console.log('Response JSON:', responseJSON);
+                    } catch (e) {
+                        console.error('Failed to parse response as JSON:', e);
+                    }
+    
+                });
+    
+        });*/
 
 
-</script>
+        let currentDeleteId = null;
+
+        // Open modal when delete button is clicked
+        $('.delete-btn').on('click', function () {
+            currentDeleteId = $(this).data('identifiant');
+            console.log(currentDeleteId);
+            $('#deleteModal').removeClass('hidden');
+        });
+
+        // Close modal when cancel is clicked
+        $('#cancelDelete').on('click', function () {
+            $('#deleteModal').addClass('hidden');
+            currentDeleteId = null;
+        });
+
+        // Confirm delete action
+        $('#confirmDelete').on('click', function () {
+            if (currentDeleteId) {
+                // Perform the delete action, e.g., make an AJAX call or redirect
+                console.log('Deleting item with ID:', currentDeleteId);
+
+                var settings = {
+                    "url": "/api/formation/" + currentDeleteId + "/",
+                    "method": "DELETE",
+                    "timeout": 0,
+                    "headers": {
+                        "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
+                    },
+                };
+
+                $.ajax(settings).done(function (response) {
+                    console.log(response);
+                    $('#deleteModal').addClass('hidden');
+                });
+
+            }
+        });
+
+
+    </script>
 {% endblock %}

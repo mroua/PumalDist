@@ -7,7 +7,7 @@ from django.urls import reverse
 
 from rest_framework import viewsets, status
 # Create your views here.
-from Distributeur.models import Distributeur
+from Distributeur.models import Distributeur, Payeur
 from Produits.models import TypeProduit, Couleur, Mesure
 from Session.models import Ville, CustomUser
 from .Serializers import Dist_CommandeLinesSerializer, Dist_CommandeSerializer, Dist_BonLivraisonSerializer, \
@@ -119,7 +119,6 @@ def CommandeView(request):
                     'codename', flat=True)
             )
         )
-        print(listeauth)
 
         liste_type = TypeProduit.objects.all()
         liste_couleur = Couleur.objects.all()
@@ -153,9 +152,7 @@ def CommandeView(request):
                 filters.append("date_ajout <= %s")
                 params.append(date_ajout_max)
             if etat:
-                filters.append("etat = %s")
-                params.append(etat)
-            else:
+                print('ici')
                 filters.append("etat = %s")
                 params.append(etat)
 
@@ -164,7 +161,7 @@ def CommandeView(request):
                 query += " AND " + " AND ".join(filters)
 
             with connection.cursor() as cursor:
-                # Execute the SQL query with parameters
+                print(query, params)
                 cursor.execute(query, params)
 
                 rows = cursor.fetchall()
@@ -183,6 +180,8 @@ def CommandeView(request):
                         "taxedtotal_blivraison": row[9],
                     })
 
+            liste_ville = Ville.objects.all()
+
             # return render(request, "Commande.html", {
             return render(request, "Dist/Commande.html", {
                 'liste_type': liste_type,
@@ -190,7 +189,8 @@ def CommandeView(request):
                 'liste_mesure': liste_mesure,
                 'liste_distributeur': liste_distributeur,
                 'liste_cmd': lise_prod,
-                'listeauth': listeauth
+                'listeauth': listeauth,
+                'liste_ville': liste_ville
             })
         else:
             query = """SELECT id, code, distributeur, ville, date_ajout, total, etat, total_blivraison, taxedtotal, 
@@ -224,7 +224,7 @@ def CommandeView(request):
 
             # Default behavior: Exclude `etat = 'brouillons'` unless it belongs to the logged-in user
             if not etat:  # Apply the default filter only if no specific `etat` is provided
-                filters.append("(etat != 'brouillons' OR distributeur = %s)")
+                filters.append("(etat <> 'Brouillon' OR distributeur = %s)")
                 params.append(request.user.id)
 
             # Append the filters to the query if there are any
@@ -233,6 +233,8 @@ def CommandeView(request):
 
             # Execute the query
             with connection.cursor() as cursor:
+                print(query)
+                print(params)
                 cursor.execute(query, params)
                 rows = cursor.fetchall()
 
@@ -295,6 +297,26 @@ def BlivraisonView(request):
             blist = Dist_BonLivraison.objects.all()
 
 
+        ville = request.GET.get('ville', None)
+        distributeur = request.GET.get('distributeur', None)
+        payeur = request.GET.get('payeur', None)
+        validate = request.GET.get('validate', 'false')
+
+        if (validate == "true"):
+            is_validate = True
+        else:
+            is_validate = False
+
+
+        if (ville):
+            blist = blist.filter(payeur__distributeur__user__ville__id=ville)
+        if (distributeur):
+            blist = blist.filter(payeur__distributeur__id=int(distributeur))
+        if (payeur):
+            blist = blist.filter(payeur__id=int(payeur))
+
+        blist = blist.filter(validate=is_validate)
+
         blist = blist.values(
             'id',
             'commandes__user__id',
@@ -307,11 +329,18 @@ def BlivraisonView(request):
             'total'
         )
 
+        listedist = Distributeur.objects.filter(user__is_active=True)
+        listepaye = Payeur.objects.filter(distributeur__in=listedist)
+        liste_ville = Ville.objects.all()
+
         return render(request, "Pumal/Blivraison.html", {
             "blist": blist,
             "cmd": commandes,
             "listeauth": listeauth,
-            "listmodules": listmodules
+            "listmodules": listmodules,
+            'listedist': listedist,
+            'listepaye': listepaye,
+            'liste_ville': liste_ville
         })
     else:
         return render(request, "access.html", {"listmodules": listmodules})
