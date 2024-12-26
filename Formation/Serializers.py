@@ -203,7 +203,7 @@ class ProblematiqueSerializer(serializers.ModelSerializer):
 
          # Clear existing images and add new ones
         if images_data:
-            instance.imagesformation_set.all().delete()
+            instance.imagesproblematique_set.all().delete()
             for image_file in images_data:
                 ImagesProblematique.objects.create(problematique=instance, image=image_file)  # Save image file
 

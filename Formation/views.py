@@ -74,7 +74,19 @@ def FormView(request):
 
         formations = Formation.objects.all()
 
-        if(request.user.type == "Distributeur"):
+        if(request.user.type in ["Distributeur", "Employé"]):
+
+            date_debut = request.GET.get('date_debut', None)
+            date_fin = request.GET.get('date_fin', None)
+
+
+            if date_debut:
+                formations = formations.filter(datedebut__gte=date_debut)
+
+            if date_fin:
+                # Calculate the end date dynamically as `datedebut + duree`
+                formations = formations.filter(datedebut__lte=date_fin, datedebut__gte=('datedebut') + timedelta(days=('duree')))
+
             return render(request, "Dist/Formations.html", {
                 "formations": formations,
                 "listeauth": listeauth,
@@ -114,11 +126,11 @@ def ProbView(request):
     if ('formation' in listmodules):
         listeauth = list(
             set(
-                Permission.objects.filter(user=request.user, content_type__model='formation').values_list('codename', flat=True)
+                Permission.objects.filter(user=request.user, content_type__model='Problematique').values_list('codename', flat=True)
             )
         )
-        if (request.user.type=="Distributeur"):
-            problematique = Problematique.objects.filter(etat__in=['Reception', 'En cours', 'Validation'], profile__user=request.user)
+        if (request.user.type in ["Distributeur", "Employé"]):
+            problematique = Problematique.objects.filter(etat__in=['Reception', 'En cours', 'Validation'], profile=request.user)
 
             return render(request, "Dist/problematique.html", {
                 "problematique": problematique,

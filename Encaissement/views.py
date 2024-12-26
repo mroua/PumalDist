@@ -22,6 +22,8 @@ def EncaissementView(request):
     )
     if (request.user.type in ["Distributeur", "Employé"] ):
         distrib = Distributeur.objects.get(user =request.user)
+        listepayeur = Payeur.objects.filter(distributeur=distrib)
+        listeville = Ville.objects.all()
 
         # Base SQL query
         query = """
@@ -38,32 +40,33 @@ def EncaissementView(request):
         # Apply filters based on the request parameters
         ville = request.GET.get('ville')
         if ville:
-            filters.append("AND ville_id = %s")
+            filters.append(" AND ville_id = %s")
             params.append(ville)
 
         code = request.GET.get('code')
         if code:
-            filters.append("AND code LIKE %s")
+            filters.append(" AND code LIKE %s")
             params.append(f"%{code}%")
 
         payeur = request.GET.get('payeur')
+        print("payeur: "+str(payeur))
         if payeur:
-            filters.append("AND payeur_id = %s")
-            params.append(f"%{payeur}%")
+            filters.append(" AND payeur_id = %s")
+            params.append(payeur)
 
         date_ajout_debut = request.GET.get('date_ajout_debut')
         if date_ajout_debut:
-            filters.append("AND date_ajout >= %s")
+            filters.append(" AND date_ajout >= %s")
             params.append(date_ajout_debut)
 
         date_ajout_fin = request.GET.get('date_ajout_fin')
         if date_ajout_fin:
-            filters.append("AND date_ajout <= %s")
+            filters.append(" AND date_ajout <= %s")
             params.append(date_ajout_fin)
 
         complete = request.GET.get('complete')
         if complete:
-            filters.append("AND complete = %s")
+            filters.append(" AND complete = %s")
             params.append(complete)
 
         # Combine base query with filters
@@ -106,7 +109,7 @@ def EncaissementView(request):
                 "total_validation_depot_true": row[14],
                 "montant_echue": row[15],
                 "plafonnement": row[16],
-                "distributeur_id": row[17]
+                "distributeur_id": row[17],
             })
 
         # Pass the results and lists to the template
@@ -117,7 +120,9 @@ def EncaissementView(request):
             "somme_circu": somme_circu,
             "somme_depot": somme_depot,
             "somme_echue": somme_echue,
-            "distrib_id": distrib.id
+            "distrib_id": distrib.id,
+            'listepayeur': listepayeur,
+            'listeville': listeville,
         })
 
     else:
@@ -152,41 +157,41 @@ def EncaissementView(request):
             ville = request.GET.get('ville')
             print("ville: "+str(ville))
             if ville:
-                filters.append("AND ville_id = %s")
+                filters.append(" AND ville_id = %s")
                 params.append(ville)
 
             code = request.GET.get('code')
             if code:
-                filters.append("AND code LIKE %s")
+                filters.append(" AND code LIKE %s")
                 params.append(f"%{code}%")
 
             distributeur = request.GET.get('distributeur')
             print("distributeur: "+str(distributeur))
             if distributeur:
-                filters.append("AND distributeur_id LIKE %s")
+                filters.append(" AND distributeur_id = %s")
                 params.append(f"%{distributeur}%")
 
             payeur = request.GET.get('payeur')
             print("payeur: "+str(payeur))
             if payeur:
-                filters.append("AND payeur_id LIKE %s")
+                filters.append(" AND payeur_id = %s")
                 params.append(f"%{payeur}%")
 
             date_ajout_debut = request.GET.get('date_ajout_debut')
             print("date_ajout_debut: "+str(date_ajout_debut))
             if date_ajout_debut:
-                filters.append("AND date_ajout >= %s")
+                filters.append(" AND date_ajout >= %s")
                 params.append(date_ajout_debut)
 
             date_ajout_fin = request.GET.get('date_ajout_fin')
             print("date_ajout_fin: "+str(date_ajout_fin))
             if date_ajout_fin:
-                filters.append("AND date_ajout <= %s")
+                filters.append(" AND date_ajout <= %s")
                 params.append(date_ajout_fin)
 
             complete = request.GET.get('complete')
             if complete:
-                filters.append("AND complete = %s")
+                filters.append(" AND complete = %s")
                 params.append(complete)
 
             # Combine base query with filters
@@ -326,7 +331,7 @@ def AccompteView(request):
         set(request.user.user_permissions.values_list('content_type_id__model', flat=True))
     )
 
-    if(request.user.type == "Distributeur"):
+    if(request.user.type in ["Distributeur", "Employé"]):
         listeaccompte = Account.objects.filter(montant__gt=0, payeur__distributeur__user=request.user)
         return render(request, "Dist/Accompte.html", {
             "listeaccompte": listeaccompte

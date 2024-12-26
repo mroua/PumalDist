@@ -17,24 +17,6 @@
                 <form id="ProbForm" class="">
                     <div class="overflow-y-auto containerdef2 px-4">
                         <div class="mb-4">
-
-                            <div class="relative">
-                                <div class="mb-4">
-                                    <label for="images" class="block text-sm font-medium text-gray-700 mb-2 textslate ">Ajout
-                                        images
-                                        <i class="fas fa-add"></i>
-                                    </label>
-                                    <input type="file" id="images" name="images" multiple
-                                           class="hidden mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                           onchange="previewImages()">
-                                </div>
-                            </div>
-                            <div id="imagePreview" class="mb-4 flex flex-wrap gap-2 relative">
-                                <!-- Fourth Row: Images Upload -->
-
-                            </div>
-
-
                             <div>
                                 <select id="type" name="type"
                                         class="mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
@@ -76,23 +58,6 @@
                 <form id="editProduitForm">
                     <div class="overflow-y-auto containerdef2 px-4">
                         <div class="mb-4">
-                            <!-- Images: Display and Delete -->
-                            <div class="relative">
-                                <div class="mb-4">
-                                    <label for="edit_images"
-                                           class="block text-sm font-medium text-gray-700 mb-2 textslate ">Ajout images
-                                        <i class="fas fa-add"></i>
-                                    </label>
-                                    <input type="file" id="edit_images" name="edit_images" multiple
-                                           class="hidden mt-1 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                           onchange="editpreviewImages()">
-                                </div>
-                            </div>
-                            <div id="edit_imagePreview" class="mb-4 flex flex-wrap gap-2 relative">
-                                <!-- Fourth Row: Images Upload -->
-
-                            </div>
-
                             <div>
                                 <select id="edittype" name="edittype"
                                         class="mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
@@ -114,10 +79,7 @@
                     </div>
 
 
-                    <div class="flex justify-between">
-
-                        <div id="editdiv"></div>
-
+                    <div class="flex justify-end">
                         <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400">
                             Modifier
                         </button>
@@ -131,17 +93,12 @@
              class="fixed right-0 top-0 bottom-0 w-2/5 backprimer shadow-lg transform translate-x-full transition-transform duration-300 z-50"
              style="margin-top: -8px">
             <div class="flex justify-between items-center p-4 border-b">
-                <h3 class="text-lg font-semibold textslate">Page problématique: </h3>
+                <h3 class="text-lg font-semibold textslate">Page produit: </h3>
                 <button id="closeViewSidebar" class="text-xl">&times;</button>
             </div>
             <!-- Edit Produit Form -->
             <div class="p-4 overflow-y-auto">
                 <div class="overflow-y-auto containerdef2">
-
-                    <div id="view_imagePreview" class="mb-4 flex flex-wrap gap-2 relative">
-
-                    </div>
-
                     <div class="mb-4">
                         <div id="viewtype" name="viewtype"
                              class="backslate mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
@@ -160,7 +117,8 @@
                 </div>
 
 
-                <div class="flex justify-end">
+                <div class="flex justify-between">
+                    <div id="editdiv"></div>
                     <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400">
                         Modifier
                     </button>
@@ -191,20 +149,15 @@
                 <div><!-- accomptes -->
                     <a href="{% url 'problematique' %}" class="block px-4 py-2 actualprimer rounded">Problematique</a>
                 </div>
-                <div>
-                    <a href="{% url 'promotion' %}" class="block px-4 py-2 hoverprimer rounded">Promotion</a>
-                </div>
             </div>
             <div>
                 <button id="filterButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
                     hover:bg-blue-900 hover:border-slate-400 rounded-md">Filtrer
                 </button>
 
-
                     <button id="addButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
                         hover:bg-blue-900 hover:border-slate-400 rounded-md">Ajouter
                     </button>
-
 
 
             </div>
@@ -229,8 +182,8 @@
 
                 <div class="flex items-center justify-between p-2 backslateslite flex-none mb-2">
                     <div class="w-1/4">
-                        <h3 class="font-bold text-blue-600">{{ elem.profile.username }}</h3>
-                        <p class="text-sm textslate">{{ elem.profile.first_name }} {{ elem.profile.last_name }}</p>
+                        <h3 class="font-bold text-blue-600">{{ elem.profile.designation }}</h3>
+                        <p class="text-sm textslate">{{ elem.profile.user.first_name }} {{ elem.profile.user.last_name }}</p>
                     </div>
                     <div class="w-1/8">{{ elem.intitule }}</div>
                     <div class="w-1/8">{{ elem.type }}</div>
@@ -239,20 +192,37 @@
                         {{ elem.date_ajout|date:'Y-m-d' }}
                     </div>
                     <div class="flex space-x-2 w-1/8 justify-end">
-                            <button id="viewButton"
-                                    class="viewButton bg-blue-500 text-white p-2 rounded viewelem_{{ elem.id }}"
+                        {% if 104 in listeauth %}
+                            <button id="viewButton" class="viewButton bg-blue-500 text-white p-2 rounded viewelem_{{ elem.id }}"
                                     data-identifiant="{{ elem.id }}">
                                 <i class="fas fa-search"></i>
                             </button>
+                        {% else %}
+                            <button class="cursor-not-allowed bg-gray-500 text-white p-2 rounded"
+                                    data-identifiant="{{ elem.id }}">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        {% endif %}
 
+                        {% if 102 in listeauth and elem.etat == "Reception" %}
                             <button id="editButton" class="editButton bg-blue-500 text-white p-2 rounded"
                                     data-identifiant="{{ elem.id }}">
                                 <i class="fas fa-pencil-alt"></i>
                             </button>
+                        {% else %}
+                            <button class="cursor-not-allowed bg-gray-500 text-white p-2 rounded"
+                                    data-identifiant="{{ elem.id }}">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                        {% endif %}
 
+                        {% if 103 in listeauth %}
                             <button class="bg-red-500 text-white p-2 rounded delete-btn"
                                     data-identifiant="{{ elem.id }}"><i class="fas fa-trash"></i></button>
-
+                        {% else %}
+                            <button class="cursor-not-allowed bg-gray-500 text-white p-2 rounded"><i
+                                    class="fas fa-trash"></i></button>
+                        {% endif %}
 
 
                     </div>
@@ -278,7 +248,7 @@
                 $("#userslistlink").addClass('hidden');
             {% endif %}
 
-            {% if 'produit' not in listmodules %}
+            {% if 'produits' not in listmodules %}
                 $("#prodlistlink").addClass('hidden');
             {% endif %}
 
@@ -297,101 +267,6 @@
             {% if 'formation' not in listmodules %}
                 $("#formslistlink").addClass('hidden');
             {% endif %}
-
-
-
-            function previewImages() {
-                const fileInput = document.getElementById('images');
-                const imagePreviewContainer = document.getElementById('imagePreview');
-                const files = fileInput.files;
-
-                // Clear previous previews
-                //imagePreviewContainer.innerHTML = '';
-
-                // Loop through selected files
-                for (let i = 0; i < files.length; i++) {
-                    const file = files[i]; // Get the file object
-                    const reader = new FileReader();
-
-                    reader.onload = function (event) {
-                        const imageWrapper = document.createElement('div');
-                        imageWrapper.classList.add('relative', 'w-24', 'h-24', 'overflow-hidden', 'rounded', 'border');
-
-                        // Store the file using jQuery's data() method
-                        $(imageWrapper).data('file', file);
-
-                        // Image element
-                        const img = document.createElement('img');
-                        img.src = event.target.result;
-                        img.classList.add('object-cover', 'w-full', 'h-full');
-                        imageWrapper.appendChild(img);
-
-                        // Delete button
-                        const deleteButton = document.createElement('button');
-                        deleteButton.innerHTML = '&times;';
-                        deleteButton.classList.add(
-                            'absolute', 'top-1', 'right-1', 'text-white', 'bg-red-500',
-                            'bg-opacity-75', 'w-6', 'h-6', 'rounded-full', 'flex', 'items-center', 'justify-center', 'text-xs'
-                        );
-                        deleteButton.onclick = function () {
-                            imageWrapper.remove(); // Remove the image element
-                        };
-
-                        imageWrapper.appendChild(deleteButton);
-                        imagePreviewContainer.appendChild(imageWrapper);
-                    };
-
-                    reader.readAsDataURL(file);
-                }
-            }
-
-            function editpreviewImages() {
-                const fileInput = document.getElementById('edit_images');
-                const imagePreviewContainer = document.getElementById('edit_imagePreview');
-                const files = fileInput.files;
-
-                // Loop through selected files
-                for (let i = 0; i < files.length; i++) {
-                    const file = files[i]; // Get the file object
-                    const reader = new FileReader();
-
-                    reader.onload = function (event) {
-                        const imageWrapper = document.createElement('div');
-                        imageWrapper.classList.add('relative', 'w-24', 'h-24', 'overflow-hidden', 'rounded', 'border');
-
-                        // Store the file using jQuery's data() method
-                        $(imageWrapper).data('file', file);
-
-                        // Image element
-                        const img = document.createElement('img');
-                        img.src = event.target.result;
-                        img.classList.add('object-cover', 'w-full', 'h-full');
-                        imageWrapper.appendChild(img);
-
-                        // Delete button
-                        const deleteButton = document.createElement('button');
-                        deleteButton.innerHTML = '&times;';
-                        deleteButton.classList.add(
-                            'absolute', 'top-1', 'right-1', 'text-white', 'bg-red-500',
-                            'bg-opacity-75', 'w-6', 'h-6', 'rounded-full', 'flex', 'items-center', 'justify-center', 'text-xs'
-                        );
-
-                        // Prevent closing the popup
-                        deleteButton.onclick = function (event) {
-                            event.preventDefault(); // Prevent form submission
-                            event.stopPropagation(); // Prevent event bubbling
-                            imageWrapper.remove(); // Remove the image element
-                        };
-
-                        imageWrapper.appendChild(deleteButton);
-                        imagePreviewContainer.appendChild(imageWrapper);
-                    };
-
-                    reader.readAsDataURL(file);
-                }
-            }
-
-
             edit_elem = 0;
 
             $reference = $('#reference');
@@ -413,7 +288,6 @@
             // Toggle the sidebar edit
             $('.editButton').on('click', function () {
                 identifiant = $(this).data('identifiant');
-
                 let settings = {
                     url: `/api/problematique/${identifiant}`,
                     method: "GET",
@@ -427,52 +301,9 @@
 
                     let responsedata = response;
 
-
-                    const imagePreviewContainer = $('#edit_imagePreview');
-                    imagePreviewContainer.html(""); // Clear previous images
-                    if (responsedata['images_urls'] && responsedata['images_urls'].length > 0) {
-                        responsedata['images_urls'].forEach(function (imageUrl) {
-                            const imageWrapper = $('<div>', {class: 'relative w-24 h-24 overflow-hidden rounded border'});
-
-                            // Add the image
-                            const img = $('<img>', {
-                                src: imageUrl,
-                                class: 'object-cover w-full h-full'
-                            });
-                            imageWrapper.append(img);
-
-                            // Add the delete button
-                            const deleteButton = $('<button>', {
-                                html: '&times;',
-                                class: 'absolute top-1 right-1 text-white bg-red-500 bg-opacity-75 w-6 h-6 rounded-full flex items-center justify-center text-xs',
-                                click: function (e) {
-                                    e.stopPropagation(); // Prevent event bubbling
-                                    imageWrapper.remove(); // Remove the image wrapper
-                                }
-                            });
-                            imageWrapper.append(deleteButton);
-
-                            // Append to the container
-                            imagePreviewContainer.append(imageWrapper);
-                        });
-                    }
-
-
                     $('#edittype').val(responsedata['type'])
                     $('#editintitule').val(responsedata['intitule'])
                     $('#editmessage').val(responsedata['message'])
-                    $('#editdiv').html('')
-                    if (responsedata['etat'] === "Reception") {
-                        $('#editdiv').append(`<button onclick="callstate(${identifiant}, 'En cours')" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
-                            hover:bg-blue-900 hover:border-slate-400 rounded-md">Lancer le traitement
-                        </button>`)
-                    } else if (responsedata['etat'] === "En cours") {
-                        $('#editdiv').append(`<button onclick="callstate(${identifiant}, 'Validation')" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
-                            hover:bg-blue-900 hover:border-slate-400 rounded-md">Valider
-                        </button>`)
-                    } else {
-                        $('#editdiv').html(html)
-                    }
 
 
                     $('#editSidebar').toggleClass('translate-x-full');
@@ -498,28 +329,22 @@
                 $.ajax(settings).done(function (response) {
                     let responsedata = response;
 
-                    const view_imagePreviewContainer = $('#view_imagePreview');
-                    view_imagePreviewContainer.html(""); // Clear previous images
-                    if (responsedata['images_urls'] && responsedata['images_urls'].length > 0) {
-                        responsedata['images_urls'].forEach(function (imageUrl) {
-                            const imageWrapper = $('<div>', {class: 'relative w-24 h-24 overflow-hidden rounded border'});
-
-                            // Add the image
-                            const img = $('<img>', {
-                                src: imageUrl,
-                                class: 'object-cover w-full h-full'
-                            });
-                            imageWrapper.append(img);
-
-                            // Append to the container
-                            view_imagePreviewContainer.append(imageWrapper);
-                        });
-                    }
 
                     $('#viewtype').html(responsedata['type'])
                     $('#viewintitule').html(responsedata['intitule'])
                     $('#viewmessage').html(responsedata['message'])
-
+                    $('#editdiv').html('')
+                    if (responsedata['etat'] === "Reception") {
+                        $('#editdiv').append(`<button onclick="callstate(${identifiantview}, 'En cours')" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
+                            hover:bg-blue-900 hover:border-slate-400 rounded-md">Lancer le traitement
+                        </button>`)
+                    } else if (responsedata['etat'] === "En cours") {
+                        $('#editdiv').append(`<button onclick="callstate(${identifiantview}, 'Validation')" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
+                            hover:bg-blue-900 hover:border-slate-400 rounded-md">Valider
+                        </button>`)
+                    } else {
+                        $('#editdiv').html(html)
+                    }
 
                     $('#viewSidebar').toggleClass('translate-x-full');
                 });
@@ -574,11 +399,12 @@
             });
 
             function callstate(id, etat) {
+                alert("je suis la")
                 dataview = JSON.stringify({
-                    "type": $('#edittype').val(),
-                    "profile": {{ request.user.id }},
-                    "intitule": $('#editintitule').val(),
-                    "message": $('#editmessage').val(),
+                    "type": $('#viewtype').html(),
+                    "profile": 1,
+                    "intitule": $('#viewintitule').html(),
+                    "message": $('#viewmessage').html(),
                     "etat": etat
                 });
 
@@ -590,14 +416,25 @@
                         "Content-Type": "application/json",
                         "X-CSRFToken": $('input[name= csrfmiddlewaretoken]').val(),
                     },
-                    "data": dataview
+                    "data": JSON.stringify({
+                        "type": $('#viewtype').html,
+                        "intitule": $('#viewintitule').html,
+                        "message": $('#viewmessage').html,
+                        "etat": JSON.stringify({
+                            "type": $('#viewtype').html(),
+                            "profile": 1,
+                            "intitule": $('#viewintitule').html(),
+                            "message": $('#viewmessage').html(),
+                            "etat": etat
+                        })
+                    })
                 };
 
 
                 $.ajax(settings)
                     .done(function (response) {
                         console.log(response);
-                        //window.location.href = "/formation/problematique";
+                        window.location.href = "/formation/problematique";
                     })
                     .fail(function (jqXHR, textStatus, errorThrown) {
                         // Log the entire jqXHR object to see all details
@@ -610,8 +447,7 @@
                         console.log('Error Thrown:', errorThrown);
 
                         // Log the response text, which might contain detailed error messages
-                        console.log('Response Text:', jqXHR.responseText);
-                        alert(jqXHR.responseText)
+                        console.log('Response Text:', jqXHR.responseText); alert(jqXHR.responseText)
 
                         // Optionally, parse the responseText as JSON if it's in JSON format
                         try {
@@ -628,47 +464,16 @@
 
             $('#subprob').on('click', function (e) {
                 e.preventDefault(); // Prevent the default form submission
-
-
-                // Initialize FormData
-                var form = new FormData();
-                form.append("type", $('#type').val());
-                form.append("profile", {{ request.user.id }});
-                form.append("intitule", $('#intitule').val());
-                form.append("message", $('#message').val());
-                form.append("etat", "En cours");
-
-                // Append images from #imagePreview
-                $("#imagePreview div").each(function () {
-                    let file = $(this).data("file"); // Retrieve file stored using jQuery's data() method
-                    if (file) {
-                        form.append("images", file);
-                    } else {
-                        console.log("No file found for this image preview.");
-                    }
-                });
-
-                $.ajax({
-                    url: "/api/problematique/",
-                    method: "POST",
-                    headers: {
-                        "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
-                    },
-                    processData: false, // Prevent jQuery from processing data
-                    contentType: false, // Let the browser set Content-Type with boundary
-                    data: form,
-                    success: function (response) {
-
-                        window.location.href = "/formation/problematique";
-                    },
-                    error: function (xhr, status, error) {
-                        console.error("Error adding formation:", xhr.responseText);
-                        alert("Error adding formation: " + xhr.responseText);
-                    },
+                data = JSON.stringify({
+                    "type": $('#type').val(),
+                    "profile": 1,
+                    "intitule": $('#intitule').val(),
+                    "message": $('#message').val(),
+                    "etat": "En cours"
                 });
 
 
-                /*var settings = {
+                var settings = {
                     "url": "/api/problematique/",
                     "method": "POST",
                     "timeout": 0,
@@ -695,8 +500,7 @@
                         console.log('Error Thrown:', errorThrown);
 
                         // Log the response text, which might contain detailed error messages
-                        console.log('Response Text:', jqXHR.responseText);
-                        alert(jqXHR.responseText)
+                        console.log('Response Text:', jqXHR.responseText); alert(jqXHR.responseText)
 
                         // Optionally, parse the responseText as JSON if it's in JSON format
                         try {
@@ -706,61 +510,12 @@
                             console.error('Failed to parse response as JSON:', e);
                         }
 
-                    });*/
+                    });
             });
 
             $('#editProduitForm').on('submit', function (e) {
                 e.preventDefault();
-
-                var form = new FormData();
-                form.append("type", $('#type').val());
-                form.append("intitule", $('#intitule').val());
-                form.append("message", $('#message').val());
-
-
-            $("#edit_imagePreview div").each(function () {
-                let file = $(this).data("file"); // Retrieve file stored using jQuery's data() method
-                if (file) {
-                    form.append("images", file);
-                } else {
-                    console.log("No file found for this image preview.");
-                }
-            });
-
-            var settings = {
-                "url": `/api/problematique/${identifiant}/`,
-                "method": "PUT",
-                "timeout": 0,
-                "processData": false,
-                "mimeType": "multipart/form-data",
-                "contentType": false,
-                "data": form
-            };
-
-            $.ajax(settings)
-                .done(function (response) {
-                    console.log('Response:', response);
-                    window.location.href = "/formation/"; // Redirect on success
-                })
-                .fail(function (jqXHR, textStatus, errorThrown) {
-                    console.error('Error occurred:');
-                    console.error('jqXHR:', jqXHR); // Full details of the error
-                    console.error('Status:', textStatus);
-                    console.error('Error Thrown:', errorThrown);
-                    console.error('Response Text:', jqXHR.responseText);
-
-                    // Parse the error response, if it's in JSON format
-                    try {
-                        const responseJSON = JSON.parse(jqXHR.responseText);
-                        alert(`Error: ${responseJSON.message || 'Something went wrong!'}`);
-                    } catch (e) {
-                        console.error('Failed to parse response as JSON:', e);
-                        alert('An unexpected error occurred.');
-                    }
-                });
-
-
-
+                alert("ici")
 
 
                 data = JSON.stringify({
@@ -784,7 +539,7 @@
                 };
 
 
-                /*$.ajax(settings)
+                $.ajax(settings)
                     .done(function (response) {
                         alert("ici2")
                         console.log(response);
@@ -801,8 +556,7 @@
                         console.log('Error Thrown:', errorThrown);
 
                         // Log the response text, which might contain detailed error messages
-                        console.log('Response Text:', jqXHR.responseText);
-                        alert(jqXHR.responseText)
+                        console.log('Response Text:', jqXHR.responseText); alert(jqXHR.responseText)
 
                         // Optionally, parse the responseText as JSON if it's in JSON format
                         try {
@@ -812,7 +566,7 @@
                             console.error('Failed to parse response as JSON:', e);
                         }
 
-                    });*/
+                    });
             });
 
 
@@ -837,7 +591,7 @@
                     console.log('Deleting item with ID:', currentDeleteId);
 
                     var settings = {
-                        "url": "/api/problematique/" + currentDeleteId + "/",
+                        "url": "/api/formation/problematique" + currentDeleteId + "/",
                         "method": "DELETE",
                         "timeout": 0,
                         "headers": {

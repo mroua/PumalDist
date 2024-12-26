@@ -180,12 +180,16 @@ class EncaissementSerializer(serializers.ModelSerializer):
 
         # Check if the type is "Espece"
         if validated_data.get('type') == "Espece":
+
             validated_data['validation'] = True
             validated_data['validation_depot'] = True
             validated_data['date_validation'] = timezone.now().date()
             validated_data['date_depot'] = timezone.now().date()
 
-        if (validated_data['montant'] != 0):
+        payeur = validated_data['payeur']
+        accounts = Account.objects.filter(payeur=payeur, montant__gt=0).order_by('date_ajout')
+
+        if (validated_data['montant'] != 0 or len(accounts) > 0 ):
             encaissement = Encaissement.objects.create(**validated_data)
 
             remaining_montant = encaissement.montant
@@ -232,12 +236,10 @@ class EncaissementSerializer(serializers.ModelSerializer):
             retour = encaissement
         else:
             remaining_montant = 0
-            payeur = validated_data['payeur']
 
 
             # If there's remaining montant, use account funds
         if remaining_montant >= 0:
-            accounts = Account.objects.filter(payeur=payeur, montant__gt=0).order_by('date_ajout')
             for account in accounts:
                 for facture_id in factures_ids:
                     facture = Factures.objects.get(id=facture_id)

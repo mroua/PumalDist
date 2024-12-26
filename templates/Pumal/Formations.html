@@ -237,6 +237,10 @@
                 <div><!-- accomptes -->
                     <a href="{% url 'problematique' %}" class="block px-4 py-2 hoverprimer rounded">Problematique</a>
                 </div>
+                
+                <div>
+                    <a href="{% url 'promotion' %}" class="block px-4 py-2 hoverprimer rounded">Promotion</a>
+                </div>
             </div>
             <div>
                 <button id="filterButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
@@ -412,6 +416,14 @@
 
 
     <script>
+    
+        $("#SearchApply").on('click', function (e) {
+            e.preventDefault();
+
+            link = "/formation/?date_debut=" + $('#date_debut').val() +"&date_fin=" + $('#payeur_filter').val();
+            //alert(link)
+            window.location.href = link;
+        })
 
         function previewImages() {
             const fileInput = document.getElementById('images');

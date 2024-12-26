@@ -1,7 +1,7 @@
 
 from rest_framework import routers
 
-from Session.views import ProfileViewSet
+from Session.views import ProfileViewSet, PromotionViewSet
 from Distributeur.views import DistributeurViewSet, PayeurViewSet
 from Produits.views import ProduitViewSet
 from Commande.views import Dist_CommandeLinesViewSet, Dist_CommandeViewSet, Dist_BonLivraisonViewSet, \
@@ -45,3 +45,4 @@ router1.register('blivraison', Dist_BonLivraisonNormalViewset, basename='blivrai
 router1.register('formation', FormationViewSet, basename='formation')
 router1.register('formationsingup', FormationSingupViewSet, basename='formationsingup')
 router1.register('problematique', ProblematiqueViewSet, basename='problematique')
+router1.register('promotion', PromotionViewSet, basename='promotion')

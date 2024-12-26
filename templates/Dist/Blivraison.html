@@ -4,7 +4,6 @@
 {% block title %}Commandes{% endblock %}
 
 {% block content %}
-coucou
     <div class="w-full h-full backprimer px-4 pb-4 flex flex-col">
         <style>
             .hiddenelem {
@@ -13,7 +12,18 @@ coucou
         </style>
 
         <div class="flex justify-between items-center pt-8 mb-4" style="margin-top: -8px">
-            <h2 class="text-2xl font-bold textslate">Liste des BL</h2>
+            <div class="flex gap-2">
+                <div>
+                    <a href="{% url 'commande' %}"
+                       class="block px-4 py-2 hoverprimer rounded">Commandes</a>
+                </div>
+                <div><!-- accomptes -->
+                    <a href="{% url 'bl' %}" class="block px-4 py-2 actualprimer rounded">Bon de livraison</a>
+                </div>
+            </div>
+            <button id="filterButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
+                    hover:bg-blue-900 hover:border-slate-400 rounded-md">Filtrer
+            </button>
         </div>
         <hr/>
 
@@ -76,39 +86,14 @@ coucou
                         </div>
                     </div>
                     <div class="flex space-x-2 w-1/6 justify-end">
-                        {% if 64 in listeauth %}
                             <button id="popupButton2" class="popupButton2 bg-blue-500 text-white p-2 rounded viewelem_{{ elem.id }}"
                                 data-identifiant="{{ elem.id }}"><i
                                 class="fas fa-search"></i>
                             </button>
-                        {% else %}
-                            <div class="bg-gray-300 text-white p-2 rounded cursor-not-allowed"
-                                     data-identifiant="{{ elem.id }}"><i
-                                        class="fas fa-search"></i>
-                            </div>
-                        {% endif %}
-                        {% if 62 in listeauth %}
                             <button id="popupButton" class="popupButton bg-blue-500 text-white p-2 rounded"
                                 data-identifiant="{{ elem.id }}"><i
                                 class="fas fa-pencil-alt"></i>
                             </button>
-                        {% else %}
-                            <div class="bg-gray-300 text-white p-2 rounded cursor-not-allowed"
-                                     data-identifiant="{{ elem.id }}"><i
-                                        class="fas fa-pencil-alt"></i>
-                            </div>
-                        {% endif %}
-                        {% if 63 in listeauth %}
-                            <button class="bg-red-500 text-white p-2 rounded delete-btn"
-                                data-code="{{ elem.commandes__distributeur__code }}"
-                                data-identifiant="{{ elem.id }}" data-cmd="{{ cmd }}"><i class="fas fa-trash"></i>
-                            </button>
-                        {% else %}
-                            <div class="bg-gray-300 text-white p-2 rounded cursor-not-allowed"
-                                     data-identifiant="{{ elem.id }}"><i
-                                        class="fas fa-trash"></i>
-                            </div>
-                        {% endif %}
 
 
 
@@ -134,15 +119,56 @@ coucou
 
                         <div class="listeblprod flex-grow flex-grow overflow-y-auto" id="listeblprod">
                         </div>
-                        <div class="grid grid-cols-8 text-right pr-4 text-lg">
-                            <div class="col-span-7 mr-3.5">Total HT:</div>
-                            <div class="col-span-1" id="totalhtbl">0 DA</div>
+
+
+                        <div class="grid grid-cols-8 pr-4 text-lg gap-4">
+                            <div class="col-span-6 grid grid-cols-2 gap-4">
+                                <div class="flex items-center space-x-4 border border-gray-300 rounded-lg fileinputback">
+                                    <label for="file-upload" class="block flex-shrink-0">
+                                        <div class="flex items-center justify-center px-4 py-1 rounded-l-lg backslate text-blue-500 cursor-pointer
+                                    hover:bg-blue-500 hover:text-white transition-colors duration-300">
+                                            <span>Fichier FC</span>
+                                        </div>
+                                        <input id="file-upload" type="file" class="hidden"/>
+                                    </label>
+                                    <span id="file-name" class="text-gray-800 truncate">No fc file</span>
+                                </div>
+
+                                <div class="flex items-center justify-center space-x-4">
+                                    <input id="facture_id" class="border border-gray-300 w-full
+                                    text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block
+                                    p-2.5" placeholder="Facture"/>
+                                </div>
+
+                                <div class="flex items-center space-x-4 border border-gray-300 rounded-lg fileinputback">
+                                    <label for="file-upload2" class="block flex-shrink-0">
+                                        <div class="flex items-center justify-center px-4 py-1 rounded-l-lg backslate text-blue-500 cursor-pointer hover:bg-blue-500 hover:text-white transition-colors duration-300">
+                                            <span>Fichier BL</span>
+                                        </div>
+                                        <input id="file-upload2" type="file" class="hidden"/>
+                                    </label>
+                                    <span id="file-name2" class="text-gray-800 truncate">No bl file</span>
+                                </div>
+
+                                <select id="payeur_bl"
+                                        class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                                    {% for pay in listepayeur %}
+                                        <option value="{{ pay.id }}">{{ pay.designation }}</option>
+                                    {% endfor %}
+                                </select>
+
+
+                            </div>
+                            <div class="col-span-2 grid grid-cols-2 items-center">
+                                <div class="col-span-1">Total HT:</div>
+                                <div class="col-span-1 text-right" id="totalhtbl">0 DA</div>
+                                <div class="col-span-1">Total Taxe:</div>
+                                <div class="col-span-1 text-right" id="totaltaxebl">0 DA</div>
+                            </div>
+
                         </div>
-                        <div class="grid grid-cols-8 text-right pr-4 text-lg">
-                            <div class="col-span-7">Total Taxe:</div>
-                            <div class="col-span-1" id="totaltaxebl">0 DA</div>
-                        </div>
-                        <div class="flex justify-around">
+
+                        <div class="flex justify-between">
                             <div class="">
                                 <button type="button" id="closePopup"
                                         class="bg-gray-500 text-white px-4 py-2 rounded-lg">
@@ -150,43 +176,14 @@ coucou
                                 </button>
                             </div>
 
-                            <div class="flex-grow flex items-center justify-around space-x-4">
-                                <div class="flex items-center justify-center space-x-4">
-                                    <input id="facture_id" class="border border-gray-300
-                                    text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block
-                                    p-2.5" placeholder="Facture"/>
-                                </div>
-
-                                <div class="flex items-center space-x-4 border border-gray-300 rounded-lg w-72 fileinputback">
-                                    <label for="file-upload" class="block flex-shrink-0">
-                                        <div class="flex items-center justify-center px-4 py-2 rounded-l-lg bg-white text-blue-500 cursor-pointer hover:bg-blue-500 hover:text-white transition-colors duration-300">
-                                            <span>Fichier FC</span>
-                                        </div>
-                                        <input id="file-upload" type="file" class="hidden"/>
-                                    </label>
-                                    <span id="file-name" class="text-gray-500 w-64 truncate">No fc file</span>
-                                </div>
-
-                                <div class="flex items-center space-x-4 border border-gray-300 rounded-lg w-72 fileinputback">
-                                    <label for="file-upload2" class="block flex-shrink-0">
-                                        <div class="flex items-center justify-center px-4 py-2 rounded-l-lg bg-white text-blue-500 cursor-pointer hover:bg-blue-500 hover:text-white transition-colors duration-300">
-                                            <span>Fichier BL</span>
-                                        </div>
-                                        <input id="file-upload2" type="file" class="hidden"/>
-                                    </label>
-                                    <span id="file-name2" class="text-gray-500 w-64 truncate">No bl file</span>
-                                </div>
-
-                            </div>
 
                             <div class="">
-                                <input type="submit" class="bg-green-300 text-white px-4 py-2 rounded-lg"
+                                <input type="submit" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
+                        hover:bg-blue-900 hover:border-slate-400 rounded-md" style="color: #FFFFFF!important;"
                                        id="validatebl"
                                        value="Valider">
                             </div>
                         </div>
-
-
                     </div>
                 </div>
             </form>
@@ -230,6 +227,66 @@ coucou
     </div>
 
 
+    <div id="filterModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40 flex items-center justify-center"
+         style="margin-top: -16px">
+        <div class="backprimer w-1/3 rounded-lg shadow-lg">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 class="text-lg font-semibold">Filtres</h3>
+                <button id="closeFilterModal" class="text-gray-500 hover:text-gray-700">&times;</button>
+            </div>
+            <div class="p-4">
+                
+                <div class="mb-3">
+                    <label for="payeur_filter"
+                           class="block mb-1 pl-1 text-sm font-medium textslate">Payeur:</label>
+                    <select id="payeur_filter"
+                            class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                        <option value="" {% if request.GET.payeur == "" %}selected{% endif %}>Tous</option>
+                        {% for dist in listepaye %}
+                            <option value="{{ dist.id }}"
+                                    {% if request.GET.payeur == dist.id|stringformat:"s" %}selected{% endif %}>{{ dist.designation }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="ville_filter" class="block mb-1 pl-1 text-sm font-medium textslate">Ville:</label>
+                    <select id="ville_filter" class="mt-1 p-2 block w-full shadow-sm sm:border-gray-300 rounded-md">
+                        <option value="" {% if request.GET.ville == "" %}selected{% endif %}>Tous</option>
+                        {% for ville in liste_ville %}
+                            <option value="{{ ville.id }}"
+                                    {% if request.GET.ville == ville.id|stringformat:"s" %}selected{% endif %}>{{ ville.designation }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-2">
+                    <div class="mb-3">
+                        <div class="checkbox-wrapper-6 flex items-center gap-6">
+                            <label class="textslate">Validation</label>
+                            <input class="tgl tgl-light" id="validatefilter" type="checkbox"/>
+                            <label class="tgl-btn" for="validatefilter"></label>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="flex justify-between">
+                    <button class="closePopup text-white p-2 rounded btn capitalize bg-[#141b54] hover:bg-blue-900">
+                        Annuler
+                    </button>
+                    <button id="SearchApply"
+                            class="btn capitalize bg-[#141b54] px-4 rounded py-2 border border-slate-300 text-gray-400 text-sm hover:bg-blue-900 hover:border-slate-400">
+                        Lancer recherce
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
 
     <script>
 
@@ -237,6 +294,27 @@ coucou
         var fileupload2data = null;
         var identifiant = 0;
         var commandesid = 0;
+        
+        
+        $('#filterButton').click(function () {
+            $('#filterModal').removeClass('hidden');
+        });
+
+        $('#closeFilterModal').click(function () {
+            $('#filterModal').addClass('hidden');
+        });
+        
+        $("#SearchApply").on('click', function (e) {
+            e.preventDefault();
+
+            if($("#validatefilter").prop('checked')) filt = true
+            else filt = false
+
+            link = "/commande/bl?ville=" + $('#ville_filter').val() +"&payeur=" + $('#payeur_filter').val()
+                +"&validate=" + filt;
+            //alert(link)
+            window.location.href = link;
+        })
 
         function formatNumber(num) {
             return new Intl.NumberFormat('fr-FR', {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(num);
@@ -296,6 +374,10 @@ coucou
                     // Update total price
                     let totalprice = responsedata['total'];
                     $('#totalhtbl').text(formatNumber(totalprice) + ' DA');
+                    $('#payeur_bl').val(responsedata['payeur']['id'])
+                    if(responsedata['validate']){
+                        $('#payeur_bl').attr('disabled', 'true')
+                    }
 
                     // Update tax
                     const totalTaxe = totalprice + totalprice * 0.19;
@@ -448,6 +530,7 @@ coucou
             if ($facture_id.val() === "") facture = null;
             else facture = $facture_id.val();
             form.append("BonLivraison", ["sol"]);
+            form.append("validate", true);
 
             var settings = {
                 "url": "/api/blivraison/" + identifiant + "/",

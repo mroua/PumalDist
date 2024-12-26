@@ -11,8 +11,38 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body class="w-full h-screen backprimer flex justify-center items-center overflow-hidden">
-
 <div class="w-full flex items-center justify-between px-20">
+    {% if listepromots.exists %}
+        <div id="promo-popup" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-40">
+            <div class="bg-white rounded-lg shadow-lg w-full h-full relative">
+                <button id="close-popup" class="absolute top-3 right-3 text-gray-500 hover:text-gray-800">
+                    <i class="uil uil-times text-2xl"></i>
+                </button>
+                <h2 class="text-2xl font-semibold text-center mb-4">Promotions</h2>
+                <div class="relative overflow-hidden">
+                    <div id="carousel-items" class="flex transition-transform duration-500 ease-in-out"
+                         style="transform: translateX(0);">
+                        {% for promo in listepromots %}
+                            <div class="min-w-full flex-none">
+                                <img src="{{ promo.image.url }}" alt="Promotion Image"
+                                     class="w-full h-[300px] object-cover rounded-lg">
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <button id="prev"
+                            class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 p-2 rounded-full">
+                        <i class="uil uil-angle-left text-2xl"></i>
+                    </button>
+                    <button id="next"
+                            class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 p-2 rounded-full">
+                        <i class="uil uil-angle-right text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    {% endif %}
+
     <!-- Left Side Links -->
     <div class="w-1/3 flex flex-col gap-2 items-end">
         <a href="/dashboard/"
@@ -26,7 +56,7 @@
                 <i class="uil uil-users-alt text-4xl"></i>
                 <span class="text-xl">Utilisateur</span>
             </a>
-         {% endif %}
+        {% endif %}
         {% if 'distributeur' in listeauth and request.user.type != 'Distributeur' %}
             <a href="/distributeur/"
                class="btn btn-square backprimer w-64 h-16 hover:bg-[#151e66] border-none flex gap-2 justify-between px-4 text-slate-300 hover:text-white">
@@ -39,15 +69,14 @@
                 <i class="uil uil-truck-loading text-4xl"></i>
                 <span class="text-xl">Payeur</span>
             </a>
-         {% endif %}
+        {% endif %}
         {% if 'produit' in listeauth and request.user.type != 'Distributeur' %}
             <a href="/produit/"
                class="btn btn-square backprimer w-64 h-16 hover:bg-[#151e66] border-none flex gap-2 justify-between px-4 text-slate-300 hover:text-white">
                 <i class="uil uil-box text-4xl"></i>
                 <span class="text-xl">Produits</span>
             </a>
-         {% endif %}
-
+        {% endif %}
 
 
     </div>
@@ -108,6 +137,50 @@
 
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        const $popup = $('#promo-popup');
+        const $carousel = $('#carousel-items');
+        const totalItems = $('#carousel-items > div').length;
+        let currentIndex = 0;
+
+        // Close the popup
+        $('#close-popup').on('click', function () {
+            $popup.fadeOut();
+        });
+
+        // Navigate to the previous image
+        $('#prev').on('click', function () {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateCarousel();
+            }
+        });
+
+        // Navigate to the next image
+        $('#next').on('click', function () {
+            if (currentIndex < totalItems - 1) {
+                currentIndex++;
+                updateCarousel();
+            }
+        });
+
+        // Update the carousel position
+        function updateCarousel() {
+            const offset = -(currentIndex * 100) + '%';
+            $carousel.css('transform', `translateX(${offset})`);
+        }
+
+        // Optionally close the popup when clicking outside the content
+        $popup.on('click', function (e) {
+            if ($(e.target).is($popup)) {
+                $popup.fadeOut();
+            }
+        });
+    });
+</script>
+
 
 </body>
 </html>

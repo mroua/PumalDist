@@ -112,4 +112,50 @@ class CustomUserSerializer(serializers.ModelSerializer):
         return instance
 
 
+class ImagesPromotionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ImagesPromotion
+        fields = ['id', 'image']
+
+class PromotionSerializer(serializers.ModelSerializer):
+    images = ImagesPromotionSerializer(many=True, write_only=True, required=False)
+    images_urls = serializers.SerializerMethodField(read_only=True)
+    class Meta:
+        model = Promotion
+        fields = '__all__'
+
+    def get_images_urls(self, obj):
+        """Get URLs of related images."""
+        return [img.image.url for img in obj.imagespromotion_set.all()]
+
+    def create(self, validated_data):
+        images_data = self.context['request'].FILES.getlist('images')  # Retrieve file list from request
+        form = Promotion.objects.create(**validated_data)
+
+        for image_file in images_data:
+            ImagesPromotion.objects.create(promotion=form, image=image_file)
+
+        """serializer = PromotionSerializer(form)
+        addhistory({}, serializer.data, 'problematique', 1, user=self.context.get('user'))"""
+
+        return form
+
+    def update(self, instance, validated_data):
+        images_data = self.context['request'].FILES.getlist('images')
+
+        oldvalue = PromotionSerializer(instance).data
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+         # Clear existing images and add new ones
+        if images_data:
+            instance.imagespromotion_set.all().delete()
+            for image_file in images_data:
+                ImagesPromotion.objects.create(promotion=instance, image=image_file)  # Save image file
+
+        """serializer = PromotionSerializer(instance)
+        addhistory(oldvalue, serializer.data, 'problematique', 2, user=self.context.get('user'))"""
+
+        return instance
 

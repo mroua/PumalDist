@@ -207,7 +207,7 @@ class Dist_BonLivraisonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Dist_BonLivraison
         fields = ['id', 'facture', 'date_ajout', 'date_facturation', 'date_echeance', 'fc_file', 'bl_file', 'commandes',
-                  'BonLivraison', 'total', 'payeur']
+                  'BonLivraison', 'total', 'payeur', 'validate']
         read_only_fields = ['date_ajout', 'total']
 
     def create(self, validated_data):
@@ -261,8 +261,8 @@ class Dist_BonLivraisonSerializer(serializers.ModelSerializer):
         return bon_livraison
 
     def update(self, instance, validated_data):
-        # Pop BonLivraison data to avoid modifying existing lines
         bon_livraison_lines_data = validated_data.pop('BonLivraison', [])
+        print(validated_data)
 
         oldvalue = Dist_BonLivraisonDetailSerializer(instance).data
         # Update remaining fields
@@ -389,7 +389,7 @@ class Dist_BonLivraisonDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Dist_BonLivraison
         fields = ['id', 'facture', 'date_ajout', 'date_facturation', 'date_echeance', 'fc_file', 'bl_file', 'commandes',
-                  'BonLivraison', 'total']
+                  'BonLivraison', 'total', 'payeur']
         read_only_fields = ['date_ajout', 'total']
         depth= 2
 
@@ -420,7 +420,7 @@ class Dist_BonLivraisonNormalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Dist_BonLivraison
         fields = ['id', 'facture', 'date_ajout', 'date_facturation', 'date_echeance', 'fc_file', 'bl_file', 'commandes',
-                  'BonLivraison', 'total', 'payeur']
+                  'BonLivraison', 'total', 'payeur', 'validate']
         read_only_fields = ['date_ajout', 'total']
 
 
@@ -475,11 +475,16 @@ class Dist_BonLivraisonNormalSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         bon_livraison_lines_data = validated_data.pop('BonLivraison')
 
+
+
         oldvalue = Dist_BonLivraisonDetailSerializer(instance).data
 
         facture = validated_data.get('facture', None)
         fc_file = validated_data.get('fc_file', None)
         bl_file = validated_data.get('bl_file', None)
+
+        if('validate' in validated_data):
+            instance.validate = True
 
         if facture is not None:
             instance.facture = facture

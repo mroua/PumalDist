@@ -157,7 +157,7 @@ def DistribView(request):
 
 @login_required
 def PayView(request):
-    if(request.user.type == "Distributeur"):
+    if(request.user.type in ["Distributeur", "Employé"]):
         pass
     else:
         print("coucou ici")

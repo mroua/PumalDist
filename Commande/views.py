@@ -289,59 +289,125 @@ def BlivraisonView(request):
             )
         )
 
-        commandes = request.GET.get('commandes', None)
+        if(request.user.type in ['Distributeur', 'Employé']):
+            commandes = request.GET.get('commandes', None)
 
-        if (commandes):
-            blist = Dist_BonLivraison.objects.filter(commandes=commandes)
+            if(request.user.type in ["Distributeur", "Employé"]):
+                listuser = CustomUser.objects.filter(Q(id=request.user.id) | Q(responsable__id=request.user.id))
+
+                listepayeur = Payeur.objects.filter(distributeur__user=request.user)
+            else:
+                listuser = CustomUser.objects.filter(id=request.user.id)
+                listepayeur = Payeur.objects.filter(distributeur__user=request.user.responsable)
+
+
+            if (commandes):
+                blist = Dist_BonLivraison.objects.filter(commandes=commandes, commandes__user__in=listuser)
+            else:
+                blist = Dist_BonLivraison.objects.filter(commandes__user__in=listuser)
+
+
+            ville = request.GET.get('ville', None)
+            distributeur = request.GET.get('distributeur', None)
+            payeur = request.GET.get('payeur', None)
+            validate = request.GET.get('validate', 'false')
+
+            if (validate == "true"):
+                is_validate = True
+            else:
+                is_validate = False
+
+
+            if (ville):
+                blist = blist.filter(payeur__distributeur__user__ville__id=ville)
+            if (distributeur):
+                blist = blist.filter(payeur__distributeur__id=int(distributeur))
+            if (payeur):
+                blist = blist.filter(payeur__id=int(payeur))
+
+            blist = blist.filter(validate=is_validate)
+
+            blist = blist.values(
+                'id',
+                'commandes__user__id',
+                'facture',
+                'date_ajout',
+                'date_facturation',
+                'date_echeance',
+                'fc_file',
+                'bl_file',
+                'total'
+            )
+
+            listedist = Distributeur.objects.filter(user__is_active=True)
+            listepaye = Payeur.objects.filter(distributeur__in=listedist)
+            liste_ville = Ville.objects.all()
+
+            return render(request, "Dist/Blivraison.html", {
+                "blist": blist,
+                "cmd": commandes,
+                "listeauth": listeauth,
+                "listmodules": listmodules,
+                'listedist': listedist,
+                'listepaye': listepaye,
+                'liste_ville': liste_ville,
+                'listepayeur': listepayeur
+            })
         else:
-            blist = Dist_BonLivraison.objects.all()
+
+            commandes = request.GET.get('commandes', None)
+
+            if (commandes):
+                blist = Dist_BonLivraison.objects.filter(commandes=commandes)
+            else:
+                blist = Dist_BonLivraison.objects.all()
 
 
-        ville = request.GET.get('ville', None)
-        distributeur = request.GET.get('distributeur', None)
-        payeur = request.GET.get('payeur', None)
-        validate = request.GET.get('validate', 'false')
+            ville = request.GET.get('ville', None)
+            distributeur = request.GET.get('distributeur', None)
+            payeur = request.GET.get('payeur', None)
+            validate = request.GET.get('validate', 'false')
 
-        if (validate == "true"):
-            is_validate = True
-        else:
-            is_validate = False
+            if (validate == "true"):
+                is_validate = True
+            else:
+                is_validate = False
 
 
-        if (ville):
-            blist = blist.filter(payeur__distributeur__user__ville__id=ville)
-        if (distributeur):
-            blist = blist.filter(payeur__distributeur__id=int(distributeur))
-        if (payeur):
-            blist = blist.filter(payeur__id=int(payeur))
+            if (ville):
+                blist = blist.filter(payeur__distributeur__user__ville__id=ville)
+            if (distributeur):
+                blist = blist.filter(payeur__distributeur__id=int(distributeur))
+            if (payeur):
+                blist = blist.filter(payeur__id=int(payeur))
 
-        blist = blist.filter(validate=is_validate)
+            blist = blist.filter(validate=is_validate)
 
-        blist = blist.values(
-            'id',
-            'commandes__user__id',
-            'facture',
-            'date_ajout',
-            'date_facturation',
-            'date_echeance',
-            'fc_file',
-            'bl_file',
-            'total'
-        )
+            blist = blist.values(
+                'id',
+                'commandes__user__id',
+                'facture',
+                'date_ajout',
+                'date_facturation',
+                'date_echeance',
+                'fc_file',
+                'bl_file',
+                'total'
+            )
 
-        listedist = Distributeur.objects.filter(user__is_active=True)
-        listepaye = Payeur.objects.filter(distributeur__in=listedist)
-        liste_ville = Ville.objects.all()
+            listedist = Distributeur.objects.filter(user__is_active=True)
+            listepaye = Payeur.objects.filter(distributeur__in=listedist)
+            liste_ville = Ville.objects.all()
 
-        return render(request, "Pumal/Blivraison.html", {
-            "blist": blist,
-            "cmd": commandes,
-            "listeauth": listeauth,
-            "listmodules": listmodules,
-            'listedist': listedist,
-            'listepaye': listepaye,
-            'liste_ville': liste_ville
-        })
+            return render(request, "Pumal/Blivraison.html", {
+                "blist": blist,
+                "cmd": commandes,
+                "listeauth": listeauth,
+                "listmodules": listmodules,
+                'listedist': listedist,
+                'listepaye': listepaye,
+                'liste_ville': liste_ville
+            })
     else:
         return render(request, "access.html", {"listmodules": listmodules})
 

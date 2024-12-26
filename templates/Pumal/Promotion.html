@@ -9,7 +9,7 @@
         <div id="addSidebar"
              class="fixed right-0 top-0 bottom-0 w-2/5 backprimer shadow-lg transform translate-x-full transition-transform duration-300 z-50 textslate">
             <div class="flex justify-between items-center p-4 border-b">
-                <h3 class="text-lg font-semibold textslate">Signaler un probleme</h3>
+                <h3 class="text-lg font-semibold textslate">Ajouter une promotion</h3>
                 <button id="closeSidebar" class="text-xl">&times;</button>
             </div>
             <!-- Add Produit Form -->
@@ -36,20 +36,13 @@
 
 
                             <div>
-                                <select id="type" name="type"
-                                        class="mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                    <option value="Reclamation">Reclamation</option>
-                                    <option value="Intervention">Intervention</option>
-                                </select>
-                            </div>
-                            <div>
-                                <input type="text" id="intitule" name="intitule" placeholder="Intitule"
+                                <input type="text" id="titre" name="titre" placeholder="Titre"
                                        class="mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                             </div>
                             <div>
-                                <textarea id="message" rows="8"
+                                <textarea id="description" rows="8"
                                           class="mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                          placeholder="Votre message d'erreur"></textarea>
+                                          placeholder="Déscription"></textarea>
                             </div>
 
                         </div>
@@ -94,20 +87,19 @@
                             </div>
 
                             <div>
-                                <select id="edittype" name="edittype"
-                                        class="mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                                    <option value="Reclamation">Reclamation</option>
-                                    <option value="Intervention">Intervention</option>
-                                </select>
-                            </div>
-                            <div>
-                                <input type="text" id="editintitule" name="editintitule" placeholder="Intitule"
+                                <input type="text" id="edit_titre" name="edit_titre" placeholder="Titre"
                                        class="mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                             </div>
                             <div>
-                                <textarea id="editmessage" rows="8"
+                                <textarea id="edit_description" rows="8"
                                           class="mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                          placeholder="Votre message d'erreur"></textarea>
+                                          placeholder="Déscription"></textarea>
+                            </div>
+
+                            <div class="checkbox-wrapper-6 flex items-center gap-6">
+                                <label class="textslate">État</label>
+                                <input class="tgl tgl-light" id="edit_is_active" type="checkbox"/>
+                                <label class="tgl-btn" for="edit_is_active"></label>
                             </div>
 
                         </div>
@@ -116,7 +108,6 @@
 
                     <div class="flex justify-between">
 
-                        <div id="editdiv"></div>
 
                         <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-400">
                             Modifier
@@ -143,17 +134,19 @@
                     </div>
 
                     <div class="mb-4">
-                        <div id="viewtype" name="viewtype"
+                        <div type="text" id="viewtitre"
                              class="backslate mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
 
                         </div>
-                        <div type="text" id="viewintitule"
-                             class="backslate mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-
-                        </div>
-                        <div id="viewmessage" rows="8"
+                        <div id="viewdescription" rows="8"
                              class="backslate mt-3 p-2 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                             placeholder="Votre message d'erreur">
+                             >
+                        </div>
+
+                        <div class="checkbox-wrapper-6 flex items-center gap-6">
+                            <label class="textslate">État</label>
+                            <input class="tgl tgl-light" id="is_activeview" disabled type="checkbox"/>
+                            <label class="tgl-btn" for="is_activeview"></label>
                         </div>
 
                     </div>
@@ -189,16 +182,16 @@
                        class="block px-4 py-2 hoverprimer rounded">Formation</a>
                 </div>
                 <div><!-- accomptes -->
-                    <a href="{% url 'problematique' %}" class="block px-4 py-2 actualprimer rounded">Problematique</a>
+                    <a href="{% url 'problematique' %}" class="block px-4 py-2 hoverprimer rounded">Problematique</a>
                 </div>
                 <div>
-                    <a href="{% url 'promotion' %}" class="block px-4 py-2 hoverprimer rounded">Promotion</a>
+                    <a href="{% url 'promotion' %}" class="block px-4 py-2 actualprimer rounded">Promotion</a>
                 </div>
             </div>
             <div>
-                <button id="filterButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
+                <!--<button id="filterButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
                     hover:bg-blue-900 hover:border-slate-400 rounded-md">Filtrer
-                </button>
+                </button>-->
 
 
                     <button id="addButton" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
@@ -214,31 +207,21 @@
         <!-- Produit List Headers -->
         <div class="pt-4">
             <div class="flex items-center justify-between text-gray-600 font-semibold px-4 defaultboldval">
-                <div class="w-1/4 capitalize">Distributeur</div>
-                <div class="w-1/8 capitalize">Intitulé</div>
-                <div class="w-1/8 capitalize">Type</div>
-                <div class="w-1/8 capitalize">État</div>
-                <div class="w-1/8 capitalize mr-6">Date Ajout</div>
-                <div class="w-1/8 capitalize text-center">Actions</div>
+                <div class="w-1/4 capitalize">Titre</div>
+                <div class="w-2/4 capitalize">Descripton</div>
+                <div class="w-1/4 capitalize mr-6">État</div>
+                <div class="w-1/4 capitalize text-center">Actions</div>
             </div>
         </div>
 
         <!-- Produit List -->
         <div class="flex-grow shadow-md rounded-b-lg backslateprime p-2 overflow-y-auto textslate">
-            {% for elem in problematique %}
-
+            {% for elem in listepromos %}
                 <div class="flex items-center justify-between p-2 backslateslite flex-none mb-2">
-                    <div class="w-1/4">
-                        <h3 class="font-bold text-blue-600">{{ elem.profile.username }}</h3>
-                        <p class="text-sm textslate">{{ elem.profile.first_name }} {{ elem.profile.last_name }}</p>
-                    </div>
-                    <div class="w-1/8">{{ elem.intitule }}</div>
-                    <div class="w-1/8">{{ elem.type }}</div>
-                    <div class="w-1/8">{{ elem.etat }}</div>
-                    <div class="w-1/8">
-                        {{ elem.date_ajout|date:'Y-m-d' }}
-                    </div>
-                    <div class="flex space-x-2 w-1/8 justify-end">
+                    <div class="w-1/4 capitalize">{{ elem.titre }}</div>
+                    <div class="w-2/4 capitalize">{{ elem.description }}</div>
+                    <div class="w-1/4 capitalize mr-6">{% if elem.active%}Active{% else %}Désactivé{% endif %}</div>
+                    <div class="flex space-x-2 w-1/4 justify-end">
                             <button id="viewButton"
                                     class="viewButton bg-blue-500 text-white p-2 rounded viewelem_{{ elem.id }}"
                                     data-identifiant="{{ elem.id }}">
@@ -415,7 +398,7 @@
                 identifiant = $(this).data('identifiant');
 
                 let settings = {
-                    url: `/api/problematique/${identifiant}`,
+                    url: `/api/promotion/${identifiant}`,
                     method: "GET",
                     timeout: 0,
                     headers: {
@@ -458,21 +441,16 @@
                     }
 
 
-                    $('#edittype').val(responsedata['type'])
-                    $('#editintitule').val(responsedata['intitule'])
-                    $('#editmessage').val(responsedata['message'])
-                    $('#editdiv').html('')
-                    if (responsedata['etat'] === "Reception") {
-                        $('#editdiv').append(`<button onclick="callstate(${identifiant}, 'En cours')" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
-                            hover:bg-blue-900 hover:border-slate-400 rounded-md">Lancer le traitement
-                        </button>`)
-                    } else if (responsedata['etat'] === "En cours") {
-                        $('#editdiv').append(`<button onclick="callstate(${identifiant}, 'Validation')" class="btn capitalize backprimer px-4 py-2 border border-slate-300 text-gray-400
-                            hover:bg-blue-900 hover:border-slate-400 rounded-md">Valider
-                        </button>`)
-                    } else {
-                        $('#editdiv').html(html)
+                    $('#edit').val(responsedata['type'])
+                    $('#edit_titre').val(responsedata['titre'])
+                    $('#edit_description').val(responsedata['description'])
+
+                    if (responsedata['active'] === "True") {
+                        $('#edit_is_active').prop('checked', true);
+                    }else{
+                        $('#edit_is_active').prop('checked', false);
                     }
+
 
 
                     $('#editSidebar').toggleClass('translate-x-full');
@@ -487,7 +465,7 @@
                 identifiantview = $(this).data('identifiant');
 
                 let settings = {
-                    url: `/api/problematique/${identifiantview}`,
+                    url: `/api/promotion/${identifiantview}`,
                     method: "GET",
                     timeout: 0,
                     headers: {
@@ -516,9 +494,14 @@
                         });
                     }
 
-                    $('#viewtype').html(responsedata['type'])
-                    $('#viewintitule').html(responsedata['intitule'])
-                    $('#viewmessage').html(responsedata['message'])
+                    $('#viewtitre').html(responsedata['titre'])
+                    $('#viewdescription').html(responsedata['description'])
+
+                    if (response['active'] === true) {
+                    $('#is_activeview').prop('checked', true);
+                } else {
+                    $('#is_activeview').prop('checked', false);
+                }
 
 
                     $('#viewSidebar').toggleClass('translate-x-full');
@@ -583,7 +566,7 @@
                 });
 
                 var settings = {
-                    "url": "/api/problematique/" + id + "/",
+                    "url": "/api/promotion/" + id + "/",
                     "method": "PUT",
                     "timeout": 0,
                     "headers": {
@@ -597,7 +580,7 @@
                 $.ajax(settings)
                     .done(function (response) {
                         console.log(response);
-                        //window.location.href = "/formation/problematique";
+                        window.location.href = "/formation/promotion";
                     })
                     .fail(function (jqXHR, textStatus, errorThrown) {
                         // Log the entire jqXHR object to see all details
@@ -632,11 +615,9 @@
 
                 // Initialize FormData
                 var form = new FormData();
-                form.append("type", $('#type').val());
-                form.append("profile", {{ request.user.id }});
-                form.append("intitule", $('#intitule').val());
-                form.append("message", $('#message').val());
-                form.append("etat", "En cours");
+                form.append("titre", $('#titre').val());
+                form.append("description", $('#description').val());
+                form.append("active", "true");
 
                 // Append images from #imagePreview
                 $("#imagePreview div").each(function () {
@@ -649,7 +630,7 @@
                 });
 
                 $.ajax({
-                    url: "/api/problematique/",
+                    url: "/api/promotion/",
                     method: "POST",
                     headers: {
                         "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val(),
@@ -659,7 +640,7 @@
                     data: form,
                     success: function (response) {
 
-                        window.location.href = "/formation/problematique";
+                        window.location.href = "/promotion/";
                     },
                     error: function (xhr, status, error) {
                         console.error("Error adding formation:", xhr.responseText);
@@ -713,9 +694,10 @@
                 e.preventDefault();
 
                 var form = new FormData();
-                form.append("type", $('#type').val());
-                form.append("intitule", $('#intitule').val());
-                form.append("message", $('#message').val());
+
+                form.append("titre", $('#edit_titre').val());
+                form.append("description", $('#edit_description').val());
+                form.append("active", $('#edit_is_active').prop('checked'));
 
 
             $("#edit_imagePreview div").each(function () {
@@ -728,7 +710,7 @@
             });
 
             var settings = {
-                "url": `/api/problematique/${identifiant}/`,
+                "url": `/api/promotion/${identifiant}/`,
                 "method": "PUT",
                 "timeout": 0,
                 "processData": false,
@@ -740,7 +722,7 @@
             $.ajax(settings)
                 .done(function (response) {
                     console.log('Response:', response);
-                    window.location.href = "/formation/"; // Redirect on success
+                    window.location.href = "/promotion/"; // Redirect on success
                 })
                 .fail(function (jqXHR, textStatus, errorThrown) {
                     console.error('Error occurred:');
@@ -773,7 +755,7 @@
 
 
                 var settings = {
-                    "url": "/api/problematique/" + identifiant + "/",
+                    "url": "/api/promotion/" + identifiant + "/",
                     "method": "PUT",
                     "timeout": 0,
                     "headers": {
@@ -837,7 +819,7 @@
                     console.log('Deleting item with ID:', currentDeleteId);
 
                     var settings = {
-                        "url": "/api/problematique/" + currentDeleteId + "/",
+                        "url": "/api/promotion/" + currentDeleteId + "/",
                         "method": "DELETE",
                         "timeout": 0,
                         "headers": {
@@ -848,7 +830,7 @@
                     $.ajax(settings).done(function (response) {
                         console.log(response);
                         $('#deleteModal').addClass('hidden');
-                        window.location.href = "/formation/problematique";
+                        window.location.href = "/promotion/";
                     });
 
 

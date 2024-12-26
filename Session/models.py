@@ -63,6 +63,19 @@ class CustomUser(AbstractUser):
             distdesignation = ""
         return distdesignation
 
+class Promotion(models.Model):
+    id = models.AutoField(primary_key=True)
+    description = models.TextField(blank=True, null=True)
+    titre = models.TextField(blank=True, null=True)
+    active = models.BooleanField(default=True)
+
+
+class ImagesPromotion(models.Model):
+    id = models.AutoField(primary_key=True)
+    image = models.FileField(upload_to="Promotions", blank=True, null=True)
+    promotion = models.ForeignKey(Promotion, on_delete=models.CASCADE)
+
+
 class History(models.Model):
     id = models.AutoField(primary_key=True)
     elem_id = models.IntegerField()

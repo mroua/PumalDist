@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Ville, Localite, CustomUser
+from .models import Ville, Localite, CustomUser, Promotion
 
 
 
@@ -20,3 +20,4 @@ class CustomUserAdmin(admin.ModelAdmin):
 admin.site.register(Ville, VilleAdmin)
 admin.site.register(Localite, LocaliteAdmin)
 admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(Promotion)

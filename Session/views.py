@@ -12,7 +12,7 @@ from django.db import connection
 from Distributeur.models import Distributeur
 from Produits.models import TypeProduit, Couleur, Mesure
 from .models import *
-from .Serializers import VilleSerializer, CustomUserSerializer, ChangePasswordSerializer
+from .Serializers import VilleSerializer, CustomUserSerializer, ChangePasswordSerializer, PromotionSerializer
 from django.contrib.auth.decorators import login_required
 
 
@@ -52,6 +52,11 @@ class VilleViewSet(viewsets.ModelViewSet):
 class LocaliteViewSet(viewsets.ModelViewSet):
     queryset = Ville.objects.all()
     serializer_class = VilleSerializer
+
+
+class PromotionViewSet(viewsets.ModelViewSet):
+    queryset = Promotion.objects.all()
+    serializer_class = PromotionSerializer
 
 
 class ChangePasswordView(APIView):
@@ -266,8 +271,11 @@ def LandingPage(request):
         set(request.user.user_permissions.values_list('content_type__model', flat=True))
     )
 
+    listepromots = ImagesPromotion.objects.filter(promotion__active=True)
+
     return render(request, "homelanding.html", {
-        'listeauth': listeauth
+        'listeauth': listeauth,
+        'listepromots': listepromots
     })
 
 
@@ -279,7 +287,7 @@ def custom_logout(request):
 
 @login_required
 def ProfilePage(request):
-    if(request.user.type == "Distributeur"):
+    if(request.user.type in ["Distributeur", "Employé"]):
         listeville = Ville.objects.all()
         return render(request, 'Dist/Profile.html', {
             'listeville': listeville
@@ -292,6 +300,31 @@ def ProfilePage(request):
         return render(request, 'Pumal/Profile.html', {
             'listmodules': listmodules
         })
+
+
+@login_required
+def Promo(request):
+    listmodules  = list(
+        set(request.user.user_permissions.values_list('content_type_id__model', flat=True))
+    )
+
+    if ('produit' in listmodules):
+        if(request.user.type in ["Distributeur", "Employé"]):
+            return render(request,"access.html", {"listmodules": listmodules})
+        else:
+            listmodules  = list(
+                set(request.user.user_permissions.values_list('content_type_id', flat=True))
+            )
+
+            listepromos = Promotion.objects.all()
+
+
+            return render(request, 'Pumal/Promotion.html', {
+                'listmodules': listmodules,
+                'listepromos': listepromos
+            })
+    else:
+        return render(request,"access.html", {"listmodules": listmodules})
 
 
 
